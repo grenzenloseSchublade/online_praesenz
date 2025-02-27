@@ -1,13 +1,14 @@
-title: Meine Website
-name: Ihr Name
+title: Kraftstoff
+name: Hans Müller
 description: Eine persönliche Website mit Minimal Mistakes Jekyll Theme
-url: # Die URL Ihrer Website
-baseurl: "" # der Subpath Ihrer Website, z.B. "/blog"
-repository: # GitHub username/repo-name z.B. "username/minimal-mistakes"
+url: "https://grenzenloseSchublade.github.io"
+baseurl: "/online_praesenz"
+repository: "grenzenloseSchublade/online_praesenz"
+logo: "/assets/images/kraftstoff.jpg"
 
 # Theme Einstellungen
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "sunrise" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale: "de-DE"
@@ -15,6 +16,28 @@ search: true
 search_full_content: true
 lunr:
   search_within_pages: true
+
+# Math Settings
+markdown: kramdown
+mathjax: true
+kramdown:
+  math_engine: mathjax
+  parse_block_html: true    # Erlaubt Markdown innerhalb von HTML-Blöcken
+  parse_span_html: true     # Erlaubt Markdown innerhalb von HTML-Spans
+  typographic_symbols: { hellip: ... }  # Typographische Verbesserungen
+  syntax_highlighter: rouge
+  input: GFM
+  hard_wrap: false         # Verhindert unerwünschte Zeilenumbrüche
+  footnote_nr: 1          # Startnummer für Fußnoten
+  show_warnings: true     # Zeigt Parsing-Warnungen an
+
+# MathJax specific settings
+head_scripts:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML
+
+# Collections
+include:
+  - _pages
 
 # SEO Related
 google_site_verification:
@@ -43,23 +66,19 @@ analytics:
 
 # Site Author
 author:
-  name: "Ihr Name"
-  avatar: # Pfad zu Ihrem Profilbild
-  bio: "Ihre Kurzbeschreibung"
-  location: "Ihr Standort"
+  name: "Hans Müller"
+  avatar: "/assets/images/kraftstoff.jpg"
+  bio: "Entwickler und Mathematik-Enthusiast"
+  location: "Deutschland"
   links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/grenzenloseSchublade"
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:ihre@email.de"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      url: "https://ihre-website.de"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/username"
 
 # Build settings
-markdown: kramdown
 highlighter: rouge
 lsi: false
 excerpt_separator: "\n\n"
@@ -108,7 +127,7 @@ exclude:
   - vendor
   - .asset-cache
   - .bundle
-  - .jekyll-assets-cache
+  - .jekyll-cache
   - .sass-cache
   - assets/js/plugins
   - assets/js/_main.js

@@ -1,0 +1,20 @@
+# Jekyll generierte Dateien
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+.bundle
+vendor
+
+# Lokale Entwicklungsdateien
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+
+# IDE Dateien
+.idea/
+.vscode/
+*.swp
+*.swo 

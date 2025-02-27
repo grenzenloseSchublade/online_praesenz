@@ -3,6 +3,8 @@ main:
     url: /
   - title: "Über mich"
     url: /about/
+  - title: "Mandelbrot"
+    url: /mandelbrot/
   - title: "Blog"
     url: /posts/
   - title: "Kategorien"
