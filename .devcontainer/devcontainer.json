@@ -1,20 +1,29 @@
 {
-    "name": "Jekyll Minimal Mistakes Development",
-    "image": "mcr.microsoft.com/devcontainers/ruby:3",
+    "name": "Python 3.11 & Jekyll",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
     "features": {
         "ghcr.io/devcontainers/features/node:1": {
             "version": "lts"
         },
+        "ghcr.io/devcontainers/features/ruby:1": {
+            "version": "latest"
+        },
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
-    "forwardPorts": [4000],
+    "forwardPorts": [4000, 8888],
     "remoteEnv": {
     "GH_TOKEN": "${localEnv:GH_TOKEN}"
   	},
-    "postCreateCommand": "sh .devcontainer/post-create.sh",
+    "postCreateCommand": "sh .devcontainer/post-create.sh && pip install --upgrade pip && pip install -r requirements.txt && bundle install",
     "customizations": {
         "vscode": {
             "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-toolsai.jupyter",
+                "ms-toolsai.jupyter-keymap",
+                "ms-toolsai.jupyter-renderers",
+                "donjayamanne.python-extension-pack",
                 "sissel.shopify-liquid",
                 "davidanson.vscode-markdownlint",
                 "yzhang.markdown-all-in-one",
@@ -22,7 +31,25 @@
                 "streetsidesoftware.code-spell-checker-german",
                 "redhat.vscode-yaml",
                 "github.vscode-pull-request-github"
-            ]
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+                "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+                "python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+                "python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+                "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+                "python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+                "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+                "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+                "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+                "editor.formatOnSave": "true",
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": "true"
+                }
+            }
         }
     },
     "remoteUser": "vscode"

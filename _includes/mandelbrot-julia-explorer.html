@@ -1,0 +1,501 @@
+<!-- Interaktiver Mandelbrot-Julia-Explorer -->
+<div class="explorer-container">
+  <div class="explorer-controls">
+    <div class="control-group">
+      <label for="explorerMaxIter">Max. Iterationen:</label>
+      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="100">
+      <span id="explorerIterValue">100</span>
+    </div>
+    <div class="control-group">
+      <label for="explorerColorScheme">Farbschema:</label>
+      <select id="explorerColorScheme">
+        <option value="blau-rot">Blau-Rot</option>
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="feuer">Feuer</option>
+        <option value="ozean">Ozean</option>
+        <option value="monochrom">Monochrom</option>
+        <option value="regenbogen">Regenbogen</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <button id="resetExplorer">Zurücksetzen</button>
+      <button id="saveExplorerImage">Bild speichern</button>
+    </div>
+  </div>
+  
+  <div class="explorer-row">
+    <div class="explorer-column">
+      <h4>Mandelbrot-Menge</h4>
+      <div class="canvas-container">
+        <canvas id="mandelbrotCanvas" width="400" height="400"></canvas>
+        <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
+      </div>
+      <div class="info-panel">
+        <p>Klicken Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>
+      </div>
+    </div>
+    <div class="explorer-column">
+      <h4>Julia-Menge für c = <span id="juliaParameter">-0.7 + 0.27i</span></h4>
+      <div class="canvas-container">
+        <canvas id="explorerJuliaCanvas" width="400" height="400"></canvas>
+        <div class="loading-indicator" id="juliaLoading">Berechne...</div>
+      </div>
+      <div class="info-panel">
+        <p>Die Julia-Menge für den gewählten Parameter c.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .explorer-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 850px;
+    margin: 0 auto;
+    background: #222;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .explorer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #333;
+    border-radius: 5px;
+  }
+  
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 300px;
+  }
+  
+  .explorer-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .explorer-column {
+    flex: 1 1 400px;
+  }
+  
+  .explorer-column h4 {
+    color: #eacfb4;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .canvas-container {
+    position: relative;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  #mandelbrotCanvas, #explorerJuliaCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    cursor: crosshair;
+  }
+  
+  .loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    display: none;
+  }
+  
+  .info-panel {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #ccc;
+    text-align: center;
+  }
+  
+  button {
+    background: #444;
+    color: #eacfb4;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background: #555;
+  }
+  
+  input[type="range"] {
+    flex: 1;
+  }
+  
+  select {
+    background: #444;
+    color: #eacfb4;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Canvas und Kontext für Mandelbrot
+  const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
+  const mandelbrotCtx = mandelbrotCanvas.getContext('2d');
+  const mandelbrotLoading = document.getElementById('mandelbrotLoading');
+  
+  // Canvas und Kontext für Julia
+  const juliaCanvas = document.getElementById('explorerJuliaCanvas');
+  const juliaCtx = juliaCanvas.getContext('2d');
+  const juliaLoading = document.getElementById('juliaLoading');
+  
+  // Steuerelemente
+  const maxIterSlider = document.getElementById('explorerMaxIter');
+  const colorSchemeSelect = document.getElementById('explorerColorScheme');
+  const resetButton = document.getElementById('resetExplorer');
+  const saveImageButton = document.getElementById('saveExplorerImage');
+  
+  // Anzeige-Elemente
+  const iterValueSpan = document.getElementById('explorerIterValue');
+  const juliaParameter = document.getElementById('juliaParameter');
+  
+  // Parameter
+  let maxIterations = parseInt(maxIterSlider.value);
+  let colorScheme = colorSchemeSelect.value;
+  let juliaReal = -0.7;
+  let juliaImag = 0.27;
+  
+  // Farbpaletten
+  const colorPalettes = {
+    'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
+    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00'],
+    'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00'],
+    'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff'],
+    'monochrom': ['#000000', '#333333', '#666666', '#999999', '#ffffff'],
+    'regenbogen': ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff']
+  };
+  
+  // Optimierte Mandelbrot-Berechnung mit Web Workers
+  function calculateMandelbrot() {
+    mandelbrotLoading.style.display = 'block';
+    
+    requestAnimationFrame(() => {
+      if (window.Worker) {
+        // Anzahl der Worker (Prozessorkerne)
+        const numWorkers = navigator.hardwareConcurrency || 4;
+        const workers = [];
+        const chunks = [];
+        let completedChunks = 0;
+        
+        // Canvas in Chunks aufteilen
+        const chunkHeight = Math.ceil(mandelbrotCanvas.height / numWorkers);
+        
+        // Niedrigauflösende Vorschau für sofortiges Feedback
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        const scaleFactor = 0.25;
+        
+        tempCanvas.width = mandelbrotCanvas.width * scaleFactor;
+        tempCanvas.height = mandelbrotCanvas.height * scaleFactor;
+        
+        // Schnelle Berechnung mit niedriger Auflösung
+        const tempWorker = new Worker('{{ site.baseurl }}/assets/js/mandelbrot-worker.js');
+        tempWorker.postMessage({
+          width: tempCanvas.width,
+          height: tempCanvas.height,
+          maxIterations: Math.min(50, maxIterations),
+          colorScheme: colorScheme,
+          colorPalettes: colorPalettes,
+          startY: 0,
+          endY: tempCanvas.height,
+          workerId: 'preview'
+        });
+        
+        tempWorker.onmessage = function(e) {
+          tempCtx.putImageData(e.data.imageData, 0, 0);
+          mandelbrotCtx.drawImage(tempCanvas, 0, 0, mandelbrotCanvas.width, mandelbrotCanvas.height);
+          tempWorker.terminate();
+          
+          // Jetzt die hochauflösende Version berechnen
+          startMultiWorkerCalculation();
+        };
+        
+        function startMultiWorkerCalculation() {
+          // Erstelle Worker für jeden Chunk
+          for (let i = 0; i < numWorkers; i++) {
+            const startY = i * chunkHeight;
+            const endY = Math.min(startY + chunkHeight, mandelbrotCanvas.height);
+            
+            const worker = new Worker('{{ site.baseurl }}/assets/js/mandelbrot-worker.js');
+            workers.push(worker);
+            
+            worker.postMessage({
+              width: mandelbrotCanvas.width,
+              height: mandelbrotCanvas.height,
+              maxIterations: maxIterations,
+              colorScheme: colorScheme,
+              colorPalettes: colorPalettes,
+              startY: startY,
+              endY: endY,
+              workerId: i
+            });
+            
+            worker.onmessage = function(e) {
+              const result = e.data;
+              chunks[result.workerId] = result;
+              completedChunks++;
+              
+              // Zeichne diesen Chunk sofort
+              mandelbrotCtx.putImageData(
+                result.imageData, 
+                0, 
+                result.startY, 
+                0, 
+                0, 
+                mandelbrotCanvas.width, 
+                result.endY - result.startY
+              );
+              
+              // Wenn alle Chunks fertig sind
+              if (completedChunks === numWorkers) {
+                mandelbrotLoading.style.display = 'none';
+                
+                // Bereinige Worker
+                workers.forEach(w => w.terminate());
+              }
+            };
+          }
+        }
+      } else {
+        // Fallback für Browser ohne Web Worker-Unterstützung
+        calculateMandelbrotDirectly();
+      }
+    });
+  }
+  
+  // Optimierte Julia-Berechnung mit Web Workers
+  function calculateJulia() {
+    juliaLoading.style.display = 'block';
+    
+    requestAnimationFrame(() => {
+      if (window.Worker) {
+        // Anzahl der Worker (Prozessorkerne)
+        const numWorkers = navigator.hardwareConcurrency || 4;
+        const workers = [];
+        const chunks = [];
+        let completedChunks = 0;
+        
+        // Canvas in Chunks aufteilen
+        const chunkHeight = Math.ceil(juliaCanvas.height / numWorkers);
+        
+        // Niedrigauflösende Vorschau für sofortiges Feedback
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        const scaleFactor = 0.25;
+        
+        tempCanvas.width = juliaCanvas.width * scaleFactor;
+        tempCanvas.height = juliaCanvas.height * scaleFactor;
+        
+        // Schnelle Berechnung mit niedriger Auflösung
+        const tempWorker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
+        tempWorker.postMessage({
+          width: tempCanvas.width,
+          height: tempCanvas.height,
+          realPart: juliaReal,
+          imagPart: juliaImag,
+          maxIterations: Math.min(50, maxIterations),
+          colorScheme: colorScheme,
+          viewX: 0,
+          viewY: 0,
+          zoomLevel: 1,
+          colorPalettes: colorPalettes,
+          startY: 0,
+          endY: tempCanvas.height,
+          workerId: 'preview'
+        });
+        
+        tempWorker.onmessage = function(e) {
+          tempCtx.putImageData(e.data.imageData, 0, 0);
+          juliaCtx.drawImage(tempCanvas, 0, 0, juliaCanvas.width, juliaCanvas.height);
+          tempWorker.terminate();
+          
+          // Jetzt die hochauflösende Version berechnen
+          startMultiWorkerCalculation();
+        };
+        
+        function startMultiWorkerCalculation() {
+          // Erstelle Worker für jeden Chunk
+          for (let i = 0; i < numWorkers; i++) {
+            const startY = i * chunkHeight;
+            const endY = Math.min(startY + chunkHeight, juliaCanvas.height);
+            
+            const worker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
+            workers.push(worker);
+            
+            worker.postMessage({
+              width: juliaCanvas.width,
+              height: juliaCanvas.height,
+              realPart: juliaReal,
+              imagPart: juliaImag,
+              maxIterations: maxIterations,
+              colorScheme: colorScheme,
+              viewX: 0,
+              viewY: 0,
+              zoomLevel: 1,
+              colorPalettes: colorPalettes,
+              startY: startY,
+              endY: endY,
+              workerId: i
+            });
+            
+            worker.onmessage = function(e) {
+              const result = e.data;
+              chunks[result.workerId] = result;
+              completedChunks++;
+              
+              // Zeichne diesen Chunk sofort
+              juliaCtx.putImageData(
+                result.imageData, 
+                0, 
+                result.startY, 
+                0, 
+                0, 
+                juliaCanvas.width, 
+                result.endY - result.startY
+              );
+              
+              // Wenn alle Chunks fertig sind
+              if (completedChunks === numWorkers) {
+                juliaLoading.style.display = 'none';
+                
+                // Bereinige Worker
+                workers.forEach(w => w.terminate());
+              }
+            };
+          }
+        }
+      } else {
+        // Fallback für Browser ohne Web Worker-Unterstützung
+        calculateJuliaDirectly();
+      }
+    });
+  }
+  
+  // Hilfsfunktion: HEX zu RGB
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+      parseInt(result[1], 16),
+      parseInt(result[2], 16),
+      parseInt(result[3], 16)
+    ] : [0, 0, 0];
+  }
+  
+  // Fallback-Funktionen für Browser ohne Web Worker
+  function calculateMandelbrotDirectly() {
+    // Implementierung hier...
+  }
+  
+  function calculateJuliaDirectly() {
+    // Implementierung hier...
+  }
+  
+  // Event-Listener für Mandelbrot-Canvas
+  mandelbrotCanvas.addEventListener('click', function(e) {
+    const rect = mandelbrotCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Umrechnung in komplexe Koordinaten
+    const xRange = 3.0;
+    const yRange = 3.0;
+    const xMin = -2.0;
+    const yMin = -1.5;
+    
+    juliaReal = xMin + (xRange * x / mandelbrotCanvas.width);
+    juliaImag = yMin + (yRange * y / mandelbrotCanvas.height);
+    
+    // Anzeige aktualisieren
+    const sign = juliaImag >= 0 ? '+' : '';
+    juliaParameter.textContent = `${juliaReal.toFixed(3)} ${sign} ${juliaImag.toFixed(3)}i`;
+    
+    // Julia-Menge neu berechnen
+    calculateJulia();
+  });
+  
+  // Event-Listener für Steuerelemente
+  maxIterSlider.addEventListener('input', function() {
+    maxIterations = parseInt(this.value);
+    iterValueSpan.textContent = maxIterations;
+    calculateMandelbrot();
+    calculateJulia();
+  });
+  
+  colorSchemeSelect.addEventListener('change', function() {
+    colorScheme = this.value;
+    calculateMandelbrot();
+    calculateJulia();
+  });
+  
+  resetButton.addEventListener('click', function() {
+    juliaReal = -0.7;
+    juliaImag = 0.27;
+    const sign = juliaImag >= 0 ? '+' : '';
+    juliaParameter.textContent = `${juliaReal.toFixed(3)} ${sign} ${juliaImag.toFixed(3)}i`;
+    calculateMandelbrot();
+    calculateJulia();
+  });
+  
+  saveImageButton.addEventListener('click', function() {
+    // Erstelle ein temporäres Canvas mit beiden Bildern
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = mandelbrotCanvas.width + juliaCanvas.width + 20; // 20px Abstand
+    tempCanvas.height = Math.max(mandelbrotCanvas.height, juliaCanvas.height);
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    // Hintergrund
+    tempCtx.fillStyle = '#222';
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    
+    // Zeichne beide Canvas
+    tempCtx.drawImage(mandelbrotCanvas, 0, 0);
+    tempCtx.drawImage(juliaCanvas, mandelbrotCanvas.width + 20, 0);
+    
+    // Füge Text hinzu
+    tempCtx.font = '14px Arial';
+    tempCtx.fillStyle = '#eacfb4';
+    tempCtx.fillText('Mandelbrot-Menge', 10, mandelbrotCanvas.height + 20);
+    tempCtx.fillText(`Julia-Menge für c = ${juliaReal.toFixed(3)} ${juliaImag >= 0 ? '+' : ''} ${juliaImag.toFixed(3)}i`, 
+                     mandelbrotCanvas.width + 30, mandelbrotCanvas.height + 20);
+    
+    // Erstelle Download-Link
+    const link = document.createElement('a');
+    link.download = `mandelbrot-julia-c${juliaReal.toFixed(3)}_${juliaImag.toFixed(3)}i.png`;
+    link.href = tempCanvas.toDataURL('image/png');
+    link.click();
+  });
+  
+  // Initialisierung
+  iterValueSpan.textContent = maxIterations;
+  calculateMandelbrot();
+  calculateJulia();
+});
+</script> 

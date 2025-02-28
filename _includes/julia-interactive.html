@@ -1,0 +1,805 @@
+<!-- Interaktive Julia-Menge Visualisierung -->
+<div class="julia-container">
+  <div class="julia-controls">
+    <div class="control-row">
+      <label for="realPart">Realteil (c):</label>
+      <input type="range" id="realPart" min="-2" max="2" step="0.01" value="-0.7">
+      <span id="realValue">-0.7</span>
+    </div>
+    <div class="control-row">
+      <label for="imagPart">Imaginärteil (c):</label>
+      <input type="range" id="imagPart" min="-2" max="2" step="0.01" value="0.27">
+      <span id="imagValue">0.27</span>
+    </div>
+    <div class="control-row">
+      <label for="maxIterations">Max. Iterationen:</label>
+      <input type="range" id="maxIterations" min="10" max="1000" step="10" value="100">
+      <span id="iterValue">100</span>
+    </div>
+    <div class="control-row">
+      <label for="colorScheme">Farbschema:</label>
+      <select id="colorScheme" class="auto-width">
+        <option value="blau-rot">Blau-Rot</option>
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="feuer">Feuer</option>
+        <option value="ozean">Ozean</option>
+        <option value="monochrom">Monochrom</option>
+        <option value="regenbogen">Regenbogen</option>
+      </select>
+    </div>
+    <div class="button-row">
+      <button id="applySettings">Anwenden</button>
+      <button id="defaultValues">Standardwerte</button>
+      <button id="resetZoom">Zoom zurücksetzen</button>
+      <button id="saveImage">Bild speichern</button>
+      <button id="toggleZoomBox">Zoom-Box ein/aus</button>
+    </div>
+  </div>
+  
+  <div class="info-panel">
+    <div class="info-row">Mausrad: Zoomen | Klick: Zentrieren | Doppelklick: Zoom + | Ziehen: Zoom-Bereich</div>
+    <div class="info-row">Aktuelle Position: <span id="positionInfo">0 + 0i</span></div>
+    <div class="info-row">Zoom: <span id="zoomInfo">1x</span></div>
+  </div>
+  
+  <div class="canvas-container">
+    <canvas id="juliaCanvas" width="600" height="600"></canvas>
+    <div id="zoomBox" class="zoom-box"></div>
+    <div class="loading-indicator" id="loadingIndicator">Berechne...</div>
+  </div>
+  
+  <div class="explanation-container">
+    <button id="toggleExplanation" class="explanation-toggle">Erklärung anzeigen ▼</button>
+    <div id="explanationBox" class="explanation-box">
+      <h3>Die Julia-Menge: Erklärung der Parameter</h3>
+      
+      <h4>Was ist die Julia-Menge?</h4>
+      <p>Die Julia-Menge ist eine fraktale Menge in der komplexen Ebene, die durch Iteration einer komplexen Funktion entsteht. Die hier dargestellte Julia-Menge basiert auf der Funktion f(z) = z² + c, wobei c eine komplexe Konstante ist.</p>
+      
+      <h4>Parameter und ihre Auswirkungen:</h4>
+      
+      <h5>Realteil (c) und Imaginärteil (c):</h5>
+      <p>Diese beiden Parameter definieren zusammen die komplexe Konstante c = Realteil + Imaginärteil·i in der Formel f(z) = z² + c. Jeder Wert von c erzeugt eine einzigartige Julia-Menge:</p>
+      <ul>
+        <li><strong>Realteil zwischen -2 und 0.25, Imaginärteil nahe 0:</strong> Erzeugt zusammenhängende Julia-Mengen mit unterschiedlichen Formen.</li>
+        <li><strong>Realteil ≈ -0.75, Imaginärteil ≈ 0.1:</strong> Erzeugt die berühmte "Dendriten"-Form mit baumartigen Verzweigungen.</li>
+        <li><strong>Realteil ≈ 0, Imaginärteil ≈ 1:</strong> Erzeugt kreisähnliche Strukturen.</li>
+        <li><strong>Werte außerhalb des Mandelbrot-Sets:</strong> Erzeugen "Staub"-artige, nicht zusammenhängende Julia-Mengen.</li>
+      </ul>
+      <p>Kleine Änderungen an c können dramatische Änderungen in der Struktur der Julia-Menge bewirken, besonders nahe der Grenze des Mandelbrot-Sets.</p>
+      
+      <h5>Max. Iterationen:</h5>
+      <p>Dieser Parameter bestimmt, wie oft die Funktion f(z) = z² + c für jeden Punkt angewendet wird, bevor entschieden wird, ob der Punkt zur Julia-Menge gehört:</p>
+      <ul>
+        <li><strong>Niedrige Werte (10-50):</strong> Schnellere Berechnung, aber weniger Details und möglicherweise ungenaue Grenzen.</li>
+        <li><strong>Mittlere Werte (100-200):</strong> Guter Kompromiss zwischen Geschwindigkeit und Detailgenauigkeit.</li>
+        <li><strong>Hohe Werte (300+):</strong> Sehr detaillierte Grenzen, besonders bei hohem Zoom, aber langsamere Berechnung.</li>
+      </ul>
+      <p>Bei höherem Zoom werden mehr Iterationen benötigt, um feine Details korrekt darzustellen. Die Farben außerhalb der Julia-Menge basieren auf der Anzahl der Iterationen, die benötigt werden, bis ein Punkt "entkommt" (d.h. einen Betrag größer als 2 erreicht).</p>
+      
+      <h5>Farbschema:</h5>
+      <p>Das Farbschema bestimmt, wie die Fluchtgeschwindigkeit (Anzahl der Iterationen bis zum "Entkommen") in Farben umgesetzt wird:</p>
+      <ul>
+        <li><strong>Blau-Rot:</strong> Klassisches Farbschema mit sanften Übergängen von Blau über Weiß zu Rot.</li>
+        <li><strong>Cyberpunk:</strong> Lebhafte, kontrastreiche Neonfarben.</li>
+        <li><strong>Feuer:</strong> Warme Farbtöne von Schwarz über Rot zu Gelb, ähnlich einer Flamme.</li>
+        <li><strong>Ozean:</strong> Verschiedene Blautöne, die an Meerestiefen erinnern.</li>
+        <li><strong>Monochrom:</strong> Graustufendarstellung für eine klassische, reduzierte Ästhetik.</li>
+        <li><strong>Regenbogen:</strong> Volles Farbspektrum für maximalen Kontrast und Detailsichtbarkeit.</li>
+      </ul>
+      
+      <h4>Navigation und Zoom:</h4>
+      <p>Sie können in die Julia-Menge hineinzoomen, um feinere Details zu entdecken:</p>
+      <ul>
+        <li><strong>Mausrad:</strong> Zoom hinein/heraus an der Mausposition</li>
+        <li><strong>Klick:</strong> Zentriert die Ansicht auf den angeklickten Punkt</li>
+        <li><strong>Doppelklick:</strong> Zentriert und zoomt hinein</li>
+        <li><strong>Zoom-Box:</strong> Ermöglicht das Auswählen eines rechteckigen Bereichs zum Hineinzoomen</li>
+      </ul>
+      <p>Bei höherem Zoom werden fraktale Selbstähnlichkeiten sichtbar - Strukturen wiederholen sich in immer kleineren Maßstäben, oft mit subtilen Variationen.</p>
+      
+      <h4>Mathematischer Hintergrund:</h4>
+      <p>Für jeden Punkt z₀ in der komplexen Ebene wird die Folge z_{n+1} = z_n² + c berechnet. Wenn diese Folge beschränkt bleibt (d.h. nicht gegen Unendlich strebt), gehört z₀ zur Julia-Menge. In der Praxis wird ein Punkt als "entkommen" betrachtet, wenn |z_n| > 2 für ein n kleiner als die maximale Iterationszahl.</p>
+      <p>Die Julia-Menge ist eng mit der Mandelbrot-Menge verwandt: Ein Punkt c in der Mandelbrot-Menge erzeugt eine zusammenhängende Julia-Menge, während Punkte außerhalb der Mandelbrot-Menge nicht-zusammenhängende, "staubartige" Julia-Mengen erzeugen.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .julia-container {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    background: #222;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+  }
+  
+  .julia-controls {
+    background: #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .control-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .control-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .control-row label {
+    width: 120px;
+    text-align: left;
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+  
+  .control-row input[type="range"] {
+    flex: 1;
+    margin: 0 10px 0 0;
+  }
+  
+  .control-row select {
+    margin: 0 10px 0 0;
+    padding: 3px;
+  }
+  
+  .control-row select.auto-width {
+    width: auto;
+    min-width: 120px;
+  }
+  
+  .control-row span {
+    width: 40px;
+    text-align: right;
+  }
+  
+  .button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .button-row button {
+    flex: 1;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+  
+  .info-panel {
+    background: #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #ccc;
+    text-align: center;
+  }
+  
+  .info-row {
+    margin: 5px 0;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .canvas-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  #juliaCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+    border-radius: 5px;
+  }
+  
+  .zoom-box {
+    position: absolute;
+    border: 1px dashed #fff;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    display: none;
+  }
+  
+  .loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none;
+  }
+  
+  /* Erklärbox Styling */
+  .explanation-container {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 15px;
+  }
+  
+  .explanation-toggle {
+    background: #444;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .explanation-toggle:hover {
+    background: #555;
+  }
+  
+  .explanation-box {
+    display: none;
+    background: #333;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 10px;
+    color: #ccc;
+    line-height: 1.5;
+  }
+  
+  .explanation-box h3 {
+    color: #eacfb4;
+    margin-top: 0;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+  }
+  
+  .explanation-box h4 {
+    color: #eacfb4;
+    margin: 20px 0 10px;
+  }
+  
+  .explanation-box h5 {
+    color: #eacfb4;
+    margin: 15px 0 8px;
+  }
+  
+  .explanation-box p {
+    margin: 10px 0;
+  }
+  
+  .explanation-box ul {
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+  
+  .explanation-box li {
+    margin-bottom: 5px;
+  }
+  
+  .explanation-box strong {
+    color: #eacfb4;
+  }
+  
+  /* Responsive Anpassungen */
+  @media (max-width: 600px) {
+    .control-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .control-row label {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+    
+    .control-row input[type="range"],
+    .control-row select {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+    
+    .button-row {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Canvas und Kontext
+  const canvas = document.getElementById('juliaCanvas');
+  const ctx = canvas.getContext('2d');
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  const zoomBox = document.getElementById('zoomBox');
+  
+  // Steuerelemente
+  const realPartSlider = document.getElementById('realPart');
+  const imagPartSlider = document.getElementById('imagPart');
+  const maxIterSlider = document.getElementById('maxIterations');
+  const colorSchemeSelect = document.getElementById('colorScheme');
+  const applyButton = document.getElementById('applySettings');
+  const defaultValuesButton = document.getElementById('defaultValues');
+  const resetZoomButton = document.getElementById('resetZoom');
+  const saveImageButton = document.getElementById('saveImage');
+  const toggleZoomBoxButton = document.getElementById('toggleZoomBox');
+  
+  // Anzeige-Elemente
+  const realValueSpan = document.getElementById('realValue');
+  const imagValueSpan = document.getElementById('imagValue');
+  const iterValueSpan = document.getElementById('iterValue');
+  const positionInfoSpan = document.getElementById('positionInfo');
+  const zoomInfoSpan = document.getElementById('zoomInfo');
+  
+  // Automatische Anpassung der Schriftgröße
+  function adjustFontSize() {
+    const container = document.querySelector('.info-panel');
+    const textElements = document.querySelectorAll('.info-row');
+    const containerWidth = container.offsetWidth - 20; // 20px Padding
+    
+    textElements.forEach(element => {
+      // Starte mit einer größeren Schriftgröße
+      let fontSize = 16;
+      element.style.fontSize = fontSize + 'px';
+      
+      // Reduziere die Schriftgröße, bis der Text passt
+      while (element.scrollWidth > containerWidth && fontSize > 8) {
+        fontSize -= 0.5;
+        element.style.fontSize = fontSize + 'px';
+      }
+    });
+    
+    // Auch für Labels und Buttons anpassen
+    const labels = document.querySelectorAll('.control-row label');
+    const buttons = document.querySelectorAll('.button-row button');
+    
+    [...labels, ...buttons].forEach(element => {
+      let fontSize = 14;
+      element.style.fontSize = fontSize + 'px';
+      
+      while (element.scrollWidth > element.offsetWidth && fontSize > 8) {
+        fontSize -= 0.5;
+        element.style.fontSize = fontSize + 'px';
+      }
+    });
+  }
+  
+  // Passe die Schriftgröße an, wenn sich die Fenstergröße ändert
+  window.addEventListener('resize', adjustFontSize);
+  
+  // Standardwerte
+  const defaultSettings = {
+    realPart: -0.7,
+    imagPart: 0.27,
+    maxIterations: 100,
+    colorScheme: 'blau-rot'
+  };
+  
+  // Parameter
+  let realPart = parseFloat(realPartSlider.value);
+  let imagPart = parseFloat(imagPartSlider.value);
+  let maxIterations = parseInt(maxIterSlider.value);
+  let colorScheme = colorSchemeSelect.value;
+  
+  // Ansichtsparameter
+  let viewX = 0;
+  let viewY = 0;
+  let zoomLevel = 1;
+  const zoomFactor = 1.5;
+  
+  // Zoom-Box Parameter
+  let isZoomBoxActive = false;
+  let isDrawingZoomBox = false;
+  let zoomBoxStartX = 0;
+  let zoomBoxStartY = 0;
+  
+  // Farbpaletten
+  const colorPalettes = {
+    'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
+    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00'],
+    'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00'],
+    'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff'],
+    'monochrom': ['#000000', '#333333', '#666666', '#999999', '#ffffff'],
+    'regenbogen': ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff']
+  };
+  
+  // Optimierte Berechnung mit mehreren Web Workers
+  function calculateJulia() {
+    loadingIndicator.style.display = 'block';
+    
+    // Verwende requestAnimationFrame für bessere Performance
+    requestAnimationFrame(() => {
+      if (window.Worker) {
+        // Anzahl der Worker (Prozessorkerne)
+        const numWorkers = navigator.hardwareConcurrency || 4; // Fallback auf 4 Worker
+        const workers = [];
+        const chunks = [];
+        let completedChunks = 0;
+        
+        // Canvas in Chunks aufteilen
+        const chunkHeight = Math.ceil(canvas.height / numWorkers);
+        
+        // Niedrigauflösende Vorschau für sofortiges Feedback
+        if (zoomLevel > 2) {
+          // Temporäres Canvas mit niedriger Auflösung
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+          const scaleFactor = 0.25; // 25% der Originalauflösung
+          
+          tempCanvas.width = canvas.width * scaleFactor;
+          tempCanvas.height = canvas.height * scaleFactor;
+          
+          // Schnelle Berechnung mit niedriger Auflösung
+          const tempWorker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
+          tempWorker.postMessage({
+            width: tempCanvas.width,
+            height: tempCanvas.height,
+            realPart: realPart,
+            imagPart: imagPart,
+            maxIterations: Math.min(50, maxIterations), // Weniger Iterationen für Vorschau
+            colorScheme: colorScheme,
+            viewX: viewX,
+            viewY: viewY,
+            zoomLevel: zoomLevel,
+            colorPalettes: colorPalettes,
+            startY: 0,
+            endY: tempCanvas.height,
+            workerId: 'preview'
+          });
+          
+          tempWorker.onmessage = function(e) {
+            tempCtx.putImageData(e.data.imageData, 0, 0);
+            // Skaliere auf Originalgröße (unscharf, aber schnell)
+            ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
+            tempWorker.terminate();
+            
+            // Jetzt die hochauflösende Version berechnen
+            startMultiWorkerCalculation();
+          };
+        } else {
+          // Direkt hochauflösend berechnen, wenn Zoom niedrig ist
+          startMultiWorkerCalculation();
+        }
+        
+        function startMultiWorkerCalculation() {
+          // Erstelle Worker für jeden Chunk
+          for (let i = 0; i < numWorkers; i++) {
+            const startY = i * chunkHeight;
+            const endY = Math.min(startY + chunkHeight, canvas.height);
+            
+            const worker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
+            workers.push(worker);
+            
+            worker.postMessage({
+              width: canvas.width,
+              height: canvas.height,
+              realPart: realPart,
+              imagPart: imagPart,
+              maxIterations: maxIterations,
+              colorScheme: colorScheme,
+              viewX: viewX,
+              viewY: viewY,
+              zoomLevel: zoomLevel,
+              colorPalettes: colorPalettes,
+              startY: startY,
+              endY: endY,
+              workerId: i
+            });
+            
+            worker.onmessage = function(e) {
+              const result = e.data;
+              chunks[result.workerId] = result;
+              completedChunks++;
+              
+              // Zeichne diesen Chunk sofort
+              ctx.putImageData(
+                result.imageData, 
+                0, 
+                result.startY, 
+                0, 
+                0, 
+                canvas.width, 
+                result.endY - result.startY
+              );
+              
+              // Wenn alle Chunks fertig sind
+              if (completedChunks === numWorkers) {
+                loadingIndicator.style.display = 'none';
+                zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+                
+                // Bereinige Worker
+                workers.forEach(w => w.terminate());
+              }
+            };
+          }
+        }
+      } else {
+        // Fallback für Browser ohne Web Worker-Unterstützung
+        calculateJuliaDirectly();
+      }
+    });
+  }
+  
+  // Hilfsfunktion: HEX zu RGB
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+      parseInt(result[1], 16),
+      parseInt(result[2], 16),
+      parseInt(result[3], 16)
+    ] : [0, 0, 0];
+  }
+  
+  // Event-Listener für Steuerelemente (nur Anzeige aktualisieren)
+  realPartSlider.addEventListener('input', function() {
+    realValueSpan.textContent = this.value;
+  });
+  
+  imagPartSlider.addEventListener('input', function() {
+    imagValueSpan.textContent = this.value;
+  });
+  
+  maxIterSlider.addEventListener('input', function() {
+    iterValueSpan.textContent = this.value;
+  });
+  
+  // Anwenden-Button
+  applyButton.addEventListener('click', function() {
+    // Parameter aus den Steuerelementen übernehmen
+    realPart = parseFloat(realPartSlider.value);
+    imagPart = parseFloat(imagPartSlider.value);
+    maxIterations = parseInt(maxIterSlider.value);
+    colorScheme = colorSchemeSelect.value;
+    
+    // Julia-Menge neu berechnen
+    calculateJulia();
+  });
+  
+  // Standardwerte-Button
+  defaultValuesButton.addEventListener('click', function() {
+    // Steuerelemente auf Standardwerte setzen
+    realPartSlider.value = defaultSettings.realPart;
+    imagPartSlider.value = defaultSettings.imagPart;
+    maxIterations = defaultSettings.maxIterations;
+    colorSchemeSelect.value = defaultSettings.colorScheme;
+    
+    // Anzeige aktualisieren
+    realValueSpan.textContent = defaultSettings.realPart;
+    imagValueSpan.textContent = defaultSettings.imagPart;
+    iterValueSpan.textContent = defaultSettings.maxIterations;
+    
+    // Parameter übernehmen
+    realPart = defaultSettings.realPart;
+    imagPart = defaultSettings.imagPart;
+    maxIterations = defaultSettings.maxIterations;
+    colorScheme = defaultSettings.colorScheme;
+    
+    // Ansicht zurücksetzen
+    viewX = 0;
+    viewY = 0;
+    zoomLevel = 1;
+    zoomInfoSpan.textContent = '1x';
+    
+    // Julia-Menge neu berechnen
+    calculateJulia();
+  });
+  
+  // Event-Handler
+  colorSchemeSelect.addEventListener('change', function() {
+    colorScheme = this.value;
+    calculateJulia();
+  });
+  
+  resetZoomButton.addEventListener('click', function() {
+    viewX = 0;
+    viewY = 0;
+    zoomLevel = 1;
+    calculateJulia();
+  });
+  
+  saveImageButton.addEventListener('click', function() {
+    const link = document.createElement('a');
+    link.download = 'julia-set.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+  
+  toggleZoomBoxButton.addEventListener('click', function() {
+    isZoomBoxActive = !isZoomBoxActive;
+    this.textContent = isZoomBoxActive ? 'Zoom-Box aus' : 'Zoom-Box ein';
+  });
+  
+  // Maus-Events für Zoom und Navigation
+  canvas.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    
+    // Mausposition im Canvas
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Position im komplexen Koordinatensystem
+    const xRange = 3.0 / zoomLevel;
+    const yRange = 3.0 / zoomLevel;
+    const xMouse = viewX + (mouseX / canvas.width - 0.5) * xRange;
+    const yMouse = viewY + (mouseY / canvas.height - 0.5) * yRange;
+    
+    // Zoom anpassen
+    if (e.deltaY < 0) {
+      zoomLevel *= zoomFactor;
+    } else {
+      zoomLevel /= zoomFactor;
+    }
+    
+    // Begrenzung des Zooms
+    zoomLevel = Math.max(0.1, Math.min(1000, zoomLevel));
+    
+    // Ansicht auf Mausposition zentrieren
+    const newXRange = 3.0 / zoomLevel;
+    const newYRange = 3.0 / zoomLevel;
+    viewX = xMouse - (mouseX / canvas.width - 0.5) * newXRange;
+    viewY = yMouse - (mouseY / canvas.height - 0.5) * newYRange;
+    
+    calculateJulia();
+  });
+  
+  canvas.addEventListener('mousemove', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Position im komplexen Koordinatensystem
+    const xRange = 3.0 / zoomLevel;
+    const yRange = 3.0 / zoomLevel;
+    const xMouse = viewX + (mouseX / canvas.width - 0.5) * xRange;
+    const yMouse = viewY + (mouseY / canvas.height - 0.5) * yRange;
+    
+    // Anzeige aktualisieren
+    positionInfoSpan.textContent = `${xMouse.toFixed(4)} + ${yMouse.toFixed(4)}i`;
+    
+    // Zoom-Box zeichnen, wenn aktiv und Maus gedrückt
+    if (isZoomBoxActive && isDrawingZoomBox) {
+      const width = mouseX - zoomBoxStartX;
+      const height = mouseY - zoomBoxStartY;
+      
+      zoomBox.style.left = (width > 0 ? zoomBoxStartX : mouseX) + 'px';
+      zoomBox.style.top = (height > 0 ? zoomBoxStartY : mouseY) + 'px';
+      zoomBox.style.width = Math.abs(width) + 'px';
+      zoomBox.style.height = Math.abs(height) + 'px';
+    }
+  });
+  
+  canvas.addEventListener('mousedown', function(e) {
+    if (isZoomBoxActive) {
+      const rect = canvas.getBoundingClientRect();
+      zoomBoxStartX = e.clientX - rect.left;
+      zoomBoxStartY = e.clientY - rect.top;
+      
+      isDrawingZoomBox = true;
+      zoomBox.style.display = 'block';
+      zoomBox.style.left = zoomBoxStartX + 'px';
+      zoomBox.style.top = zoomBoxStartY + 'px';
+      zoomBox.style.width = '0';
+      zoomBox.style.height = '0';
+    }
+  });
+  
+  canvas.addEventListener('mouseup', function(e) {
+    if (isZoomBoxActive && isDrawingZoomBox) {
+      isDrawingZoomBox = false;
+      
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // Nur zoomen, wenn die Box eine Mindestgröße hat
+      const boxWidth = Math.abs(mouseX - zoomBoxStartX);
+      const boxHeight = Math.abs(mouseY - zoomBoxStartY);
+      
+      if (boxWidth > 10 && boxHeight > 10) {
+        // Berechne die Grenzen der Box im komplexen Koordinatensystem
+        const xRange = 3.0 / zoomLevel;
+        const yRange = 3.0 / zoomLevel;
+        
+        const x1 = viewX + (Math.min(zoomBoxStartX, mouseX) / canvas.width - 0.5) * xRange;
+        const x2 = viewX + (Math.max(zoomBoxStartX, mouseX) / canvas.width - 0.5) * xRange;
+        const y1 = viewY + (Math.min(zoomBoxStartY, mouseY) / canvas.height - 0.5) * yRange;
+        const y2 = viewY + (Math.max(zoomBoxStartY, mouseY) / canvas.height - 0.5) * yRange;
+        
+        // Neuer Mittelpunkt und Zoom-Level
+        viewX = (x1 + x2) / 2;
+        viewY = (y1 + y2) / 2;
+        
+        // Berechne den neuen Zoom-Level basierend auf der Box-Größe
+        const newXRange = x2 - x1;
+        const newYRange = y2 - y1;
+        const aspectRatio = canvas.width / canvas.height;
+        
+        // Wähle den kleineren Zoom-Faktor, um sicherzustellen, dass die gesamte Box sichtbar ist
+        if (newXRange / newYRange > aspectRatio) {
+          zoomLevel = 3.0 / newXRange;
+        } else {
+          zoomLevel = 3.0 / (newYRange * aspectRatio);
+        }
+        
+        calculateJulia();
+      }
+      
+      zoomBox.style.display = 'none';
+    }
+  });
+  
+  canvas.addEventListener('click', function(e) {
+    if (!isZoomBoxActive) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // Position im komplexen Koordinatensystem
+      const xRange = 3.0 / zoomLevel;
+      const yRange = 3.0 / zoomLevel;
+      const xMouse = viewX + (mouseX / canvas.width - 0.5) * xRange;
+      const yMouse = viewY + (mouseY / canvas.height - 0.5) * yRange;
+      
+      // Zentriere die Ansicht auf die Mausposition
+      viewX = xMouse;
+      viewY = yMouse;
+      
+      calculateJulia();
+    }
+  });
+  
+  canvas.addEventListener('dblclick', function(e) {
+    if (!isZoomBoxActive) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // Position im komplexen Koordinatensystem
+      const xRange = 3.0 / zoomLevel;
+      const yRange = 3.0 / zoomLevel;
+      const xMouse = viewX + (mouseX / canvas.width - 0.5) * xRange;
+      const yMouse = viewY + (mouseY / canvas.height - 0.5) * yRange;
+      
+      // Zentriere die Ansicht auf die Mausposition und zoome hinein
+      viewX = xMouse;
+      viewY = yMouse;
+      zoomLevel *= 2;
+      
+      calculateJulia();
+    }
+  });
+  
+  // Initialisierung
+  realValueSpan.textContent = realPartSlider.value;
+  imagValueSpan.textContent = imagPartSlider.value;
+  iterValueSpan.textContent = maxIterSlider.value;
+  calculateJulia(); // Erste Berechnung
+  // Führe die Schriftgrößenanpassung nach dem Laden durch
+  setTimeout(adjustFontSize, 100);
+  
+  // Erklärbox-Funktionalität
+  const toggleExplanationButton = document.getElementById('toggleExplanation');
+  const explanationBox = document.getElementById('explanationBox');
+  
+  toggleExplanationButton.addEventListener('click', function() {
+    if (explanationBox.style.display === 'block') {
+      explanationBox.style.display = 'none';
+      this.textContent = 'Erklärung anzeigen ▼';
+    } else {
+      explanationBox.style.display = 'block';
+      this.textContent = 'Erklärung ausblenden ▲';
+    }
+  });
+});
+</script> 
