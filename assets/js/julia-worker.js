@@ -30,8 +30,12 @@ self.onmessage = function (e) {
     const yMin = viewY - yRange / 2;
     const yMax = viewY + yRange / 2;
 
-    // Farbpalette
-    const palette = colorPalettes[colorScheme];
+    // Farbpalette mit Fallback
+    let palette = colorPalettes[colorScheme];
+    if (!palette) {
+        console.error("Worker: Farbschema nicht gefunden:", colorScheme);
+        palette = colorPalettes['blau-rot'] || ['#000000', '#0000FF', '#FFFFFF', '#FF0000', '#000000'];
+    }
 
     // Vorberechnete Farbwerte für bessere Performance
     const precomputedColors = precomputeColors(palette, 1000);
@@ -64,20 +68,20 @@ self.onmessage = function (e) {
             // Farbberechnung
             let color;
             if (iteration === maxIterations) {
-                color = [0, 0, 0]; // Schwarz für Punkte in der Menge
+                // Punkte in der Menge sind schwarz
+                color = [0, 0, 0];
             } else {
                 // Verbesserte Smooth-Coloring-Formel
+                // Berechne den glatten Wert basierend auf dem letzten z-Wert
                 const log_zn = Math.log(zx2_squared + zy2_squared) / 2;
                 const nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
                 const smoothed = iteration + 1 - nu;
 
-                // Verbesserte Farbverteilung mit Histogramm-Ähnlichem Effekt
-                // Verwendet eine Sigmoid-Funktion für weichere Übergänge
-                const t = smoothed / maxIterations;
-                const sigmoid = 1 / (1 + Math.exp(-12 * (t - 0.5)));
-                const normalized = Math.pow(sigmoid, 0.5); // Quadratwurzel für bessere Verteilung
+                // Fortschrittliche Normalisierung für bessere Farbverteilung
+                // Verwende Quadratwurzel für natürlichere Verteilung
+                const normalized = Math.sqrt(smoothed / maxIterations);
 
-                // Verwende vorberechnete Farben für bessere Performance
+                // Wähle die Farbe aus der vorberechneten Palette
                 const colorIndex = Math.min(Math.floor(normalized * 999), 998);
                 color = precomputedColors[colorIndex];
             }
@@ -102,54 +106,70 @@ self.onmessage = function (e) {
 
 // Hilfsfunktion: HEX zu RGB
 function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-    ] : [0, 0, 0];
+    try {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? [
+            parseInt(result[1], 16),
+            parseInt(result[2], 16),
+            parseInt(result[3], 16)
+        ] : [0, 0, 0];
+    } catch (error) {
+        console.error("Fehler bei Farbkonvertierung:", error);
+        return [0, 0, 0];
+    }
 }
 
 // Vorberechnung von Farben für bessere Performance
 function precomputeColors(palette, steps) {
-    const colors = new Array(steps);
+    try {
+        const colors = new Array(steps);
 
-    for (let i = 0; i < steps; i++) {
-        const t = i / (steps - 1);
+        for (let i = 0; i < steps; i++) {
+            const t = i / (steps - 1);
 
-        // Verbesserte Farbinterpolation mit Gamma-Korrektur und Farbton-Rotation
-        // Verwende eine kubische Funktion für natürlichere Übergänge
-        const adjustedT = t * t * (3 - 2 * t); // Kubische Hermite-Interpolation
-        const position = adjustedT * (palette.length - 1);
-        const index = Math.min(Math.floor(position), palette.length - 2);
-        const fraction = position - index;
+            // Kubische Interpolation für weichere Farbübergänge
+            const position = t * (palette.length - 1);
+            const index = Math.min(Math.floor(position), palette.length - 2);
+            const fraction = position - index;
 
-        // Gamma-korrigierte Interpolation für natürlichere Farbübergänge
-        const color1 = hexToRgb(palette[index]);
-        const color2 = hexToRgb(palette[index + 1]);
+            // Kubische Hermite-Interpolation (Smoothstep)
+            const fraction2 = fraction * fraction;
+            const fraction3 = fraction2 * fraction;
+            const smoothFraction = 3 * fraction2 - 2 * fraction3;
 
-        // Umwandlung in linearen Farbraum für bessere Interpolation
-        const r1 = Math.pow(color1[0] / 255, 2.2);
-        const g1 = Math.pow(color1[1] / 255, 2.2);
-        const b1 = Math.pow(color1[2] / 255, 2.2);
+            // Farbinterpolation mit Gamma-Korrektur für bessere Wahrnehmung
+            const color1 = hexToRgb(palette[index]);
+            const color2 = hexToRgb(palette[index + 1]);
 
-        const r2 = Math.pow(color2[0] / 255, 2.2);
-        const g2 = Math.pow(color2[1] / 255, 2.2);
-        const b2 = Math.pow(color2[2] / 255, 2.2);
+            // Gamma-korrigierte Interpolation
+            function gammaInterpolate(a, b, t) {
+                // Gamma-Dekodierung (sRGB zu linear)
+                const aLinear = Math.pow(a / 255, 2.2);
+                const bLinear = Math.pow(b / 255, 2.2);
 
-        // Kubische Interpolation im linearen Farbraum für weichere Übergänge
-        const cubicFraction = fraction * fraction * (3 - 2 * fraction);
-        const r = r1 * (1 - cubicFraction) + r2 * cubicFraction;
-        const g = g1 * (1 - cubicFraction) + g2 * cubicFraction;
-        const b = b1 * (1 - cubicFraction) + b2 * cubicFraction;
+                // Lineare Interpolation im linearen Farbraum
+                const result = aLinear * (1 - t) + bLinear * t;
 
-        // Zurück in sRGB-Farbraum
-        colors[i] = [
-            Math.round(Math.pow(r, 1 / 2.2) * 255),
-            Math.round(Math.pow(g, 1 / 2.2) * 255),
-            Math.round(Math.pow(b, 1 / 2.2) * 255)
-        ];
+                // Gamma-Kodierung (linear zu sRGB)
+                return Math.round(Math.pow(result, 1 / 2.2) * 255);
+            }
+
+            colors[i] = [
+                gammaInterpolate(color1[0], color2[0], smoothFraction),
+                gammaInterpolate(color1[1], color2[1], smoothFraction),
+                gammaInterpolate(color1[2], color2[2], smoothFraction)
+            ];
+        }
+
+        return colors;
+    } catch (error) {
+        console.error("Fehler bei Farbvorberechnung:", error);
+        // Fallback: Einfache Graustufenpalette
+        const fallbackColors = new Array(steps);
+        for (let i = 0; i < steps; i++) {
+            const value = Math.round((i / (steps - 1)) * 255);
+            fallbackColors[i] = [value, value, value];
+        }
+        return fallbackColors;
     }
-
-    return colors;
 } 

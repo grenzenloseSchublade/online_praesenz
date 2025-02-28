@@ -3,14 +3,15 @@
   <div class="explorer-controls">
     <div class="control-group">
       <label for="explorerMaxIter">Max. Iterationen:</label>
-      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="100">
-      <span id="explorerIterValue">100</span>
+      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="250">
+      <span id="explorerIterValue">250</span>
+      <button id="applyIterButton">Anwenden</button>
     </div>
     <div class="control-group">
       <label for="explorerColorScheme">Farbschema:</label>
       <select id="explorerColorScheme">
         <option value="blau-rot">Blau-Rot</option>
-        <option value="cyberpunk">Cyberpunk</option>
+        <option value="cyberpunk" selected>Cyberpunk</option>
         <option value="feuer">Feuer</option>
         <option value="ozean">Ozean</option>
         <option value="monochrom">Monochrom</option>
@@ -53,8 +54,8 @@
   .explorer-container {
     display: flex;
     flex-direction: column;
-    max-width: 850px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0 auto 20px;
     background: #222;
     border-radius: 8px;
     padding: 15px;
@@ -81,12 +82,13 @@
   .explorer-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
   }
   
   .explorer-column {
-    flex: 1 1 400px;
+    flex: 1 1 300px;
+    min-width: 300px;
   }
   
   .explorer-column h4 {
@@ -109,6 +111,7 @@
     height: auto;
     border-radius: 4px;
     cursor: crosshair;
+    max-height: 350px;
   }
   
   .loading-indicator {
@@ -154,6 +157,8 @@
     border: none;
     padding: 5px;
     border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9em;
   }
 </style>
 
@@ -174,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const colorSchemeSelect = document.getElementById('explorerColorScheme');
   const resetButton = document.getElementById('resetExplorer');
   const saveImageButton = document.getElementById('saveExplorerImage');
+  const applyIterButton = document.getElementById('applyIterButton');
   
   // Anzeige-Elemente
   const iterValueSpan = document.getElementById('explorerIterValue');
@@ -181,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Parameter
   let maxIterations = parseInt(maxIterSlider.value);
-  let colorScheme = colorSchemeSelect.value;
+  let colorScheme = 'cyberpunk';
   let juliaReal = -0.7;
   let juliaImag = 0.27;
   
@@ -209,38 +215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const chunks = [];
         let completedChunks = 0;
         
+        // Stelle sicher, dass die aktuelle Farbpalette existiert
+        if (!colorPalettes[colorScheme]) {
+          console.error("Farbschema nicht gefunden:", colorScheme);
+          colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+          colorSchemeSelect.value = colorScheme;
+        }
+        
         // Canvas in Chunks aufteilen
         const chunkHeight = Math.ceil(mandelbrotCanvas.height / numWorkers);
         
-        // Niedrigauflösende Vorschau für sofortiges Feedback
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        const scaleFactor = 0.25;
-        
-        tempCanvas.width = Math.floor(mandelbrotCanvas.width * scaleFactor);
-        tempCanvas.height = Math.floor(mandelbrotCanvas.height * scaleFactor);
-        
-        // Schnelle Berechnung mit niedriger Auflösung
-        const tempWorker = new Worker('{{ site.baseurl }}/assets/js/mandelbrot-worker.js');
-        tempWorker.postMessage({
-          width: tempCanvas.width,
-          height: tempCanvas.height,
-          maxIterations: Math.min(50, maxIterations),
-          colorScheme: colorScheme,
-          colorPalettes: colorPalettes,
-          startY: 0,
-          endY: tempCanvas.height,
-          workerId: 'preview'
-        });
-        
-        tempWorker.onmessage = function(e) {
-          tempCtx.putImageData(e.data.imageData, 0, 0);
-          mandelbrotCtx.drawImage(tempCanvas, 0, 0, mandelbrotCanvas.width, mandelbrotCanvas.height);
-          tempWorker.terminate();
-          
-          // Jetzt die hochauflösende Version berechnen
-          startMultiWorkerCalculation();
-        };
+        // Direkt hochauflösend berechnen
+        startMultiWorkerCalculation();
         
         function startMultiWorkerCalculation() {
           // Erstelle Worker für jeden Chunk
@@ -307,43 +293,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const chunks = [];
         let completedChunks = 0;
         
+        // Stelle sicher, dass die aktuelle Farbpalette existiert
+        if (!colorPalettes[colorScheme]) {
+          console.error("Farbschema nicht gefunden:", colorScheme);
+          colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+          colorSchemeSelect.value = colorScheme;
+        }
+        
         // Canvas in Chunks aufteilen
         const chunkHeight = Math.ceil(juliaCanvas.height / numWorkers);
         
-        // Niedrigauflösende Vorschau für sofortiges Feedback
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        const scaleFactor = 0.25;
-        
-        tempCanvas.width = Math.floor(juliaCanvas.width * scaleFactor);
-        tempCanvas.height = Math.floor(juliaCanvas.height * scaleFactor);
-        
-        // Schnelle Berechnung mit niedriger Auflösung
-        const tempWorker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
-        tempWorker.postMessage({
-          width: tempCanvas.width,
-          height: tempCanvas.height,
-          realPart: juliaReal,
-          imagPart: juliaImag,
-          maxIterations: Math.min(50, maxIterations),
-          colorScheme: colorScheme,
-          viewX: 0,
-          viewY: 0,
-          zoomLevel: 1,
-          colorPalettes: colorPalettes,
-          startY: 0,
-          endY: tempCanvas.height,
-          workerId: 'preview'
-        });
-        
-        tempWorker.onmessage = function(e) {
-          tempCtx.putImageData(e.data.imageData, 0, 0);
-          juliaCtx.drawImage(tempCanvas, 0, 0, juliaCanvas.width, juliaCanvas.height);
-          tempWorker.terminate();
-          
-          // Jetzt die hochauflösende Version berechnen
-          startMultiWorkerCalculation();
-        };
+        // Direkt hochauflösend berechnen
+        startMultiWorkerCalculation();
         
         function startMultiWorkerCalculation() {
           // Erstelle Worker für jeden Chunk
@@ -453,12 +414,28 @@ document.addEventListener('DOMContentLoaded', function() {
   maxIterSlider.addEventListener('input', function() {
     maxIterations = parseInt(this.value);
     iterValueSpan.textContent = maxIterations;
+    // Sofortige Neuberechnung
+    calculateMandelbrot();
+    calculateJulia();
+  });
+  
+  // Anwenden-Button für Iterationen - nicht mehr benötigt, da sofortige Aktualisierung
+  applyIterButton.addEventListener('click', function() {
+    // Für den Fall, dass der Benutzer den Button trotzdem drückt
     calculateMandelbrot();
     calculateJulia();
   });
   
   colorSchemeSelect.addEventListener('change', function() {
     colorScheme = this.value;
+    
+    // Überprüfe, ob das Farbschema existiert
+    if (!colorPalettes[colorScheme]) {
+      console.error("Farbschema nicht gefunden:", colorScheme);
+      colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+      this.value = colorScheme;
+    }
+    
     calculateMandelbrot();
     calculateJulia();
   });

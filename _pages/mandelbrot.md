@@ -34,9 +34,11 @@ wobei $$\lvert z_n \rvert$$ der Betrag der komplexen Zahl $$z_n$$ ist.
 
 Die Julia-Menge ist eng mit der Mandelbrot-Menge verwandt. Während die Mandelbrot-Menge alle komplexen Zahlen $c$ enthält, für die die Folge $z_{n+1} = z_n^2 + c$ mit $z_0 = 0$ beschränkt bleibt, wird bei der Julia-Menge ein fester Wert für $c$ gewählt und die Menge aller Startpunkte $z_0$ betrachtet, für die die Folge beschränkt bleibt.
 
+<div class="notice--info" markdown="1">
 Experimentieren Sie mit verschiedenen Parametern und erkunden Sie die faszinierende Welt der Julia-Mengen:
 
 {% include julia-interactive.html %}
+</div>
 
 ### Zusammenhang zwischen Mandelbrot- und Julia-Mengen
 
@@ -44,11 +46,13 @@ Für jeden Punkt $c$ in der Mandelbrot-Menge ist die entsprechende Julia-Menge z
 
 Die interessantesten Julia-Mengen entstehen für Werte von $c$, die nahe am Rand der Mandelbrot-Menge liegen.
 
+<div class="notice--info" markdown="1">
 ### Interaktiver Mandelbrot-Julia-Explorer
 
 Entdecken Sie den Zusammenhang zwischen der Mandelbrot-Menge und den Julia-Mengen mit diesem interaktiven Explorer. Klicken Sie auf einen Punkt in der Mandelbrot-Menge, um die entsprechende Julia-Menge zu sehen:
 
 {% include mandelbrot-julia-explorer.html %}
+</div>
 
 ## Programmierung der Mandelbrot-Menge
 

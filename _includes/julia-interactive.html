@@ -13,20 +13,18 @@
     </div>
     <div class="control-row">
       <label for="maxIterations">Max. Iterationen:</label>
-      <input type="range" id="maxIterations" min="10" max="1000" step="10" value="100">
-      <span id="iterValue">100</span>
+      <input type="range" id="maxIterations" min="10" max="1000" step="10" value="250">
+      <span id="iterValue">250</span>
     </div>
     <div class="control-row">
       <label for="colorScheme">Farbschema:</label>
       <select id="colorScheme" class="auto-width">
         <option value="blau-rot">Blau-Rot</option>
-        <option value="cyberpunk">Cyberpunk</option>
+        <option value="cyberpunk" selected>Cyberpunk</option>
         <option value="feuer">Feuer</option>
         <option value="ozean">Ozean</option>
         <option value="monochrom">Monochrom</option>
         <option value="regenbogen">Regenbogen</option>
-        <option value="ultraviolett">Ultraviolett</option>
-        <option value="goldgrün">Gold-Grün</option>
       </select>
     </div>
     <div class="button-row">
@@ -150,6 +148,12 @@
   .control-row select {
     margin: 0 10px 0 0;
     padding: 3px;
+    background: #444;
+    color: #eacfb4;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9em;
   }
   
   .control-row select.auto-width {
@@ -383,8 +387,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultSettings = {
     realPart: -0.7,
     imagPart: 0.27,
-    maxIterations: 100,
-    colorScheme: 'blau-rot'
+    maxIterations: 250,
+    colorScheme: 'cyberpunk'
   };
   
   // Parameter
@@ -400,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const zoomFactor = 1.5;
   
   // Zoom-Box Parameter
-  let isZoomBoxActive = false;
+  let isZoomBoxActive = true;
   let isDrawingZoomBox = false;
   let zoomBoxStartX = 0;
   let zoomBoxStartY = 0;
@@ -412,9 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00', '#ffffff'],
     'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff', '#00ffff'],
     'monochrom': ['#000000', '#222222', '#444444', '#666666', '#888888', '#aaaaaa', '#cccccc', '#ffffff'],
-    'regenbogen': ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff', '#ff0000'],
-    'ultraviolett': ['#000000', '#2E0854', '#5A1A9A', '#7B52AB', '#9470DC', '#B490FF', '#DCACFF', '#FFFFFF'],
-    'goldgrün': ['#071A07', '#0B3B0B', '#0E640E', '#11C411', '#30FF30', '#88FF88', '#DFFFDF', '#FFFFFF']
+    'regenbogen': ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff', '#ff0000']
   };
   
   // Optimierte Berechnung mit mehreren Web Workers
@@ -433,47 +435,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Canvas in Chunks aufteilen
         const chunkHeight = Math.ceil(canvas.height / numWorkers);
         
-        // Niedrigauflösende Vorschau für sofortiges Feedback
-        if (zoomLevel > 2) {
-          // Temporäres Canvas mit niedriger Auflösung
-          const tempCanvas = document.createElement('canvas');
-          const tempCtx = tempCanvas.getContext('2d');
-          const scaleFactor = 0.25; // 25% der Originalauflösung
-          
-          tempCanvas.width = canvas.width * scaleFactor;
-          tempCanvas.height = canvas.height * scaleFactor;
-          
-          // Schnelle Berechnung mit niedriger Auflösung
-          const tempWorker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
-          tempWorker.postMessage({
-            width: tempCanvas.width,
-            height: tempCanvas.height,
-            realPart: realPart,
-            imagPart: imagPart,
-            maxIterations: Math.min(50, maxIterations), // Weniger Iterationen für Vorschau
-            colorScheme: colorScheme,
-            viewX: viewX,
-            viewY: viewY,
-            zoomLevel: zoomLevel,
-            colorPalettes: colorPalettes,
-            startY: 0,
-            endY: tempCanvas.height,
-            workerId: 'preview'
-          });
-          
-          tempWorker.onmessage = function(e) {
-            tempCtx.putImageData(e.data.imageData, 0, 0);
-            // Skaliere auf Originalgröße (unscharf, aber schnell)
-            ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
-            tempWorker.terminate();
-            
-            // Jetzt die hochauflösende Version berechnen
-            startMultiWorkerCalculation();
-          };
-        } else {
-          // Direkt hochauflösend berechnen, wenn Zoom niedrig ist
-          startMultiWorkerCalculation();
+        // Stelle sicher, dass die aktuelle Farbpalette existiert
+        if (!colorPalettes[colorScheme]) {
+          console.error("Farbschema nicht gefunden:", colorScheme);
+          colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+          colorSchemeSelect.value = colorScheme;
         }
+        
+        // Direkt hochauflösend berechnen
+        startMultiWorkerCalculation();
         
         function startMultiWorkerCalculation() {
           // Erstelle Worker für jeden Chunk
@@ -544,26 +514,41 @@ document.addEventListener('DOMContentLoaded', function() {
     ] : [0, 0, 0];
   }
   
-  // Event-Listener für Steuerelemente (nur Anzeige aktualisieren)
+  // Event-Listener für Steuerelemente (synchrone Aktualisierung der Anzeige)
   realPartSlider.addEventListener('input', function() {
     realValueSpan.textContent = this.value;
+    // Aktualisiere Parameter sofort
+    realPart = parseFloat(this.value);
+    // Keine sofortige Neuberechnung, nur Anzeige aktualisieren
   });
   
   imagPartSlider.addEventListener('input', function() {
     imagValueSpan.textContent = this.value;
+    // Aktualisiere Parameter sofort
+    imagPart = parseFloat(this.value);
+    // Keine sofortige Neuberechnung, nur Anzeige aktualisieren
   });
   
   maxIterSlider.addEventListener('input', function() {
     iterValueSpan.textContent = this.value;
+    // Aktualisiere Parameter sofort
+    maxIterations = parseInt(this.value);
+    // Sofortige Neuberechnung
+    calculateJulia();
   });
   
   // Anwenden-Button
   applyButton.addEventListener('click', function() {
-    // Parameter aus den Steuerelementen übernehmen
-    realPart = parseFloat(realPartSlider.value);
-    imagPart = parseFloat(imagPartSlider.value);
-    maxIterations = parseInt(maxIterSlider.value);
+    // Parameter wurden bereits durch die Slider aktualisiert
+    // Überprüfe nur das Farbschema
     colorScheme = colorSchemeSelect.value;
+    
+    // Überprüfe, ob das Farbschema existiert
+    if (!colorPalettes[colorScheme]) {
+      console.error("Farbschema nicht gefunden:", colorScheme);
+      colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+      colorSchemeSelect.value = colorScheme;
+    }
     
     // Julia-Menge neu berechnen
     calculateJulia();
@@ -651,8 +636,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ansicht auf Mausposition zentrieren
     const newXRange = 3.0 / zoomLevel;
     const newYRange = 3.0 / zoomLevel;
-    viewX = xMouse - (mouseX / canvas.width - 0.5) * newXRange;
-    viewY = yMouse - (mouseY / canvas.height - 0.5) * newYRange;
+    viewX = xMouse;
+    viewY = yMouse;
     
     calculateJulia();
   });
@@ -720,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const y1 = viewY + (Math.min(zoomBoxStartY, mouseY) / canvas.height - 0.5) * yRange;
         const y2 = viewY + (Math.max(zoomBoxStartY, mouseY) / canvas.height - 0.5) * yRange;
         
-        // Neuer Mittelpunkt und Zoom-Level
+        // Neuer Mittelpunkt - exakt in der Mitte der Box
         viewX = (x1 + x2) / 2;
         viewY = (y1 + y2) / 2;
         
@@ -788,6 +773,7 @@ document.addEventListener('DOMContentLoaded', function() {
   realValueSpan.textContent = realPartSlider.value;
   imagValueSpan.textContent = imagPartSlider.value;
   iterValueSpan.textContent = maxIterSlider.value;
+  toggleZoomBoxButton.textContent = 'Zoom-Box aus';
   calculateJulia(); // Erste Berechnung
   // Führe die Schriftgrößenanpassung nach dem Laden durch
   setTimeout(adjustFontSize, 100);
