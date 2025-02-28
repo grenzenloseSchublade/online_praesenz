@@ -3,21 +3,54 @@
 ---
 
 @charset "utf-8";
-@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+
+// Globale Farbvariablen - Hier können alle Farben zentral angepasst werden
+$text-color: #eacfb4;          // Haupttextfarbe
+$link-color: #05d9e8;          // Linkfarbe
+$hover-color: #ff00ff;         // Hover-Effekt Farbe
+$background-dark: #1a1a1a;     // Dunkler Hintergrund
+$code-background: #2d2d2d;     // Code-Block Hintergrund
+$h1-color: #ff00ff;            // H1 Überschriften
+$h2-color: #05d9e8;            // H2 Überschriften
+$h3-color: #00ffc8;            // H3 Überschriften
+$excerpt-color: #00ffc8;       // Untertitel Farbe
+$selection-bg: #ff00ff;        // Hintergrundfarbe für markierten Text
+$selection-text: #000000;      // Textfarbe für markierten Text
+
+// Theme importieren - nach den Variablen, aber vor eigenen Styles
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
+
+/* ===== GRUNDLEGENDE ELEMENTE ===== */
+
+/* Text-Markierung Styling */
+::selection {
+  background: $selection-bg;
+  color: $selection-text;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: $selection-bg;
+  color: $selection-text;
+  text-shadow: none;
+}
+
+/* Link-Styling seitenübergreifend */
+a {
+  color: $link-color;
+  &:hover {
+    color: $hover-color;
+    text-decoration: none;
+  }
+}
 
 /* Globale Farbvariablen */
 :root {
-  --text-color: #f2cca5;          /* Haupttextfarbe */
-  --link-color: #05d9e8;          /* Linkfarbe */
-  --hover-color: #ff00ff;         /* Hover-Effekt Farbe */
-  --background-dark: #1a1a1a;     /* Dunkler Hintergrund */
-  --code-background: #2d2d2d;     /* Code-Block Hintergrund */
-  --h1-color: #ff00ff;            /* H1 Überschriften */
-  --h2-color: #05d9e8;            /* H2 Überschriften */
-  --h3-color: #00ffc8;            /* H3 Überschriften */
-  --excerpt-color: #00ffc8;       /* Untertitel Farbe */
+  --background-dark: #{$background-dark};  /* Dunkler Hintergrund */
 }
+
+/* ===== NAVIGATION & HEADER ===== */
 
 /* Navigation Header Styling */
 .masthead {
@@ -26,44 +59,49 @@
   }
   
   .greedy-nav {
-    background: var(--background-dark);
+    // background: $background-dark;
     
     a {
-      color: var(--text-color);
+      color: $text-color;
+      font-size: 0.95em;  /* Etwas kleinere Schrift für die Navigation */
       
       &:hover {
-        color: var(--hover-color);  /* Magenta beim Hover */
+        color: $hover-color;
       }
     }
     
     .visible-links {
       a {
         &:before {
-          background: var(--hover-color);  /* Unterstrich-Farbe beim Hover */
+          background: $hover-color;
         }
       }
     }
     
     .search__toggle {
-      color: var(--text-color);
+      color: $text-color;
       
       &:hover {
-        color: var(--hover-color);
+        color: $hover-color;
       }
     }
   }
 }
 
+/* ===== SEITENTITEL & ÜBERSCHRIFTEN ===== */
+
 /* Seitentitel und Überschriften */
 .page__title,
 .archive__item-title {
-  color: var(--text-color);
+  color: $text-color;
+  text-align: left;
+  font-size: 2em;  /* Angepasste Größe für Seitentitel */
   
   a {
-    color: var(--text-color);
+    color: $text-color;
     
     &:hover {
-      color: var(--hover-color);
+      color: $hover-color;
     }
   }
 }
@@ -71,89 +109,103 @@
 /* Hauptinhalt Styling */
 .landing,
 .page__content {
-  color: var(--text-color);
+  color: $text-color;
 
   h1 {
-    color: var(--h1-color);
-    font-size: 1.8em;  /* Größe für H1 */
+    color: $h1-color;
+    font-size: 1.8em;  /* Etwas kleiner für bessere Proportionen */
     font-weight: bold;
-    text-align: left;  /* Links ausgerichtet */
     margin-bottom: 0.5em;
+    text-align: left;
   }
   
   h2 {
-    color: var(--h2-color);
-    font-size: 1.4em;  /* Größe für H2 */
-    text-align: left;  /* Links ausgerichtet */
+    color: $h2-color;
+    font-size: 1.4em;
     margin-top: 1.5em;
+    text-align: left;
   }
   
   h3 {
-    color: var(--h3-color);
-    font-size: 1.1em;  /* Größe für H3 */
-    text-align: left;  /* Links ausgerichtet */
+    color: $h3-color;
+    font-size: 1.1em;
+    text-align: left;
   }
   
   p {
-    color: var(--text-color);
-    font-size: 1em;  /* Standardgröße für Paragraphen */
+    color: $text-color;
+    font-size: 1em;
+    line-height: 1.6;  /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
   }
   
   a {
-    color: var(--link-color);
+    color: $link-color;
     
     &:hover {
-      color: var(--hover-color);
+      color: $hover-color;
       text-decoration: none;
     }
   }
   
   /* Listen-Styling */
   ul, ol {
-    color: var(--text-color);
+    color: $text-color;
   }
   
   /* Blockquote-Styling */
   blockquote {
-    color: var(--text-color);
-    border-left-color: var(--link-color);
+    color: $text-color;
+    border-left-color: $link-color;
   }
 }
+
+/* ===== UNTERTITEL & BESCHREIBUNGEN ===== */
 
 /* Styling für den Untertitel (excerpt) */
 .page__lead,
-// .archive__item-excerpt,
-.page__excerpt {
-  color: var(--excerpt-color) !important;
-  font-size: 1.2em !important;  /* Größe für Excerpts */
-  text-align: left;  /* Links ausgerichtet */
+.page__excerpt,
+.archive__item-excerpt {
+  color: $excerpt-color !important;
+  font-size: 0.85em !important;  /* Kleinere Schriftgröße für Excerpts */
   margin-top: 0.5em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   font-style: italic;
+  text-align: left;
+  line-height: 1.4;
 }
+
+/* ===== SIDEBAR ===== */
 
 /* Sidebar-Text */
 .sidebar {
-  color: var(--text-color);
+  color: $text-color;
+  font-size: 0.90em;
   
   .author__name {
-    color: var(--text-color);
+    color: $text-color;
+    font-size: 0.90em;  /* Angepasste Größe für den Autornamen */
   }
   
   .author__bio {
-    color: var(--text-color);
+    color: $text-color;
+    font-size: 0.7em;  /* Kleinere Schriftgröße für die Bio */
+    line-height: 1.5;  /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
   }
+  
+
 }
+
+/* ===== HEADER-BILDER ===== */
 
 /* Hintergrundbild-Styling */
 .page__hero--overlay {
-  padding: 4em 0;  /* Vertikaler Abstand oben/unten */
+  padding: 4em 0;
   
   &::before {
-    background-size: cover;  /* oder 'contain', '100% auto', etc. */
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    height: 400px;  /* Feste Höhe */
+    height: 400px;
   }
 }
 
@@ -175,18 +227,11 @@
   }
 }
 
-/* Link-Styling seitenübergreifend */
-a {
-  color: var(--link-color);
-  &:hover {
-    color: var(--hover-color);
-    text-decoration: none;
-  }
-}
+/* ===== CODE-BLÖCKE ===== */
 
 /* Code Block Anpassungen */
 div.highlight {
-  background: var(--code-background) !important; /* !important überschreibt Theme-Styles */
+  background: $code-background !important;
   border-radius: 4px;
   margin: 1em 0;
 }
@@ -194,82 +239,12 @@ div.highlight {
 .highlight pre {
   padding: 1em;
   border: none;
-  font-size: 0.9em;
+  background: $code-background;
 }
 
-/* Syntax Highlighting Farben */
-.highlight {
-  background: #1a1a2e !important;  /* Dunkler Background für Kontrast */
-  .c     { color: #75715e; }                     /* Kommentar */
-  .k     { color: #66d9ef; }                     /* Keyword */
-  .s     { color: #a6e22e; }                     /* String */
-  .n     { color: #f8f8f2; }                     /* Name */
-  .o     { color: #f92672; }                     /* Operator */
-  .p     { color: #f8f8f2; }                     /* Punctuation */
-  /* Zusätzliche Synthwave-Farben für andere Code-Elemente */
-  .nt    { color: #fe75fe !important; }     /* Tags in hellem Magenta */
-  .na    { color: #fff951 !important; }     /* Attribute in Neon-Gelb */
-  .nb    { color: #00ffc8 !important; }     /* Built-ins in Türkis */
-  .nf    { color: #7fff00 !important; }     /* Funktionen in Neon-Grün */
-}
-
-
-// /* Überschriften-Styling */
-// h1, h2, h3, h4, h5, h6 {
-//   color: var(--text-color);
-//   margin: 1em 0 0.5em;
-  
-//   &:first-child {
-//     margin-top: 0;
-//   }
-// }
-
-// /* Navigation und Menü-Styling */
-// .masthead {
-//   background-color: var(--background-dark);
-//   border-bottom: 1px solid rgba(255,255,255,0.1);
-// }
-
-// /* Sidebar Anpassungen */
-// .sidebar {
-//   background-color: var(--background-dark);
-  
-//   .author__name {
-//     color: var(--text-color);
-//   }
-  
-//   .author__bio {
-//     color: var(--text-color);
-//   }
-// }
-
-// /* Notice Boxes (Info, Warning, etc.) */
-// .notice {
-//   background-color: rgba(0,0,0,0.2);
-//   border-left: 4px solid var(--link-color);
-//   padding: 1em;
-//   margin: 1em 0;
-// }
-
-// /* Tabellen-Styling */
-// table {
-//   background-color: var(--background-dark);
-//   border: 1px solid rgba(255,255,255,0.1);
-  
-//   th {
-//     background-color: rgba(255,255,255,0.05);
-//   }
-  
-//   tr:nth-child(even) {
-//     background-color: rgba(255,255,255,0.02);
-//   }
-// }
-
-// /* Blockquote-Styling */
-// blockquote {
-//   border-left: 4px solid var(--link-color);
-//   background-color: rgba(0,0,0,0.2);
-//   padding: 1em;
-//   margin: 1em 0;
-//   font-style: italic;
-// }
+/* Syntax-Highlighting Anpassungen */
+.highlight .c, .highlight .c1, .highlight .cm { color: #75715e; } /* Kommentare */
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #66d9ef; } /* Schlüsselwörter */
+.highlight .s, .highlight .s1, .highlight .s2 { color: #e6db74; } /* Strings */
+.highlight .na, .highlight .nb, .highlight .nc, .highlight .no { color: #a6e22e; } /* Namen */
+.highlight .m, .highlight .mi, .highlight .mf { color: #ae81ff; } /* Zahlen */ 

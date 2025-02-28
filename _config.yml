@@ -31,7 +31,7 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
-      background_color: "#8a36362" 
+      background_color: "#2d2d2d"
 
 # MathJax specific settings
 head_scripts:
