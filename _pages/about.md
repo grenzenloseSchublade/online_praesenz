@@ -5,8 +5,6 @@ classes: wide
 author_profile: true
 ---
 
-# Willkommen auf meiner persönlichen Seite
-
 ## Wer bin ich?
 
 Ich bin ein leidenschaftlicher Entwickler und Mathematik-Enthusiast. Meine Faszination für Algorithmen, Fraktale und komplexe Systeme hat mich dazu gebracht, diese Website zu erstellen.

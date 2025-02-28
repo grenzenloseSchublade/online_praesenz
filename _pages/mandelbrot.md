@@ -10,8 +10,6 @@ excerpt: "Eine Reise in die faszinierende Welt der Fraktale"
 mathjax: true
 ---
 
-# Die Mandelbrot-Menge
-
 Die Mandelbrot-Menge ist eines der bekanntesten mathematischen Objekte und ein faszinierendes Beispiel für die Schönheit der Mathematik.
 
 ## Mathematische Definition
@@ -22,9 +20,9 @@ $$z_{n+1} = z_n^2 + c, \quad z_0 = 0$$
 
 beschränkt bleibt. Genauer gesagt:
 
-$$\mathscr{M} = \{c \in \mathbb{C} : \limsup_{n \to \infty} |z_n| \leq 2\}$$
+$$\mathscr{M} = \{c \in \mathbb{C} : \limsup_{n \to \infty} \lvert z_n \rvert \leq 2\}$$
 
-wobei $$|z_n|$$ der Betrag der komplexen Zahl $$z_n$$ ist.
+wobei $$\lvert z_n \rvert$$ der Betrag der komplexen Zahl $$z_n$$ ist.
 
 ## Eigenschaften
 
@@ -38,7 +36,7 @@ wobei $$|z_n|$$ der Betrag der komplexen Zahl $$z_n$$ ist.
 
 ## Programmierung der Mandelbrot-Menge
 
-Hier ist ein verbessertes Python-Beispiel zur Berechnung und Visualisierung der Mandelbrot-Menge:
+Hier ist ein Python-Beispiel zur Berechnung und Visualisierung der Mandelbrot-Menge:
 
 ```python
 import numpy as np
@@ -60,28 +58,22 @@ def mandelbrot(h, w, max_iter):
 
     return divtime
 
-def plot_mandelbrot(size=1000, max_iter=100):
-    plt.figure(figsize=(12, 8))
-    
-    # Erstelle eine benutzerdefinierte Farbpalette
-    colors = ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00']
-    n_bins = 100
-    cmap = LinearSegmentedColormap.from_list('custom', colors, N=n_bins)
-    
-    plt.imshow(mandelbrot(size, size, max_iter),
-               cmap=cmap,
-               extent=[-2, 0.8, -1.4, 1.4])
-    
-    plt.title('Die Mandelbrot-Menge', fontsize=16)
-    plt.xlabel('Re(c)', fontsize=12)
-    plt.ylabel('Im(c)', fontsize=12)
-    plt.colorbar(label='Iterationen bis zur Divergenz')
-    plt.grid(True, alpha=0.3)
-    
-    return plt
+# Erstelle eine hochauflösende Visualisierung
+plt.figure(figsize=(12, 8))
 
-# Generiere und zeige die Visualisierung
-plot_mandelbrot(size=1000, max_iter=100)
+# Erstelle eine benutzerdefinierte Farbpalette
+colors = ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00']
+n_bins = 100
+cmap = LinearSegmentedColormap.from_list('custom', colors, N=n_bins)
+
+plt.imshow(mandelbrot(1000, 1000, 100),
+          cmap=cmap,
+          extent=[-2, 0.8, -1.4, 1.4])
+
+plt.colorbar(label='Iterationen bis zur Divergenz')
+plt.title('Die Mandelbrot-Menge')
+plt.xlabel('Re(c)')
+plt.ylabel('Im(c)')
 plt.show()
 ```
 
@@ -103,13 +95,76 @@ Die Mandelbrot-Menge enthält verschiedene charakteristische Bereiche:
 
 Einige wichtige mathematische Eigenschaften der Mandelbrot-Menge sind:
 
-1. **Beschränktheit**: Wenn für ein $$c \in \mathbb{C}$$ gilt: $$|z_n| > 2$$, dann divergiert die Folge und $$c$$ liegt nicht in $$\mathscr{M}$$.
+1. **Beschränktheit**: Wenn für ein $$c \in \mathbb{C}$$ gilt: $$\lvert z_n \rvert > 2$$, dann divergiert die Folge und $$c$$ liegt nicht in $$\mathscr{M}$$.
 
 2. **Symmetrie**: Die Menge ist symmetrisch zur reellen Achse:
    $$c \in \mathscr{M} \iff \overline{c} \in \mathscr{M}$$
 
 3. **Innere Punkte**: Für jeden Punkt $$c$$ im Inneren der Hauptkardiode gilt:
-   $$|z_n| \leq 2$$ für alle $$n \geq 0$$
+   $$\lvert z_n \rvert \leq 2$$ für alle $$n \geq 0$$
+
+## Mathematische Notation
+
+### Inline-Formeln
+
+- Der Betrag $\lvert z \rvert$ einer komplexen Zahl
+- Norm eines Vektors $\lvert \vec{v} \rvert$
+
+### Alleinstehende Formeln
+
+Die quadratische Gleichung und ihre Lösung:
+
+$$ax^2 + bx + c = 0 \quad \Rightarrow \quad x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$
+
+Eine Matrix:
+
+$$
+\begin{pmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{pmatrix}
+$$
+
+Ein Gleichungssystem:
+
+$$
+\begin{align*}
+3x + 2y &= 7 \\
+x - 4y &= 1
+\end{align*}
+$$
+
+Eine Fallunterscheidung:
+
+$$
+f(x) = \begin{cases}
+x^2 & \text{für } x \geq 0 \\
+-x^2 & \text{für } x < 0
+\end{cases}
+$$
+
+Ein Grenzwert mit Bruch:
+
+$$\lim_{x \to \infty} \frac{x^2 + 2x + 1}{x^2 + 1} = 1$$
+
+Eine Summenformel:
+
+$$\sum_{k=1}^n k = \frac{n(n+1)}{2}$$
+
+Ein Integral:
+
+$$\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$$
+
+### Spezielle Notation für die Mandelbrot-Menge
+
+Die Folge $(z_n)_{n \in \mathbb{N}}$ konvergiert genau dann, wenn:
+
+$$\exists M \in \mathbb{R}: \lvert z_n \rvert \leq M \text{ für alle } n \in \mathbb{N}$$
+
+Die Mandelbrot-Menge kann auch als Vereinigung geschrieben werden:
+
+$$\mathscr{M} = \bigcup_{k=1}^\infty \{c \in \mathbb{C} : \lvert z_n \rvert \leq 2 \text{ für alle } n \leq k\}$$
 
 ## Weiterführende Ressourcen
 
@@ -119,4 +174,15 @@ Einige wichtige mathematische Eigenschaften der Mandelbrot-Menge sind:
 
 ## Fazit
 
-Die Mandelbrot-Menge ist ein perfektes Beispiel dafür, wie aus einfachen mathematischen Regeln komplexe und wunderschöne Strukturen entstehen können. Sie verbindet Mathematik, Kunst und Computervisualisierung auf einzigartige Weise. 
+Die Mandelbrot-Menge ist ein perfektes Beispiel dafür, wie aus einfachen mathematischen Regeln komplexe und wunderschöne Strukturen entstehen können. Sie verbindet Mathematik, Kunst und Computervisualisierung auf einzigartige Weise.
+
+## Display-Math (komplex)
+
+$$\left|\frac{x^2}{y}\right| = \sqrt{\frac{x^4}{y^2}}$$
+
+$$\left|\begin{matrix} 
+a & b \\
+c & d
+\end{matrix}\right| = ad-bc$$
+
+$$\left|\frac{\sum_{i=1}^n x_i}{\prod_{j=1}^m y_j}\right|$$

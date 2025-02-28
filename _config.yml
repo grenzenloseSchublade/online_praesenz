@@ -8,7 +8,7 @@ logo: "/assets/images/kraftstoff.jpg"
 
 # Theme Einstellungen
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-minimal_mistakes_skin: "sunrise" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "dark" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale: "de-DE"
@@ -22,18 +22,20 @@ markdown: kramdown
 mathjax: true
 kramdown:
   math_engine: mathjax
-  parse_block_html: true    # Erlaubt Markdown innerhalb von HTML-Blöcken
-  parse_span_html: true     # Erlaubt Markdown innerhalb von HTML-Spans
-  typographic_symbols: { hellip: ... }  # Typographische Verbesserungen
   syntax_highlighter: rouge
   input: GFM
-  hard_wrap: false         # Verhindert unerwünschte Zeilenumbrüche
-  footnote_nr: 1          # Startnummer für Fußnoten
-  show_warnings: true     # Zeigt Parsing-Warnungen an
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+      background_color: "#8a36362" 
 
 # MathJax specific settings
 head_scripts:
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 # Collections
 include:
@@ -147,4 +149,9 @@ exclude:
   - README
   - tmp
   - /docs
-  - /test 
+  - /test
+
+# Additional Styles
+sass:
+  style: compressed
+  sourcemap: never 

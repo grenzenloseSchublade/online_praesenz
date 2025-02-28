@@ -1,0 +1,275 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes";
+
+/* Globale Farbvariablen */
+:root {
+  --text-color: #f2cca5;          /* Haupttextfarbe */
+  --link-color: #05d9e8;          /* Linkfarbe */
+  --hover-color: #ff00ff;         /* Hover-Effekt Farbe */
+  --background-dark: #1a1a1a;     /* Dunkler Hintergrund */
+  --code-background: #2d2d2d;     /* Code-Block Hintergrund */
+  --h1-color: #ff00ff;            /* H1 Überschriften */
+  --h2-color: #05d9e8;            /* H2 Überschriften */
+  --h3-color: #00ffc8;            /* H3 Überschriften */
+  --excerpt-color: #00ffc8;       /* Untertitel Farbe */
+}
+
+/* Navigation Header Styling */
+.masthead {
+  &__inner-wrap {
+    padding: 0.5em;
+  }
+  
+  .greedy-nav {
+    background: var(--background-dark);
+    
+    a {
+      color: var(--text-color);
+      
+      &:hover {
+        color: var(--hover-color);  /* Magenta beim Hover */
+      }
+    }
+    
+    .visible-links {
+      a {
+        &:before {
+          background: var(--hover-color);  /* Unterstrich-Farbe beim Hover */
+        }
+      }
+    }
+    
+    .search__toggle {
+      color: var(--text-color);
+      
+      &:hover {
+        color: var(--hover-color);
+      }
+    }
+  }
+}
+
+/* Seitentitel und Überschriften */
+.page__title,
+.archive__item-title {
+  color: var(--text-color);
+  
+  a {
+    color: var(--text-color);
+    
+    &:hover {
+      color: var(--hover-color);
+    }
+  }
+}
+
+/* Hauptinhalt Styling */
+.landing,
+.page__content {
+  color: var(--text-color);
+
+  h1 {
+    color: var(--h1-color);
+    font-size: 1.8em;  /* Größe für H1 */
+    font-weight: bold;
+    text-align: left;  /* Links ausgerichtet */
+    margin-bottom: 0.5em;
+  }
+  
+  h2 {
+    color: var(--h2-color);
+    font-size: 1.4em;  /* Größe für H2 */
+    text-align: left;  /* Links ausgerichtet */
+    margin-top: 1.5em;
+  }
+  
+  h3 {
+    color: var(--h3-color);
+    font-size: 1.1em;  /* Größe für H3 */
+    text-align: left;  /* Links ausgerichtet */
+  }
+  
+  p {
+    color: var(--text-color);
+    font-size: 1em;  /* Standardgröße für Paragraphen */
+  }
+  
+  a {
+    color: var(--link-color);
+    
+    &:hover {
+      color: var(--hover-color);
+      text-decoration: none;
+    }
+  }
+  
+  /* Listen-Styling */
+  ul, ol {
+    color: var(--text-color);
+  }
+  
+  /* Blockquote-Styling */
+  blockquote {
+    color: var(--text-color);
+    border-left-color: var(--link-color);
+  }
+}
+
+/* Styling für den Untertitel (excerpt) */
+.page__lead,
+// .archive__item-excerpt,
+.page__excerpt {
+  color: var(--excerpt-color) !important;
+  font-size: 1.2em !important;  /* Größe für Excerpts */
+  text-align: left;  /* Links ausgerichtet */
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  font-style: italic;
+}
+
+/* Sidebar-Text */
+.sidebar {
+  color: var(--text-color);
+  
+  .author__name {
+    color: var(--text-color);
+  }
+  
+  .author__bio {
+    color: var(--text-color);
+  }
+}
+
+/* Hintergrundbild-Styling */
+.page__hero--overlay {
+  padding: 4em 0;  /* Vertikaler Abstand oben/unten */
+  
+  &::before {
+    background-size: cover;  /* oder 'contain', '100% auto', etc. */
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 400px;  /* Feste Höhe */
+  }
+}
+
+/* Für volle Viewport-Höhe */
+.page__hero--overlay.header--full {
+  min-height: 100vh;
+  
+  &::before {
+    min-height: 100vh;
+  }
+}
+
+/* Für halbe Viewport-Höhe */
+.page__hero--overlay.header--half {
+  min-height: 50vh;
+  
+  &::before {
+    min-height: 50vh;
+  }
+}
+
+/* Link-Styling seitenübergreifend */
+a {
+  color: var(--link-color);
+  &:hover {
+    color: var(--hover-color);
+    text-decoration: none;
+  }
+}
+
+/* Code Block Anpassungen */
+div.highlight {
+  background: var(--code-background) !important; /* !important überschreibt Theme-Styles */
+  border-radius: 4px;
+  margin: 1em 0;
+}
+
+.highlight pre {
+  padding: 1em;
+  border: none;
+  font-size: 0.9em;
+}
+
+/* Syntax Highlighting Farben */
+.highlight {
+  background: #1a1a2e !important;  /* Dunkler Background für Kontrast */
+  .c     { color: #75715e; }                     /* Kommentar */
+  .k     { color: #66d9ef; }                     /* Keyword */
+  .s     { color: #a6e22e; }                     /* String */
+  .n     { color: #f8f8f2; }                     /* Name */
+  .o     { color: #f92672; }                     /* Operator */
+  .p     { color: #f8f8f2; }                     /* Punctuation */
+  /* Zusätzliche Synthwave-Farben für andere Code-Elemente */
+  .nt    { color: #fe75fe !important; }     /* Tags in hellem Magenta */
+  .na    { color: #fff951 !important; }     /* Attribute in Neon-Gelb */
+  .nb    { color: #00ffc8 !important; }     /* Built-ins in Türkis */
+  .nf    { color: #7fff00 !important; }     /* Funktionen in Neon-Grün */
+}
+
+
+// /* Überschriften-Styling */
+// h1, h2, h3, h4, h5, h6 {
+//   color: var(--text-color);
+//   margin: 1em 0 0.5em;
+  
+//   &:first-child {
+//     margin-top: 0;
+//   }
+// }
+
+// /* Navigation und Menü-Styling */
+// .masthead {
+//   background-color: var(--background-dark);
+//   border-bottom: 1px solid rgba(255,255,255,0.1);
+// }
+
+// /* Sidebar Anpassungen */
+// .sidebar {
+//   background-color: var(--background-dark);
+  
+//   .author__name {
+//     color: var(--text-color);
+//   }
+  
+//   .author__bio {
+//     color: var(--text-color);
+//   }
+// }
+
+// /* Notice Boxes (Info, Warning, etc.) */
+// .notice {
+//   background-color: rgba(0,0,0,0.2);
+//   border-left: 4px solid var(--link-color);
+//   padding: 1em;
+//   margin: 1em 0;
+// }
+
+// /* Tabellen-Styling */
+// table {
+//   background-color: var(--background-dark);
+//   border: 1px solid rgba(255,255,255,0.1);
+  
+//   th {
+//     background-color: rgba(255,255,255,0.05);
+//   }
+  
+//   tr:nth-child(even) {
+//     background-color: rgba(255,255,255,0.02);
+//   }
+// }
+
+// /* Blockquote-Styling */
+// blockquote {
+//   border-left: 4px solid var(--link-color);
+//   background-color: rgba(0,0,0,0.2);
+//   padding: 1em;
+//   margin: 1em 0;
+//   font-style: italic;
+// }
