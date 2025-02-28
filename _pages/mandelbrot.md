@@ -30,10 +30,6 @@ wobei $$\lvert z_n \rvert$$ der Betrag der komplexen Zahl $$z_n$$ ist.
 2. **Selbstähnlichkeit**: An den Rändern der Menge finden sich immer wieder ähnliche Strukturen.
 3. **Fraktale Dimension**: Die Hausdorff-Dimension der Randkurve beträgt etwa 2.
 
-## Interaktive Visualisierung
-
-{% include mandelbrot-iframe.html %}
-
 ## Interaktive Julia-Menge
 
 Die Julia-Menge ist eng mit der Mandelbrot-Menge verwandt. Während die Mandelbrot-Menge alle komplexen Zahlen $c$ enthält, für die die Folge $z_{n+1} = z_n^2 + c$ mit $z_0 = 0$ beschränkt bleibt, wird bei der Julia-Menge ein fester Wert für $c$ gewählt und die Menge aller Startpunkte $z_0$ betrachtet, für die die Folge beschränkt bleibt.

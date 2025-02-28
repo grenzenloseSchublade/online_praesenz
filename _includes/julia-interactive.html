@@ -25,6 +25,8 @@
         <option value="ozean">Ozean</option>
         <option value="monochrom">Monochrom</option>
         <option value="regenbogen">Regenbogen</option>
+        <option value="ultraviolett">Ultraviolett</option>
+        <option value="goldgrün">Gold-Grün</option>
       </select>
     </div>
     <div class="button-row">
@@ -406,11 +408,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Farbpaletten
   const colorPalettes = {
     'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
-    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00'],
-    'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00'],
-    'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff'],
-    'monochrom': ['#000000', '#333333', '#666666', '#999999', '#ffffff'],
-    'regenbogen': ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff']
+    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00', '#ff00ff'],
+    'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00', '#ffffff'],
+    'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff', '#00ffff'],
+    'monochrom': ['#000000', '#222222', '#444444', '#666666', '#888888', '#aaaaaa', '#cccccc', '#ffffff'],
+    'regenbogen': ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff', '#ff0000'],
+    'ultraviolett': ['#000000', '#2E0854', '#5A1A9A', '#7B52AB', '#9470DC', '#B490FF', '#DCACFF', '#FFFFFF'],
+    'goldgrün': ['#071A07', '#0B3B0B', '#0E640E', '#11C411', '#30FF30', '#88FF88', '#DFFFDF', '#FFFFFF']
   };
   
   // Optimierte Berechnung mit mehreren Web Workers

@@ -26,6 +26,9 @@ self.onmessage = function (e) {
     // Farbpalette
     const palette = colorPalettes[colorScheme];
 
+    // Vorberechnete Farbwerte für bessere Performance
+    const precomputedColors = precomputeColors(palette, 1000);
+
     // Berechnung für den zugewiesenen Chunk
     for (let y = 0; y < chunkHeight; y++) {
         const actualY = y + startY;
@@ -55,22 +58,20 @@ self.onmessage = function (e) {
             if (iteration === maxIterations) {
                 color = [0, 0, 0]; // Schwarz für Punkte in der Menge
             } else {
-                // Smooth coloring
-                const smoothed = iteration + 1 - Math.log(Math.log(Math.sqrt(zx2 + zy2))) / Math.log(2);
-                const normalized = smoothed / maxIterations;
+                // Verbesserte Smooth-Coloring-Formel
+                const log_zn = Math.log(zx2 + zy2) / 2;
+                const nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
+                const smoothed = iteration + 1 - nu;
 
-                // Optimierte Interpolation
-                const index = Math.min(Math.floor(normalized * (palette.length - 1)), palette.length - 2);
-                const t = (normalized * (palette.length - 1)) - index;
+                // Verbesserte Farbverteilung mit Histogramm-Ähnlichem Effekt
+                // Verwendet eine Sigmoid-Funktion für weichere Übergänge
+                const t = smoothed / maxIterations;
+                const sigmoid = 1 / (1 + Math.exp(-12 * (t - 0.5)));
+                const normalized = Math.pow(sigmoid, 0.5); // Quadratwurzel für bessere Verteilung
 
-                const color1 = hexToRgb(palette[index]);
-                const color2 = hexToRgb(palette[index + 1]);
-
-                color = [
-                    Math.floor(color1[0] * (1 - t) + color2[0] * t),
-                    Math.floor(color1[1] * (1 - t) + color2[1] * t),
-                    Math.floor(color1[2] * (1 - t) + color2[2] * t)
-                ];
+                // Verwende vorberechnete Farben für bessere Performance
+                const colorIndex = Math.min(Math.floor(normalized * 999), 998);
+                color = precomputedColors[colorIndex];
             }
 
             // Pixel setzen
@@ -99,4 +100,48 @@ function hexToRgb(hex) {
         parseInt(result[2], 16),
         parseInt(result[3], 16)
     ] : [0, 0, 0];
+}
+
+// Vorberechnung von Farben für bessere Performance
+function precomputeColors(palette, steps) {
+    const colors = new Array(steps);
+
+    for (let i = 0; i < steps; i++) {
+        const t = i / (steps - 1);
+
+        // Verbesserte Farbinterpolation mit Gamma-Korrektur und Farbton-Rotation
+        // Verwende eine kubische Funktion für natürlichere Übergänge
+        const adjustedT = t * t * (3 - 2 * t); // Kubische Hermite-Interpolation
+        const position = adjustedT * (palette.length - 1);
+        const index = Math.min(Math.floor(position), palette.length - 2);
+        const fraction = position - index;
+
+        // Gamma-korrigierte Interpolation für natürlichere Farbübergänge
+        const color1 = hexToRgb(palette[index]);
+        const color2 = hexToRgb(palette[index + 1]);
+
+        // Umwandlung in linearen Farbraum für bessere Interpolation
+        const r1 = Math.pow(color1[0] / 255, 2.2);
+        const g1 = Math.pow(color1[1] / 255, 2.2);
+        const b1 = Math.pow(color1[2] / 255, 2.2);
+
+        const r2 = Math.pow(color2[0] / 255, 2.2);
+        const g2 = Math.pow(color2[1] / 255, 2.2);
+        const b2 = Math.pow(color2[2] / 255, 2.2);
+
+        // Kubische Interpolation im linearen Farbraum für weichere Übergänge
+        const cubicFraction = fraction * fraction * (3 - 2 * fraction);
+        const r = r1 * (1 - cubicFraction) + r2 * cubicFraction;
+        const g = g1 * (1 - cubicFraction) + g2 * cubicFraction;
+        const b = b1 * (1 - cubicFraction) + b2 * cubicFraction;
+
+        // Zurück in sRGB-Farbraum
+        colors[i] = [
+            Math.round(Math.pow(r, 1 / 2.2) * 255),
+            Math.round(Math.pow(g, 1 / 2.2) * 255),
+            Math.round(Math.pow(b, 1 / 2.2) * 255)
+        ];
+    }
+
+    return colors;
 } 
