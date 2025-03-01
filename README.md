@@ -13,8 +13,6 @@ Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Them
 
 - reduce html style in MD files
 
-
-
  
 ## Installation
 
