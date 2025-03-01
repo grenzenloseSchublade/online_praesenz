@@ -16,36 +16,53 @@
       <input type="range" id="maxIterations" min="10" max="1000" step="10" value="250">
       <span id="iterValue">250</span>
     </div>
-    <div class="control-row">
-      <label for="colorScheme">Farbschema:</label>
-      <select id="colorScheme" class="auto-width">
-        <option value="blau-rot">Blau-Rot</option>
-        <option value="cyberpunk" selected>Cyberpunk</option>
-        <option value="feuer">Feuer</option>
-        <option value="ozean">Ozean</option>
-        <option value="monochrom">Monochrom</option>
-        <option value="regenbogen">Regenbogen</option>
-      </select>
+    <div class="color-controls-row">
+      <div class="color-control-item">
+        <label for="colorScheme">Farbschema:</label>
+        <select id="colorScheme" class="form-control">
+          <option value="blau-rot">Blau-Rot</option>
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="retrowave" selected>Retrowave</option>
+          <option value="feuer">Feuer</option>
+          <option value="ozean">Ozean</option>
+          <option value="monochrom">Monochrom</option>
+          <option value="regenbogen">Regenbogen</option>
+          <option value="ultraviolett">Ultraviolett</option>
+          <option value="goldgrün">Gold-Grün</option>
+        </select>
+      </div>
+      <div class="color-control-item">
+        <label for="colorIntensity">Farbintensität:</label>
+        <button id="colorIntensity" class="toggle-button">Subtil</button>
+      </div>
     </div>
     <div class="button-row">
       <button id="applySettings">Anwenden</button>
       <button id="defaultValues">Standardwerte</button>
       <button id="resetZoom">Zoom zurücksetzen</button>
       <button id="saveImage">Bild speichern</button>
-      <button id="toggleZoomBox">Zoom-Box ein/aus</button>
+      <button id="toggleZoomBox">Zoom-Box aus</button>
     </div>
   </div>
   
-  <div class="info-panel">
-    <div class="info-row">Mausrad: Zoomen | Klick: Zentrieren | Doppelklick: Zoom + | Ziehen: Zoom-Bereich</div>
-    <div class="info-row">Aktuelle Position: <span id="positionInfo">0 + 0i</span></div>
-    <div class="info-row">Zoom: <span id="zoomInfo">1x</span></div>
+  <div class="info-bar">
+    <div class="info-item">Mausrad: Zoomen</div>
+    <div class="info-item">Klick: Zentrieren</div>
+    <div class="info-item">Doppelklick: Zoom +</div>
+    <div class="info-item">Ziehen: Zoom-Bereich</div>
+    <div class="info-item">Aktuelle Position: <span id="positionInfo">0 + 0i</span></div>
+    <div class="info-item">Zoom: <span id="zoomInfo">1x</span></div>
   </div>
   
   <div class="canvas-container">
-    <canvas id="juliaCanvas" width="600" height="600"></canvas>
+    <canvas id="juliaCanvas" width="800" height="450"></canvas>
     <div id="zoomBox" class="zoom-box"></div>
     <div class="loading-indicator" id="loadingIndicator">Berechne...</div>
+    <div class="info-panel">
+      <p>Position: <span id="mousePosition" class="info-value">(0, 0)</span></p>
+      <p>Komplexe Zahl: <span id="complexValue" class="info-value">0 + 0i</span></p>
+      <p>Iterationen: <span id="iterationInfo" class="info-value">-</span></p>
+    </div>
   </div>
   
   <div class="explanation-container">
@@ -82,6 +99,7 @@
       <ul>
         <li><strong>Blau-Rot:</strong> Klassisches Farbschema mit sanften Übergängen von Blau über Weiß zu Rot.</li>
         <li><strong>Cyberpunk:</strong> Lebhafte, kontrastreiche Neonfarben.</li>
+        <li><strong>Retrowave:</strong> Markante Übergänge von Magenta zu Cyan.</li>
         <li><strong>Feuer:</strong> Warme Farbtöne von Schwarz über Rot zu Gelb, ähnlich einer Flamme.</li>
         <li><strong>Ozean:</strong> Verschiedene Blautöne, die an Meerestiefen erinnern.</li>
         <li><strong>Monochrom:</strong> Graustufendarstellung für eine klassische, reduzierte Ästhetik.</li>
@@ -107,114 +125,134 @@
 
 <style>
   .julia-container {
-    max-width: 800px;
-    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
     background: #222;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    font-family: Arial, sans-serif;
   }
   
   .julia-controls {
-    background: #333;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 6px;
   }
   
   .control-row {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
   }
   
-  .control-row:last-child {
-    margin-bottom: 0;
+  .color-controls-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .color-control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 200px;
+    gap: 6px;
+  }
+  
+  .color-control-item label {
+    width: 100%;
+    color: #ddd;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+  
+  .color-control-item select,
+  .color-control-item button {
+    width: 100%;
+    max-width: 200px;
   }
   
   .control-row label {
-    width: 120px;
+    width: 150px;
+    color: #ddd;
+    font-size: 14px;
     text-align: left;
-    margin-right: 10px;
-    white-space: nowrap;
   }
   
   .control-row input[type="range"] {
     flex: 1;
-    margin: 0 10px 0 0;
-  }
-  
-  .control-row select {
-    margin: 0 10px 0 0;
-    padding: 3px;
+    margin: 0 10px;
+    min-width: 150px;
+    height: 6px;
     background: #444;
-    color: #eacfb4;
-    border: none;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 0.9em;
+    border-radius: 3px;
+    -webkit-appearance: none;
   }
   
-  .control-row select.auto-width {
-    width: auto;
-    min-width: 120px;
+  .control-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
   }
   
   .control-row span {
-    width: 40px;
-    text-align: right;
+    width: 50px;
+    color: #ddd;
+    font-size: 16px;
+    font-weight: bold;
   }
   
   .button-row {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    justify-content: flex-start;
   }
   
-  .button-row button {
-    flex: 1;
-    padding: 5px 10px;
-    white-space: nowrap;
-  }
-  
-  .info-panel {
-    background: #333;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    color: #ccc;
-    text-align: center;
-  }
-  
-  .info-row {
-    margin: 5px 0;
+  button {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    transition: background 0.3s, transform 0.1s;
+  }
+  
+  button:hover {
+    background: #555;
+  }
+  
+  button:active {
+    transform: scale(0.98);
   }
   
   .canvas-container {
     position: relative;
     width: 100%;
-    margin-bottom: 15px;
+    margin: 0 auto;
   }
   
   #juliaCanvas {
     display: block;
     width: 100%;
     height: auto;
-    background: #000;
-    border-radius: 5px;
-  }
-  
-  .zoom-box {
-    position: absolute;
-    border: 1px dashed #fff;
-    background: rgba(255, 255, 255, 0.1);
-    pointer-events: none;
-    display: none;
+    border-radius: 4px;
+    cursor: crosshair;
+    aspect-ratio: 16/9;
   }
   
   .loading-indicator {
@@ -223,101 +261,132 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.7);
-    color: #fff;
+    color: white;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 4px;
+    display: none;
+    font-size: 16px;
+  }
+  
+  #zoomBox {
+    position: absolute;
+    border: 2px dashed #ff00ff;
+    background: rgba(255, 0, 255, 0.15);
+    pointer-events: none;
     display: none;
   }
   
-  /* Erklärbox Styling */
   .explanation-container {
     margin-top: 20px;
-    border-top: 1px solid #444;
-    padding-top: 15px;
   }
   
   .explanation-toggle {
-    background: #444;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
     width: 100%;
-    text-align: left;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .explanation-toggle:hover {
-    background: #555;
+    text-align: center;
+    margin-bottom: 10px;
+    background: #333;
+    color: #eacfb4;
+    padding: 8px;
   }
   
   .explanation-box {
-    display: none;
     background: #333;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 15px;
-    margin-top: 10px;
-    color: #ccc;
-    line-height: 1.5;
-  }
-  
-  .explanation-box h3 {
-    color: #eacfb4;
     margin-top: 0;
-    border-bottom: 1px solid #555;
-    padding-bottom: 8px;
+    color: #ddd;
+    font-size: 14px;
+    display: none;
   }
   
   .explanation-box h4 {
-    color: #eacfb4;
-    margin: 20px 0 10px;
-  }
-  
-  .explanation-box h5 {
-    color: #eacfb4;
-    margin: 15px 0 8px;
+    margin-top: 0;
+    margin-left: 0;
+    color: #fff;
+    font-size: 18px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 8px;
   }
   
   .explanation-box p {
-    margin: 10px 0;
+    margin-bottom: 10px;
   }
   
-  .explanation-box ul {
-    margin: 10px 0;
-    padding-left: 20px;
+  select {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
   }
   
-  .explanation-box li {
-    margin-bottom: 5px;
+  select.auto-width {
+    width: auto;
   }
   
-  .explanation-box strong {
-    color: #eacfb4;
+  /* Neue Info-Bar für Informationen oberhalb des Canvas */
+  .info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #ddd;
   }
   
-  /* Responsive Anpassungen */
-  @media (max-width: 600px) {
-    .control-row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .control-row label {
-      width: 100%;
-      margin-bottom: 5px;
-    }
-    
-    .control-row input[type="range"],
-    .control-row select {
-      width: 100%;
-      margin-bottom: 5px;
-    }
-    
-    .button-row {
-      flex-direction: column;
-    }
+  .info-item {
+    margin: 2px 5px;
+    white-space: nowrap;
+  }
+  
+  /* Größere Schrift für Echtzeit-Informationen */
+  .info-panel {
+    margin-top: 10px;
+    background: #333;
+    padding: 12px 15px;
+    border-radius: 4px;
+    color: #ddd;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .info-panel p {
+    margin: 5px 0;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .info-value {
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  
+  /* Toggle-Button Styling */
+  .toggle-button {
+    background: #444;
+    color: #ddd;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+  }
+  
+  .toggle-button.active {
+    background: #0066cc;
+    color: white;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
   }
 </style>
 
@@ -334,6 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const imagPartSlider = document.getElementById('imagPart');
   const maxIterSlider = document.getElementById('maxIterations');
   const colorSchemeSelect = document.getElementById('colorScheme');
+  const colorIntensityButton = document.getElementById('colorIntensity');
   const applyButton = document.getElementById('applySettings');
   const defaultValuesButton = document.getElementById('defaultValues');
   const resetZoomButton = document.getElementById('resetZoom');
@@ -383,19 +453,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Passe die Schriftgröße an, wenn sich die Fenstergröße ändert
   window.addEventListener('resize', adjustFontSize);
   
-  // Standardwerte
+  // Standardeinstellungen
   const defaultSettings = {
     realPart: -0.7,
-    imagPart: 0.27,
-    maxIterations: 250,
-    colorScheme: 'cyberpunk'
+    imagPart: 0.27015,
+    maxIterations: 100,
+    colorScheme: 'retrowave'
   };
   
-  // Parameter
-  let realPart = parseFloat(realPartSlider.value);
-  let imagPart = parseFloat(imagPartSlider.value);
-  let maxIterations = parseInt(maxIterSlider.value);
-  let colorScheme = colorSchemeSelect.value;
+  // Initialisierung der Steuerelemente
+  let realPart = defaultSettings.realPart;
+  let imagPart = defaultSettings.imagPart;
+  let maxIterations = defaultSettings.maxIterations;
+  let colorScheme = defaultSettings.colorScheme;
   
   // Ansichtsparameter
   let viewX = 0;
@@ -409,19 +479,44 @@ document.addEventListener('DOMContentLoaded', function() {
   let zoomBoxStartX = 0;
   let zoomBoxStartY = 0;
   
-  // Farbpaletten
+  // Für Echtzeit-Informationen
+  let iterationData = null;
+  let isCalculating = false;
+  
+  // Farbpaletten mit mehr Magenta-Tönen
   const colorPalettes = {
     'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
-    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00', '#ff00ff'],
+    'cyberpunk': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc'],
+    'retrowave': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc', '#ff00ff'],
     'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00', '#ffffff'],
     'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff', '#00ffff'],
     'monochrom': ['#000000', '#222222', '#444444', '#666666', '#888888', '#aaaaaa', '#cccccc', '#ffffff'],
-    'regenbogen': ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff', '#ff0000']
+    'regenbogen': ['#ff00ff', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff'],
+    'ultraviolett': ['#000000', '#2E0854', '#5A1A9A', '#7B52AB', '#9470DC', '#B490FF', '#DCACFF', '#FFFFFF'],
+    'goldgrün': ['#071A07', '#0B3B0B', '#0E640E', '#11C411', '#30FF30', '#88FF88', '#DFFFDF', '#FFFFFF']
   };
+  
+  // Erweiterte Farbpaletten für intensivere Farbverläufe
+  const intensePalettes = {
+    'blau-rot': ['#000764', '#0C3B9E', '#206BCB', '#4E9CED', '#EDFFFF', '#FFCE89', '#FFB847', '#FF7847', '#FB0C00'],
+    'cyberpunk': ['#ff00ff', '#d400ff', '#a900ff', '#7e00ff', '#5300ff', '#2700ff', '#001eff', '#0069ff', '#00b4ff', '#00ffff', '#00ffb4', '#00ff69', '#00ff1e', '#27ff00', '#53ff00', '#7eff00', '#a9ff00', '#d4ff00', '#ffff00', '#ffd400', '#ffa900', '#ff7e00', '#ff5300', '#ff2700', '#ff001e', '#ff0069', '#ff00b4', '#ff00ff'],
+    'retrowave': ['#ff00ff', '#f700f7', '#d100ff', '#9f00ff', '#5500ff', '#2300ff', '#0014ff', '#0046ff', '#0078ff', '#00a9ff', '#00d9ff', '#00ffff', '#00ffdc', '#00ffb0', '#00ff83', '#00ff55', '#00ff28', '#19ff00', '#64ff00', '#b0ff00', '#ffff00', '#ffdc00', '#ffb000', '#ff8300', '#ff5500', '#ff2800', '#ff0019', '#ff0064', '#ff00b0', '#ff00ff'],
+    'feuer': ['#000000', '#1C0000', '#340000', '#550000', '#800000', '#AA0000', '#D40000', '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#FFFFAA', '#FFFFFF'],
+    'ozean': ['#000033', '#000044', '#000066', '#000088', '#0000AA', '#0000CC', '#0000FF', '#0055FF', '#00AAFF', '#00FFFF', '#55FFFF', '#AAFFFF', '#FFFFFF', '#AAFFFF', '#00FFFF'],
+    'monochrom': ['#000000', '#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999', '#aaaaaa', '#bbbbbb', '#cccccc', '#dddddd', '#eeeeee', '#ffffff'],
+    'regenbogen': ['#ff00ff', '#ff00cc', '#ff0099', '#ff0066', '#ff0033', '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00', '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff', '#0000ff', '#3300ff', '#6600ff', '#9900ff', '#cc00ff', '#ff00ff'],
+    'ultraviolett': ['#000000', '#150429', '#2E0854', '#44127E', '#5A1A9A', '#6B36A3', '#7B52AB', '#876EB4', '#9470DC', '#A480E8', '#B490FF', '#C59DFF', '#DCACFF', '#E9CBFF', '#F5E9FF', '#FFFFFF'],
+    'goldgrün': ['#071A07', '#09280A', '#0B3B0B', '#0C500C', '#0E640E', '#0F790F', '#118E11', '#10A710', '#11C411', '#20D820', '#30FF30', '#59FF59', '#88FF88', '#B0FFB0', '#DFFFDF', '#FFFFFF']
+  };
+  
+  // Standardmäßig intensive Farbverläufe verwenden
+  let useIntensePalettes = false;
+  let activePalettes = colorPalettes;
   
   // Optimierte Berechnung mit mehreren Web Workers
   function calculateJulia() {
     loadingIndicator.style.display = 'block';
+    isCalculating = true;
     
     // Verwende requestAnimationFrame für bessere Performance
     requestAnimationFrame(() => {
@@ -435,8 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Canvas in Chunks aufteilen
         const chunkHeight = Math.ceil(canvas.height / numWorkers);
         
-        // Stelle sicher, dass die aktuelle Farbpalette existiert
-        if (!colorPalettes[colorScheme]) {
+        if (!activePalettes[colorScheme]) {
           console.error("Farbschema nicht gefunden:", colorScheme);
           colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
           colorSchemeSelect.value = colorScheme;
@@ -464,7 +558,7 @@ document.addEventListener('DOMContentLoaded', function() {
               viewX: viewX,
               viewY: viewY,
               zoomLevel: zoomLevel,
-              colorPalettes: colorPalettes,
+              colorPalettes: activePalettes,
               startY: startY,
               endY: endY,
               workerId: i
@@ -490,6 +584,13 @@ document.addEventListener('DOMContentLoaded', function() {
               if (completedChunks === numWorkers) {
                 loadingIndicator.style.display = 'none';
                 zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+                
+                // Speichere Iterationsdaten für Echtzeit-Informationen
+                if (result.iterationData) {
+                  iterationData = result.iterationData;
+                }
+                
+                isCalculating = false;
                 
                 // Bereinige Worker
                 workers.forEach(w => w.terminate());
@@ -544,7 +645,7 @@ document.addEventListener('DOMContentLoaded', function() {
     colorScheme = colorSchemeSelect.value;
     
     // Überprüfe, ob das Farbschema existiert
-    if (!colorPalettes[colorScheme]) {
+    if (!activePalettes[colorScheme]) {
       console.error("Farbschema nicht gefunden:", colorScheme);
       colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
       colorSchemeSelect.value = colorScheme;
@@ -559,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Steuerelemente auf Standardwerte setzen
     realPartSlider.value = defaultSettings.realPart;
     imagPartSlider.value = defaultSettings.imagPart;
-    maxIterations = defaultSettings.maxIterations;
+    maxIterSlider.value = defaultSettings.maxIterations;
     colorSchemeSelect.value = defaultSettings.colorScheme;
     
     // Anzeige aktualisieren
@@ -579,13 +680,46 @@ document.addEventListener('DOMContentLoaded', function() {
     zoomLevel = 1;
     zoomInfoSpan.textContent = '1x';
     
+    // Farbintensität zurücksetzen
+    useIntensePalettes = false;
+    colorIntensityButton.textContent = 'Subtil';
+    colorIntensityButton.classList.remove('active');
+    activePalettes = colorPalettes;
+    
     // Julia-Menge neu berechnen
     calculateJulia();
   });
   
-  // Event-Handler
+  // Farbschema-Auswahl
   colorSchemeSelect.addEventListener('change', function() {
     colorScheme = this.value;
+    
+    if (!activePalettes[colorScheme]) {
+      console.error("Farbschema nicht gefunden:", colorScheme);
+      colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
+      colorSchemeSelect.value = colorScheme;
+    }
+    
+    // Julia-Menge neu berechnen
+    calculateJulia();
+  });
+  
+  // Farbintensitäts-Button
+  colorIntensityButton.addEventListener('click', function() {
+    useIntensePalettes = !useIntensePalettes;
+    
+    // Button-Zustand aktualisieren
+    if (useIntensePalettes) {
+      this.textContent = 'Intensiv';
+      this.classList.add('active');
+      activePalettes = intensePalettes;
+    } else {
+      this.textContent = 'Subtil';
+      this.classList.remove('active');
+      activePalettes = colorPalettes;
+    }
+    
+    // Julia-Menge neu berechnen
     calculateJulia();
   });
   
@@ -593,6 +727,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewX = 0;
     viewY = 0;
     zoomLevel = 1;
+    zoomInfoSpan.textContent = '1x';
     calculateJulia();
   });
   
@@ -634,35 +769,56 @@ document.addEventListener('DOMContentLoaded', function() {
     zoomLevel = Math.max(0.1, Math.min(1000, zoomLevel));
     
     // Ansicht auf Mausposition zentrieren
-    const newXRange = 3.0 / zoomLevel;
-    const newYRange = 3.0 / zoomLevel;
     viewX = xMouse;
     viewY = yMouse;
+    
+    // Zoom-Info aktualisieren
+    zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
     
     calculateJulia();
   });
   
+  // Event-Listener für Mausbewegungen über dem Canvas
   canvas.addEventListener('mousemove', function(e) {
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    if (isCalculating) return;
     
-    // Position im komplexen Koordinatensystem
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Umrechnung in komplexe Koordinaten
     const xRange = 3.0 / zoomLevel;
     const yRange = 3.0 / zoomLevel;
-    const xMouse = viewX + (mouseX / canvas.width - 0.5) * xRange;
-    const yMouse = viewY + (mouseY / canvas.height - 0.5) * yRange;
+    const xMin = viewX - xRange / 2;
+    const yMin = viewY - yRange / 2;
     
-    // Anzeige aktualisieren
-    positionInfoSpan.textContent = `${xMouse.toFixed(4)} + ${yMouse.toFixed(4)}i`;
+    const complexX = xMin + (x / canvas.width) * xRange;
+    const complexY = yMin + (y / canvas.height) * yRange;
+    
+    // Anzeige der Position und komplexen Zahl
+    document.getElementById('mousePosition').textContent = `(${x.toFixed(0)}, ${y.toFixed(0)})`;
+    document.getElementById('complexValue').textContent = `${complexX.toFixed(6)} + ${complexY.toFixed(6)}i`;
+    
+    // Iterationsinfo aktualisieren, falls verfügbar
+    if (iterationData) {
+      const pixelX = Math.floor(x * (iterationData.width / canvas.width));
+      const pixelY = Math.floor(y * (iterationData.height / canvas.height));
+      
+      if (pixelX >= 0 && pixelX < iterationData.width && pixelY >= 0 && pixelY < iterationData.height) {
+        const index = (pixelY * iterationData.width + pixelX);
+        const iterations = iterationData.data[index];
+        document.getElementById('iterationInfo').textContent = iterations === maxIterations ? 'In der Menge' : iterations;
+      }
+    }
     
     // Zoom-Box zeichnen, wenn aktiv und Maus gedrückt
     if (isZoomBoxActive && isDrawingZoomBox) {
-      const width = mouseX - zoomBoxStartX;
-      const height = mouseY - zoomBoxStartY;
+      const width = x - zoomBoxStartX;
+      const height = y - zoomBoxStartY;
       
-      zoomBox.style.left = (width > 0 ? zoomBoxStartX : mouseX) + 'px';
-      zoomBox.style.top = (height > 0 ? zoomBoxStartY : mouseY) + 'px';
+      // Setze die Position und Größe der Zoom-Box
+      zoomBox.style.left = (width < 0 ? zoomBoxStartX + width : zoomBoxStartX) + 'px';
+      zoomBox.style.top = (height < 0 ? zoomBoxStartY + height : zoomBoxStartY) + 'px';
       zoomBox.style.width = Math.abs(width) + 'px';
       zoomBox.style.height = Math.abs(height) + 'px';
     }
@@ -721,6 +877,9 @@ document.addEventListener('DOMContentLoaded', function() {
           zoomLevel = 3.0 / (newYRange * aspectRatio);
         }
         
+        // Zoom-Info aktualisieren
+        zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+        
         calculateJulia();
       }
       
@@ -744,6 +903,9 @@ document.addEventListener('DOMContentLoaded', function() {
       viewX = xMouse;
       viewY = yMouse;
       
+      // Zoom-Info aktualisieren (obwohl sich der Zoom-Level nicht ändert)
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
       calculateJulia();
     }
   });
@@ -764,6 +926,9 @@ document.addEventListener('DOMContentLoaded', function() {
       viewX = xMouse;
       viewY = yMouse;
       zoomLevel *= 2;
+      
+      // Zoom-Info aktualisieren
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
       
       calculateJulia();
     }

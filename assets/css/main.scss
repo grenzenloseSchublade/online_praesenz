@@ -1,21 +1,17 @@
----
-# Only the main Sass file needs front matter (the dashes are enough)
----
-
-@charset "utf-8";
+--- # Only the main Sass file needs front matter (the dashes are enough) --- @charset "utf-8";
 
 // Globale Farbvariablen - Hier können alle Farben zentral angepasst werden
-$text-color: #eacfb4;          // Haupttextfarbe
-$link-color: #05d9e8;          // Linkfarbe
-$hover-color: #ff00ff;         // Hover-Effekt Farbe
-$background-dark: #1a1a1a;     // Dunkler Hintergrund
-$code-background: #2d2d2d;     // Code-Block Hintergrund
-$h1-color: #ff00ff;            // H1 Überschriften
-$h2-color: #05d9e8;            // H2 Überschriften
-$h3-color: #00ffc8;            // H3 Überschriften
-$excerpt-color: #00ffc8;       // Untertitel Farbe
-$selection-bg: #ff00ff;        // Hintergrundfarbe für markierten Text
-$selection-text: #000000;      // Textfarbe für markierten Text
+$text-color: #eacfb4; // Haupttextfarbe
+$link-color: #05d9e8; // Linkfarbe
+$hover-color: #ff00ff; // Hover-Effekt Farbe
+$background-dark: #1a1a1a; // Dunkler Hintergrund
+$code-background: #2d2d2d; // Code-Block Hintergrund
+$h1-color: #ff00ff; // H1 Überschriften
+$h2-color: #05d9e8; // H2 Überschriften
+$h3-color: #00ffc8; // H3 Überschriften
+$excerpt-color: #00ffc8; // Untertitel Farbe
+$selection-bg: #ff00ff; // Hintergrundfarbe für markierten Text
+$selection-text: #000000; // Textfarbe für markierten Text
 
 // Theme importieren - nach den Variablen, aber vor eigenen Styles
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
@@ -39,6 +35,7 @@ $selection-text: #000000;      // Textfarbe für markierten Text
 /* Link-Styling seitenübergreifend */
 a {
   color: $link-color;
+
   &:hover {
     color: $hover-color;
     text-decoration: none;
@@ -47,7 +44,8 @@ a {
 
 /* Globale Farbvariablen */
 :root {
-  --background-dark: #{$background-dark};  /* Dunkler Hintergrund */
+  --background-dark: #{$background-dark};
+  /* Dunkler Hintergrund */
 }
 
 /* ===== NAVIGATION & HEADER ===== */
@@ -57,19 +55,20 @@ a {
   &__inner-wrap {
     padding: 0.5em;
   }
-  
+
   .greedy-nav {
     // background: $background-dark;
-    
+
     a {
       color: $text-color;
-      font-size: 0.95em;  /* Etwas kleinere Schrift für die Navigation */
-      
+      font-size: 0.95em;
+      /* Etwas kleinere Schrift für die Navigation */
+
       &:hover {
         color: $hover-color;
       }
     }
-    
+
     .visible-links {
       a {
         &:before {
@@ -77,10 +76,10 @@ a {
         }
       }
     }
-    
+
     .search__toggle {
       color: $text-color;
-      
+
       &:hover {
         color: $hover-color;
       }
@@ -95,11 +94,12 @@ a {
 .archive__item-title {
   color: $text-color;
   text-align: left;
-  font-size: 2em;  /* Angepasste Größe für Seitentitel */
-  
+  font-size: 2em;
+  /* Angepasste Größe für Seitentitel */
+
   a {
     color: $text-color;
-    
+
     &:hover {
       color: $hover-color;
     }
@@ -113,45 +113,48 @@ a {
 
   h1 {
     color: $h1-color;
-    font-size: 1.8em;  /* Etwas kleiner für bessere Proportionen */
+    font-size: 1.8em;
+    /* Etwas kleiner für bessere Proportionen */
     font-weight: bold;
     margin-bottom: 0.5em;
     text-align: left;
   }
-  
+
   h2 {
     color: $h2-color;
     font-size: 1.4em;
     margin-top: 1.5em;
     text-align: left;
   }
-  
+
   h3 {
     color: $h3-color;
     font-size: 1.1em;
     text-align: left;
   }
-  
+
   p {
     color: $text-color;
     font-size: 1em;
-    line-height: 1.6;  /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
+    line-height: 1.6;
+    /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
   }
-  
+
   a {
     color: $link-color;
-    
+
     &:hover {
       color: $hover-color;
       text-decoration: none;
     }
   }
-  
+
   /* Listen-Styling */
-  ul, ol {
+  ul,
+  ol {
     color: $text-color;
   }
-  
+
   /* Blockquote-Styling */
   blockquote {
     color: $text-color;
@@ -166,7 +169,8 @@ a {
 .page__excerpt,
 .archive__item-excerpt {
   color: $excerpt-color !important;
-  font-size: 0.85em !important;  /* Kleinere Schriftgröße für Excerpts */
+  font-size: 0.85em !important;
+  /* Kleinere Schriftgröße für Excerpts */
   margin-top: 0.5em;
   margin-bottom: 1em;
   font-style: italic;
@@ -180,18 +184,21 @@ a {
 .sidebar {
   color: $text-color;
   font-size: 0.90em;
-  
+
   .author__name {
     color: $text-color;
-    font-size: 0.90em;  /* Angepasste Größe für den Autornamen */
+    font-size: 0.90em;
+    /* Angepasste Größe für den Autornamen */
   }
-  
+
   .author__bio {
     color: $text-color;
-    font-size: 0.7em;  /* Kleinere Schriftgröße für die Bio */
-    line-height: 1.5;  /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
+    font-size: 0.7em;
+    /* Kleinere Schriftgröße für die Bio */
+    line-height: 1.5;
+    /* Verbesserte Zeilenhöhe für bessere Lesbarkeit */
   }
-  
+
 
 }
 
@@ -200,7 +207,7 @@ a {
 /* Hintergrundbild-Styling */
 .page__hero--overlay {
   padding: 4em 0;
-  
+
   &::before {
     background-size: cover;
     background-position: center center;
@@ -212,7 +219,7 @@ a {
 /* Für volle Viewport-Höhe */
 .page__hero--overlay.header--full {
   min-height: 100vh;
-  
+
   &::before {
     min-height: 100vh;
   }
@@ -221,7 +228,7 @@ a {
 /* Für halbe Viewport-Höhe */
 .page__hero--overlay.header--half {
   min-height: 50vh;
-  
+
   &::before {
     min-height: 50vh;
   }
@@ -243,8 +250,103 @@ div.highlight {
 }
 
 /* Syntax-Highlighting Anpassungen */
-.highlight .c, .highlight .c1, .highlight .cm { color: #75715e; } /* Kommentare */
-.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #66d9ef; } /* Schlüsselwörter */
-.highlight .s, .highlight .s1, .highlight .s2 { color: #e6db74; } /* Strings */
-.highlight .na, .highlight .nb, .highlight .nc, .highlight .no { color: #a6e22e; } /* Namen */
-.highlight .m, .highlight .mi, .highlight .mf { color: #ae81ff; } /* Zahlen */ 
+.highlight .c,
+.highlight .c1,
+.highlight .cm {
+  color: #75715e;
+}
+
+/* Kommentare */
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr {
+  color: #66d9ef;
+}
+
+/* Schlüsselwörter */
+.highlight .s,
+.highlight .s1,
+.highlight .s2 {
+  color: #e6db74;
+}
+
+/* Strings */
+.highlight .na,
+.highlight .nb,
+.highlight .nc,
+.highlight .no {
+  color: #a6e22e;
+}
+
+/* Namen */
+.highlight .m,
+.highlight .mi,
+.highlight .mf {
+  color: #ae81ff;
+}
+
+/* Zahlen */
+
+/* Toggle-Button für Farbintensität */
+.toggle-button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-button.active {
+  background-color: #4a4a9c;
+  color: white;
+  border-color: #6a6adc;
+  box-shadow: 0 0 5px rgba(106, 106, 220, 0.5);
+}
+
+.toggle-button:hover {
+  background-color: #444;
+  color: white;
+}
+
+.toggle-button.active:hover {
+  background-color: #5a5aac;
+}
+
+/* Verbesserte Steuerelemente für Fraktale */
+.control-row,
+.control-group {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control-row label,
+.control-group label {
+  margin-right: 10px;
+  min-width: 120px;
+}
+
+.control-row button,
+.control-group button {
+  margin-right: 5px;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+
+  .control-row,
+  .control-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .control-row label,
+  .control-group label {
+    margin-bottom: 5px;
+  }
+}

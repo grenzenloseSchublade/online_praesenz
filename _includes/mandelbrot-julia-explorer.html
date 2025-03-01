@@ -4,23 +4,29 @@
     <div class="control-group">
       <label for="explorerMaxIter">Max. Iterationen:</label>
       <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="250">
-      <span id="explorerIterValue">250</span>
-      <button id="applyIterButton">Anwenden</button>
+      <span id="explorerIterValue" class="info-value">250</span>
     </div>
-    <div class="control-group">
-      <label for="explorerColorScheme">Farbschema:</label>
-      <select id="explorerColorScheme">
-        <option value="blau-rot">Blau-Rot</option>
-        <option value="cyberpunk" selected>Cyberpunk</option>
-        <option value="feuer">Feuer</option>
-        <option value="ozean">Ozean</option>
-        <option value="monochrom">Monochrom</option>
-        <option value="regenbogen">Regenbogen</option>
-        <option value="ultraviolett">Ultraviolett</option>
-        <option value="goldgrün">Gold-Grün</option>
-      </select>
+    <div class="color-controls-group">
+      <div class="color-control-item">
+        <label for="explorerColorScheme">Farbschema:</label>
+        <select id="explorerColorScheme">
+          <option value="blau-rot">Blau-Rot</option>
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="retrowave" selected>Retrowave</option>
+          <option value="feuer">Feuer</option>
+          <option value="ozean">Ozean</option>
+          <option value="monochrom">Monochrom</option>
+          <option value="regenbogen">Regenbogen</option>
+          <option value="ultraviolett">Ultraviolett</option>
+          <option value="goldgrün">Gold-Grün</option>
+        </select>
+      </div>
+      <div class="color-control-item">
+        <label for="explorerColorIntensity">Farbintensität:</label>
+        <button id="explorerColorIntensity" class="toggle-button">Subtil</button>
+      </div>
     </div>
-    <div class="control-group">
+    <div class="control-group button-group">
       <button id="resetExplorer">Zurücksetzen</button>
       <button id="saveExplorerImage">Bild speichern</button>
     </div>
@@ -30,7 +36,7 @@
     <div class="explorer-column">
       <h4>Mandelbrot-Menge</h4>
       <div class="canvas-container">
-        <canvas id="mandelbrotCanvas" width="400" height="400"></canvas>
+        <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
         <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
       </div>
       <div class="info-panel">
@@ -38,9 +44,9 @@
       </div>
     </div>
     <div class="explorer-column">
-      <h4>Julia-Menge für c = <span id="juliaParameter">-0.7 + 0.27i</span></h4>
+      <h4>Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h4>
       <div class="canvas-container">
-        <canvas id="explorerJuliaCanvas" width="400" height="400"></canvas>
+        <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
       </div>
       <div class="info-panel">
@@ -65,18 +71,50 @@
   .explorer-controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 15px;
-    padding: 10px;
-    background: #333;
-    border-radius: 5px;
+    padding: 15px;
+    background: #2a2a2a;
+    border-radius: 6px;
   }
   
   .control-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex: 1 1 300px;
+  }
+  
+  .button-group {
+    justify-content: flex-start;
+  }
+  
+  .color-controls-group {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    flex: 1 1 600px;
+  }
+  
+  .color-control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex: 1;
+  }
+  
+  .color-control-item label {
+    color: #ddd;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+  
+  .color-control-item select,
+  .color-control-item button {
+    width: 100%;
+    max-width: 200px;
   }
   
   .explorer-row {
@@ -112,6 +150,7 @@
     border-radius: 4px;
     cursor: crosshair;
     max-height: 350px;
+    aspect-ratio: 16/9;
   }
   
   .loading-indicator {
@@ -128,37 +167,87 @@
   
   .info-panel {
     margin-top: 10px;
-    font-size: 0.9em;
-    color: #ccc;
-    text-align: center;
+    background: #333;
+    padding: 12px 15px;
+    border-radius: 4px;
+    color: #ddd;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+  }
+  
+  .info-panel p {
+    margin: 5px 0;
+  }
+  
+  .info-value {
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
   }
   
   button {
     background: #444;
     color: #eacfb4;
     border: none;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.1s;
   }
   
   button:hover {
     background: #555;
   }
   
+  button:active {
+    transform: scale(0.98);
+  }
+  
   input[type="range"] {
     flex: 1;
+    height: 6px;
+    background: #444;
+    border-radius: 3px;
+    -webkit-appearance: none;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
   }
   
   select {
     background: #444;
     color: #eacfb4;
     border: none;
-    padding: 5px;
+    padding: 8px 12px;
     border-radius: 4px;
     font-family: inherit;
-    font-size: 0.9em;
+    font-size: inherit;
+  }
+  
+  /* Toggle-Button Styling */
+  .toggle-button {
+    background: #444;
+    color: #ddd;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+  }
+  
+  .toggle-button.active {
+    background: #0066cc;
+    color: white;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
   }
 </style>
 
@@ -177,31 +266,55 @@ document.addEventListener('DOMContentLoaded', function() {
   // Steuerelemente
   const maxIterSlider = document.getElementById('explorerMaxIter');
   const colorSchemeSelect = document.getElementById('explorerColorScheme');
+  const colorIntensityButton = document.getElementById('explorerColorIntensity');
   const resetButton = document.getElementById('resetExplorer');
   const saveImageButton = document.getElementById('saveExplorerImage');
-  const applyIterButton = document.getElementById('applyIterButton');
   
   // Anzeige-Elemente
   const iterValueSpan = document.getElementById('explorerIterValue');
   const juliaParameter = document.getElementById('juliaParameter');
   
-  // Parameter
+  // Standardeinstellungen
+  const defaultSettings = {
+    maxIterations: 250,
+    colorScheme: 'retrowave'
+  };
+  
+  // Initialisierung der Steuerelemente
   let maxIterations = parseInt(maxIterSlider.value);
-  let colorScheme = 'cyberpunk';
+  let colorScheme = colorSchemeSelect.value;
   let juliaReal = -0.7;
   let juliaImag = 0.27;
   
-  // Farbpaletten
+  // Farbpaletten mit mehr Magenta-Tönen
   const colorPalettes = {
     'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
-    'cyberpunk': ['#ff00ff', '#00ffc8', '#00ffff', '#ff00a0', '#7fff00', '#ff00ff'],
+    'cyberpunk': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc'],
+    'retrowave': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc', '#ff00ff'],
     'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00', '#ffffff'],
     'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff', '#00ffff'],
     'monochrom': ['#000000', '#222222', '#444444', '#666666', '#888888', '#aaaaaa', '#cccccc', '#ffffff'],
-    'regenbogen': ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff', '#ff0000'],
+    'regenbogen': ['#ff00ff', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff'],
     'ultraviolett': ['#000000', '#2E0854', '#5A1A9A', '#7B52AB', '#9470DC', '#B490FF', '#DCACFF', '#FFFFFF'],
     'goldgrün': ['#071A07', '#0B3B0B', '#0E640E', '#11C411', '#30FF30', '#88FF88', '#DFFFDF', '#FFFFFF']
   };
+  
+  // Erweiterte Farbpaletten für intensivere Farbverläufe
+  const intensePalettes = {
+    'blau-rot': ['#000764', '#0C3B9E', '#206BCB', '#4E9CED', '#EDFFFF', '#FFCE89', '#FFB847', '#FF7847', '#FB0C00'],
+    'cyberpunk': ['#ff00ff', '#d400ff', '#a900ff', '#7e00ff', '#5300ff', '#2700ff', '#001eff', '#0069ff', '#00b4ff', '#00ffff', '#00ffb4', '#00ff69', '#00ff1e', '#27ff00', '#53ff00', '#7eff00', '#a9ff00', '#d4ff00', '#ffff00', '#ffd400', '#ffa900', '#ff7e00', '#ff5300', '#ff2700', '#ff001e', '#ff0069', '#ff00b4', '#ff00ff'],
+    'retrowave': ['#ff00ff', '#f700f7', '#d100ff', '#9f00ff', '#5500ff', '#2300ff', '#0014ff', '#0046ff', '#0078ff', '#00a9ff', '#00d9ff', '#00ffff', '#00ffdc', '#00ffb0', '#00ff83', '#00ff55', '#00ff28', '#19ff00', '#64ff00', '#b0ff00', '#ffff00', '#ffdc00', '#ffb000', '#ff8300', '#ff5500', '#ff2800', '#ff0019', '#ff0064', '#ff00b0', '#ff00ff'],
+    'feuer': ['#000000', '#1C0000', '#340000', '#550000', '#800000', '#AA0000', '#D40000', '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#FFFFAA', '#FFFFFF'],
+    'ozean': ['#000033', '#000044', '#000066', '#000088', '#0000AA', '#0000CC', '#0000FF', '#0055FF', '#00AAFF', '#00FFFF', '#55FFFF', '#AAFFFF', '#FFFFFF', '#AAFFFF', '#00FFFF'],
+    'monochrom': ['#000000', '#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999', '#aaaaaa', '#bbbbbb', '#cccccc', '#dddddd', '#eeeeee', '#ffffff'],
+    'regenbogen': ['#ff00ff', '#ff00cc', '#ff0099', '#ff0066', '#ff0033', '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00', '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff', '#0000ff', '#3300ff', '#6600ff', '#9900ff', '#cc00ff', '#ff00ff'],
+    'ultraviolett': ['#000000', '#150429', '#2E0854', '#44127E', '#5A1A9A', '#6B36A3', '#7B52AB', '#876EB4', '#9470DC', '#A480E8', '#B490FF', '#C59DFF', '#DCACFF', '#E9CBFF', '#F5E9FF', '#FFFFFF'],
+    'goldgrün': ['#071A07', '#09280A', '#0B3B0B', '#0C500C', '#0E640E', '#0F790F', '#118E11', '#10A710', '#11C411', '#20D820', '#30FF30', '#59FF59', '#88FF88', '#B0FFB0', '#DFFFDF', '#FFFFFF']
+  };
+  
+  // Standardmäßig intensive Farbverläufe verwenden
+  let useIntensePalettes = false;
+  let activePalettes = colorPalettes;
   
   // Optimierte Mandelbrot-Berechnung mit Web Workers
   function calculateMandelbrot() {
@@ -216,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let completedChunks = 0;
         
         // Stelle sicher, dass die aktuelle Farbpalette existiert
-        if (!colorPalettes[colorScheme]) {
+        if (!activePalettes[colorScheme]) {
           console.error("Farbschema nicht gefunden:", colorScheme);
           colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
           colorSchemeSelect.value = colorScheme;
@@ -242,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
               height: mandelbrotCanvas.height,
               maxIterations: maxIterations,
               colorScheme: colorScheme,
-              colorPalettes: colorPalettes,
+              colorPalettes: activePalettes,
               startY: startY,
               endY: endY,
               workerId: i
@@ -294,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let completedChunks = 0;
         
         // Stelle sicher, dass die aktuelle Farbpalette existiert
-        if (!colorPalettes[colorScheme]) {
+        if (!activePalettes[colorScheme]) {
           console.error("Farbschema nicht gefunden:", colorScheme);
           colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
           colorSchemeSelect.value = colorScheme;
@@ -325,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
               viewX: 0,
               viewY: 0,
               zoomLevel: 1,
-              colorPalettes: colorPalettes,
+              colorPalettes: activePalettes,
               startY: startY,
               endY: endY,
               workerId: i
@@ -412,16 +525,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Event-Listener für Steuerelemente
   maxIterSlider.addEventListener('input', function() {
-    maxIterations = parseInt(this.value);
-    iterValueSpan.textContent = maxIterations;
-    // Sofortige Neuberechnung
-    calculateMandelbrot();
-    calculateJulia();
-  });
-  
-  // Anwenden-Button für Iterationen - nicht mehr benötigt, da sofortige Aktualisierung
-  applyIterButton.addEventListener('click', function() {
-    // Für den Fall, dass der Benutzer den Button trotzdem drückt
+    const iterValue = parseInt(this.value);
+    iterValueSpan.textContent = iterValue;
+    maxIterations = iterValue;
     calculateMandelbrot();
     calculateJulia();
   });
@@ -429,8 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
   colorSchemeSelect.addEventListener('change', function() {
     colorScheme = this.value;
     
-    // Überprüfe, ob das Farbschema existiert
-    if (!colorPalettes[colorScheme]) {
+    if (!activePalettes[colorScheme]) {
       console.error("Farbschema nicht gefunden:", colorScheme);
       colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
       this.value = colorScheme;
@@ -440,9 +545,33 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateJulia();
   });
   
+  // Farbintensitäts-Button
+  colorIntensityButton.addEventListener('click', function() {
+    useIntensePalettes = !useIntensePalettes;
+    
+    // Button-Zustand aktualisieren
+    if (useIntensePalettes) {
+      this.textContent = 'Intensiv';
+      this.classList.add('active');
+      activePalettes = intensePalettes;
+    } else {
+      this.textContent = 'Subtil';
+      this.classList.remove('active');
+      activePalettes = colorPalettes;
+    }
+    
+    calculateMandelbrot();
+    calculateJulia();
+  });
+  
   resetButton.addEventListener('click', function() {
     juliaReal = -0.7;
     juliaImag = 0.27;
+    
+    // Setze Iterationen auf Standardwert zurück
+    maxIterations = defaultSettings.maxIterations;
+    maxIterSlider.value = maxIterations;
+    iterValueSpan.textContent = maxIterations;
     
     // Aktualisiere Anzeige
     const sign = juliaImag >= 0 ? '+' : '';
