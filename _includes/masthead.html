@@ -144,17 +144,20 @@
         position: relative !important;
         min-height: 180px !important;
         /* Mindesthöhe für kleine Hero-Bilder */
-
-
     }
 
     /* Innere Wrapper-Elemente des Hero-Bilds bekommen oberen Abstand */
     .page__hero--overlay .wrapper {
         padding-top: calc(var(--masthead-height) + 0px) !important;
-        /* Titel noch weiter nach oben verschieben */
+        /* Titel höher setzen */
         position: relative !important;
         z-index: 2 !important;
     }
+
+    /* 
+     * HINWEIS: Die Caption-Stile werden in main.scss definiert.
+     * Wir stellen hier nur die korrekte Positionierung mit Abständen sicher.
+     */
 
     /* Content nach dem Hero-Bild - Abstand beibehalten */
     .page__hero+.page__content,

@@ -344,30 +344,31 @@ a {
 
   /* ZENTRALE DEFINITION FÜR CAPTION - VERDOPPELTE GRÖßE */
   .caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: auto;
-    margin: 0;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    margin: 0 !important;
     /* Verdoppelte Padding-Werte */
-    padding: 16px 30px;
-    background: $caption-bg;
-    color: $caption-text;
+    padding: 16px 30px !important;
+    background: $caption-bg !important;
+    color: $caption-text !important;
     /* Verdoppelte Schriftgröße */
-    font-size: 1.6em;
-    border-radius: 0 $border-radius 0 0;
+    font-size: 1.6em !important;
+    border-radius: 0 $border-radius 0 0 !important;
     /* Verdoppelte maximale Breite */
-    max-width: 90%;
-    text-align: left;
+    max-width: 90% !important;
+    text-align: left !important;
     /* Hinzugefügt: Box-Shadow für bessere Sichtbarkeit */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+    z-index: 100 !important;
 
     a {
-      color: $caption-text;
-      text-decoration: underline;
+      color: $caption-text !important;
+      text-decoration: underline !important;
 
       &:hover {
-        color: $caption-link-hover;
+        color: $caption-link-hover !important;
       }
     }
   }
@@ -538,29 +539,4 @@ select#explorerColorScheme option {
   }
 }
 
-/* CAPTION STYLING - MIT MAXIMALER PRIORITÄT */
-.page__hero--overlay .caption {
-  position: absolute !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: auto !important;
-  margin: 0 !important;
-  padding: 16px 30px !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  color: #fff !important;
-  font-size: 1.6em !important;
-  border-radius: 0 4px 0 0 !important;
-  max-width: 90% !important;
-  text-align: left !important;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
-  z-index: 100 !important;
-}
-
-.page__hero--overlay .caption a {
-  color: #fff !important;
-  text-decoration: underline !important;
-}
-
-.page__hero--overlay .caption a:hover {
-  color: #4a9ae1 !important;
-}
+/* ENDE DER STYLESHEET-DEFINITIONEN */
