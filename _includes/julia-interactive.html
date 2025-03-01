@@ -1,5 +1,6 @@
 <!-- Interaktive Julia-Menge Visualisierung -->
 <div class="julia-container">
+  <h2 class="julia-title">Interaktive Julia-Menge</h2>
   <div class="julia-controls">
     <div class="control-row">
       <label for="realPart">Realteil (c):</label>
@@ -133,6 +134,28 @@
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .julia-title {
+    color: #eacfb4;
+    margin: 0 0 20px 0;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 2px solid #444;
+    position: relative;
+  }
+  
+  .julia-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background-color: #0066cc;
   }
   
   .julia-controls {
@@ -798,6 +821,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Anzeige der Position und komplexen Zahl
     document.getElementById('mousePosition').textContent = `(${x.toFixed(0)}, ${y.toFixed(0)})`;
     document.getElementById('complexValue').textContent = `${complexX.toFixed(6)} + ${complexY.toFixed(6)}i`;
+    positionInfoSpan.textContent = `${complexX.toFixed(4)} + ${complexY.toFixed(4)}i`;
     
     // Iterationsinfo aktualisieren, falls verfügbar
     if (iterationData) {

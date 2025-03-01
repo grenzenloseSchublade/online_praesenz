@@ -1,10 +1,11 @@
 <!-- Interaktiver Mandelbrot-Julia-Explorer -->
 <div class="explorer-container">
+  <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
   <div class="explorer-controls">
     <div class="control-group">
       <label for="explorerMaxIter">Max. Iterationen:</label>
-      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="250">
-      <span id="explorerIterValue" class="info-value">250</span>
+      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
+      <span id="explorerIterValue" class="info-value">80</span>
     </div>
     <div class="color-controls-group">
       <div class="color-control-item">
@@ -34,23 +35,23 @@
   
   <div class="explorer-row">
     <div class="explorer-column">
-      <h4>Mandelbrot-Menge</h4>
-      <div class="canvas-container">
-        <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
-        <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
-      </div>
-      <div class="info-panel">
-        <p>Klicken Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>
-      </div>
-    </div>
-    <div class="explorer-column">
-      <h4>Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h4>
+      <h3 class="explorer-title">Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h3>
       <div class="canvas-container">
         <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
       </div>
       <div class="info-panel">
         <p>Die Julia-Menge für den gewählten Parameter c.</p>
+      </div>
+    </div>
+    <div class="explorer-column">
+      <h3 class="explorer-title">Mandelbrot-Menge</h3>
+      <div class="canvas-container">
+        <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
+        <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
+      </div>
+      <div class="info-panel">
+        <p>Klicken Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>
       </div>
     </div>
   </div>
@@ -66,6 +67,28 @@
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .explorer-main-title {
+    color: #eacfb4;
+    margin: 0 0 20px 0;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 2px solid #444;
+    position: relative;
+  }
+  
+  .explorer-main-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 2px;
+    background-color: #0066cc;
   }
   
   .explorer-controls {
@@ -129,11 +152,26 @@
     min-width: 300px;
   }
   
-  .explorer-column h4 {
+  .explorer-title {
     color: #eacfb4;
-    margin-top: 0;
-    margin-bottom: 10px;
+    margin: 0 0 20px 0;
+    padding: 10px 0;
     text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #444;
+    position: relative;
+  }
+  
+  .explorer-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background-color: #0066cc;
   }
   
   .canvas-container {
@@ -276,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Standardeinstellungen
   const defaultSettings = {
-    maxIterations: 250,
+    maxIterations: 80,
     colorScheme: 'retrowave'
   };
   
