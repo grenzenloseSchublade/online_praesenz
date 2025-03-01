@@ -2,6 +2,20 @@
 
 Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Theme erstellt wurde.
 
+## TODO
+- about me mit inhalt füllen
+- lebenslauf mit inhalt füllen
+- clean up python scripts
+  - mandelbrot calculation
+  - julia calculation
+  - mandelbrot animation
+  - julia animation
+
+- reduce html style in MD files
+
+
+
+ 
 ## Installation
 
 1. Stellen Sie sicher, dass Ruby (Version 2.5.0 oder höher) installiert ist:

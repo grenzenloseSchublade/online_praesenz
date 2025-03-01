@@ -94,9 +94,9 @@ Nun kommt der entscheidende Punkt: Wenn die Werte von $z_n$ für immer kleiner a
 
 Der Escape-Zeit-Algorithmus ist die gängigste Methode zur Berechnung der Mandelbrot-Menge. Für jeden Punkt $c$ in der komplexen Ebene:
 
-$$\text{Für } c \in \mathbb{C}, \text{ berechne die Folge } z_0 = 0, z_{n+1} = z_n^2 + c$$
+$$\text{Für } c \in \mathbb{C}\text{, berechne die Folge } z_0 = 0\text{, } z_{n+1} = z_n^2 + c$$
 
-Die Anzahl der Iterationen $n$, bis $|z_n| > 2$ wird als Fluchtzeit bezeichnet. Wenn nach einer maximalen Anzahl von Iterationen $|z_n| \leq 2$ bleibt, wird angenommen, dass $c$ zur Mandelbrot-Menge gehört.
+Die Anzahl der Iterationen $n$, bis $\lvert z_n \rvert > 2$ wird als Fluchtzeit bezeichnet. Wenn nach einer maximalen Anzahl von Iterationen $\lvert z_n \rvert \leq 2$ bleibt, wird angenommen, dass $c$ zur Mandelbrot-Menge gehört.
 
 Die Smooth-Coloring-Technik verbessert die Visualisierung durch die Formel:
 

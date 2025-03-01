@@ -2,22 +2,22 @@
 
 {% if page.mathjax %}
 <script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']],
-    processEscapes: true,
-    packages: ['base', 'ams', 'noerrors', 'noundefined']
-  },
-  options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-    ignoreHtmlClass: 'tex2jax_ignore',
-    processHtmlClass: 'tex2jax_process'
-  },
-  loader: {
-    load: ['[tex]/noerrors', '[tex]/noundefined']
-  }
-};
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      packages: ['base', 'ams', 'noerrors', 'noundefined']
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      ignoreHtmlClass: 'tex2jax_ignore',
+      processHtmlClass: 'tex2jax_process'
+    },
+    loader: {
+      load: ['[tex]/noerrors', '[tex]/noundefined']
+    }
+  };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endif %}
@@ -49,40 +49,22 @@ MathJax = {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
 
-  /* Ausschließlich die Unterschrift im Hintergrund verbessern */
-  .page__hero--overlay .page__caption {
-    font-size: 1.8rem !important;
-    font-weight: 600;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 0.7rem 1.2rem;
-    border-radius: 6px;
-    display: inline-block;
-    margin-top: 1rem;
-    letter-spacing: 0.5px;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
+  /* 
+   * Hinweis: Die page__caption-Styles wurden entfernt und 
+   * alle Caption-Stile sind jetzt zentral in main.scss definiert 
+   */
 
-  /* Stil für Anker-Ziele */
-  .anchor-target {
-    display: block;
-    position: relative;
-    top: -80px; /* Anpassen je nach Header-Höhe */
-    visibility: hidden;
-  }
-  
   /* Verhindert Flackern beim Laden der Seite */
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* Versteckt den Inhalt kurz beim Laden, um Sprünge zu vermeiden */
   body.page-loading {
     opacity: 0;
     transition: opacity 0.3s ease-in;
   }
-  
+
   body.page-loaded {
     opacity: 1;
   }
@@ -94,18 +76,29 @@ MathJax = {
   .archive__item-excerpt .page__meta {
     display: none !important;
   }
-  
+
   /* Verstecke die Kategorien- und Tags-Seiten in der Suche und Sitemap */
   body.layout--categories,
   body.layout--tags {
     display: none !important;
+  }
+
+  /* Anmerkung: Die dynamischen Header-Stile wurden in masthead.html verschoben */
+
+  /* Stil für Anker-Ziele */
+  .anchor-target {
+    display: block;
+    position: relative;
+    top: -80px;
+    /* Anpassen je nach Header-Höhe */
+    visibility: hidden;
   }
 </style>
 
 <script>
   // Füge eine Klasse zum Body hinzu, um das Laden zu steuern
   document.body.classList.add('page-loading');
-  
+
   // Funktion, um die Seite an den Anfang zu scrollen
   function scrollToTop() {
     window.scrollTo({
@@ -114,20 +107,20 @@ MathJax = {
       behavior: 'auto'
     });
   }
-  
+
   // Funktion, um die Seite als geladen zu markieren
   function markPageAsLoaded() {
     document.body.classList.remove('page-loading');
     document.body.classList.add('page-loaded');
   }
-  
+
   // Beim ersten Laden der Seite zum Anfang scrollen
-  window.addEventListener('load', function() {
+  window.addEventListener('load', function () {
     // Wenn kein Hash in der URL ist oder die Seite neu geladen wurde, scrolle zum Anfang
     if (!window.location.hash || (window.performance && window.performance.navigation.type === 1)) {
       scrollToTop();
       // Kurze Verzögerung, um sicherzustellen, dass die Seite an den Anfang gescrollt ist
-      setTimeout(function() {
+      setTimeout(function () {
         markPageAsLoaded();
       }, 50);
     } else {
@@ -135,7 +128,7 @@ MathJax = {
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // Debug-Funktion
     function debug(message) {
       console.log('[Anker-Debug] ' + message);
@@ -144,17 +137,17 @@ MathJax = {
     // Verhindern des automatischen Scrollens beim Neuladen der Seite
     // Prüfen, ob die Seite zum ersten Mal geladen wird oder neu geladen wurde
     const isFirstVisit = sessionStorage.getItem('visitedBefore') !== 'true';
-    
+
     // Beim ersten Besuch, setze das Flag
     if (isFirstVisit) {
       debug('Erster Besuch der Seite');
       sessionStorage.setItem('visitedBefore', 'true');
-      
+
       // Wenn ein Hash in der URL ist und es ist der erste Besuch, dann scrolle dorthin
       if (window.location.hash) {
         const targetId = window.location.hash.substring(1);
         debug('Hash in URL beim ersten Besuch gefunden: ' + targetId);
-        setTimeout(function() {
+        setTimeout(function () {
           scrollToElement(targetId);
         }, 500);
       }
@@ -169,20 +162,20 @@ MathJax = {
     // Funktion zum Scrollen zu einem Element mit einer bestimmten ID
     function scrollToElement(id) {
       debug('Versuche zu Element mit ID zu scrollen: ' + id);
-      
+
       // Versuche zuerst, das Element direkt zu finden
       let element = document.getElementById(id);
-      
+
       // Wenn nicht gefunden, versuche es mit dem Anker-Suffix
       if (!element && !id.endsWith('-anchor')) {
         const anchorId = id + '-anchor';
         debug('Element nicht gefunden, versuche Anker-ID: ' + anchorId);
         element = document.getElementById(anchorId);
       }
-      
+
       if (element) {
         debug('Element gefunden, scrolle...');
-        setTimeout(function() {
+        setTimeout(function () {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           debug('Scroll abgeschlossen');
         }, 300); // Kurze Verzögerung, um sicherzustellen, dass die Seite vollständig geladen ist
@@ -194,12 +187,12 @@ MathJax = {
     // Event-Listener für alle internen Links hinzufügen
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       debug('Interner Link gefunden: ' + anchor.getAttribute('href'));
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').substring(1);
         debug('Interner Link geklickt: ' + targetId);
         scrollToElement(targetId);
-        
+
         // URL aktualisieren, ohne die Seite neu zu laden
         if (history.pushState) {
           history.pushState(null, null, '#' + targetId);
@@ -212,29 +205,29 @@ MathJax = {
     // Event-Listener für Links mit vollständigen URLs, die auf Anker auf derselben Seite verweisen
     document.querySelectorAll('a[href*="' + window.location.pathname + '#"]').forEach(anchor => {
       debug('Vollständiger URL-Link gefunden: ' + anchor.getAttribute('href'));
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         // Extrahiere den Anker-Teil aus der URL
         const hrefParts = this.getAttribute('href').split('#');
         if (hrefParts.length > 1) {
           const targetId = hrefParts[1];
           debug('Vollständiger URL-Link geklickt, Ziel-ID: ' + targetId);
-          
+
           // Versuche zuerst, das Element direkt zu finden
           let element = document.getElementById(targetId);
-          
+
           // Wenn nicht gefunden, versuche es mit dem Anker-Suffix
           if (!element && !targetId.endsWith('-anchor')) {
             const anchorId = targetId + '-anchor';
             debug('Element nicht gefunden, versuche Anker-ID: ' + anchorId);
             element = document.getElementById(anchorId);
           }
-          
+
           // Nur verarbeiten, wenn das Element existiert
           if (element) {
             debug('Element gefunden, verarbeite Klick');
             e.preventDefault();
             scrollToElement(targetId);
-            
+
             // URL aktualisieren, ohne die Seite neu zu laden
             if (history.pushState) {
               history.pushState(null, null, window.location.pathname + '#' + targetId);
@@ -253,40 +246,40 @@ MathJax = {
     debug('Suche nach Header-Buttons...');
     const headerButtons = document.querySelectorAll('.page__hero--overlay .btn');
     debug('Gefundene Header-Buttons: ' + headerButtons.length);
-    
+
     headerButtons.forEach(button => {
       const href = button.getAttribute('href');
       debug('Header-Button gefunden mit href: ' + href);
-      
-      button.addEventListener('click', function(e) {
+
+      button.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         debug('Header-Button geklickt: ' + href);
-        
+
         if (href && href.includes('#')) {
           const hashIndex = href.indexOf('#');
           const targetId = href.substring(hashIndex + 1);
           debug('Ziel-ID aus Header-Button: ' + targetId);
-          
+
           // Versuche zuerst, das Element direkt zu finden
           let element = document.getElementById(targetId);
-          
+
           // Wenn nicht gefunden, versuche es mit dem Anker-Suffix
           if (!element && !targetId.endsWith('-anchor')) {
             const anchorId = targetId + '-anchor';
             debug('Element nicht gefunden, versuche Anker-ID: ' + anchorId);
             element = document.getElementById(anchorId);
           }
-          
+
           debug('Element gefunden: ' + (element ? 'Ja' : 'Nein'));
           debug('Aktueller Pfad: ' + window.location.pathname);
           debug('Enthält /mandelbrot/: ' + window.location.pathname.includes('/mandelbrot/'));
-          
+
           // Nur verarbeiten, wenn das Element auf der aktuellen Seite existiert
           if (element && window.location.pathname.includes('/mandelbrot/')) {
             debug('Verarbeite Header-Button-Klick');
             e.preventDefault();
             scrollToElement(targetId);
-            
+
             // URL aktualisieren, ohne die Seite neu zu laden
             if (history.pushState) {
               history.pushState(null, null, window.location.pathname + '#' + targetId);
@@ -305,7 +298,9 @@ MathJax = {
     document.querySelectorAll('[id]').forEach(el => {
       debug('- ' + el.id);
     });
+
+    // Anmerkung: Die Masthead-Funktionalität wurde in masthead.html verschoben
   });
 </script>
 
-<!-- end custom head snippets --> 
+<!-- end custom head snippets -->

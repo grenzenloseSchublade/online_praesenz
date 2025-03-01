@@ -3,6 +3,8 @@ main:
     url: /
   - title: "Über mich"
     url: /about/
+  - title: "Lebenslauf"
+    url: /cv/
   - title: "Mandelbrot"
     url: /mandelbrot/
   - title: "Blog"

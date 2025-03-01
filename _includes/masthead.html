@@ -1,0 +1,299 @@
+{% capture logo_path %}{{ site.logo }}{% endcapture %}
+
+<div class="masthead masthead--visible">
+    <div class="masthead__inner-wrap">
+        <div class="masthead__menu">
+            <nav id="site-nav" class="greedy-nav">
+                {% unless logo_path == empty %}
+                <a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path | relative_url }}"
+                        alt="{{ site.masthead_title | default: site.title }}"></a>
+                {% endunless %}
+                <a class="site-title" href="{{ '/' | relative_url }}">
+                    {{ site.masthead_title | default: site.title }}
+                    {% if site.subtitle %}<span class="site-subtitle">{{ site.subtitle }}</span>{% endif %}
+                </a>
+                <ul class="visible-links">
+                    {%- for link in site.data.navigation.main -%}
+                    <li class="masthead__menu-item">
+                        <a href="{{ link.url | relative_url }}" {% if link.description %} title="{{ link.description }}"
+                            {% endif %} {% if link.target %} target="{{ link.target }}" {% endif %}>{{ link.title }}</a>
+                    </li>
+                    {%- endfor -%}
+                </ul>
+                {% if site.search == true %}
+                <button class="search__toggle" type="button">
+                    <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle
+                        search" }}</span>
+                    <i class="fas fa-search"></i>
+                </button>
+                {% endif %}
+                <button class="greedy-nav__toggle hidden" type="button">
+                    <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu"
+                        }}</span>
+                    <div class="navicon"></div>
+                </button>
+                <ul class="hidden-links hidden"></ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* =====================================================
+       HEADER/MASTHEAD GRUNDEINSTELLUNGEN - START
+       ===================================================== */
+    .masthead {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 1000 !important;
+        transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1),
+            opacity 0.3s ease !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+        border-bottom: none !important;
+        height: auto !important;
+        min-height: 50px !important;
+    }
+
+    .masthead--hidden {
+        transform: translateY(-100%) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .masthead--visible {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+
+    .masthead__inner-wrap {
+        padding: 0.4em 1em !important;
+    }
+
+    .greedy-nav {
+        line-height: 1.2 !important;
+    }
+
+    /* =====================================================
+       HEADER/MASTHEAD GRUNDEINSTELLUNGEN - ENDE
+       ===================================================== */
+
+    /* =====================================================
+       GLOBALE LAYOUT-RESETS - START
+       Um Probleme mit konkurrierenden CSS-Regeln zu vermeiden
+       ===================================================== */
+    /* Konstanten für die Abstände */
+    :root {
+        --masthead-height: 50px;
+        --content-spacing: 0.8rem;
+    }
+
+    /* Grundsätzlichen Body-Abstand setzen für Header-Platz */
+    body {
+        position: relative !important;
+        padding-top: var(--masthead-height) !important;
+        margin-top: 0 !important;
+    }
+
+    /* RADIKAL: Alle potenziell problematischen Abstandsregeln zurücksetzen */
+    .initial-content,
+    .page__content,
+    .page__meta,
+    .page__related,
+    .archive,
+    .search__content,
+    header.page__title,
+    article.page {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* RADIKAL: Alle page__hero Margins und Paddings kontrollieren */
+    .page__hero,
+    .page__hero--overlay,
+    .page__hero--video,
+    .page__header {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* =====================================================
+       GLOBALE LAYOUT-RESETS - ENDE
+       ===================================================== */
+
+    /* =====================================================
+       SEITENSPEZIFISCHE ANPASSUNGEN - START
+       ===================================================== */
+    /* 1. STARTSEITE / HOME */
+    /* Direkter Inhalt nach dem Header */
+    .layout--home .page__content,
+    .layout--archive .page__content:not(.page__hero + .page__content),
+    .layout--single .page__content:not(.page__hero + .page__content) {
+        padding-top: var(--content-spacing) !important;
+    }
+
+    /* 2. SEITEN MIT HERO-BILD */
+    /* Der Hero-Bereich beginnt direkt unter dem Header */
+    .page__hero--overlay {
+        position: relative !important;
+        min-height: 180px !important;
+        /* Mindesthöhe für kleine Hero-Bilder */
+    }
+
+    /* Innere Wrapper-Elemente des Hero-Bilds bekommen oberen Abstand */
+    .page__hero--overlay .wrapper {
+        padding-top: calc(var(--masthead-height) + 0px) !important;
+        /* Titel höher setzen */
+        position: relative !important;
+        z-index: 2 !important;
+    }
+
+    /* 
+     * HINWEIS: Die Caption-Stile werden in main.scss definiert.
+     * Wir stellen hier nur die korrekte Positionierung mit Abständen sicher.
+     */
+
+    /* Content nach dem Hero-Bild - Abstand beibehalten */
+    .page__hero+.page__content,
+    .page__hero--overlay+.page__content,
+    .page__hero--video+.page__content {
+        padding-top: calc(var(--content-spacing) * 2) !important;
+        /* Normaler Abstand */
+        position: relative !important;
+    }
+
+    /* 3. SPEZIFISCHE LAYOUT-TYPEN */
+    /* Single-Layout ohne Hero braucht ggf. mehr Abstand */
+    .layout--single:not(.page__hero):not(.page__hero--overlay) .page__content {
+        padding-top: calc(var(--content-spacing) * 2) !important;
+    }
+
+    /* Page-Title innerhalb der inneren Wrapper */
+    .page__inner-wrap header {
+        padding-top: var(--content-spacing) !important;
+    }
+
+    /* Stärker spezifische Regeln für Sidebar-Bereiche, falls vorhanden */
+    #main .sidebar,
+    aside.sidebar__right {
+        padding-top: var(--content-spacing) !important;
+    }
+
+    /* =====================================================
+       SEITENSPEZIFISCHE ANPASSUNGEN - ENDE
+       ===================================================== */
+
+    /* =====================================================
+       NOTFALL-OVERRIDE - Für sehr spezifische Probleme
+       ===================================================== */
+    /* Wenn alle Stricke reißen: Layout-Klassen direkt ansprechen */
+    body[class*="layout--"] .page__content {
+        margin-top: 0 !important;
+    }
+
+    /* Extrem spezifischer Selektor für kritische Elemente */
+    .layout--single .page .page__inner-wrap,
+    .layout--archive .archive,
+    .layout--home .page__content {
+        margin-top: 0 !important;
+    }
+
+    /* Ultimativer Fallback für absolute Positionierung wenn nötig */
+    .masthead~div:not(.search-content):not(.page__footer) {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    /* =====================================================
+       NOTFALL-OVERRIDE - ENDE
+       ===================================================== */
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Masthead Funktionalität
+        const header = document.querySelector('.masthead');
+
+        // Sicherheitscheck
+        if (!header) {
+            console.error('Masthead-Element nicht gefunden');
+            return;
+        }
+
+        let lastScrollTop = 0;
+        let ticking = false;
+        let headerVisible = true;
+        const scrollThreshold = 30; // Niedrigerer Schwellenwert für schnelleres Reagieren
+        let idleTimer = null;
+
+        // Funktion zum Aktualisieren der Header-Sichtbarkeit
+        function updateHeaderVisibility() {
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Bestimmen der Scroll-Richtung
+            if (currentScrollTop > lastScrollTop && currentScrollTop > scrollThreshold) {
+                // Nach unten scrollen und über dem Schwellenwert
+                if (headerVisible) {
+                    header.classList.remove('masthead--visible');
+                    header.classList.add('masthead--hidden');
+                    headerVisible = false;
+                }
+            } else if (currentScrollTop < lastScrollTop) {
+                // Nach oben scrollen: Header immer einblenden
+                if (!headerVisible) {
+                    header.classList.add('masthead--visible');
+                    header.classList.remove('masthead--hidden');
+                    headerVisible = true;
+                }
+            }
+
+            lastScrollTop = currentScrollTop;
+            ticking = false;
+        }
+
+        // Scroll-Event mit RequestAnimationFrame für bessere Performance
+        window.addEventListener('scroll', function () {
+            // Timer für Inaktivität zurücksetzen
+            resetIdleTimer();
+
+            // RequestAnimationFrame für flüssige Animation
+            if (!ticking) {
+                window.requestAnimationFrame(function () {
+                    updateHeaderVisibility();
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Bei Inaktivität (kein Scrollen) Header nach 1.5 Sekunden wieder einblenden (schneller)
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(function () {
+                if (!headerVisible) {
+                    header.classList.add('masthead--visible');
+                    header.classList.remove('masthead--hidden');
+                    headerVisible = true;
+                }
+            }, 1500); // Schnelleres Wiedereinblenden bei Inaktivität
+        }
+
+        // Zusätzliche Event-Listener, die den Header wieder einblenden können
+        ['mousemove', 'keydown', 'touchstart', 'click'].forEach(function (event) {
+            document.addEventListener(event, resetIdleTimer, { passive: true });
+        });
+
+        // Initial Header sichtbar machen
+        header.classList.add('masthead--visible');
+        header.classList.remove('masthead--hidden');
+
+        // Initial einmal aufrufen
+        updateHeaderVisibility();
+        resetIdleTimer();
+    });
+</script>
