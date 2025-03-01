@@ -25,7 +25,7 @@ kramdown:
   syntax_highlighter: rouge
   input: GFM
   syntax_highlighter_opts:
-    css_class: 'highlight'
+    css_class: "highlight"
     span:
       line_numbers: false
     block:
@@ -114,6 +114,9 @@ defaults:
       comments: true
       share: true
       related: true
+      show_date: true
+      show_categories: false
+      show_tags: false
   # _pages
   - scope:
       path: "_pages"
@@ -154,4 +157,4 @@ exclude:
 # Additional Styles
 sass:
   style: compressed
-  sourcemap: never 
+  sourcemap: never

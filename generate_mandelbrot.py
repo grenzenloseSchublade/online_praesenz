@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+import os
+
 
 def mandelbrot(h, w, max_iter):
     y, x = np.ogrid[-1.4:1.4:h*1j, -2:0.8:w*1j]
@@ -17,6 +19,11 @@ def mandelbrot(h, w, max_iter):
 
     return divtime
 
+
+# Verzeichnis erstellen, falls es nicht existiert
+output_dir = 'assets/images/fractals'
+os.makedirs(output_dir, exist_ok=True)
+
 # Erstelle eine hochauflösende Visualisierung für den Header
 plt.figure(figsize=(20, 8))
 
@@ -32,8 +39,11 @@ plt.imshow(mandelbrot(2000, 5000, 100),
 plt.axis('off')  # Verstecke die Achsen für ein sauberes Header-Bild
 
 # Speichere das Bild
-plt.savefig('assets/images/mandelbrot-header.jpg',
+output_file = os.path.join(output_dir, 'mandelbrot-header.jpg')
+plt.savefig(output_file,
             dpi=300,
             bbox_inches='tight',
             pad_inches=0,
-            facecolor='black') 
+            facecolor='black')
+
+print(f"Mandelbrot-Bild gespeichert unter: {output_file}")
