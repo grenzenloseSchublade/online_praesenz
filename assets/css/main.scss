@@ -185,7 +185,9 @@ a {
 
 /* ===== NAVIGATION & HEADER ===== */
 
-/* Navigation Header Styling */
+// Navigation Header Styling - Hinweis: Hauptstyling jetzt in masthead.html
+// Original Masthead-Styles wurden nach masthead.html verschoben
+// Hier nur noch ergänzende Anpassungen, die nicht das Scrollverhalten beeinflussen
 .masthead {
   &__inner-wrap {
     padding: 0.5em;
@@ -198,26 +200,6 @@ a {
       color: $text-color;
       font-size: 0.95em;
       /* Etwas kleinere Schrift für die Navigation */
-
-      &:hover {
-        color: $hover-color;
-      }
-    }
-
-    .visible-links {
-      a {
-        &:before {
-          background: $hover-color;
-        }
-      }
-    }
-
-    .search__toggle {
-      color: $text-color;
-
-      &:hover {
-        color: $hover-color;
-      }
     }
   }
 }
