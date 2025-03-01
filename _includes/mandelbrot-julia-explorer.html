@@ -1,5 +1,6 @@
 <!-- Interaktiver Mandelbrot-Julia-Explorer -->
-<div class="explorer-container">
+<div class="explorer-container" id="explorer-container">
+  <a id="explorer-container-anchor" class="anchor-target"></a>
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
   <div class="explorer-controls">
     <div class="control-group">
@@ -10,7 +11,7 @@
     <div class="color-controls-group">
       <div class="color-control-item">
         <label for="explorerColorScheme">Farbschema:</label>
-        <select id="explorerColorScheme">
+        <select id="explorerColorScheme" style="font-size: 1rem;">
           <option value="blau-rot">Blau-Rot</option>
           <option value="cyberpunk">Cyberpunk</option>
           <option value="retrowave" selected>Retrowave</option>
@@ -35,16 +36,6 @@
   
   <div class="explorer-row">
     <div class="explorer-column">
-      <h3 class="explorer-title">Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h3>
-      <div class="canvas-container">
-        <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
-        <div class="loading-indicator" id="juliaLoading">Berechne...</div>
-      </div>
-      <div class="info-panel">
-        <p>Die Julia-Menge für den gewählten Parameter c.</p>
-      </div>
-    </div>
-    <div class="explorer-column">
       <h3 class="explorer-title">Mandelbrot-Menge</h3>
       <div class="canvas-container">
         <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
@@ -52,6 +43,16 @@
       </div>
       <div class="info-panel">
         <p>Klicken Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>
+      </div>
+    </div>
+    <div class="explorer-column">
+      <h3 class="explorer-title">Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h3>
+      <div class="canvas-container">
+        <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
+        <div class="loading-indicator" id="juliaLoading">Berechne...</div>
+      </div>
+      <div class="info-panel">
+        <p>Die Julia-Menge für den gewählten Parameter c.</p>
       </div>
     </div>
   </div>
@@ -71,8 +72,8 @@
   
   .explorer-main-title {
     color: #eacfb4;
-    margin: 0 0 20px 0;
-    padding: 10px 0;
+    margin: 0 0 15px 0;
+    padding: 5px 0;
     text-align: center;
     font-size: 24px;
     font-weight: 600;
