@@ -7,7 +7,8 @@ main:
     url: /mandelbrot/
   - title: "Blog"
     url: /posts/
-  - title: "Kategorien"
-    url: /categories/
-  - title: "Tags"
-    url: /tags/ 
+  # Kategorien und Tags auskommentiert, damit sie nicht mehr in der Navigation erscheinen
+  # - title: "Kategorien"
+  #   url: /categories/
+  # - title: "Tags"
+  #   url: /tags/

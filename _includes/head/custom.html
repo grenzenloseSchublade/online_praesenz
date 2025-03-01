@@ -86,6 +86,20 @@ MathJax = {
   body.page-loaded {
     opacity: 1;
   }
+
+  /* Verstecke Kategorien und Tags auf der Website */
+  .page__taxonomy,
+  .page__taxonomy-item,
+  .taxonomy__index,
+  .archive__item-excerpt .page__meta {
+    display: none !important;
+  }
+  
+  /* Verstecke die Kategorien- und Tags-Seiten in der Suche und Sitemap */
+  body.layout--categories,
+  body.layout--tags {
+    display: none !important;
+  }
 </style>
 
 <script>
