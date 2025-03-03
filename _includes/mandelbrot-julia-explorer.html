@@ -161,6 +161,47 @@
     max-width: 200px;
   }
   
+  /* Media Query für mobile Geräte */
+  @media (max-width: 768px) {
+    .color-control-item select,
+    .color-control-item button {
+      max-width: 100%;
+      min-width: auto;
+    }
+    
+    .color-controls-group {
+      flex-direction: column;
+    }
+    
+    .explorer-container {
+      padding: 10px;
+      width: 100%;
+      max-width: 100vw;
+      margin-left: 0;
+      margin-right: 0;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    
+    .toggle-button {
+      min-width: auto;
+      width: 100%;
+    }
+    
+    .explorer-controls {
+      padding: 10px;
+    }
+    
+    .control-group {
+      flex: 1 1 100%;
+    }
+    
+    .explorer-column {
+      min-width: 100%;
+      flex: 1 1 100%;
+    }
+  }
+  
   .explorer-row {
     display: flex;
     flex-wrap: wrap;
@@ -299,7 +340,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 100px;
+    min-width: 80px;
     text-align: center;
   }
   
@@ -322,6 +363,24 @@
     border-radius: 20px;
     padding: 10px 5px;
     z-index: 10;
+  }
+  
+  @media (max-width: 768px) {
+    .mobile-zoom-control {
+      right: 5px;
+      padding: 8px 4px;
+    }
+    
+    .zoom-button {
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
+    }
+    
+    .zoom-level-display {
+      font-size: 12px;
+      padding: 2px 6px;
+    }
   }
   
   .zoom-slider-container {
@@ -1159,13 +1218,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const mandelbrotMobileZoom = document.getElementById('mandelbrotMobileZoom');
     const juliaMobileZoom = document.getElementById('juliaMobileZoom');
     
-    if (isMobileDevice()) {
+    if (isMobileDevice() || window.innerWidth <= 768) {
       // Zeige mobile Steuerungen auf Smartphones
       if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'flex';
       if (juliaMobileZoom) juliaMobileZoom.style.display = 'flex';
       
       // Passe Auflösung für mobile Geräte an
       adjustCanvasResolution();
+      
+      // Passe die Breite des Containers an
+      const container = document.querySelector('.explorer-container');
+      if (container) {
+        container.style.width = '100%';
+        container.style.maxWidth = '100vw';
+        container.style.boxSizing = 'border-box';
+      }
     } else {
       // Verstecke mobile Steuerungen auf Desktop
       if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'none';

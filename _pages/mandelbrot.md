@@ -27,6 +27,27 @@ header:
   top: -100px;
   visibility: hidden;
 }
+
+/* Stelle sicher, dass die Seite die volle Breite nutzt */
+.page__content {
+  width: 100%;
+  max-width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+@media (max-width: 768px) {
+  .page__inner-wrap {
+    width: 100%;
+    max-width: 100vw;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  
+  .page__content {
+    padding: 0;
+  }
+}
 </style>
 
 {% for section in site.data.mandelbrot.sections %}
