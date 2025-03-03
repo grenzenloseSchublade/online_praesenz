@@ -5,13 +5,15 @@ Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Them
 ## TODO
 - about me mit inhalt füllen
 - lebenslauf mit inhalt füllen
+- 
+- Touch funktion für Zoom Mandelbrotmenge vernünftig umsetzen
+- 
 - clean up python scripts
   - mandelbrot calculation
   - julia calculation
   - mandelbrot animation
   - julia animation
 
-- reduce html style in MD files
 
  
 ## Installation
