@@ -355,15 +355,70 @@ document.addEventListener('DOMContentLoaded', function() {
   let useIntensePalettes = false;
   let activePalettes = colorPalettes;
   
-  // Optimierte Mandelbrot-Berechnung mit Web Workers
+  // Touch-Gesten-Unterstützung für mobile Geräte
+  // Mandelbrot-Canvas Touch-Unterstützung
+  let mandelbrotLastTouchDistance = 0;
+  let mandelbrotLastTouchCenter = { x: 0, y: 0 };
+  let mandelbrotIsTouching = false;
+  let mandelbrotZoomLevel = 1;
+  let mandelbrotViewX = -0.5; // Zentrum der Mandelbrot-Menge
+  let mandelbrotViewY = 0;
+  
+  // Julia-Canvas Touch-Unterstützung
+  let juliaLastTouchDistance = 0;
+  let juliaLastTouchCenter = { x: 0, y: 0 };
+  let juliaIsTouching = false;
+  let juliaZoomLevel = 1;
+  let juliaViewX = 0;
+  let juliaViewY = 0;
+  
+  // Variablen für Doppeltipp-Erkennung
+  let lastTapTime = 0;
+  let juliaLastTapTime = 0;
+  
+  // Variablen für Drosselung (Throttling)
+  let mandelbrotThrottleTimer = null;
+  let juliaThrottleTimer = null;
+  const throttleDelay = 150; // Verzögerung in Millisekunden
+  
+  // Variablen für Worker-Management
+  let mandelbrotWorkers = [];
+  let juliaWorkers = [];
+  let mandelbrotCalculationInProgress = false;
+  let juliaCalculationInProgress = false;
+  
+  // Funktion zum Drosseln von Funktionsaufrufen
+  function throttle(callback, delay) {
+    return function() {
+      const context = this;
+      const args = arguments;
+      
+      if (!mandelbrotThrottleTimer) {
+        callback.apply(context, args);
+        mandelbrotThrottleTimer = setTimeout(() => {
+          mandelbrotThrottleTimer = null;
+        }, delay);
+      }
+    };
+  }
+  
+  // Optimierte Funktion zur Berechnung der Mandelbrot-Menge
   function calculateMandelbrot() {
+    // Wenn bereits eine Berechnung läuft, breche sie ab
+    if (mandelbrotCalculationInProgress) {
+      // Beende alle laufenden Worker
+      mandelbrotWorkers.forEach(w => w.terminate());
+      mandelbrotWorkers = [];
+    }
+    
     mandelbrotLoading.style.display = 'block';
+    mandelbrotCalculationInProgress = true;
     
     requestAnimationFrame(() => {
       if (window.Worker) {
         // Anzahl der Worker (Prozessorkerne)
-        const numWorkers = Math.min(navigator.hardwareConcurrency || 4, 4); // Maximal 4 Worker
-        const workers = [];
+        const numWorkers = Math.min(navigator.hardwareConcurrency || 2, 2); // Reduziert auf maximal 2 Worker für mobile Geräte
+        mandelbrotWorkers = [];
         const chunks = [];
         let completedChunks = 0;
         
@@ -387,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const endY = Math.min(startY + chunkHeight, mandelbrotCanvas.height);
             
             const worker = new Worker('{{ site.baseurl }}/assets/js/mandelbrot-worker.js');
-            workers.push(worker);
+            mandelbrotWorkers.push(worker);
             
             worker.postMessage({
               width: mandelbrotCanvas.width,
@@ -423,29 +478,43 @@ document.addEventListener('DOMContentLoaded', function() {
               // Wenn alle Chunks fertig sind
               if (completedChunks === numWorkers) {
                 mandelbrotLoading.style.display = 'none';
-                
-                // Bereinige Worker
-                workers.forEach(w => w.terminate());
+                mandelbrotCalculationInProgress = false;
               }
+            };
+            
+            // Fehlerbehandlung für Worker
+            worker.onerror = function(e) {
+              console.error("Worker-Fehler:", e);
+              mandelbrotLoading.style.display = 'none';
+              mandelbrotCalculationInProgress = false;
             };
           }
         }
       } else {
         // Fallback für Browser ohne Web Worker-Unterstützung
         calculateMandelbrotDirectly();
+        mandelbrotCalculationInProgress = false;
       }
     });
   }
   
-  // Optimierte Julia-Berechnung mit Web Workers
+  // Optimierte Funktion zur Berechnung der Julia-Menge
   function calculateJulia() {
+    // Wenn bereits eine Berechnung läuft, breche sie ab
+    if (juliaCalculationInProgress) {
+      // Beende alle laufenden Worker
+      juliaWorkers.forEach(w => w.terminate());
+      juliaWorkers = [];
+    }
+    
     juliaLoading.style.display = 'block';
+    juliaCalculationInProgress = true;
     
     requestAnimationFrame(() => {
       if (window.Worker) {
         // Anzahl der Worker (Prozessorkerne)
-        const numWorkers = Math.min(navigator.hardwareConcurrency || 4, 4); // Maximal 4 Worker
-        const workers = [];
+        const numWorkers = Math.min(navigator.hardwareConcurrency || 2, 2); // Reduziert auf maximal 2 Worker für mobile Geräte
+        juliaWorkers = [];
         const chunks = [];
         let completedChunks = 0;
         
@@ -469,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const endY = Math.min(startY + chunkHeight, juliaCanvas.height);
             
             const worker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
-            workers.push(worker);
+            juliaWorkers.push(worker);
             
             worker.postMessage({
               width: juliaCanvas.width,
@@ -506,16 +575,22 @@ document.addEventListener('DOMContentLoaded', function() {
               // Wenn alle Chunks fertig sind
               if (completedChunks === numWorkers) {
                 juliaLoading.style.display = 'none';
-                
-                // Bereinige Worker
-                workers.forEach(w => w.terminate());
+                juliaCalculationInProgress = false;
               }
+            };
+            
+            // Fehlerbehandlung für Worker
+            worker.onerror = function(e) {
+              console.error("Worker-Fehler:", e);
+              juliaLoading.style.display = 'none';
+              juliaCalculationInProgress = false;
             };
           }
         }
       } else {
         // Fallback für Browser ohne Web Worker-Unterstützung
         calculateJuliaDirectly();
+        juliaCalculationInProgress = false;
       }
     });
   }
@@ -668,27 +743,6 @@ document.addEventListener('DOMContentLoaded', function() {
   calculateMandelbrot();
   calculateJulia();
   
-  // Touch-Gesten-Unterstützung für mobile Geräte
-  // Mandelbrot-Canvas Touch-Unterstützung
-  let mandelbrotLastTouchDistance = 0;
-  let mandelbrotLastTouchCenter = { x: 0, y: 0 };
-  let mandelbrotIsTouching = false;
-  let mandelbrotZoomLevel = 1;
-  let mandelbrotViewX = -0.5; // Zentrum der Mandelbrot-Menge
-  let mandelbrotViewY = 0;
-  
-  // Julia-Canvas Touch-Unterstützung
-  let juliaLastTouchDistance = 0;
-  let juliaLastTouchCenter = { x: 0, y: 0 };
-  let juliaIsTouching = false;
-  let juliaZoomLevel = 1;
-  let juliaViewX = 0;
-  let juliaViewY = 0;
-  
-  // Variablen für Doppeltipp-Erkennung
-  let lastTapTime = 0;
-  let juliaLastTapTime = 0;
-  
   // Touch-Start-Handler für Mandelbrot-Canvas
   mandelbrotCanvas.addEventListener('touchstart', function(e) {
     e.preventDefault(); // Verhindere Standard-Touch-Aktionen
@@ -726,8 +780,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Touch-Move-Handler für Mandelbrot-Canvas
-  mandelbrotCanvas.addEventListener('touchmove', function(e) {
+  // Gedrosselter Touch-Move-Handler für Mandelbrot-Canvas
+  mandelbrotCanvas.addEventListener('touchmove', throttle(function(e) {
     e.preventDefault(); // Verhindere Standard-Touch-Aktionen
     
     if (!mandelbrotIsTouching) return;
@@ -774,7 +828,7 @@ document.addEventListener('DOMContentLoaded', function() {
       mandelbrotLastTouchCenter = newTouchCenter;
       
       // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
-      if (Math.abs(zoomChange - 1) > 0.05) {
+      if (Math.abs(zoomChange - 1) > 0.1) { // Erhöhter Schwellenwert
         // Neuberechnung der Mandelbrot-Menge mit aktualisierten Zoom-Parametern
         calculateMandelbrot();
       }
@@ -804,12 +858,12 @@ document.addEventListener('DOMContentLoaded', function() {
       mandelbrotLastTouchCenter = newTouchCenter;
       
       // Nur neu berechnen, wenn sich die Position signifikant geändert hat
-      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) { // Erhöhter Schwellenwert
         // Neuberechnung der Mandelbrot-Menge mit aktualisierten Panning-Parametern
         calculateMandelbrot();
       }
     }
-  });
+  }, throttleDelay));
   
   // Touch-End-Handler für Mandelbrot-Canvas
   mandelbrotCanvas.addEventListener('touchend', function(e) {
@@ -829,6 +883,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       lastTapTime = currentTime;
+      
+      // Finale Berechnung mit voller Qualität
+      if (!mandelbrotCalculationInProgress) {
+        calculateMandelbrot();
+      }
     } else if (e.touches.length === 1) {
       // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
       const touch = e.touches[0];
@@ -878,8 +937,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Touch-Move-Handler für Julia-Canvas
-  juliaCanvas.addEventListener('touchmove', function(e) {
+  // Gedrosselter Touch-Move-Handler für Julia-Canvas
+  juliaCanvas.addEventListener('touchmove', throttle(function(e) {
     e.preventDefault(); // Verhindere Standard-Touch-Aktionen
     
     if (!juliaIsTouching) return;
@@ -926,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
       juliaLastTouchCenter = newTouchCenter;
       
       // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
-      if (Math.abs(zoomChange - 1) > 0.05) {
+      if (Math.abs(zoomChange - 1) > 0.1) { // Erhöhter Schwellenwert
         // Neuberechnung der Julia-Menge mit aktualisierten Zoom-Parametern
         calculateJulia();
       }
@@ -956,12 +1015,12 @@ document.addEventListener('DOMContentLoaded', function() {
       juliaLastTouchCenter = newTouchCenter;
       
       // Nur neu berechnen, wenn sich die Position signifikant geändert hat
-      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) { // Erhöhter Schwellenwert
         // Neuberechnung der Julia-Menge mit aktualisierten Panning-Parametern
         calculateJulia();
       }
     }
-  });
+  }, throttleDelay));
   
   // Touch-End-Handler für Julia-Canvas
   juliaCanvas.addEventListener('touchend', function(e) {
@@ -981,6 +1040,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       juliaLastTapTime = currentTime;
+      
+      // Finale Berechnung mit voller Qualität
+      if (!juliaCalculationInProgress) {
+        calculateJulia();
+      }
     } else if (e.touches.length === 1) {
       // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
       const touch = e.touches[0];
@@ -1013,6 +1077,36 @@ document.addEventListener('DOMContentLoaded', function() {
         juliaInfoPanel.innerHTML = '<p>Die Julia-Menge für den gewählten Parameter c.</p>' +
                                   '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
       }
+      
+      // Reduziere die Auflösung auf Mobilgeräten
+      adjustCanvasResolution();
+    }
+  }
+  
+  // Funktion zur Anpassung der Canvas-Auflösung auf Mobilgeräten
+  function adjustCanvasResolution() {
+    // Prüfe, ob es sich um ein Mobilgerät handelt
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Reduziere die Auflösung für bessere Performance
+      const scaleFactor = 0.75; // 75% der ursprünglichen Auflösung
+      
+      // Mandelbrot-Canvas anpassen
+      const originalMandelbrotWidth = mandelbrotCanvas.width;
+      const originalMandelbrotHeight = mandelbrotCanvas.height;
+      mandelbrotCanvas.width = Math.floor(originalMandelbrotWidth * scaleFactor);
+      mandelbrotCanvas.height = Math.floor(originalMandelbrotHeight * scaleFactor);
+      
+      // Julia-Canvas anpassen
+      const originalJuliaWidth = juliaCanvas.width;
+      const originalJuliaHeight = juliaCanvas.height;
+      juliaCanvas.width = Math.floor(originalJuliaWidth * scaleFactor);
+      juliaCanvas.height = Math.floor(originalJuliaHeight * scaleFactor);
+      
+      // Neuberechnung mit reduzierter Auflösung
+      calculateMandelbrot();
+      calculateJulia();
     }
   }
   
