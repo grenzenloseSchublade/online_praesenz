@@ -439,6 +439,43 @@
     z-index: 10;
   }
   
+  /* Angepasste Position für den mobilen Zoom-Regler */
+  @media (max-width: 768px) {
+    .mobile-zoom-control {
+      right: 5px;
+      top: auto;
+      bottom: 10px;
+      transform: none;
+      flex-direction: row;
+      padding: 5px 10px;
+    }
+    
+    .zoom-slider-container {
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .zoom-slider {
+      transform: none;
+      width: 100px;
+      margin: 0 8px;
+    }
+    
+    .zoom-level-display {
+      margin-top: 0;
+      margin-left: 5px;
+    }
+    
+    /* Für Firefox */
+    @supports (-moz-appearance:none) {
+      .zoom-slider {
+        writing-mode: lr-tb; /* Horizontaler Slider in Firefox */
+        height: 6px;
+        width: 100px;
+      }
+    }
+  }
+  
   .zoom-slider-container {
     display: flex;
     flex-direction: column;
@@ -663,7 +700,33 @@ document.addEventListener('DOMContentLoaded', function() {
     requestAnimationFrame(() => {
       if (window.Worker) {
         // Anzahl der Worker (Prozessorkerne)
-        const numWorkers = navigator.hardwareConcurrency || 4; // Fallback auf 4 Worker
+        let numWorkers = navigator.hardwareConcurrency || 4; // Fallback auf 4 Worker
+        
+        // Reduziere die Anzahl der Worker auf Mobilgeräten
+        if (isMobileDevice()) {
+          numWorkers = Math.min(2, numWorkers); // Maximal 2 Worker auf Mobilgeräten
+          
+          // Reduziere auch die maximalen Iterationen, wenn sie zu hoch sind
+          if (maxIterations > 500 && zoomLevel > 10) {
+            const originalIterations = maxIterations;
+            maxIterations = Math.min(maxIterations, 500);
+            console.log(`Reduziere Iterationen von ${originalIterations} auf ${maxIterations} für bessere mobile Performance`);
+          }
+        }
+        
+        // Beende alle laufenden Worker, falls vorhanden
+        if (window.activeJuliaWorkers && window.activeJuliaWorkers.length > 0) {
+          console.log('Beende laufende Worker vor dem Start neuer Berechnungen');
+          window.activeJuliaWorkers.forEach(worker => {
+            if (worker) {
+              worker.terminate();
+            }
+          });
+        }
+        
+        // Initialisiere das Array für aktive Worker
+        window.activeJuliaWorkers = [];
+        
         const workers = [];
         const chunks = [];
         let completedChunks = 0;
@@ -688,6 +751,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const worker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
             workers.push(worker);
+            window.activeJuliaWorkers.push(worker);
             
             worker.postMessage({
               width: canvas.width,
@@ -734,8 +798,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 isCalculating = false;
                 
                 // Bereinige Worker
-                workers.forEach(w => w.terminate());
+                workers.forEach(w => {
+                  w.terminate();
+                  // Entferne Worker aus dem aktiven Array
+                  const index = window.activeJuliaWorkers.indexOf(w);
+                  if (index !== -1) {
+                    window.activeJuliaWorkers.splice(index, 1);
+                  }
+                });
               }
+            };
+            
+            // Fehlerbehandlung für Worker
+            worker.onerror = function(e) {
+              console.error('Worker-Fehler:', e);
+              loadingIndicator.style.display = 'none';
+              isCalculating = false;
+              
+              // Bereinige alle Worker bei einem Fehler
+              workers.forEach(w => {
+                w.terminate();
+                const index = window.activeJuliaWorkers.indexOf(w);
+                if (index !== -1) {
+                  window.activeJuliaWorkers.splice(index, 1);
+                }
+              });
+              
+              // Zeige Fehlermeldung an
+              alert('Bei der Berechnung ist ein Fehler aufgetreten. Bitte versuchen Sie es mit weniger Iterationen oder einem geringeren Zoom-Level.');
             };
           }
         }
@@ -775,8 +865,8 @@ document.addEventListener('DOMContentLoaded', function() {
     iterValueSpan.textContent = this.value;
     // Aktualisiere Parameter sofort
     maxIterations = parseInt(this.value);
-    // Sofortige Neuberechnung
-    calculateJulia();
+    // Sofortige Neuberechnung mit Drosselung
+    safeCalculateJulia();
   });
   
   // Anwenden-Button
@@ -793,7 +883,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Julia-Menge neu berechnen
-    calculateJulia();
+    safeCalculateJulia();
   });
   
   // Standardwerte-Button
@@ -828,7 +918,7 @@ document.addEventListener('DOMContentLoaded', function() {
     activePalettes = colorPalettes;
     
     // Julia-Menge neu berechnen
-    calculateJulia();
+    safeCalculateJulia();
   });
   
   // Farbschema-Auswahl
@@ -842,7 +932,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Julia-Menge neu berechnen
-    calculateJulia();
+    safeCalculateJulia();
   });
   
   // Farbintensitäts-Button
@@ -861,7 +951,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Julia-Menge neu berechnen
-    calculateJulia();
+    safeCalculateJulia();
   });
   
   resetZoomButton.addEventListener('click', function() {
@@ -869,7 +959,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewY = 0;
     zoomLevel = 1;
     zoomInfoSpan.textContent = '1x';
-    calculateJulia();
+    safeCalculateJulia();
   });
   
   saveImageButton.addEventListener('click', function() {
@@ -916,10 +1006,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Zoom-Info aktualisieren
     zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
     
-    calculateJulia();
+    // Aktualisiere auch den mobilen Zoom-Slider
+    if (juliaZoomSlider) {
+      juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+    }
+    if (juliaZoomValue) {
+      juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+    }
+    
+    safeCalculateJulia();
   });
   
-  // Event-Listener für Mausbewegungen über dem Canvas
   canvas.addEventListener('mousemove', function(e) {
     if (isCalculating) return;
     
@@ -927,7 +1024,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Umrechnung in komplexe Koordinaten
+    // Umrechnung in komplexen Koordinaten
     const xRange = 3.0 / zoomLevel;
     const yRange = 3.0 / zoomLevel;
     const xMin = viewX - xRange / 2;
@@ -1022,7 +1119,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Zoom-Info aktualisieren
         zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
         
-        calculateJulia();
+        // Aktualisiere auch den mobilen Zoom-Slider
+        if (juliaZoomSlider) {
+          juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+        }
+        if (juliaZoomValue) {
+          juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+        }
+        
+        safeCalculateJulia();
       }
       
       zoomBox.style.display = 'none';
@@ -1048,7 +1153,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Zoom-Info aktualisieren (obwohl sich der Zoom-Level nicht ändert)
       zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
       
-      calculateJulia();
+      safeCalculateJulia();
     }
   });
   
@@ -1072,7 +1177,15 @@ document.addEventListener('DOMContentLoaded', function() {
       // Zoom-Info aktualisieren
       zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
       
-      calculateJulia();
+      // Aktualisiere auch den mobilen Zoom-Slider
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
+      
+      safeCalculateJulia();
     }
   });
   
@@ -1081,34 +1194,119 @@ document.addEventListener('DOMContentLoaded', function() {
   imagValueSpan.textContent = imagPartSlider.value;
   iterValueSpan.textContent = maxIterSlider.value;
   toggleZoomBoxButton.textContent = 'Zoom-Box aus';
-  calculateJulia(); // Erste Berechnung
+  
+  // Initialisiere mobile Steuerungen
+  setupMobileControls();
+  
+  // Erste Berechnung mit reduzierter Auflösung auf Mobilgeräten
+  if (isMobileDevice()) {
+    // Reduziere die Auflösung und Iterationen für Mobilgeräte
+    adjustCanvasResolution();
+    // Verzögere die erste Berechnung leicht, um die UI zu initialisieren
+    setTimeout(() => {
+      calculateJulia();
+    }, 100);
+  } else {
+    // Auf Desktop-Geräten sofort berechnen
+    calculateJulia();
+  }
+  
   // Führe die Schriftgrößenanpassung nach dem Laden durch
   setTimeout(adjustFontSize, 100);
   
   // Touch-Variablen
+  let lastTouchX = 0;
+  let lastTouchY = 0;
+  let touchCenterX = 0;
+  let touchCenterY = 0;
   let lastTouchDistance = 0;
-  let lastTouchCenter = { x: 0, y: 0 };
   let isTouching = false;
+  let isZooming = false;
   
   // Variablen für Drosselung (Throttling)
   let touchThrottleTimer = null;
   const touchThrottleDelay = 150; // Verzögerung in Millisekunden
   
-  // Funktion zum Drosseln von Funktionsaufrufen
-  function throttleTouch(callback, delay) {
-    return function() {
-      const context = this;
-      const args = arguments;
-      
-      if (!touchThrottleTimer) {
-        callback.apply(context, args);
-        touchThrottleTimer = setTimeout(() => {
-          touchThrottleTimer = null;
-        }, delay);
+  // Aktualisiere Info-Text für Touch-Geräte
+  function updateTouchInfo() {
+    const isTouchDevice = ('ontouchstart' in window) || 
+                          (navigator.maxTouchPoints > 0) || 
+                          (navigator.msMaxTouchPoints > 0);
+    
+    if (isTouchDevice) {
+      // Füge Info-Text für Touch-Geräte hinzu
+      const infoBar = document.querySelector('.info-bar');
+      if (infoBar) {
+        // Prüfe, ob bereits ein Touch-Info-Element existiert
+        if (!document.querySelector('.touch-info')) {
+          const touchInfoElement = document.createElement('div');
+          touchInfoElement.className = 'touch-info';
+          touchInfoElement.innerHTML = '<p>Ein Finger: Verschieben | Doppeltippen: Zoom + | Zoom-Regler: Unten rechts</p>';
+          touchInfoElement.style.width = '100%';
+          touchInfoElement.style.textAlign = 'center';
+          touchInfoElement.style.marginTop = '5px';
+          touchInfoElement.style.padding = '5px';
+          touchInfoElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+          touchInfoElement.style.borderRadius = '4px';
+          infoBar.appendChild(touchInfoElement);
+        }
       }
-    };
+    }
   }
   
+  // Führe die Aktualisierung der Info-Texte nach dem Laden durch
+  setTimeout(updateTouchInfo, 200);
+  
+  // Erklärbox-Funktionalität
+  const toggleExplanationButton = document.getElementById('toggleExplanation');
+  const explanationBox = document.getElementById('explanationBox');
+  
+  toggleExplanationButton.addEventListener('click', function() {
+    if (explanationBox.style.display === 'block') {
+      explanationBox.style.display = 'none';
+      this.textContent = 'Erklärung anzeigen ▼';
+    } else {
+      explanationBox.style.display = 'block';
+      this.textContent = 'Erklärung ausblenden ▲';
+    }
+  });
+
+  // Drosselungsfunktion für Berechnungen
+  let calculationThrottleTimer = null;
+  const calculationThrottleDelay = 500; // 500ms Verzögerung
+  
+  function throttleCalculation(callback) {
+    if (calculationThrottleTimer) {
+      clearTimeout(calculationThrottleTimer);
+    }
+    
+    calculationThrottleTimer = setTimeout(() => {
+      callback();
+      calculationThrottleTimer = null;
+    }, calculationThrottleDelay);
+  }
+  
+  // Funktion zum sicheren Berechnen mit Drosselung
+  function safeCalculateJulia() {
+    // Wenn bereits eine Berechnung läuft, diese abbrechen
+    if (isCalculating) {
+      console.log('Berechnung läuft bereits, breche ab und starte neu');
+      // Beende alle laufenden Worker
+      if (window.activeJuliaWorkers && window.activeJuliaWorkers.length > 0) {
+        window.activeJuliaWorkers.forEach(worker => {
+          if (worker) worker.terminate();
+        });
+        window.activeJuliaWorkers = [];
+      }
+      isCalculating = false;
+    }
+    
+    // Drossele die Berechnung
+    throttleCalculation(() => {
+      calculateJulia();
+    });
+  }
+
   // Funktion zum Erkennen von Mobilgeräten
   function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1137,22 +1335,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (isMobile) {
       // Reduziere die Auflösung für bessere Performance
-      const scaleFactor = 0.75; // 75% der ursprünglichen Auflösung
+      const scaleFactor = 0.5; // 50% der ursprünglichen Auflösung für Mobilgeräte
       
       // Canvas anpassen
-      const originalWidth = canvas.width;
-      const originalHeight = canvas.height;
+      const originalWidth = 800; // Ursprüngliche Breite
+      const originalHeight = 450; // Ursprüngliche Höhe
       canvas.width = Math.floor(originalWidth * scaleFactor);
       canvas.height = Math.floor(originalHeight * scaleFactor);
       
-      // Neuberechnung mit reduzierter Auflösung
-      calculateJulia();
+      // Reduziere auch die maximalen Iterationen für bessere Performance
+      if (maxIterations > 300) {
+        maxIterSlider.value = 300;
+        maxIterations = 300;
+        iterValueSpan.textContent = maxIterations;
+      }
+      
+      console.log(`Mobile Gerät erkannt: Canvas-Auflösung auf ${canvas.width}x${canvas.height} reduziert, Max. Iterationen: ${maxIterations}`);
     }
   }
-
-  // Initialisiere mobile Steuerungen beim Laden
-  document.addEventListener('DOMContentLoaded', setupMobileControls);
-  window.addEventListener('resize', setupMobileControls);
 
   // Zoom-Slider für Julia-Set
   const juliaZoomSlider = document.getElementById('juliaZoomSlider');
@@ -1230,6 +1430,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  // Funktion zum Drosseln von Funktionsaufrufen
+  function throttleTouch(callback, delay) {
+    return function() {
+      const context = this;
+      const args = arguments;
+      
+      if (!touchThrottleTimer) {
+        callback.apply(context, args);
+        touchThrottleTimer = setTimeout(() => {
+          touchThrottleTimer = null;
+        }, delay);
+      }
+    };
+  }
+  
   // Variable für Doppeltipp-Erkennung
   let lastTapTime = 0;
   
@@ -1295,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       // Berechne Julia-Set neu
-      calculateJulia();
+      safeCalculateJulia();
       
       e.preventDefault();
     }
@@ -1326,8 +1541,8 @@ document.addEventListener('DOMContentLoaded', function() {
       lastTouchY = touch.clientY;
       
       // Berechne Julia-Set neu, wenn die Verschiebung signifikant ist
-      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
-        calculateJulia();
+      if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
+        safeCalculateJulia();
       }
     } else if (e.touches.length === 2 && isZooming) {
       // Zwei-Finger-Zoom
@@ -1346,10 +1561,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const newTouchCenterX = (touch1.clientX + touch2.clientX) / 2;
       const newTouchCenterY = (touch1.clientY + touch2.clientY) / 2;
       
-      // Berechne Verschiebung des Mittelpunkts
-      const deltaX = newTouchCenterX - touchCenterX;
-      const deltaY = newTouchCenterY - touchCenterY;
-      
       // Aktualisiere Zoom-Level
       const oldZoomLevel = zoomLevel;
       zoomLevel *= zoomFactor;
@@ -1359,8 +1570,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Aktualisiere Ansichtsposition basierend auf Zoom und Mittelpunkt
       const rect = canvas.getBoundingClientRect();
-      const centerX = (touchCenterX - rect.left) / canvas.width;
-      const centerY = (touchCenterY - rect.top) / canvas.height;
       
       // Aktualisiere Zoom-Info
       zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
@@ -1379,11 +1588,11 @@ document.addEventListener('DOMContentLoaded', function() {
       touchCenterY = newTouchCenterY;
       
       // Berechne Julia-Set neu, wenn die Zoom-Änderung signifikant ist
-      if (Math.abs(oldZoomLevel - zoomLevel) > 0.05) {
-        calculateJulia();
+      if (Math.abs(oldZoomLevel - zoomLevel) > 0.1) {
+        safeCalculateJulia();
       }
     }
-  }, 50));
+  }, 100)); // Erhöhte Drosselung für Touch-Events
   
   // Touch-End-Handler
   canvas.addEventListener('touchend', function(e) {
@@ -1393,46 +1602,8 @@ document.addEventListener('DOMContentLoaded', function() {
     isTouching = false;
     isZooming = false;
     
-    // Berechne Julia-Set neu
-    calculateJulia();
-  });
-  
-  // Aktualisiere Info-Text für Touch-Geräte
-  function updateTouchInfo() {
-    const isTouchDevice = ('ontouchstart' in window) || 
-                          (navigator.maxTouchPoints > 0) || 
-                          (navigator.msMaxTouchPoints > 0);
-    
-    if (isTouchDevice) {
-      // Füge Info-Text für Touch-Geräte hinzu
-      const infoBar = document.querySelector('.info-bar');
-      if (infoBar) {
-        const touchInfoElement = document.createElement('div');
-        touchInfoElement.className = 'touch-info';
-        touchInfoElement.innerHTML = '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
-        infoBar.appendChild(touchInfoElement);
-      }
-      
-      // Reduziere die Auflösung auf Mobilgeräten
-      adjustCanvasResolution();
-    }
-  }
-  
-  // Führe die Aktualisierung der Info-Texte nach dem Laden durch
-  setTimeout(updateTouchInfo, 100);
-  
-  // Erklärbox-Funktionalität
-  const toggleExplanationButton = document.getElementById('toggleExplanation');
-  const explanationBox = document.getElementById('explanationBox');
-  
-  toggleExplanationButton.addEventListener('click', function() {
-    if (explanationBox.style.display === 'block') {
-      explanationBox.style.display = 'none';
-      this.textContent = 'Erklärung anzeigen ▼';
-    } else {
-      explanationBox.style.display = 'block';
-      this.textContent = 'Erklärung ausblenden ▲';
-    }
+    // Berechne Julia-Set neu mit voller Qualität
+    safeCalculateJulia();
   });
 });
 </script> 
