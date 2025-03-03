@@ -14,9 +14,9 @@ header:
   caption: "Die unendliche Schönheit mathematischer Strukturen"
   actions:
     - label: "Interaktive Julia-Menge"
-      url: "{{ site.baseurl }}/mandelbrot/#interaktive-julia-menge"
+      url: "/mandelbrot/#interaktive-julia-menge"
     - label: "Mandelbrot-Julia-Explorer"
-      url: "{{ site.baseurl }}/mandelbrot/#interaktiver-mandelbrot-julia-explorer"
+      url: "/mandelbrot/#interaktiver-mandelbrot-julia-explorer"
 ---
 
 <style>
@@ -28,10 +28,6 @@ header:
   visibility: hidden;
 }
 </style>
-
-{% comment %}
-Entfernung der doppelten H1-Überschrift, da der Seitentitel bereits als H1 angezeigt wird
-{% endcomment %}
 
 {% for section in site.data.mandelbrot.sections %}
 <span id="{{ section.section | slugify }}" class="section-anchor"></span>

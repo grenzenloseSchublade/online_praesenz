@@ -1,6 +1,6 @@
----
-# Only the main Sass file needs front matter (the dashes are enough)
----
+--- 
+# Only the main Sass file needs front matter (the dashes are enough) 
+--- 
 
 @charset "utf-8";
 
@@ -134,6 +134,26 @@ $caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
     transition: max-height 0.3s ease-out;
     overflow: hidden;
     width: 100%;
+}
+
+// Einheitliche Schriftgröße und Buttonhöhe für TOC auf Seiten mit 'wide' Klasse
+.wide .toc {
+    .nav__title {
+        font-size: $type-size-6;
+        padding: 0.5em;
+    }
+}
+
+.wide .toc__menu {
+    font-size: $type-size-6;
+
+    @include breakpoint($large) {
+        font-size: $type-size-6;
+    }
+
+    a {
+        padding: 0.25rem 0.75rem;
+    }
 }
 
 // Eigene Styles für die Startseite
