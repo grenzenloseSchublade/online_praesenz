@@ -7,6 +7,11 @@ self.onmessage = function (e) {
     const colorScheme = data.colorScheme;
     const colorPalettes = data.colorPalettes;
 
+    // Neue Parameter für Zoom und Panning
+    const viewX = data.viewX || -0.5; // Standardwert: Zentrum der Mandelbrot-Menge
+    const viewY = data.viewY || 0;
+    const zoomLevel = data.zoomLevel || 1;
+
     // Chunk-Informationen
     const startY = data.startY;
     const endY = data.endY;
@@ -15,7 +20,8 @@ self.onmessage = function (e) {
     // Berechne den Mandelbrot-Set für diesen Chunk
     const result = calculateMandelbrotChunk(width, height, maxIterations,
         colorScheme, colorPalettes,
-        startY, endY);
+        startY, endY,
+        viewX, viewY, zoomLevel);
 
     // Sende das Ergebnis zurück
     self.postMessage({
@@ -30,7 +36,8 @@ self.onmessage = function (e) {
 // Berechnet einen Chunk des Mandelbrot-Sets
 function calculateMandelbrotChunk(width, height, maxIterations,
     colorScheme, colorPalettes,
-    startY, endY) {
+    startY, endY,
+    viewX, viewY, zoomLevel) {
     // Erstelle ImageData für diesen Chunk
     const imageData = new ImageData(width, endY - startY);
 
@@ -41,11 +48,11 @@ function calculateMandelbrotChunk(width, height, maxIterations,
         data: new Uint16Array(width * height)
     };
 
-    // Berechne Grenzen
-    const xMin = -2.0;
-    const xMax = 1.0;
-    const yMin = -1.5;
-    const yMax = 1.5;
+    // Berechne Grenzen basierend auf Zoom und Ansicht
+    const xRange = 3.0 / zoomLevel;
+    const yRange = 3.0 / zoomLevel;
+    const xMin = viewX - xRange / 2;
+    const yMin = viewY - yRange / 2;
 
     // Vorberechnete Farben für bessere Performance
     const colorPalette = colorPalettes[colorScheme];
@@ -55,8 +62,8 @@ function calculateMandelbrotChunk(width, height, maxIterations,
     for (let y = startY; y < endY; y++) {
         for (let x = 0; x < width; x++) {
             // Umrechnung in komplexe Koordinaten
-            const cx = xMin + (x / width) * (xMax - xMin);
-            const cy = yMin + (y / height) * (yMax - yMin);
+            const cx = xMin + (x / width) * xRange;
+            const cy = yMin + (y / height) * yRange;
 
             // Mandelbrot-Set-Iteration
             let zx = 0;

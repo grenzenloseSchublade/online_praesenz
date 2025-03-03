@@ -397,7 +397,11 @@ document.addEventListener('DOMContentLoaded', function() {
               colorPalettes: activePalettes,
               startY: startY,
               endY: endY,
-              workerId: i
+              workerId: i,
+              // Neue Parameter für Zoom und Panning
+              viewX: mandelbrotViewX,
+              viewY: mandelbrotViewY,
+              zoomLevel: mandelbrotZoomLevel
             });
             
             worker.onmessage = function(e) {
@@ -474,9 +478,9 @@ document.addEventListener('DOMContentLoaded', function() {
               imagPart: juliaImag,
               maxIterations: maxIterations,
               colorScheme: colorScheme,
-              viewX: 0,
-              viewY: 0,
-              zoomLevel: 1,
+              viewX: juliaViewX,
+              viewY: juliaViewY,
+              zoomLevel: juliaZoomLevel,
               colorPalettes: activePalettes,
               startY: startY,
               endY: endY,
@@ -541,11 +545,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Umrechnung in komplexe Koordinaten
-    const xRange = 3.0;
-    const yRange = 3.0;
-    const xMin = -2.0;
-    const yMin = -1.5;
+    // Umrechnung in komplexe Koordinaten unter Berücksichtigung von Zoom und Panning
+    const xRange = 3.0 / mandelbrotZoomLevel;
+    const yRange = 3.0 / mandelbrotZoomLevel;
+    const xMin = mandelbrotViewX - xRange / 2;
+    const yMin = mandelbrotViewY - yRange / 2;
     
     const newReal = xMin + (xRange * x / mandelbrotCanvas.width);
     const newImag = yMin + (yRange * y / mandelbrotCanvas.height);
@@ -612,6 +616,14 @@ document.addEventListener('DOMContentLoaded', function() {
     maxIterSlider.value = maxIterations;
     iterValueSpan.textContent = maxIterations;
     
+    // Setze Zoom und Panning zurück
+    mandelbrotZoomLevel = 1;
+    mandelbrotViewX = -0.5;
+    mandelbrotViewY = 0;
+    juliaZoomLevel = 1;
+    juliaViewX = 0;
+    juliaViewY = 0;
+    
     // Aktualisiere Anzeige
     const sign = juliaImag >= 0 ? '+' : '';
     juliaParameter.textContent = `${juliaReal.toFixed(3)} ${sign} ${juliaImag.toFixed(3)}i`;
@@ -655,5 +667,356 @@ document.addEventListener('DOMContentLoaded', function() {
   // Erste Berechnung
   calculateMandelbrot();
   calculateJulia();
+  
+  // Touch-Gesten-Unterstützung für mobile Geräte
+  // Mandelbrot-Canvas Touch-Unterstützung
+  let mandelbrotLastTouchDistance = 0;
+  let mandelbrotLastTouchCenter = { x: 0, y: 0 };
+  let mandelbrotIsTouching = false;
+  let mandelbrotZoomLevel = 1;
+  let mandelbrotViewX = -0.5; // Zentrum der Mandelbrot-Menge
+  let mandelbrotViewY = 0;
+  
+  // Julia-Canvas Touch-Unterstützung
+  let juliaLastTouchDistance = 0;
+  let juliaLastTouchCenter = { x: 0, y: 0 };
+  let juliaIsTouching = false;
+  let juliaZoomLevel = 1;
+  let juliaViewX = 0;
+  let juliaViewY = 0;
+  
+  // Variablen für Doppeltipp-Erkennung
+  let lastTapTime = 0;
+  let juliaLastTapTime = 0;
+  
+  // Touch-Start-Handler für Mandelbrot-Canvas
+  mandelbrotCanvas.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne Abstand zwischen den Fingern
+      mandelbrotLastTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne Mittelpunkt der Berührung
+      const rect = mandelbrotCanvas.getBoundingClientRect();
+      mandelbrotLastTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      mandelbrotIsTouching = true;
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = mandelbrotCanvas.getBoundingClientRect();
+      
+      mandelbrotLastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      mandelbrotIsTouching = true;
+    }
+  });
+  
+  // Touch-Move-Handler für Mandelbrot-Canvas
+  mandelbrotCanvas.addEventListener('touchmove', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (!mandelbrotIsTouching) return;
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne neuen Abstand zwischen den Fingern
+      const newTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne neuen Mittelpunkt der Berührung
+      const rect = mandelbrotCanvas.getBoundingClientRect();
+      const newTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
+      const zoomChange = newTouchDistance / mandelbrotLastTouchDistance;
+      
+      // Position im komplexen Koordinatensystem
+      const xRange = 3.0 / mandelbrotZoomLevel;
+      const yRange = 3.0 / mandelbrotZoomLevel;
+      const xTouch = mandelbrotViewX + (mandelbrotLastTouchCenter.x / mandelbrotCanvas.width - 0.5) * xRange;
+      const yTouch = mandelbrotViewY + (mandelbrotLastTouchCenter.y / mandelbrotCanvas.height - 0.5) * yRange;
+      
+      // Zoom anpassen
+      mandelbrotZoomLevel *= zoomChange;
+      
+      // Begrenzung des Zooms
+      mandelbrotZoomLevel = Math.max(0.1, Math.min(1000, mandelbrotZoomLevel));
+      
+      // Ansicht auf Touch-Position zentrieren
+      mandelbrotViewX = xTouch;
+      mandelbrotViewY = yTouch;
+      
+      // Aktualisiere für nächsten Move-Event
+      mandelbrotLastTouchDistance = newTouchDistance;
+      mandelbrotLastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
+      if (Math.abs(zoomChange - 1) > 0.05) {
+        // Neuberechnung der Mandelbrot-Menge mit aktualisierten Zoom-Parametern
+        calculateMandelbrot();
+      }
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = mandelbrotCanvas.getBoundingClientRect();
+      
+      const newTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      // Berechne Verschiebung in Pixel
+      const deltaX = newTouchCenter.x - mandelbrotLastTouchCenter.x;
+      const deltaY = newTouchCenter.y - mandelbrotLastTouchCenter.y;
+      
+      // Umrechnung in komplexe Koordinaten
+      const xRange = 3.0 / mandelbrotZoomLevel;
+      const yRange = 3.0 / mandelbrotZoomLevel;
+      
+      // Verschiebe Ansicht
+      mandelbrotViewX -= (deltaX / mandelbrotCanvas.width) * xRange;
+      mandelbrotViewY -= (deltaY / mandelbrotCanvas.height) * yRange;
+      
+      // Aktualisiere für nächsten Move-Event
+      mandelbrotLastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
+      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        // Neuberechnung der Mandelbrot-Menge mit aktualisierten Panning-Parametern
+        calculateMandelbrot();
+      }
+    }
+  });
+  
+  // Touch-End-Handler für Mandelbrot-Canvas
+  mandelbrotCanvas.addEventListener('touchend', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 0) {
+      mandelbrotIsTouching = false;
+      
+      // Prüfe auf Doppeltipp
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTapTime;
+      
+      if (tapLength < 500 && tapLength > 0) {
+        // Doppeltipp erkannt - zoome hinein
+        mandelbrotZoomLevel *= 2;
+        calculateMandelbrot();
+      }
+      
+      lastTapTime = currentTime;
+    } else if (e.touches.length === 1) {
+      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
+      const touch = e.touches[0];
+      const rect = mandelbrotCanvas.getBoundingClientRect();
+      
+      mandelbrotLastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+    }
+  });
+  
+  // Touch-Start-Handler für Julia-Canvas
+  juliaCanvas.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne Abstand zwischen den Fingern
+      juliaLastTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne Mittelpunkt der Berührung
+      const rect = juliaCanvas.getBoundingClientRect();
+      juliaLastTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      juliaIsTouching = true;
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = juliaCanvas.getBoundingClientRect();
+      
+      juliaLastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      juliaIsTouching = true;
+    }
+  });
+  
+  // Touch-Move-Handler für Julia-Canvas
+  juliaCanvas.addEventListener('touchmove', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (!juliaIsTouching) return;
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne neuen Abstand zwischen den Fingern
+      const newTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne neuen Mittelpunkt der Berührung
+      const rect = juliaCanvas.getBoundingClientRect();
+      const newTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
+      const zoomChange = newTouchDistance / juliaLastTouchDistance;
+      
+      // Position im komplexen Koordinatensystem
+      const xRange = 3.0 / juliaZoomLevel;
+      const yRange = 3.0 / juliaZoomLevel;
+      const xTouch = juliaViewX + (juliaLastTouchCenter.x / juliaCanvas.width - 0.5) * xRange;
+      const yTouch = juliaViewY + (juliaLastTouchCenter.y / juliaCanvas.height - 0.5) * yRange;
+      
+      // Zoom anpassen
+      juliaZoomLevel *= zoomChange;
+      
+      // Begrenzung des Zooms
+      juliaZoomLevel = Math.max(0.1, Math.min(1000, juliaZoomLevel));
+      
+      // Ansicht auf Touch-Position zentrieren
+      juliaViewX = xTouch;
+      juliaViewY = yTouch;
+      
+      // Aktualisiere für nächsten Move-Event
+      juliaLastTouchDistance = newTouchDistance;
+      juliaLastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
+      if (Math.abs(zoomChange - 1) > 0.05) {
+        // Neuberechnung der Julia-Menge mit aktualisierten Zoom-Parametern
+        calculateJulia();
+      }
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = juliaCanvas.getBoundingClientRect();
+      
+      const newTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      // Berechne Verschiebung in Pixel
+      const deltaX = newTouchCenter.x - juliaLastTouchCenter.x;
+      const deltaY = newTouchCenter.y - juliaLastTouchCenter.y;
+      
+      // Umrechnung in komplexe Koordinaten
+      const xRange = 3.0 / juliaZoomLevel;
+      const yRange = 3.0 / juliaZoomLevel;
+      
+      // Verschiebe Ansicht
+      juliaViewX -= (deltaX / juliaCanvas.width) * xRange;
+      juliaViewY -= (deltaY / juliaCanvas.height) * yRange;
+      
+      // Aktualisiere für nächsten Move-Event
+      juliaLastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
+      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        // Neuberechnung der Julia-Menge mit aktualisierten Panning-Parametern
+        calculateJulia();
+      }
+    }
+  });
+  
+  // Touch-End-Handler für Julia-Canvas
+  juliaCanvas.addEventListener('touchend', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 0) {
+      juliaIsTouching = false;
+      
+      // Prüfe auf Doppeltipp
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - juliaLastTapTime;
+      
+      if (tapLength < 500 && tapLength > 0) {
+        // Doppeltipp erkannt - zoome hinein
+        juliaZoomLevel *= 2;
+        calculateJulia();
+      }
+      
+      juliaLastTapTime = currentTime;
+    } else if (e.touches.length === 1) {
+      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
+      const touch = e.touches[0];
+      const rect = juliaCanvas.getBoundingClientRect();
+      
+      juliaLastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+    }
+  });
+  
+  // Füge Info-Text für Touch-Geräte hinzu
+  function addTouchInfoText() {
+    const isTouchDevice = ('ontouchstart' in window) || 
+                          (navigator.maxTouchPoints > 0) || 
+                          (navigator.msMaxTouchPoints > 0);
+    
+    if (isTouchDevice) {
+      // Füge Info-Text für Mandelbrot-Canvas hinzu
+      const mandelbrotInfoPanel = document.querySelector('.explorer-column:first-child .info-panel');
+      if (mandelbrotInfoPanel) {
+        mandelbrotInfoPanel.innerHTML = '<p>Tippen Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>' +
+                                       '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
+      }
+      
+      // Füge Info-Text für Julia-Canvas hinzu
+      const juliaInfoPanel = document.querySelector('.explorer-column:last-child .info-panel');
+      if (juliaInfoPanel) {
+        juliaInfoPanel.innerHTML = '<p>Die Julia-Menge für den gewählten Parameter c.</p>' +
+                                  '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
+      }
+    }
+  }
+  
+  // Führe die Aktualisierung der Info-Texte nach dem Laden durch
+  setTimeout(addTouchInfoText, 100);
 });
 </script> 

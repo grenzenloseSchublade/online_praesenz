@@ -968,6 +968,176 @@ document.addEventListener('DOMContentLoaded', function() {
   // Führe die Schriftgrößenanpassung nach dem Laden durch
   setTimeout(adjustFontSize, 100);
   
+  // Touch-Gesten-Unterstützung für mobile Geräte
+  let lastTouchDistance = 0;
+  let lastTouchCenter = { x: 0, y: 0 };
+  let isTouching = false;
+  
+  // Touch-Start-Handler
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne Abstand zwischen den Fingern
+      lastTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne Mittelpunkt der Berührung
+      const rect = canvas.getBoundingClientRect();
+      lastTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      isTouching = true;
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      
+      lastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      isTouching = true;
+    }
+  });
+  
+  // Touch-Move-Handler
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (!isTouching) return;
+    
+    if (e.touches.length === 2) {
+      // Zwei-Finger-Geste für Zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Berechne neuen Abstand zwischen den Fingern
+      const newTouchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      // Berechne neuen Mittelpunkt der Berührung
+      const rect = canvas.getBoundingClientRect();
+      const newTouchCenter = {
+        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
+        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
+      };
+      
+      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
+      const zoomChange = newTouchDistance / lastTouchDistance;
+      
+      // Position im komplexen Koordinatensystem
+      const xRange = 3.0 / zoomLevel;
+      const yRange = 3.0 / zoomLevel;
+      const xTouch = viewX + (lastTouchCenter.x / canvas.width - 0.5) * xRange;
+      const yTouch = viewY + (lastTouchCenter.y / canvas.height - 0.5) * yRange;
+      
+      // Zoom anpassen
+      zoomLevel *= zoomChange;
+      
+      // Begrenzung des Zooms
+      zoomLevel = Math.max(0.1, Math.min(1000, zoomLevel));
+      
+      // Ansicht auf Touch-Position zentrieren
+      viewX = xTouch;
+      viewY = yTouch;
+      
+      // Zoom-Info aktualisieren
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
+      // Aktualisiere für nächsten Move-Event
+      lastTouchDistance = newTouchDistance;
+      lastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
+      if (Math.abs(zoomChange - 1) > 0.05) {
+        calculateJulia();
+      }
+    } else if (e.touches.length === 1) {
+      // Ein-Finger-Geste für Verschieben
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      
+      const newTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+      
+      // Berechne Verschiebung in Pixel
+      const deltaX = newTouchCenter.x - lastTouchCenter.x;
+      const deltaY = newTouchCenter.y - lastTouchCenter.y;
+      
+      // Umrechnung in komplexe Koordinaten
+      const xRange = 3.0 / zoomLevel;
+      const yRange = 3.0 / zoomLevel;
+      
+      // Verschiebe Ansicht
+      viewX -= (deltaX / canvas.width) * xRange;
+      viewY -= (deltaY / canvas.height) * yRange;
+      
+      // Aktualisiere für nächsten Move-Event
+      lastTouchCenter = newTouchCenter;
+      
+      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
+      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        calculateJulia();
+      }
+    }
+  });
+  
+  // Touch-End-Handler
+  canvas.addEventListener('touchend', function(e) {
+    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    
+    if (e.touches.length === 0) {
+      isTouching = false;
+    } else if (e.touches.length === 1) {
+      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      
+      lastTouchCenter = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+    }
+  });
+  
+  // Aktualisiere die Info-Bar für Touch-Geräte
+  function updateInfoBarForTouchDevices() {
+    const isTouchDevice = ('ontouchstart' in window) || 
+                          (navigator.maxTouchPoints > 0) || 
+                          (navigator.msMaxTouchPoints > 0);
+    
+    if (isTouchDevice) {
+      const infoBar = document.querySelector('.info-bar');
+      if (infoBar) {
+        // Ersetze die Maus-spezifischen Anweisungen durch Touch-Anweisungen
+        const infoItems = infoBar.querySelectorAll('.info-item');
+        if (infoItems.length >= 4) {
+          infoItems[0].textContent = 'Zwei Finger: Zoomen';
+          infoItems[1].textContent = 'Ein Finger: Verschieben';
+          infoItems[2].textContent = 'Tippen: Zentrieren';
+          infoItems[3].textContent = 'Doppeltippen: Zoom +';
+        }
+      }
+    }
+  }
+  
+  // Führe die Aktualisierung der Info-Bar nach dem Laden durch
+  setTimeout(updateInfoBarForTouchDevices, 100);
+  
   // Erklärbox-Funktionalität
   const toggleExplanationButton = document.getElementById('toggleExplanation');
   const explanationBox = document.getElementById('explanationBox');
