@@ -1,0 +1,59 @@
+- section: "Wer bin ich?"
+  icon: "user"
+  content: "Ich bin ein leidenschaftlicher Entwickler und Mathematik-Enthusiast. Meine Faszination für Algorithmen, Fraktale und komplexe Systeme hat mich dazu gebracht, diese Website zu erstellen."
+
+- section: "Meine Interessen"
+  icon: "brain"
+  interests:
+    - category: "Programmierung"
+      items:
+        - "Webentwicklung mit modernen Technologien"
+        - "Algorithmen und Datenstrukturen"
+        - "Mathematische Visualisierungen"
+    - category: "Mathematik"
+      items:
+        - "Fraktale Geometrie"
+        - "Komplexe Dynamische Systeme"
+        - "Numerische Mathematik"
+    - category: "Hobbys"
+      items:
+        - "Fotografie"
+        - "Wandern in der Natur"
+        - "Schach"
+
+- section: "Meine Projekte"
+  icon: "project-diagram"
+  skills:
+    - category: "Fraktale Visualisierung"
+      items:
+        - "Interaktive Darstellung der Mandelbrot-Menge"
+        - "Julia-Mengen Explorer"
+        - "Fraktale Kunst-Generator"
+    - category: "Mathematische Bildung"
+      items:
+        - "Blog-Beiträge über interessante mathematische Konzepte"
+        - "Interaktive Lernmaterialien"
+        - "Video-Tutorials"
+
+- section: "Kontakt"
+  icon: "envelope"
+  content: "Ich freue mich über jede Form der Zusammenarbeit und Austausch. Sie können mich erreichen über:"
+  contact_info:
+    - type: "E-Mail"
+      icon: "envelope"
+      value: "ihre@email.de"
+      link: "mailto:ihre@email.de"
+    - type: "GitHub"
+      icon: "github"
+      value: "@grenzenloseSchublade"
+      link: "https://github.com/grenzenloseSchublade"
+    - type: "LinkedIn"
+      icon: "linkedin"
+      value: "Ihr Name"
+      link: "https://linkedin.com/in/username"
+
+- section: "Zitat"
+  icon: "quote-left"
+  quote:
+    author: "Galileo Galilei"
+    text: "Die Mathematik ist die Sprache, in der Gott das Universum schrieb."

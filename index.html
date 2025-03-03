@@ -1,14 +1,50 @@
 ---
-layout: home
-author_profile: true
-classes:
-  - landing
-  - dark-theme
-paginate: true
-entries_layout: grid
+layout: splash
+author_profile: false
+header:
+  overlay_image: /assets/images/background.jpg
+  overlay_filter: 0.5
+  actions:
+    - label: "Über mich"
+      url: "/about/"
+    - label: "CV"
+      url: "/cv/"
+    - label: "Blog"
+      url: "/posts/"
+excerpt: "Willkommen auf meiner persönlichen Website. Hier finden Sie Informationen über mich, meine Projekte und Gedanken zu verschiedenen Themen."
 ---
 
-<div class="landing-content">
-  <h1>Willkommen auf meiner Website</h1>
-  <p>Dies ist die Startseite meiner mit Jekyll und Minimal Mistakes erstellten Website. Hier finden Sie alle meine Blogbeiträge und weitere Informationen.</p>
-</div> 
+<div class="landing-sections">
+  <!-- Über mich Teaser -->
+  <div class="landing-section">
+    <h2><i class="fas fa-user-circle"></i> Über mich</h2>
+    <p>Erfahren Sie mehr über meine Interessen, Fähigkeiten und persönlichen Hintergründe.</p>
+    <a href="/about/" class="btn btn--primary">Mehr erfahren</a>
+  </div>
+
+  <!-- CV Teaser -->
+  <div class="landing-section">
+    <h2><i class="fas fa-graduation-cap"></i> Curriculum Vitae</h2>
+    <p>Mein beruflicher Werdegang, Ausbildung und Qualifikationen auf einen Blick.</p>
+    <a href="/cv/" class="btn btn--primary">CV ansehen</a>
+  </div>
+
+  <!-- Projekte Teaser -->
+  <div class="landing-section">
+    <h2><i class="fas fa-code"></i> Projekte</h2>
+    <p>Entdecken Sie meine aktuellen und vergangenen Projekte.</p>
+    <a href="/posts/?category=projekte" class="btn btn--primary">Projekte entdecken</a>
+  </div>
+</div>
+
+<h3 class="archive__subtitle">Neueste Beiträge</h3>
+
+<div class="entries-grid">
+  {% for post in site.posts limit:6 %}
+    {% include archive-single.html type="grid" %}
+  {% endfor %}
+</div>
+
+<div class="text-center">
+  <a href="/posts/" class="btn btn--primary">Alle Beiträge anzeigen</a>
+</div>

@@ -45,7 +45,7 @@
                 "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
                 "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
                 "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-                "editor.formatOnSave": "true",
+                "editor.formatOnSave": "false",
                 "editor.codeActionsOnSave": {
                     "source.organizeImports": "true"
                 }

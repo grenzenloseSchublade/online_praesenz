@@ -1,0 +1,102 @@
+- section: "Profil"
+  icon: "user"
+  content: "Erfahrener Entwickler mit Schwerpunkt auf mathematischen Algorithmen und Visualisierungen. Spezialisiert auf die Implementierung komplexer Systeme und deren Darstellung."
+
+- section: "Berufserfahrung"
+  icon: "briefcase"
+  experiences:
+    - position: "Senior Entwickler"
+      company: "Technologie GmbH"
+      location: "Berlin, Deutschland"
+      period: "2018 - Heute"
+      description: "Entwicklung von Algorithmen zur Visualisierung komplexer mathematischer Strukturen. Implementierung von Webanwendungen mit modernen Frameworks."
+      responsibilities:
+        - "Leitung eines Teams von 5 Entwicklern"
+        - "Konzeption und Implementierung von Visualisierungstools"
+        - "Optimierung von Algorithmen für Echtzeit-Berechnungen"
+
+    - position: "Entwickler"
+      company: "Daten & Analyse AG"
+      location: "München, Deutschland"
+      period: "2015 - 2018"
+      description: "Entwicklung von Datenanalyse-Tools und Visualisierungen für große Datensätze."
+      responsibilities:
+        - "Implementierung von Datenvisualisierungen"
+        - "Entwicklung von Algorithmen zur Datenanalyse"
+        - "Optimierung von Datenbankabfragen"
+
+- section: "Ausbildung"
+  icon: "graduation-cap"
+  education:
+    - degree: "Master of Science in Informatik"
+      institution: "Technische Universität Berlin"
+      location: "Berlin, Deutschland"
+      period: "2013 - 2015"
+      description: "Schwerpunkt: Algorithmen und Datenstrukturen, Computergrafik"
+
+    - degree: "Bachelor of Science in Mathematik"
+      institution: "Universität Hamburg"
+      location: "Hamburg, Deutschland"
+      period: "2010 - 2013"
+      description: "Schwerpunkt: Numerische Mathematik, Differentialgleichungen"
+
+- section: "Technische Fähigkeiten"
+  icon: "laptop-code"
+  skill_categories:
+    - category: "Programmiersprachen"
+      skills:
+        - name: "Python"
+          level: 95
+        - name: "JavaScript"
+          level: 90
+        - name: "C++"
+          level: 75
+        - name: "Ruby"
+          level: 60
+
+    - category: "Frameworks & Bibliotheken"
+      skills:
+        - name: "NumPy/SciPy"
+          level: 90
+        - name: "React"
+          level: 85
+        - name: "D3.js"
+          level: 80
+        - name: "Jekyll"
+          level: 70
+
+    - category: "Tools & Technologien"
+      skills:
+        - name: "Git"
+          level: 95
+        - name: "Docker"
+          level: 80
+        - name: "CI/CD"
+          level: 75
+        - name: "AWS"
+          level: 70
+
+- section: "Sprachen"
+  icon: "language"
+  languages:
+    - language: "Deutsch"
+      level: "Muttersprache"
+    - language: "Englisch"
+      level: "Fließend (C2)"
+    - language: "Französisch"
+      level: "Fortgeschritten (B2)"
+    - language: "Spanisch"
+      level: "Grundkenntnisse (A2)"
+
+- section: "Zertifikate & Auszeichnungen"
+  icon: "award"
+  awards:
+    - title: "Best Paper Award"
+      organization: "International Conference on Visualization"
+      date: "2019"
+      description: "Auszeichnung für die Publikation 'Innovative Ansätze zur Visualisierung fraktaler Strukturen'"
+
+    - title: "Certified Python Developer"
+      organization: "Python Software Foundation"
+      date: "2017"
+      description: "Zertifizierung für fortgeschrittene Python-Entwicklung"

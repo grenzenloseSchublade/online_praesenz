@@ -8,4 +8,4 @@ gem "jekyll-gist", group: :jekyll_plugins
 gem "jekyll-feed", group: :jekyll_plugins
 gem "jemoji", group: :jekyll_plugins
 gem "faraday-retry"
-gem "webrick", "~> 1.7" 
+gem "webrick", "~> 1.7"
