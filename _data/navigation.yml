@@ -1,16 +1,17 @@
 main:
   - title: "Startseite"
-    url: /
-  - title: "Über mich"
-    url: /about/
-  - title: "Lebenslauf"
-    url: /cv/
+    url: "/"
   - title: "Mandelbrot"
-    url: /mandelbrot/
+    url: "/mandelbrot/"
   - title: "Blog"
-    url: /posts/
+    url: "/posts/"
+  - title: "Über mich"
+    url: "/about/"
+  - title: "Lebenslauf"
+    url: "/cv/"
+    
   # Kategorien und Tags auskommentiert, damit sie nicht mehr in der Navigation erscheinen
   # - title: "Kategorien"
-  #   url: /categories/
+  #   url: "/categories/"
   # - title: "Tags"
-  #   url: /tags/
+  #   url: "/tags/"

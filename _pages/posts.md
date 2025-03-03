@@ -15,7 +15,7 @@ Hier finden Sie alle meine Blogbeiträge zu verschiedenen Themen. Die Beiträge 
 
 <div class="category-buttons">
   {% for category in site.categories %}
-    <a href="/categories/#{{ category[0] | slugify }}" class="btn btn--primary">{{ category[0] }}</a>
+    <a href="{{ site.baseurl }}/categories/#{{ category[0] | slugify }}" class="btn btn--primary">{{ category[0] }}</a>
   {% endfor %}
 </div>
 

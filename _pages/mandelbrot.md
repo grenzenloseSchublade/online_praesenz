@@ -14,9 +14,9 @@ header:
   caption: "Die unendliche Schönheit mathematischer Strukturen"
   actions:
     - label: "Interaktive Julia-Menge"
-      url: "/mandelbrot/#interaktive-julia-menge"
+      url: "{{ site.baseurl }}/mandelbrot/#interaktive-julia-menge"
     - label: "Mandelbrot-Julia-Explorer"
-      url: "/mandelbrot/#interaktiver-mandelbrot-julia-explorer"
+      url: "{{ site.baseurl }}/mandelbrot/#interaktiver-mandelbrot-julia-explorer"
 ---
 
 <style>
