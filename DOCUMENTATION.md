@@ -201,76 +201,46 @@ toc_sticky: true
 
 ## Wichtige Hinweise zum Inhaltsverzeichnis (TOC)
 
-Für ein korrekt funktionierendes Inhaltsverzeichnis (Table of Contents) in Jekyll mit Minimal Mistakes müssen folgende Punkte beachtet werden:
+Das Inhaltsverzeichnis (Table of Contents, TOC) wird in Jekyll mit dem Minimal Mistakes Theme automatisch aus den Markdown-Überschriften generiert. Damit das TOC korrekt funktioniert, müssen folgende Punkte beachtet werden:
 
-1. **Markdown-Überschriften verwenden**: 
-   - Das TOC erkennt nur Überschriften im Markdown-Format (`## Überschrift`)
-   - HTML-Überschriften (`<h2>Überschrift</h2>`) werden nicht erkannt
-
-2. **Anker-Links korrekt setzen**:
-   - Verwende `<span id="id-name" class="section-anchor"></span>` vor jeder Überschrift
-   - Die ID sollte mit `{{ section.section | slugify }}` generiert werden, um Sonderzeichen zu entfernen
-
-3. **CSS für Anker-Links**:
-   - Füge CSS hinzu, um die Anker-Links korrekt zu positionieren:
-   ```css
-   .section-anchor {
-     display: block;
-     position: relative;
-     top: -100px;
-     visibility: hidden;
-   }
+1. **Aktivierung des TOC in der Front Matter:**
+   ```yaml
+   toc: true
+   toc_label: "Inhalt"  # Optional: Titel des Inhaltsverzeichnisses
+   toc_icon: "list"     # Optional: Icon aus Font Awesome
+   toc_sticky: true     # Optional: Fixiert das TOC beim Scrollen
    ```
 
-4. **Frontmatter-Einstellungen**:
-   - Aktiviere das TOC mit `toc: true`
-   - Passe das Label mit `toc_label: "Inhalt"` an
-   - Fixiere das TOC mit `toc_sticky: true`
+2. **Korrekte Verwendung von Markdown-Überschriften:**
+   - Überschriften müssen im Markdown-Format definiert werden (`##`, `###`, etc.)
+   - Die Überschriften müssen direkt im Markdown-Code stehen, nicht in HTML-Tags oder Liquid-Templates
+   - Überschriften sollten aufeinanderfolgende Ebenen haben (keine Ebenen überspringen)
 
-5. **Vermeidung doppelter Überschriften**:
-   - Verwende Icons direkt in der Markdown-Überschrift: `## <i class="fas fa-icon"></i> Titel`
-   - Das Include `cv-section.html` enthält keine eigene Überschrift, sondern nur den Inhalt
-   - Dadurch wird verhindert, dass sowohl in der Markdown-Datei als auch im Include eine Überschrift generiert wird
+3. **Beispiel für korrekte Implementierung mit YAML-Daten:**
+   ```liquid
+   {% for section in site.data.example.sections %}
+   <span id="{{ section.section | slugify }}" class="section-anchor"></span>
+   
+   ## <i class="fas fa-{{ section.icon }}"></i> {{ section.section }}
+   
+   {{ section.content | markdownify }}
+   
+   {% if section.subsections %}
+     {% for subsection in section.subsections %}
+   ### {{ subsection.title }}
+   
+   {{ subsection.content | markdownify }}
+     {% endfor %}
+   {% endif %}
+   {% endfor %}
+   ```
 
-Diese Struktur stellt sicher, dass das Inhaltsverzeichnis korrekt generiert wird und die Links zu den entsprechenden Abschnitten funktionieren.
+4. **Wichtige Hinweise:**
+   - Achten Sie auf die Leerzeilen vor und nach den Markdown-Überschriften
+   - Vermeiden Sie HTML-Container um die Überschriften
+   - Verwenden Sie Anker-Spans für korrekte Verlinkung und Positionierung
 
-## Beispiel für eine korrekte Implementierung
-
-```markdown
----
-title: "Meine Seite"
-permalink: /meine-seite/
-layout: single
-author_profile: true
-toc: true
-toc_label: "Inhalt"
-toc_sticky: true
----
-
-<style>
-.section-anchor {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
-}
-</style>
-
-{% for section in site.data.meine_seite %}
-<span id="{{ section.section | slugify }}" class="section-anchor"></span>
-## <i class="fas fa-{{ section.icon }}"></i> {{ section.section }}
-
-{% capture inner_content %}
-  <!-- Hier kommen die spezifischen Includes -->
-{% endcapture %}
-
-{% include cv-section.html 
-  icon=section.icon 
-  title=section.section 
-  content=section.content 
-  inner_content=inner_content %}
-{% endfor %}
-```
+Diese Implementierung stellt sicher, dass das TOC korrekt generiert wird und alle Links zu den entsprechenden Abschnitten funktionieren.
 
 ## Startseite und Blog
 
@@ -390,3 +360,64 @@ Jekyll ist ein leistungsstarkes Tool für die Erstellung von Websites und Blogs.
 ```
 
 Diese Struktur stellt sicher, dass Blogbeiträge einheitlich formatiert sind und alle wichtigen Elemente enthalten.
+
+## Verwendung von YAML-Daten für Inhaltsseiten
+
+Für komplexe Inhaltsseiten wie die Mandelbrot-Seite empfehlen wir die Verwendung von YAML-Daten, um Inhalte von der Präsentation zu trennen. Dies bietet mehrere Vorteile:
+
+1. **Trennung von Inhalt und Präsentation**: Die Inhalte werden in YAML-Dateien im `_data`-Verzeichnis gespeichert, während die Präsentation durch Templates gesteuert wird.
+2. **Bessere Wartbarkeit**: Änderungen an Inhalten können vorgenommen werden, ohne die Präsentationslogik zu beeinflussen.
+3. **Wiederverwendbarkeit**: Inhalte können in verschiedenen Kontexten wiederverwendet werden.
+4. **Konsistenz**: Alle Seiten können einem einheitlichen Muster folgen.
+
+### Beispiel: Mandelbrot-Seite
+
+Die Mandelbrot-Seite verwendet YAML-Daten, um ihre Inhalte zu strukturieren:
+
+1. **YAML-Datei**: `_data/mandelbrot.yml` enthält alle Inhalte der Seite, strukturiert in Abschnitte und Unterabschnitte.
+2. **Template**: `_includes/mandelbrot-section.html` definiert, wie jeder Abschnitt gerendert wird.
+3. **Markdown-Datei**: `_pages/mandelbrot.md` enthält nur noch die Front Matter und einen Loop, der durch die YAML-Daten iteriert.
+
+#### Struktur der YAML-Datei
+
+```yaml
+sections:
+  - section: "Abschnittstitel"
+    icon: "icon-name"  # FontAwesome-Icon
+    anchor: "optional-anchor-id"  # Optional
+    content: >-
+      Markdown-formatierter Inhalt des Abschnitts.
+      Kann mehrere Zeilen umfassen.
+    include: "optional-include-file.html"  # Optional
+    subsections:  # Optional
+      - title: "Unterabschnittstitel"
+        content: >-
+          Markdown-formatierter Inhalt des Unterabschnitts.
+```
+
+#### Verwendung in der Markdown-Datei
+
+```markdown
+---
+title: "Seitentitel"
+permalink: /permalink/
+classes: wide
+mathjax: true  # Falls MathJax benötigt wird
+toc: true      # Aktiviert das Inhaltsverzeichnis
+toc_label: "Inhalt"
+toc_icon: "list"
+header:
+  overlay_image: /path/to/image.jpg
+  overlay_filter: 0.5
+  caption: "Bildunterschrift"
+  actions:
+    - label: "Button-Label"
+      url: "/permalink/#anchor"
+---
+
+{% for section in site.data.dateiname.sections %}
+  {% include template-name.html section=section %}
+{% endfor %}
+```
+
+Diese Methode ist besonders nützlich für Seiten mit vielen Abschnitten oder für Seiten, deren Inhalte häufig aktualisiert werden müssen.

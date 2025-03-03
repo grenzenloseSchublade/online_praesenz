@@ -1,151 +1,55 @@
 ---
 title: "Die faszinierende Welt der Mandelbrot-Menge"
 permalink: /mandelbrot/
+layout: single
 classes: wide
 mathjax: true
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_sticky: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "Die unendliche Schönheit mathematischer Strukturen"
   actions:
     - label: "Interaktive Julia-Menge"
-      url: "/mandelbrot/#julia-container"
+      url: "/mandelbrot/#interaktive-julia-menge"
     - label: "Mandelbrot-Julia-Explorer"
-      url: "/mandelbrot/#explorer-container"
+      url: "/mandelbrot/#interaktiver-mandelbrot-julia-explorer"
 ---
 
-# Die faszinierende Welt der Mandelbrot-Menge
-*Die unendliche Schönheit mathematischer Strukturen*
+<style>
+/* Stelle sicher, dass die Anker-Links korrekt funktionieren */
+.section-anchor {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+</style>
 
-Stellen Sie sich vor, Sie könnten mit einer einfachen mathematischen Formel unendlich komplexe Muster erzeugen, die bei näherer Betrachtung immer wieder neue Details offenbaren. Genau das ist die Mandelbrot-Menge - eine der bekanntesten mathematischen Entdeckungen des 20. Jahrhunderts und gleichzeitig ein atemberaubendes Kunstwerk der Natur.
+{% comment %}
+Entfernung der doppelten H1-Überschrift, da der Seitentitel bereits als H1 angezeigt wird
+{% endcomment %}
 
-**Entdecken Sie auf dieser Seite:**
-- [Interaktive Julia-Menge](#julia-container) - Experimentieren Sie mit verschiedenen Parametern
-- [Was ist die Mandelbrot-Menge?](#was-ist-die-mandelbrot-menge) - Grundlegende Erklärung und Definition
-- [Interaktiver Mandelbrot-Julia-Explorer](#explorer-container) - Erkunden Sie den Zusammenhang
-- [Die Magie der Selbstähnlichkeit](#die-magie-hinter-der-mandelbrot-menge) - Entdecken Sie unendliche Details
-- [Mathematische Grundlagen](#die-mathematik-dahinter---einfach-erklärt) - Einfach erklärt
-- [Bedeutung und Anwendungen](#warum-ist-die-mandelbrot-menge-so-bedeutsam) - Warum ist sie so wichtig?
+{% for section in site.data.mandelbrot.sections %}
+<span id="{{ section.section | slugify }}" class="section-anchor"></span>
 
-## Interaktive Julia-Menge
+## <i class="fas fa-{{ section.icon }}"></i> {{ section.section }}
 
-Erkunden Sie die Julia-Menge, indem Sie die Parameter anpassen. Die Julia-Menge ist eng mit der Mandelbrot-Menge verwandt und zeigt faszinierende Muster für verschiedene komplexe Parameter $c$.
+{{ section.content | markdownify }}
 
-Warum beginnen wir mit der Julia-Menge? Ganz einfach: Die Julia-Mengen bieten oft eine unmittelbarere visuelle Faszination mit ihren symmetrischen, filigranen Strukturen. Sie sind wie kunstvolle Fenster in die Welt der komplexen Dynamik und erlauben es uns, durch einfache Parameteränderungen dramatische Formveränderungen zu beobachten - von zusammenhängenden, verschlungenen Mustern bis hin zu fraktalen "Staubwolken". Diese ästhetische Qualität macht sie zum perfekten Einstieg in die Welt der Fraktale, bevor wir uns der komplexeren Beziehung zwischen Mandelbrot- und Julia-Mengen widmen.
+{% if section.include %}
+  {% include {{ section.include }} %}
+{% endif %}
 
-{% include julia-interactive.html %}
+{% if section.subsections %}
+  {% for subsection in section.subsections %}
+### {{ subsection.title }}
 
-## Was ist die Mandelbrot-Menge?
+{{ subsection.content | markdownify }}
+  {% endfor %}
+{% endif %}
 
-Die Mandelbrot-Menge ist wie eine versteckte Schatzkarte in der Mathematik. Sie zeigt uns, wie aus einfachen Regeln unglaublich komplexe Strukturen entstehen können. Benannt nach dem Mathematiker Benoit Mandelbrot, der sie 1980 erstmals visualisierte, hat sie seitdem Mathematiker, Künstler und Neugierige gleichermaßen fasziniert.
-
-Stellen Sie sich die Mandelbrot-Menge als eine Art "Landkarte" vor, die in der Ebene der komplexen Zahlen liegt. Jeder Punkt auf dieser Karte entspricht einer komplexen Zahl. Die schwarzen Bereiche gehören zur Mandelbrot-Menge, während die farbigen Bereiche außerhalb liegen. Je bunter ein Punkt ist, desto "schneller" entflieht er ins Unendliche, wenn wir ihn durch eine bestimmte Rechenvorschrift immer wieder transformieren.
-
-### Mathematische Definition
-
-Die Mandelbrot-Menge $\mathscr{M}$ ist definiert als die Menge aller komplexen Zahlen $c$, für die die Folge $z_{n+1} = z_n^2 + c$ mit $z_0 = 0$ beschränkt bleibt:
-
-$$\mathscr{M} = \{c \in \mathbb{C} : \limsup_{n \to \infty} \lvert z_n \rvert \leq 2\}$$
-
-Eine äquivalente Definition verwendet den Orbit des kritischen Punktes $z = 0$ unter der Iteration von $f_c(z) = z^2 + c$:
-
-$$\mathscr{M} = \{c \in \mathbb{C} : \{f_c^n(0)\}_{n=0}^{\infty} \text{ ist beschränkt}\}$$
-
-## Interaktiver Mandelbrot-Julia-Explorer
-
-Entdecken Sie den Zusammenhang zwischen der Mandelbrot-Menge und den Julia-Mengen. Klicken Sie auf einen Punkt in der Mandelbrot-Menge, um die entsprechende Julia-Menge zu sehen.
-
-{% include mandelbrot-julia-explorer.html %}
-
-## Die Magie hinter der Mandelbrot-Menge
-
-Was die Mandelbrot-Menge so besonders macht, ist ihre Selbstähnlichkeit. Wenn Sie in die Ränder hineinzoomen, entdecken Sie immer wieder neue "Mini-Mandelbrots" und andere faszinierende Strukturen. Theoretisch könnten Sie unendlich weit hineinzoomen und würden immer wieder neue Details entdecken - eine Eigenschaft, die als fraktale Dimension bezeichnet wird.
-
-Interessanterweise steht die Mandelbrot-Menge in direktem Zusammenhang mit den sogenannten Julia-Mengen, die Sie im obigen Explorer rechts sehen können. Wenn Sie auf einen Punkt in der Mandelbrot-Menge klicken, wird die entsprechende Julia-Menge angezeigt. Diese Verbindung ist wie ein Fenster zwischen zwei mathematischen Welten.
-
-### Fraktale Dimension
-
-Die Mandelbrot-Menge hat eine fraktale Dimension von etwa 2. Das bedeutet, sie ist "mehr als eine Linie, aber weniger als eine Fläche". Die Hausdorff-Dimension $D_H$ eines Fraktals kann durch die Formel:
-
-$$D_H = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
-
-berechnet werden, wobei $N(\epsilon)$ die minimale Anzahl von Kugeln mit Radius $\epsilon$ ist, die benötigt werden, um das Fraktal zu überdecken.
-
-## Die Mathematik dahinter - einfach erklärt
-
-Keine Sorge, Sie brauchen keinen Doktortitel in Mathematik, um die Grundidee zu verstehen!
-
-Die Mandelbrot-Menge basiert auf einer überraschend einfachen Formel:
-
-$$z_{n+1} = z_n^2 + c$$
-
-Dabei ist $c$ eine komplexe Zahl (ein Punkt in unserer "Landkarte") und wir starten mit $z_0 = 0$.
-
-Für jeden Punkt $c$ in der komplexen Ebene führen wir folgendes Experiment durch:
-1. Wir beginnen mit $z_0 = 0$
-2. Wir berechnen $z_1 = z_0^2 + c = 0^2 + c = c$
-3. Dann $z_2 = z_1^2 + c = c^2 + c$
-4. Dann $z_3 = z_2^2 + c = (c^2 + c)^2 + c$
-5. Und so weiter...
-
-Nun kommt der entscheidende Punkt: Wenn die Werte von $z_n$ für immer kleiner als 2 bleiben (egal wie oft wir die Formel anwenden), dann gehört der Punkt $c$ zur Mandelbrot-Menge und wird schwarz dargestellt. Wenn die Werte irgendwann größer als 2 werden und ins Unendliche "fliehen", dann liegt der Punkt außerhalb der Menge und wird entsprechend seiner "Fluchtgeschwindigkeit" eingefärbt.
-
-### Escape-Zeit-Algorithmus
-
-Der Escape-Zeit-Algorithmus ist die gängigste Methode zur Berechnung der Mandelbrot-Menge. Für jeden Punkt $c$ in der komplexen Ebene:
-
-$$\text{Für } c \in \mathbb{C}\text{, berechne die Folge } z_0 = 0\text{, } z_{n+1} = z_n^2 + c$$
-
-Die Anzahl der Iterationen $n$, bis $\lvert z_n \rvert > 2$ wird als Fluchtzeit bezeichnet. Wenn nach einer maximalen Anzahl von Iterationen $\lvert z_n \rvert \leq 2$ bleibt, wird angenommen, dass $c$ zur Mandelbrot-Menge gehört.
-
-Die Smooth-Coloring-Technik verbessert die Visualisierung durch die Formel:
-
-$$n_{\text{smooth}} = n + 1 - \frac{\log(\log(|z_n|))}{\log(2)}$$
-
-## Warum ist die Mandelbrot-Menge so bedeutsam?
-
-Die Mandelbrot-Menge ist weit mehr als nur ein hübsches Bild. Sie hat tiefgreifende Bedeutung in verschiedenen Bereichen:
-
-1. **Chaostheorie**: Sie zeigt, wie deterministische Systeme (mit festen Regeln) chaotisches Verhalten erzeugen können.
-2. **Komplexe Dynamik**: Sie ist ein Paradebeispiel für die Schönheit und Komplexität dynamischer Systeme.
-3. **Fraktale Geometrie**: Sie hat eine fraktale Dimension, was bedeutet, dass sie "mehr als eine Linie, aber weniger als eine Fläche" ist.
-4. **Informatik**: Die Berechnung der Mandelbrot-Menge hat zur Entwicklung effizienter Algorithmen beigetragen.
-5. **Kunst und Kultur**: Sie hat zahlreiche Künstler inspiriert und ist zu einem kulturellen Symbol für die Schönheit der Mathematik geworden.
-
-### Verbindung zur Chaostheorie
-
-Die Mandelbrot-Menge illustriert perfekt das "Schmetterlingseffekt"-Prinzip der Chaostheorie: Kleine Änderungen in den Anfangsbedingungen können zu drastisch unterschiedlichen Ergebnissen führen. Mathematisch ausgedrückt:
-
-$$\lim_{t \to \infty} |f_c^t(z_1) - f_c^t(z_2)| \gg |z_1 - z_2|$$
-
-für bestimmte Werte von $c$ und nahe beieinander liegende Punkte $z_1$ und $z_2$.
-
-## Eigenschaften der Mandelbrot-Menge
-
-1. **Zusammenhängend**: Die Mandelbrot-Menge ist zusammenhängend, was 1982 von Adrien Douady und John H. Hubbard bewiesen wurde. Das bedeutet, sie besteht aus einem einzigen Stück, obwohl sie auf den ersten Blick aus getrennten Teilen zu bestehen scheint.
-
-2. **Selbstähnlichkeit**: An den Rändern der Menge finden sich immer wieder ähnliche Strukturen, darunter auch kleinere Kopien der gesamten Mandelbrot-Menge.
-
-3. **Fraktale Dimension**: Die Hausdorff-Dimension der Randkurve beträgt etwa 2, was bedeutet, dass der Rand so komplex ist, dass er praktisch eine Fläche ausfüllt.
-
-4. **Universalität**: Die Mandelbrot-Menge enthält eine unendliche Anzahl von "Mini-Mandelbrots", die exakte Kopien der Hauptstruktur sind, sowie andere wiederkehrende Muster wie "Seepferdchen" und "Elefantenrüssel".
-
-### Kardioide und Hauptkörper
-
-Die Hauptkomponente der Mandelbrot-Menge besteht aus einer Kardioide und einem Kreis. Die Kardioide kann durch die Gleichung:
-
-$$c = \frac{e^{i\theta}}{2} - \frac{e^{2i\theta}}{4}, \quad \theta \in [0, 2\pi)$$
-
-beschrieben werden, während der Hauptkreis durch:
-
-$$c = -1 + \frac{e^{i\theta}}{4}, \quad \theta \in [0, 2\pi)$$
-
-gegeben ist.
-
-## Fazit
-
-Die Mandelbrot-Menge ist ein perfektes Beispiel dafür, wie Mathematik gleichzeitig tiefgründig und wunderschön sein kann. Sie zeigt uns, dass selbst aus den einfachsten Regeln unendliche Komplexität entstehen kann - eine Lektion, die weit über die Mathematik hinausgeht.
-
-Ob Sie nun von der visuellen Schönheit fasziniert sind oder von der mathematischen Tiefe - die Mandelbrot-Menge hat für jeden etwas zu bieten. Und das Beste daran: Je mehr Sie erforschen, desto mehr gibt es zu entdecken!
-
-Probieren Sie es selbst aus, spielen Sie mit den Explorern und tauchen Sie ein in die faszinierende Welt der Fraktale. Wer weiß, vielleicht entdecken Sie ein Muster, das noch niemand vor Ihnen gesehen hat!
+{% endfor %}
