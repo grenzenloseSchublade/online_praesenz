@@ -1,0 +1,61 @@
+{% comment %}
+  Erweiterung des Standard-TOC von Minimal Mistakes mit optionaler Ausklapp-Funktionalität.
+  Diese Datei wird in _layouts/single.html eingebunden und ersetzt die direkte Einbindung von toc.html.
+  
+  Die Ausklapp-Funktionalität wird aktiviert, wenn in der Front Matter toc_collapse: true gesetzt ist.
+  Alle anderen TOC-Parameter (toc_label, toc_icon, toc_sticky) funktionieren weiterhin wie gewohnt.
+{% endcomment %}
+
+{% assign toc_id = "toc-" | append: page.title | slugify | default: "toc" %}
+
+<aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
+  <nav class="toc">
+    {% if page.toc_collapse %}
+      <button id="{{ toc_id }}-toggle" class="toc-toggle">
+        <h4 class="nav__title">
+          <i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> 
+          {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "Inhalt" }}
+          <span class="toc-toggle-icon">▲</span>
+        </h4>
+      </button>
+      <div id="{{ toc_id }}-content" class="toc__menu-wrapper">
+        {% include toc.html sanitize=true html=include.html h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+      </div>
+    {% else %}
+      <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "Inhalt" }}</h4></header>
+      {% include toc.html sanitize=true html=include.html h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+    {% endif %}
+  </nav>
+</aside>
+
+{% if page.toc_collapse %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tocToggle = document.getElementById('{{ toc_id }}-toggle');
+  const tocContent = document.getElementById('{{ toc_id }}-content');
+  const tocWrapper = tocToggle.closest('.sidebar__right');
+  
+  // Prüfen, ob der Zustand im localStorage gespeichert ist
+  const storageKey = '{{ toc_id }}-state';
+  const tocState = localStorage.getItem(storageKey);
+  
+  // Wenn der Zustand gespeichert ist, TOC entsprechend anzeigen
+  if (tocState === 'collapsed') {
+    tocContent.style.display = 'none';
+    tocToggle.classList.add('collapsed');
+  }
+  
+  tocToggle.addEventListener('click', function() {
+    if (tocContent.style.display === 'none') {
+      tocContent.style.display = 'block';
+      tocToggle.classList.remove('collapsed');
+      localStorage.setItem(storageKey, 'expanded');
+    } else {
+      tocContent.style.display = 'none';
+      tocToggle.classList.add('collapsed');
+      localStorage.setItem(storageKey, 'collapsed');
+    }
+  });
+});
+</script>
+{% endif %} 

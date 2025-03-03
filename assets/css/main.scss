@@ -1,11 +1,9 @@
-/* Jekyll Front Matter */
 ---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
 @charset "utf-8";
 
-$text-color: #eacfb4; // Haupttextfarbe
 $link-color: #05d9e8; // Linkfarbe
 $hover-color: #ff00ff; // Hover-Effekt Farbe
 $background-dark: #1a1a1a; // Dunkler Hintergrund
@@ -24,89 +22,203 @@ $caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
 
+// Zentralisierte TOC-Stile
+.toc {
+    font-family: $sans-serif-narrow;
+    color: $text-color;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    -webkit-box-shadow: $box-shadow;
+    box-shadow: $box-shadow;
+
+    .nav__title {
+        color: #fff;
+        font-size: $type-size-6;
+        background: $primary-color;
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        padding: 0.5em;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    // Scrollspy marks toc items as .active when they are in focus
+    .active a {
+        color: $link-color;
+        font-weight: bold;
+    }
+}
+
+.toc__menu {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    font-size: $type-size-6;
+
+    @include breakpoint($large) {
+        font-size: $type-size-7;
+    }
+
+    a {
+        display: block;
+        padding: 0.25rem 0.75rem;
+        color: $text-color;
+        font-weight: bold;
+        line-height: 1.5;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        &:hover {
+            color: $link-color;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    li ul>li a {
+        padding-left: 1.25rem;
+        font-weight: normal;
+    }
+
+    li ul li ul>li a {
+        padding-left: 1.75rem;
+    }
+
+    li ul li ul li ul>li a {
+        padding-left: 2.25rem;
+    }
+
+    li ul li ul li ul li ul>li a {
+        padding-left: 2.75rem;
+    }
+
+    li ul li ul li ul li ul li ul>li a {
+        padding-left: 3.25rem;
+    }
+}
+
+// Stile für das ausklappbare TOC
+.toc-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    display: block;
+    box-sizing: border-box;
+}
+
+.toc-toggle .nav__title {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: $border-radius $border-radius 0 0;
+}
+
+.toc-toggle-icon {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.toc-toggle.collapsed .toc-toggle-icon {
+    transform: rotate(180deg);
+}
+
+.toc__menu-wrapper {
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    width: 100%;
+}
+
 // Eigene Styles für die Startseite
 .landing-sections {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 2em;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 2em;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 }
 
 .landing-section {
-  flex: 1;
-  min-width: 250px;
-  margin: 1em;
-  padding: 1.5em;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  h2 {
-    margin-top: 0;
-    border-bottom: 2px solid $link-color;
-    padding-bottom: 0.5em;
-    
-    i {
-      margin-right: 0.5em;
+    flex: 1;
+    min-width: 250px;
+    margin: 1em;
+    padding: 1.5em;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-  }
-  
-  p {
-    margin-bottom: 1.5em;
-  }
-  
-  .btn {
-    display: inline-block;
-    margin-top: 0.5em;
-  }
+
+    h2 {
+        margin-top: 0;
+        border-bottom: 2px solid $link-color;
+        padding-bottom: 0.5em;
+
+        i {
+            margin-right: 0.5em;
+        }
+    }
+
+    p {
+        margin-bottom: 1.5em;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 0.5em;
+    }
 }
 
 // Styles für die Blogbeiträge auf der Startseite
 .entries-grid {
-  .archive__item {
-    position: relative;
-    border-radius: 5px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: translateY(-5px);
+    .archive__item {
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+
+        .archive__item-teaser {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .archive__item-title {
+            margin-top: 0.5em;
+        }
+
+        .archive__item-excerpt {
+            margin-top: 0.5em;
+        }
     }
-    
-    .archive__item-teaser {
-      border-radius: 5px 5px 0 0;
-    }
-    
-    .archive__item-title {
-      margin-top: 0.5em;
-    }
-    
-    .archive__item-excerpt {
-      margin-top: 0.5em;
-    }
-  }
 }
 
 // Zusätzliche Styles für die Kategorie-Buttons
 .category-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  margin-bottom: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 2em;
 }
 
 // Zentrieren von Elementen
 .text-center {
-  text-align: center;
-  margin: 2em 0;
+    text-align: center;
+    margin: 2em 0;
 }

@@ -6,6 +6,7 @@ author_profile: true
 toc: true
 toc_label: "Inhalt"
 toc_icon: "user-circle"
+toc_collapse: true
 toc_sticky: true
 header:
   overlay_image: /assets/images/background.jpg

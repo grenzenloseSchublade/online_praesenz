@@ -421,3 +421,94 @@ header:
 ```
 
 Diese Methode ist besonders nützlich für Seiten mit vielen Abschnitten oder für Seiten, deren Inhalte häufig aktualisiert werden müssen.
+
+## Inhaltsverzeichnis (TOC)
+
+Das Inhaltsverzeichnis (Table of Contents, TOC) wird automatisch aus den Überschriften der Seite generiert. Es gibt zwei Möglichkeiten, ein TOC zu verwenden:
+
+### Natives TOC mit Minimal Mistakes
+
+Das native TOC von Minimal Mistakes kann über die Front Matter aktiviert werden:
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"  # Optional: Passt die Beschriftung an
+toc_icon: "list"     # Optional: Fügt ein Icon hinzu
+toc_sticky: true     # Optional: Macht das TOC scrollbar
+---
+```
+
+### Ausklappbares TOC
+
+Das ausklappbare TOC erweitert das native TOC von Minimal Mistakes um eine Ausklapp-Funktionalität. Es kann über die Front Matter aktiviert werden:
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"  # Wird vom ausklappbaren TOC verwendet
+toc_icon: "list"     # Wird vom ausklappbaren TOC verwendet
+toc_collapse: true   # Macht das TOC ausklappbar
+---
+```
+
+### Parameter des ausklappbaren TOC
+
+Das ausklappbare TOC unterstützt alle Parameter des nativen TOC von Minimal Mistakes:
+
+- `toc`: Aktiviert das TOC (muss `true` sein)
+- `toc_label`: Die Beschriftung des TOC (Standard: "Inhalt")
+- `toc_icon`: Das Icon für das TOC (Standard: "file-alt")
+- `toc_sticky`: Wenn `true`, bleibt das TOC beim Scrollen sichtbar
+- `toc_collapse`: Wenn `true`, wird das TOC ausklappbar gemacht
+
+### Beispiele
+
+#### Standard-TOC
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+---
+```
+
+#### Ausklappbares TOC
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_collapse: true
+---
+```
+
+#### Ausklappbares TOC mit Sticky-Funktion
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_collapse: true
+toc_sticky: true
+---
+```
+
+### Automatische Erkennung des Farbschemas
+
+Das ausklappbare TOC erkennt automatisch, ob die Seite ein dunkles oder helles Farbschema verwendet, und passt sein Erscheinungsbild entsprechend an. Es verwendet dafür mehrere Methoden:
+
+1. Prüfung der Hintergrundfarbe des `<body>`-Elements
+2. Prüfung der Hintergrundfarbe des `.page__content`-Elements
+3. Prüfung, ob bestimmte Elemente vorhanden sind, die auf ein dunkles Design hinweisen
+4. Prüfung, ob das Minimal Mistakes Skin "dark" ist
+
+### Speicherung des Zustands
+
+Der Zustand des ausklappbaren TOC (ausgeklappt oder eingeklappt) wird im `localStorage` des Browsers gespeichert, sodass er beim nächsten Besuch der Seite wiederhergestellt wird.

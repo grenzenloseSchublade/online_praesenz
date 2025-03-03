@@ -7,6 +7,7 @@ toc: true
 toc_label: "Inhalt"
 toc_icon: "graduation-cap"
 toc_sticky: true
+toc_collapse: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
