@@ -2,7 +2,9 @@
 title: "Die faszinierende Welt der Mandelbrot-Menge"
 permalink: /mandelbrot/
 layout: single
-classes: wide
+classes: 
+  - wide
+  - full-width-page
 mathjax: true
 toc: true
 toc_label: "Inhalt"

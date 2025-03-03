@@ -53,7 +53,7 @@
     <div class="info-item">Doppelklick: Zoom +</div>
     <div class="info-item">Ziehen: Zoom-Bereich</div>
     <div class="info-item">Aktuelle Position: <span id="positionInfo">0 + 0i</span></div>
-    <div class="info-item">Zoom: <span id="zoomInfo">1x</span></div>
+    <div class="info-item">Zoom: <span id="zoomInfo">1×</span></div>
   </div>
   
   <div class="canvas-container">
@@ -65,7 +65,7 @@
     <div class="mobile-zoom-control" id="juliaMobileZoom">
       <div class="zoom-buttons-container">
         <button class="zoom-button zoom-in" id="juliaZoomIn">+</button>
-        <div class="zoom-level-display" id="juliaZoomValue">1.00×</div>
+        <div class="zoom-level-display" id="juliaZoomLevel">1.00×</div>
         <button class="zoom-button zoom-out" id="juliaZoomOut">−</button>
       </div>
     </div>
@@ -431,36 +431,50 @@
     display: none; /* Standardmäßig ausgeblendet, wird per JavaScript für Mobilgeräte aktiviert */
     flex-direction: row;
     align-items: center;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 20px;
-    padding: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 6px 8px;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   /* Angepasste Position für den mobilen Zoom-Regler */
   @media (max-width: 768px) {
     .mobile-zoom-control {
-      right: 10px;
+      right: 5px;
       bottom: 70px; /* Position über der Info-Panel */
       flex-direction: row;
-      padding: 8px;
+      padding: 5px 6px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+    }
+    
+    .zoom-button {
+      width: 26px;
+      height: 26px;
+      font-size: 16px;
+    }
+    
+    .zoom-level-display {
+      font-size: 12px;
+      padding: 2px 5px;
+      min-width: 40px;
     }
   }
   
   .zoom-buttons-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   
   .zoom-button {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #444;
     color: white;
-    font-size: 24px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -468,6 +482,8 @@
     user-select: none;
     padding: 0;
     line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: none;
   }
   
   .zoom-button:hover {
@@ -476,23 +492,35 @@
   
   .zoom-button:active {
     transform: scale(0.95);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
   }
   
   .zoom-level-display {
     color: white;
-    font-size: 14px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 10px;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 8px;
     text-align: center;
-    min-width: 50px;
-    font-weight: bold;
-    margin: 0 5px;
+    min-width: 45px;
+    font-weight: normal;
+    margin: 0 3px;
   }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Hilfsfunktion zur Formatierung der Zoom-Stufe
+  function formatZoomLevel(level) {
+    if (level >= 10) {
+      return level.toFixed(0) + '×';
+    } else if (level >= 1) {
+      return level.toFixed(1) + '×';
+    } else {
+      return level.toFixed(2) + '×';
+    }
+  }
+  
   // Canvas und Kontext
   const canvas = document.getElementById('juliaCanvas');
   const ctx = canvas.getContext('2d');
@@ -711,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function() {
               // Wenn alle Chunks fertig sind
               if (completedChunks === numWorkers) {
                 loadingIndicator.style.display = 'none';
-                zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+                zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
                 
                 // Speichere Iterationsdaten für Echtzeit-Informationen
                 if (result.iterationData) {
@@ -832,7 +860,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewX = 0;
     viewY = 0;
     zoomLevel = 1;
-    zoomInfoSpan.textContent = '1x';
+    zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
     
     // Farbintensität zurücksetzen
     useIntensePalettes = false;
@@ -881,7 +909,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewX = 0;
     viewY = 0;
     zoomLevel = 1;
-    zoomInfoSpan.textContent = '1x';
+    zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
     safeCalculateJulia();
   });
   
@@ -927,11 +955,11 @@ document.addEventListener('DOMContentLoaded', function() {
     viewY = yMouse;
     
     // Zoom-Info aktualisieren
-    zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+    zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
     
     // Aktualisiere auch den mobilen Zoom-Wert
-    if (juliaZoomValue) {
-      juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+    if (juliaZoomLevel) {
+      juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
     }
     
     safeCalculateJulia();
@@ -1037,11 +1065,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Zoom-Info aktualisieren
-        zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+        zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
         
         // Aktualisiere auch den mobilen Zoom-Wert
-        if (juliaZoomValue) {
-          juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+        if (juliaZoomLevel) {
+          juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
         }
         
         safeCalculateJulia();
@@ -1068,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function() {
       viewY = yMouse;
       
       // Zoom-Info aktualisieren (obwohl sich der Zoom-Level nicht ändert)
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       safeCalculateJulia();
     }
@@ -1092,11 +1120,11 @@ document.addEventListener('DOMContentLoaded', function() {
       zoomLevel *= 2;
       
       // Zoom-Info aktualisieren
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       // Aktualisiere auch den mobilen Zoom-Wert
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      if (juliaZoomLevel) {
+        juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
       }
       
       safeCalculateJulia();
@@ -1230,12 +1258,19 @@ document.addEventListener('DOMContentLoaded', function() {
   function setupMobileControls() {
     const juliaMobileZoom = document.getElementById('juliaMobileZoom');
     
-    if (isMobileDevice()) {
-      // Zeige mobile Steuerungen auf Smartphones
+    if (isMobileDevice() || window.innerWidth <= 768) {
+      // Zeige mobile Steuerungen auf Smartphones und Tablets
       if (juliaMobileZoom) juliaMobileZoom.style.display = 'flex';
       
       // Passe Auflösung für mobile Geräte an
       adjustCanvasResolution();
+      
+      // Passe die Position des Zoom-Controls an
+      const infoPanel = document.querySelector('.info-panel');
+      if (infoPanel && juliaMobileZoom) {
+        const infoPanelHeight = infoPanel.offsetHeight;
+        juliaMobileZoom.style.bottom = (infoPanelHeight + 10) + 'px';
+      }
     } else {
       // Verstecke mobile Steuerungen auf Desktop
       if (juliaMobileZoom) juliaMobileZoom.style.display = 'none';
@@ -1269,28 +1304,28 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Zoom-Steuerung für Julia-Set
-  const juliaZoomValue = document.getElementById('juliaZoomValue');
+  const juliaZoomLevel = document.getElementById('juliaZoomLevel');
   const juliaZoomInBtn = document.getElementById('juliaZoomIn');
   const juliaZoomOutBtn = document.getElementById('juliaZoomOut');
 
   // Initialisiere Zoom-Wert-Anzeige
-  if (juliaZoomValue) {
-    juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+  if (juliaZoomLevel) {
+    juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
   }
 
   // Zoom-Buttons für Julia-Set
   if (juliaZoomInBtn) {
     juliaZoomInBtn.addEventListener('click', function() {
-      zoomLevel *= 1.5;
-      zoomLevel = Math.min(1000, zoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick
+      zoomLevel = Math.min(zoomLevel * 1.5, 1000);
       
       // Aktualisiere Anzeige
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      if (juliaZoomLevel) {
+        juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
       }
       
       // Aktualisiere auch die Zoom-Info im Hauptbereich
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       calculateJulia();
     });
@@ -1298,16 +1333,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (juliaZoomOutBtn) {
     juliaZoomOutBtn.addEventListener('click', function() {
-      zoomLevel /= 1.5;
-      zoomLevel = Math.max(0.1, zoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick (rückwärts)
+      zoomLevel = Math.max(zoomLevel / 1.5, 0.1);
       
       // Aktualisiere Anzeige
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      if (juliaZoomLevel) {
+        juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
       }
       
       // Aktualisiere auch die Zoom-Info im Hauptbereich
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       calculateJulia();
     });
@@ -1382,11 +1417,11 @@ document.addEventListener('DOMContentLoaded', function() {
       viewY = complexY;
       
       // Aktualisiere Zoom-Info
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       // Aktualisiere auch den mobilen Zoom-Wert
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      if (juliaZoomLevel) {
+        juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
       }
       
       // Berechne Julia-Set neu
@@ -1452,11 +1487,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const rect = canvas.getBoundingClientRect();
       
       // Aktualisiere Zoom-Info
-      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
       
       // Aktualisiere auch den mobilen Zoom-Wert
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      if (juliaZoomLevel) {
+        juliaZoomLevel.textContent = formatZoomLevel(zoomLevel);
       }
       
       // Aktualisiere letzte Werte

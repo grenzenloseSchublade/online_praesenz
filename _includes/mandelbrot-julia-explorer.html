@@ -43,12 +43,11 @@
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
         <div class="mobile-zoom-control" id="mandelbrotMobileZoom">
-          <div class="zoom-slider-container">
-            <button class="zoom-button zoom-in">+</button>
-            <input type="range" class="zoom-slider" id="mandelbrotZoomSlider" min="0" max="100" value="0" orient="vertical">
-            <button class="zoom-button zoom-out">−</button>
+          <div class="zoom-buttons-container">
+            <button class="zoom-button zoom-in" id="mandelbrotZoomIn">+</button>
+            <div class="zoom-level-display" id="mandelbrotZoomLevel">1.00×</div>
+            <button class="zoom-button zoom-out" id="mandelbrotZoomOut">−</button>
           </div>
-          <div class="zoom-level-display" id="mandelbrotZoomLevel">1.00×</div>
         </div>
       </div>
       <div class="info-panel">
@@ -63,12 +62,11 @@
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
         <div class="mobile-zoom-control" id="juliaMobileZoom">
-          <div class="zoom-slider-container">
-            <button class="zoom-button zoom-in">+</button>
-            <input type="range" class="zoom-slider" id="juliaZoomSlider" min="0" max="100" value="0" orient="vertical">
-            <button class="zoom-button zoom-out">−</button>
+          <div class="zoom-buttons-container">
+            <button class="zoom-button zoom-in" id="juliaZoomIn">+</button>
+            <div class="zoom-level-display" id="juliaZoomLevel">1.00×</div>
+            <button class="zoom-button zoom-out" id="juliaZoomOut">−</button>
           </div>
-          <div class="zoom-level-display" id="juliaZoomLevel">1.00×</div>
         </div>
       </div>
       <div class="info-panel">
@@ -88,6 +86,8 @@
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .explorer-main-title {
@@ -163,6 +163,16 @@
   
   /* Media Query für mobile Geräte */
   @media (max-width: 768px) {
+    .explorer-container {
+      padding: 10px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    
     .color-control-item select,
     .color-control-item button {
       max-width: 100%;
@@ -171,16 +181,6 @@
     
     .color-controls-group {
       flex-direction: column;
-    }
-    
-    .explorer-container {
-      padding: 10px;
-      width: 100%;
-      max-width: 100vw;
-      margin-left: 0;
-      margin-right: 0;
-      box-sizing: border-box;
-      overflow-x: hidden;
     }
     
     .toggle-button {
@@ -359,44 +359,48 @@
     display: none; /* Standardmäßig ausgeblendet, wird per JavaScript für Mobilgeräte aktiviert */
     flex-direction: column;
     align-items: center;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
-    padding: 10px 5px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 5px 3px;
     z-index: 10;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
   
   @media (max-width: 768px) {
     .mobile-zoom-control {
       right: 5px;
-      padding: 8px 4px;
+      padding: 4px 2px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
     }
     
     .zoom-button {
-      width: 28px;
-      height: 28px;
-      font-size: 16px;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
     }
     
     .zoom-level-display {
-      font-size: 12px;
-      padding: 2px 6px;
+      font-size: 11px;
+      padding: 1px 4px;
+      margin: 2px 0;
     }
   }
   
-  .zoom-slider-container {
+  .zoom-buttons-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
   
   .zoom-button {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: #444;
     color: white;
-    font-size: 18px;
+    font-size: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,6 +408,9 @@
     user-select: none;
     padding: 0;
     line-height: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: none;
+    transition: background-color 0.2s, transform 0.1s;
   }
   
   .zoom-button:hover {
@@ -411,67 +418,19 @@
   }
   
   .zoom-button:active {
-    transform: scale(0.95);
-  }
-  
-  .zoom-slider {
-    width: 120px;
-    height: 6px;
-    -webkit-appearance: none;
-    background: #444;
-    outline: none;
-    border-radius: 3px;
-    transform: rotate(90deg);
-    margin: 40px 0;
-  }
-  
-  .zoom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #0066cc;
-    border-radius: 50%;
-    cursor: pointer;
+    transform: scale(0.92);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
   }
   
   .zoom-level-display {
     color: white;
-    font-size: 14px;
-    margin-top: 5px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 3px 8px;
-    border-radius: 10px;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 1px 5px;
+    border-radius: 6px;
     text-align: center;
-  }
-  
-  /* Für Firefox */
-  .zoom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #0066cc;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-  }
-  
-  /* Für IE/Edge */
-  .zoom-slider::-ms-thumb {
-    width: 20px;
-    height: 20px;
-    background: #0066cc;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  /* Für vertikale Ausrichtung in Firefox */
-  @supports (-moz-appearance:none) {
-    .zoom-slider {
-      writing-mode: bt-lr; /* Vertikaler Slider in Firefox */
-      transform: none;
-      height: 120px;
-      width: 6px;
-      margin: 0;
-    }
+    margin: 3px 0;
+    min-width: 40px;
   }
 </style>
 
@@ -1244,136 +1203,97 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('DOMContentLoaded', setupMobileControls);
   window.addEventListener('resize', setupMobileControls);
 
-  // Zoom-Slider für Mandelbrot-Set
-  const mandelbrotZoomSlider = document.getElementById('mandelbrotZoomSlider');
-  const mandelbrotZoomValue = document.getElementById('mandelbrotZoomValue');
+  // Hilfsfunktion zur Formatierung der Zoom-Stufe
+  function formatZoomLevel(level) {
+    if (level >= 10) {
+      return level.toFixed(0) + '×';
+    } else if (level >= 1) {
+      return level.toFixed(1) + '×';
+    } else {
+      return level.toFixed(2) + '×';
+    }
+  }
+  
+  // Mandelbrot Zoom-Funktionalität
+  const mandelbrotZoomValue = document.getElementById('mandelbrotZoomLevel');
   const mandelbrotZoomInBtn = document.getElementById('mandelbrotZoomIn');
   const mandelbrotZoomOutBtn = document.getElementById('mandelbrotZoomOut');
-
-  if (mandelbrotZoomSlider) {
-    // Initialisiere Slider mit aktuellem Zoom-Wert
-    mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
-    if (mandelbrotZoomValue) {
-      mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
-    }
-
-    // Event-Listener für Zoom-Slider
-    mandelbrotZoomSlider.addEventListener('input', function() {
-      // Berechne Zoom-Level aus Slider-Position (logarithmische Skala)
-      const sliderValue = parseFloat(this.value);
-      mandelbrotZoomLevel = Math.pow(10, (sliderValue - 50) / 50);
-      
-      // Begrenze Zoom-Level
-      mandelbrotZoomLevel = Math.max(0.1, Math.min(1000, mandelbrotZoomLevel));
-      
-      // Aktualisiere Anzeige
-      if (mandelbrotZoomValue) {
-        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
-      }
-      
-      // Berechne Mandelbrot-Set neu
-      calculateMandelbrot();
-    });
+  
+  // Initialisierung der Zoom-Anzeige
+  if (mandelbrotZoomValue) {
+    mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
   }
-
-  // Zoom-Buttons für Mandelbrot-Set
+  
+  // Zoom-In Button für Mandelbrot
   if (mandelbrotZoomInBtn) {
     mandelbrotZoomInBtn.addEventListener('click', function() {
-      mandelbrotZoomLevel *= 1.5;
-      mandelbrotZoomLevel = Math.min(1000, mandelbrotZoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick
+      mandelbrotZoomLevel = Math.min(mandelbrotZoomLevel * 1.5, 1000);
       
-      // Aktualisiere Slider und Anzeige
-      if (mandelbrotZoomSlider) {
-        mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
-      }
+      // Aktualisiere die Zoom-Anzeige
       if (mandelbrotZoomValue) {
-        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+        mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
       }
       
+      // Berechne Mandelbrot neu
       calculateMandelbrot();
     });
   }
-
+  
+  // Zoom-Out Button für Mandelbrot
   if (mandelbrotZoomOutBtn) {
     mandelbrotZoomOutBtn.addEventListener('click', function() {
-      mandelbrotZoomLevel /= 1.5;
-      mandelbrotZoomLevel = Math.max(0.1, mandelbrotZoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick (rückwärts)
+      mandelbrotZoomLevel = Math.max(mandelbrotZoomLevel / 1.5, 0.1);
       
-      // Aktualisiere Slider und Anzeige
-      if (mandelbrotZoomSlider) {
-        mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
-      }
+      // Aktualisiere die Zoom-Anzeige
       if (mandelbrotZoomValue) {
-        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+        mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
       }
       
+      // Berechne Mandelbrot neu
       calculateMandelbrot();
     });
   }
-
-  // Zoom-Slider für Julia-Set
-  const juliaZoomSlider = document.getElementById('juliaZoomSlider');
-  const juliaZoomValue = document.getElementById('juliaZoomValue');
+  
+  // Julia Zoom-Funktionalität
+  const juliaZoomValue = document.getElementById('juliaZoomLevel');
   const juliaZoomInBtn = document.getElementById('juliaZoomIn');
   const juliaZoomOutBtn = document.getElementById('juliaZoomOut');
-
-  if (juliaZoomSlider) {
-    // Initialisiere Slider mit aktuellem Zoom-Wert
-    juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
-    if (juliaZoomValue) {
-      juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
-    }
-
-    // Event-Listener für Zoom-Slider
-    juliaZoomSlider.addEventListener('input', function() {
-      // Berechne Zoom-Level aus Slider-Position (logarithmische Skala)
-      const sliderValue = parseFloat(this.value);
-      juliaZoomLevel = Math.pow(10, (sliderValue - 50) / 50);
-      
-      // Begrenze Zoom-Level
-      juliaZoomLevel = Math.max(0.1, Math.min(1000, juliaZoomLevel));
-      
-      // Aktualisiere Anzeige
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
-      }
-      
-      // Berechne Julia-Set neu
-      calculateJulia();
-    });
+  
+  // Initialisierung der Zoom-Anzeige
+  if (juliaZoomValue) {
+    juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
   }
-
-  // Zoom-Buttons für Julia-Set
+  
+  // Zoom-In Button für Julia
   if (juliaZoomInBtn) {
     juliaZoomInBtn.addEventListener('click', function() {
-      juliaZoomLevel *= 1.5;
-      juliaZoomLevel = Math.min(1000, juliaZoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick
+      juliaZoomLevel = Math.min(juliaZoomLevel * 1.5, 1000);
       
-      // Aktualisiere Slider und Anzeige
-      if (juliaZoomSlider) {
-        juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
-      }
+      // Aktualisiere die Zoom-Anzeige
       if (juliaZoomValue) {
-        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+        juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
       }
       
+      // Berechne Julia neu
       calculateJulia();
     });
   }
-
+  
+  // Zoom-Out Button für Julia
   if (juliaZoomOutBtn) {
     juliaZoomOutBtn.addEventListener('click', function() {
-      juliaZoomLevel /= 1.5;
-      juliaZoomLevel = Math.max(0.1, juliaZoomLevel);
+      // Zoom-Faktor: 1.5x pro Klick (rückwärts)
+      juliaZoomLevel = Math.max(juliaZoomLevel / 1.5, 0.1);
       
-      // Aktualisiere Slider und Anzeige
-      if (juliaZoomSlider) {
-        juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
-      }
+      // Aktualisiere die Zoom-Anzeige
       if (juliaZoomValue) {
-        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+        juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
       }
       
+      // Berechne Julia neu
       calculateJulia();
     });
   }
