@@ -60,6 +60,17 @@
     <canvas id="juliaCanvas" width="800" height="450"></canvas>
     <div id="zoomBox" class="zoom-box"></div>
     <div class="loading-indicator" id="loadingIndicator">Berechne...</div>
+    
+    <!-- Seitlicher Zoom-Regler für Smartphones -->
+    <div class="mobile-zoom-control" id="juliaMobileZoom">
+      <div class="zoom-slider-container">
+        <button class="zoom-button zoom-in" id="juliaZoomIn">+</button>
+        <input type="range" class="zoom-slider" id="juliaZoomSlider" min="0" max="100" value="50" orient="vertical">
+        <button class="zoom-button zoom-out" id="juliaZoomOut">−</button>
+      </div>
+      <div class="zoom-level-display" id="juliaZoomValue">1.00×</div>
+    </div>
+    
     <div class="info-panel">
       <p>Position: <span id="mousePosition" class="info-value">(0, 0)</span></p>
       <p>Komplexe Zahl: <span id="complexValue" class="info-value">0 + 0i</span></p>
@@ -411,6 +422,112 @@
     background: #0066cc;
     color: white;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+  }
+  
+  /* Seitlicher Zoom-Regler für Smartphones */
+  .mobile-zoom-control {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; /* Standardmäßig ausgeblendet, wird per JavaScript für Mobilgeräte aktiviert */
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 10px 5px;
+    z-index: 10;
+  }
+  
+  .zoom-slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .zoom-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #444;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .zoom-button:hover {
+    background: #555;
+  }
+  
+  .zoom-button:active {
+    transform: scale(0.95);
+  }
+  
+  .zoom-slider {
+    width: 120px;
+    height: 6px;
+    -webkit-appearance: none;
+    background: #444;
+    outline: none;
+    border-radius: 3px;
+    transform: rotate(90deg);
+    margin: 40px 0;
+  }
+  
+  .zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .zoom-level-display {
+    color: white;
+    font-size: 14px;
+    margin-top: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  /* Für Firefox */
+  .zoom-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+  
+  /* Für IE/Edge */
+  .zoom-slider::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  /* Für vertikale Ausrichtung in Firefox */
+  @supports (-moz-appearance:none) {
+    .zoom-slider {
+      writing-mode: bt-lr; /* Vertikaler Slider in Firefox */
+      transform: none;
+      height: 120px;
+      width: 6px;
+      margin: 0;
+    }
   }
 </style>
 
@@ -992,169 +1109,292 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
   
+  // Funktion zum Erkennen von Mobilgeräten
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  // Zeige oder verstecke mobile Zoom-Steuerungen basierend auf Gerätetyp
+  function setupMobileControls() {
+    const juliaMobileZoom = document.getElementById('juliaMobileZoom');
+    
+    if (isMobileDevice()) {
+      // Zeige mobile Steuerungen auf Smartphones
+      if (juliaMobileZoom) juliaMobileZoom.style.display = 'flex';
+      
+      // Passe Auflösung für mobile Geräte an
+      adjustCanvasResolution();
+    } else {
+      // Verstecke mobile Steuerungen auf Desktop
+      if (juliaMobileZoom) juliaMobileZoom.style.display = 'none';
+    }
+  }
+
+  // Funktion zur Anpassung der Canvas-Auflösung auf Mobilgeräten
+  function adjustCanvasResolution() {
+    // Prüfe, ob es sich um ein Mobilgerät handelt
+    const isMobile = isMobileDevice();
+    
+    if (isMobile) {
+      // Reduziere die Auflösung für bessere Performance
+      const scaleFactor = 0.75; // 75% der ursprünglichen Auflösung
+      
+      // Canvas anpassen
+      const originalWidth = canvas.width;
+      const originalHeight = canvas.height;
+      canvas.width = Math.floor(originalWidth * scaleFactor);
+      canvas.height = Math.floor(originalHeight * scaleFactor);
+      
+      // Neuberechnung mit reduzierter Auflösung
+      calculateJulia();
+    }
+  }
+
+  // Initialisiere mobile Steuerungen beim Laden
+  document.addEventListener('DOMContentLoaded', setupMobileControls);
+  window.addEventListener('resize', setupMobileControls);
+
+  // Zoom-Slider für Julia-Set
+  const juliaZoomSlider = document.getElementById('juliaZoomSlider');
+  const juliaZoomValue = document.getElementById('juliaZoomValue');
+  const juliaZoomInBtn = document.getElementById('juliaZoomIn');
+  const juliaZoomOutBtn = document.getElementById('juliaZoomOut');
+
+  if (juliaZoomSlider) {
+    // Initialisiere Slider mit aktuellem Zoom-Wert
+    juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+    if (juliaZoomValue) {
+      juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+    }
+
+    // Event-Listener für Zoom-Slider
+    juliaZoomSlider.addEventListener('input', function() {
+      // Berechne Zoom-Level aus Slider-Position (logarithmische Skala)
+      const sliderValue = parseFloat(this.value);
+      zoomLevel = Math.pow(10, (sliderValue - 50) / 50);
+      
+      // Begrenze Zoom-Level
+      zoomLevel = Math.max(0.1, Math.min(1000, zoomLevel));
+      
+      // Aktualisiere Anzeige
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Aktualisiere auch die Zoom-Info im Hauptbereich
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
+      // Berechne Julia-Set neu
+      calculateJulia();
+    });
+  }
+
+  // Zoom-Buttons für Julia-Set
+  if (juliaZoomInBtn) {
+    juliaZoomInBtn.addEventListener('click', function() {
+      zoomLevel *= 1.5;
+      zoomLevel = Math.min(1000, zoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Aktualisiere auch die Zoom-Info im Hauptbereich
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
+      calculateJulia();
+    });
+  }
+
+  if (juliaZoomOutBtn) {
+    juliaZoomOutBtn.addEventListener('click', function() {
+      zoomLevel /= 1.5;
+      zoomLevel = Math.max(0.1, zoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Aktualisiere auch die Zoom-Info im Hauptbereich
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
+      calculateJulia();
+    });
+  }
+  
   // Variable für Doppeltipp-Erkennung
   let lastTapTime = 0;
   
   // Touch-Start-Handler
   canvas.addEventListener('touchstart', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    e.preventDefault();
     
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
+    // Speichere die aktuelle Zeit für Doppeltipp-Erkennung
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
+    
+    // Speichere die Berührungsposition
+    if (e.touches.length === 1) {
+      // Ein-Finger-Berührung für Verschiebung
+      const touch = e.touches[0];
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+      isTouching = true;
+    } else if (e.touches.length === 2) {
+      // Zwei-Finger-Berührung für Zoom
       const touch1 = e.touches[0];
       const touch2 = e.touches[1];
       
       // Berechne Abstand zwischen den Fingern
-      lastTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
+      const dx = touch1.clientX - touch2.clientX;
+      const dy = touch1.clientY - touch2.clientY;
+      lastTouchDistance = Math.sqrt(dx * dx + dy * dy);
       
       // Berechne Mittelpunkt der Berührung
-      const rect = canvas.getBoundingClientRect();
-      lastTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
+      touchCenterX = (touch1.clientX + touch2.clientX) / 2;
+      touchCenterY = (touch1.clientY + touch2.clientY) / 2;
       
-      isTouching = true;
-    } else if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
+      isZooming = true;
+      isTouching = false;
+    }
+    
+    // Doppeltipp-Erkennung für Zoom
+    if (tapLength < 300 && tapLength > 0 && e.touches.length === 1) {
+      // Doppeltipp erkannt - zoome hinein
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
       
-      lastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
+      // Berechne komplexe Koordinaten
+      const complexX = viewX + (x / canvas.width - 0.5) * 4 / zoomLevel;
+      const complexY = viewY + (y / canvas.height - 0.5) * 4 / zoomLevel;
       
-      isTouching = true;
+      // Zoome hinein und zentriere auf Berührungspunkt
+      zoomLevel *= 2;
+      viewX = complexX;
+      viewY = complexY;
+      
+      // Aktualisiere Zoom-Info
+      zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
+      
+      // Aktualisiere auch den mobilen Zoom-Slider
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Berechne Julia-Set neu
+      calculateJulia();
+      
+      e.preventDefault();
     }
+    
+    lastTapTime = currentTime;
   });
   
-  // Touch-Move-Handler mit Drosselung
+  // Touch-Move-Handler
   canvas.addEventListener('touchmove', throttleTouch(function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    e.preventDefault();
     
-    if (!isTouching || isCalculating) return;
-    
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
+    if (e.touches.length === 1 && isTouching) {
+      // Ein-Finger-Verschiebung
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - lastTouchX;
+      const deltaY = touch.clientY - lastTouchY;
+      
+      // Berechne Verschiebung in komplexen Koordinaten
+      const complexDeltaX = -deltaX * 4 / (canvas.width * zoomLevel);
+      const complexDeltaY = -deltaY * 4 / (canvas.height * zoomLevel);
+      
+      // Aktualisiere Ansichtsposition
+      viewX += complexDeltaX;
+      viewY += complexDeltaY;
+      
+      // Aktualisiere letzte Berührungsposition
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+      
+      // Berechne Julia-Set neu, wenn die Verschiebung signifikant ist
+      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+        calculateJulia();
+      }
+    } else if (e.touches.length === 2 && isZooming) {
+      // Zwei-Finger-Zoom
       const touch1 = e.touches[0];
       const touch2 = e.touches[1];
       
       // Berechne neuen Abstand zwischen den Fingern
-      const newTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
+      const dx = touch1.clientX - touch2.clientX;
+      const dy = touch1.clientY - touch2.clientY;
+      const newTouchDistance = Math.sqrt(dx * dx + dy * dy);
+      
+      // Berechne Zoom-Faktor
+      const zoomFactor = newTouchDistance / lastTouchDistance;
       
       // Berechne neuen Mittelpunkt der Berührung
-      const rect = canvas.getBoundingClientRect();
-      const newTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
+      const newTouchCenterX = (touch1.clientX + touch2.clientX) / 2;
+      const newTouchCenterY = (touch1.clientY + touch2.clientY) / 2;
       
-      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
-      const zoomChange = newTouchDistance / lastTouchDistance;
+      // Berechne Verschiebung des Mittelpunkts
+      const deltaX = newTouchCenterX - touchCenterX;
+      const deltaY = newTouchCenterY - touchCenterY;
       
-      // Position im komplexen Koordinatensystem
-      const xRange = 3.0 / zoomLevel;
-      const yRange = 3.0 / zoomLevel;
-      const xTouch = viewX + (lastTouchCenter.x / canvas.width - 0.5) * xRange;
-      const yTouch = viewY + (lastTouchCenter.y / canvas.height - 0.5) * yRange;
+      // Aktualisiere Zoom-Level
+      const oldZoomLevel = zoomLevel;
+      zoomLevel *= zoomFactor;
       
-      // Zoom anpassen
-      zoomLevel *= zoomChange;
-      
-      // Begrenzung des Zooms
+      // Begrenze Zoom-Level
       zoomLevel = Math.max(0.1, Math.min(1000, zoomLevel));
       
-      // Ansicht auf Touch-Position zentrieren
-      viewX = xTouch;
-      viewY = yTouch;
+      // Aktualisiere Ansichtsposition basierend auf Zoom und Mittelpunkt
+      const rect = canvas.getBoundingClientRect();
+      const centerX = (touchCenterX - rect.left) / canvas.width;
+      const centerY = (touchCenterY - rect.top) / canvas.height;
       
-      // Aktualisiere für nächsten Move-Event
-      lastTouchDistance = newTouchDistance;
-      lastTouchCenter = newTouchCenter;
-      
-      // Zoom-Info aktualisieren
+      // Aktualisiere Zoom-Info
       zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
       
-      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
-      if (Math.abs(zoomChange - 1) > 0.1) { // Erhöhter Schwellenwert
-        calculateJulia();
+      // Aktualisiere auch den mobilen Zoom-Slider
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(zoomLevel) * 50 + 50;
       }
-    } else if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = zoomLevel.toFixed(1) + 'x';
+      }
       
-      const newTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
+      // Aktualisiere letzte Werte
+      lastTouchDistance = newTouchDistance;
+      touchCenterX = newTouchCenterX;
+      touchCenterY = newTouchCenterY;
       
-      // Berechne Verschiebung in Pixel
-      const deltaX = newTouchCenter.x - lastTouchCenter.x;
-      const deltaY = newTouchCenter.y - lastTouchCenter.y;
-      
-      // Umrechnung in komplexe Koordinaten
-      const xRange = 3.0 / zoomLevel;
-      const yRange = 3.0 / zoomLevel;
-      
-      // Verschiebe Ansicht
-      viewX -= (deltaX / canvas.width) * xRange;
-      viewY -= (deltaY / canvas.height) * yRange;
-      
-      // Aktualisiere für nächsten Move-Event
-      lastTouchCenter = newTouchCenter;
-      
-      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
-      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) { // Erhöhter Schwellenwert
+      // Berechne Julia-Set neu, wenn die Zoom-Änderung signifikant ist
+      if (Math.abs(oldZoomLevel - zoomLevel) > 0.05) {
         calculateJulia();
       }
     }
-  }, touchThrottleDelay));
+  }, 50));
   
   // Touch-End-Handler
   canvas.addEventListener('touchend', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
+    e.preventDefault();
     
-    if (e.touches.length === 0) {
-      isTouching = false;
-      
-      // Prüfe auf Doppeltipp
-      const currentTime = new Date().getTime();
-      const tapLength = currentTime - lastTapTime;
-      
-      if (tapLength < 500 && tapLength > 0) {
-        // Doppeltipp erkannt - zoome hinein
-        zoomLevel *= 2;
-        
-        // Zoom-Info aktualisieren
-        zoomInfoSpan.textContent = zoomLevel.toFixed(2) + 'x';
-        
-        calculateJulia();
-      }
-      
-      lastTapTime = currentTime;
-      
-      // Finale Berechnung mit voller Qualität
-      if (!isCalculating) {
-        calculateJulia();
-      }
-    } else if (e.touches.length === 1) {
-      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
-      
-      lastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-    }
+    // Setze Flags zurück
+    isTouching = false;
+    isZooming = false;
+    
+    // Berechne Julia-Set neu
+    calculateJulia();
   });
   
   // Aktualisiere Info-Text für Touch-Geräte
@@ -1175,26 +1415,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Reduziere die Auflösung auf Mobilgeräten
       adjustCanvasResolution();
-    }
-  }
-  
-  // Funktion zur Anpassung der Canvas-Auflösung auf Mobilgeräten
-  function adjustCanvasResolution() {
-    // Prüfe, ob es sich um ein Mobilgerät handelt
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      // Reduziere die Auflösung für bessere Performance
-      const scaleFactor = 0.75; // 75% der ursprünglichen Auflösung
-      
-      // Canvas anpassen
-      const originalWidth = canvas.width;
-      const originalHeight = canvas.height;
-      canvas.width = Math.floor(originalWidth * scaleFactor);
-      canvas.height = Math.floor(originalHeight * scaleFactor);
-      
-      // Neuberechnung mit reduzierter Auflösung
-      calculateJulia();
     }
   }
   

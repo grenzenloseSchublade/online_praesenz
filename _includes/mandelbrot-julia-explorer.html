@@ -40,6 +40,16 @@
       <div class="canvas-container">
         <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
         <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
+        
+        <!-- Seitlicher Zoom-Regler für Smartphones -->
+        <div class="mobile-zoom-control" id="mandelbrotMobileZoom">
+          <div class="zoom-slider-container">
+            <button class="zoom-button zoom-in">+</button>
+            <input type="range" class="zoom-slider" id="mandelbrotZoomSlider" min="0" max="100" value="0" orient="vertical">
+            <button class="zoom-button zoom-out">−</button>
+          </div>
+          <div class="zoom-level-display" id="mandelbrotZoomLevel">1.00×</div>
+        </div>
       </div>
       <div class="info-panel">
         <p>Klicken Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>
@@ -50,6 +60,16 @@
       <div class="canvas-container">
         <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
+        
+        <!-- Seitlicher Zoom-Regler für Smartphones -->
+        <div class="mobile-zoom-control" id="juliaMobileZoom">
+          <div class="zoom-slider-container">
+            <button class="zoom-button zoom-in">+</button>
+            <input type="range" class="zoom-slider" id="juliaZoomSlider" min="0" max="100" value="0" orient="vertical">
+            <button class="zoom-button zoom-out">−</button>
+          </div>
+          <div class="zoom-level-display" id="juliaZoomLevel">1.00×</div>
+        </div>
       </div>
       <div class="info-panel">
         <p>Die Julia-Menge für den gewählten Parameter c.</p>
@@ -287,6 +307,112 @@
     background: #0066cc;
     color: white;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+  }
+  
+  /* Seitlicher Zoom-Regler für Smartphones */
+  .mobile-zoom-control {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; /* Standardmäßig ausgeblendet, wird per JavaScript für Mobilgeräte aktiviert */
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 10px 5px;
+    z-index: 10;
+  }
+  
+  .zoom-slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .zoom-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #444;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .zoom-button:hover {
+    background: #555;
+  }
+  
+  .zoom-button:active {
+    transform: scale(0.95);
+  }
+  
+  .zoom-slider {
+    width: 120px;
+    height: 6px;
+    -webkit-appearance: none;
+    background: #444;
+    outline: none;
+    border-radius: 3px;
+    transform: rotate(90deg);
+    margin: 40px 0;
+  }
+  
+  .zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .zoom-level-display {
+    color: white;
+    font-size: 14px;
+    margin-top: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  /* Für Firefox */
+  .zoom-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+  
+  /* Für IE/Edge */
+  .zoom-slider::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #0066cc;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  /* Für vertikale Ausrichtung in Firefox */
+  @supports (-moz-appearance:none) {
+    .zoom-slider {
+      writing-mode: bt-lr; /* Vertikaler Slider in Firefox */
+      transform: none;
+      height: 120px;
+      width: 6px;
+      margin: 0;
+    }
   }
 </style>
 
@@ -786,53 +912,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!mandelbrotIsTouching) return;
     
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      
-      // Berechne neuen Abstand zwischen den Fingern
-      const newTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-      
-      // Berechne neuen Mittelpunkt der Berührung
-      const rect = mandelbrotCanvas.getBoundingClientRect();
-      const newTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
-      
-      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
-      const zoomChange = newTouchDistance / mandelbrotLastTouchDistance;
-      
-      // Position im komplexen Koordinatensystem
-      const xRange = 3.0 / mandelbrotZoomLevel;
-      const yRange = 3.0 / mandelbrotZoomLevel;
-      const xTouch = mandelbrotViewX + (mandelbrotLastTouchCenter.x / mandelbrotCanvas.width - 0.5) * xRange;
-      const yTouch = mandelbrotViewY + (mandelbrotLastTouchCenter.y / mandelbrotCanvas.height - 0.5) * yRange;
-      
-      // Zoom anpassen
-      mandelbrotZoomLevel *= zoomChange;
-      
-      // Begrenzung des Zooms
-      mandelbrotZoomLevel = Math.max(0.1, Math.min(1000, mandelbrotZoomLevel));
-      
-      // Ansicht auf Touch-Position zentrieren
-      mandelbrotViewX = xTouch;
-      mandelbrotViewY = yTouch;
-      
-      // Aktualisiere für nächsten Move-Event
-      mandelbrotLastTouchDistance = newTouchDistance;
-      mandelbrotLastTouchCenter = newTouchCenter;
-      
-      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
-      if (Math.abs(zoomChange - 1) > 0.1) { // Erhöhter Schwellenwert
-        // Neuberechnung der Mandelbrot-Menge mit aktualisierten Zoom-Parametern
-        calculateMandelbrot();
-      }
-    } else if (e.touches.length === 1) {
+    // Änderung: Immer Ein-Finger-Geste für Verschieben verwenden
+    if (e.touches.length === 1) {
       // Ein-Finger-Geste für Verschieben
       const touch = e.touches[0];
       const rect = mandelbrotCanvas.getBoundingClientRect();
@@ -943,53 +1024,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!juliaIsTouching) return;
     
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      
-      // Berechne neuen Abstand zwischen den Fingern
-      const newTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-      
-      // Berechne neuen Mittelpunkt der Berührung
-      const rect = juliaCanvas.getBoundingClientRect();
-      const newTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
-      
-      // Berechne Zoom-Faktor basierend auf der Änderung des Fingerabstands
-      const zoomChange = newTouchDistance / juliaLastTouchDistance;
-      
-      // Position im komplexen Koordinatensystem
-      const xRange = 3.0 / juliaZoomLevel;
-      const yRange = 3.0 / juliaZoomLevel;
-      const xTouch = juliaViewX + (juliaLastTouchCenter.x / juliaCanvas.width - 0.5) * xRange;
-      const yTouch = juliaViewY + (juliaLastTouchCenter.y / juliaCanvas.height - 0.5) * yRange;
-      
-      // Zoom anpassen
-      juliaZoomLevel *= zoomChange;
-      
-      // Begrenzung des Zooms
-      juliaZoomLevel = Math.max(0.1, Math.min(1000, juliaZoomLevel));
-      
-      // Ansicht auf Touch-Position zentrieren
-      juliaViewX = xTouch;
-      juliaViewY = yTouch;
-      
-      // Aktualisiere für nächsten Move-Event
-      juliaLastTouchDistance = newTouchDistance;
-      juliaLastTouchCenter = newTouchCenter;
-      
-      // Nur neu berechnen, wenn sich der Zoom signifikant geändert hat
-      if (Math.abs(zoomChange - 1) > 0.1) { // Erhöhter Schwellenwert
-        // Neuberechnung der Julia-Menge mit aktualisierten Zoom-Parametern
-        calculateJulia();
-      }
-    } else if (e.touches.length === 1) {
+    // Änderung: Immer Ein-Finger-Geste für Verschieben verwenden
+    if (e.touches.length === 1) {
       // Ein-Finger-Geste für Verschieben
       const touch = e.touches[0];
       const rect = juliaCanvas.getBoundingClientRect();
@@ -1112,5 +1148,167 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Führe die Aktualisierung der Info-Texte nach dem Laden durch
   setTimeout(addTouchInfoText, 100);
+
+  // Funktion zum Erkennen von Mobilgeräten
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  // Zeige oder verstecke mobile Zoom-Steuerungen basierend auf Gerätetyp
+  function setupMobileControls() {
+    const mandelbrotMobileZoom = document.getElementById('mandelbrotMobileZoom');
+    const juliaMobileZoom = document.getElementById('juliaMobileZoom');
+    
+    if (isMobileDevice()) {
+      // Zeige mobile Steuerungen auf Smartphones
+      if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'flex';
+      if (juliaMobileZoom) juliaMobileZoom.style.display = 'flex';
+      
+      // Passe Auflösung für mobile Geräte an
+      adjustCanvasResolution();
+    } else {
+      // Verstecke mobile Steuerungen auf Desktop
+      if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'none';
+      if (juliaMobileZoom) juliaMobileZoom.style.display = 'none';
+    }
+  }
+
+  // Initialisiere mobile Steuerungen beim Laden
+  document.addEventListener('DOMContentLoaded', setupMobileControls);
+  window.addEventListener('resize', setupMobileControls);
+
+  // Zoom-Slider für Mandelbrot-Set
+  const mandelbrotZoomSlider = document.getElementById('mandelbrotZoomSlider');
+  const mandelbrotZoomValue = document.getElementById('mandelbrotZoomValue');
+  const mandelbrotZoomInBtn = document.getElementById('mandelbrotZoomIn');
+  const mandelbrotZoomOutBtn = document.getElementById('mandelbrotZoomOut');
+
+  if (mandelbrotZoomSlider) {
+    // Initialisiere Slider mit aktuellem Zoom-Wert
+    mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
+    if (mandelbrotZoomValue) {
+      mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+    }
+
+    // Event-Listener für Zoom-Slider
+    mandelbrotZoomSlider.addEventListener('input', function() {
+      // Berechne Zoom-Level aus Slider-Position (logarithmische Skala)
+      const sliderValue = parseFloat(this.value);
+      mandelbrotZoomLevel = Math.pow(10, (sliderValue - 50) / 50);
+      
+      // Begrenze Zoom-Level
+      mandelbrotZoomLevel = Math.max(0.1, Math.min(1000, mandelbrotZoomLevel));
+      
+      // Aktualisiere Anzeige
+      if (mandelbrotZoomValue) {
+        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Berechne Mandelbrot-Set neu
+      calculateMandelbrot();
+    });
+  }
+
+  // Zoom-Buttons für Mandelbrot-Set
+  if (mandelbrotZoomInBtn) {
+    mandelbrotZoomInBtn.addEventListener('click', function() {
+      mandelbrotZoomLevel *= 1.5;
+      mandelbrotZoomLevel = Math.min(1000, mandelbrotZoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (mandelbrotZoomSlider) {
+        mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
+      }
+      if (mandelbrotZoomValue) {
+        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+      }
+      
+      calculateMandelbrot();
+    });
+  }
+
+  if (mandelbrotZoomOutBtn) {
+    mandelbrotZoomOutBtn.addEventListener('click', function() {
+      mandelbrotZoomLevel /= 1.5;
+      mandelbrotZoomLevel = Math.max(0.1, mandelbrotZoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (mandelbrotZoomSlider) {
+        mandelbrotZoomSlider.value = Math.log10(mandelbrotZoomLevel) * 50 + 50;
+      }
+      if (mandelbrotZoomValue) {
+        mandelbrotZoomValue.textContent = mandelbrotZoomLevel.toFixed(1) + 'x';
+      }
+      
+      calculateMandelbrot();
+    });
+  }
+
+  // Zoom-Slider für Julia-Set
+  const juliaZoomSlider = document.getElementById('juliaZoomSlider');
+  const juliaZoomValue = document.getElementById('juliaZoomValue');
+  const juliaZoomInBtn = document.getElementById('juliaZoomIn');
+  const juliaZoomOutBtn = document.getElementById('juliaZoomOut');
+
+  if (juliaZoomSlider) {
+    // Initialisiere Slider mit aktuellem Zoom-Wert
+    juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
+    if (juliaZoomValue) {
+      juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+    }
+
+    // Event-Listener für Zoom-Slider
+    juliaZoomSlider.addEventListener('input', function() {
+      // Berechne Zoom-Level aus Slider-Position (logarithmische Skala)
+      const sliderValue = parseFloat(this.value);
+      juliaZoomLevel = Math.pow(10, (sliderValue - 50) / 50);
+      
+      // Begrenze Zoom-Level
+      juliaZoomLevel = Math.max(0.1, Math.min(1000, juliaZoomLevel));
+      
+      // Aktualisiere Anzeige
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+      }
+      
+      // Berechne Julia-Set neu
+      calculateJulia();
+    });
+  }
+
+  // Zoom-Buttons für Julia-Set
+  if (juliaZoomInBtn) {
+    juliaZoomInBtn.addEventListener('click', function() {
+      juliaZoomLevel *= 1.5;
+      juliaZoomLevel = Math.min(1000, juliaZoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+      }
+      
+      calculateJulia();
+    });
+  }
+
+  if (juliaZoomOutBtn) {
+    juliaZoomOutBtn.addEventListener('click', function() {
+      juliaZoomLevel /= 1.5;
+      juliaZoomLevel = Math.max(0.1, juliaZoomLevel);
+      
+      // Aktualisiere Slider und Anzeige
+      if (juliaZoomSlider) {
+        juliaZoomSlider.value = Math.log10(juliaZoomLevel) * 50 + 50;
+      }
+      if (juliaZoomValue) {
+        juliaZoomValue.textContent = juliaZoomLevel.toFixed(1) + 'x';
+      }
+      
+      calculateJulia();
+    });
+  }
 });
 </script> 
