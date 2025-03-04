@@ -1,5 +1,6 @@
 ---
 title: "Die faszinierende Welt der Mandelbrot-Menge"
+excerpt: "Tauchen Sie ein in die Welt mathematischer Fraktale und entdecken Sie die Schönheit der Mandelbrot-Menge. Durch interaktive Visualisierungen können Sie sowohl die Mandelbrot-Menge als auch ihre zugehörigen Julia-Mengen selbst erkunden und deren einzigartige Eigenschaften kennenlernen."
 permalink: /mandelbrot/
 layout: single
 author_profile: true

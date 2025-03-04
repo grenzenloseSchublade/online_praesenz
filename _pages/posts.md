@@ -1,12 +1,13 @@
 ---
 title: "Blog"
+excerpt: "Eine Sammlung an Beiträgen – eine bunte Mischung aus persönlichen Reflexionen, interessanten Themen und Projekten, die mich bewegen."
 permalink: /posts/
 layout: posts
 author_profile: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
-  caption: "Meine Gedanken und Projekte"
+  caption: "Gedanken und Projekte"
 ---
 
 Auf dieser Seite findest du eine Sammlung an Blogbeiträgen – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
