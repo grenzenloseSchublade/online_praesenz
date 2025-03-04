@@ -1,0 +1,17 @@
+// Typografie-Variablen für das gesamte Projekt
+// Diese Datei enthält alle Schriftarten, Größen und Stile
+
+// Schriftarten werden aus dem Theme übernommen
+// $sans-serif, $serif, $monospace sind bereits im Theme definiert
+
+// Schriftgrößen
+// Die meisten Schriftgrößen werden aus dem Theme übernommen ($type-size-1 bis $type-size-8)
+
+// Spezifische Anpassungen für bestimmte Elemente
+$site-title-font-size: 1.8em; // Größe des Seitentitels
+$nav-font-size: 1.0em; // Größe der Navigationslinks
+
+// Schriftstärken
+$normal-weight: 400;
+$medium-weight: 500;
+$bold-weight: 700;

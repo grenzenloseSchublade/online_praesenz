@@ -1,0 +1,19 @@
+// Layout-Variablen für das gesamte Projekt
+// Diese Datei enthält alle Abstände, Größen und Layout-bezogenen Variablen
+
+// Abstände
+$section-spacing: 2em; // Abstand zwischen Sektionen
+$element-spacing: 1em; // Standardabstand zwischen Elementen
+$small-spacing: 0.5em; // Kleiner Abstand
+
+// Größen
+$landing-section-min-width: 250px; // Minimale Breite für Landingpage-Sektionen
+
+// Effekte
+$hover-transform: translateY(-5px); // Transformation beim Hover
+$standard-transition: 0.3s ease; // Standard-Übergangseffekt
+$box-shadow-light: 0 0 10px rgba(0, 0, 0, 0.1); // Leichter Schatten
+$box-shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.2); // Mittlerer Schatten
+
+// Responsive Breakpoints werden aus dem Theme übernommen
+// $small, $medium, $large, $x-large sind bereits definiert

@@ -1,0 +1,26 @@
+// Zentrale Datei für alle benutzerdefinierten Styles
+// Diese Datei importiert alle Komponenten und Layouts
+
+// Komponenten importieren
+@import "components/toc";
+@import "components/buttons";
+@import "components/cards";
+@import "components/masthead";
+
+// Layouts importieren
+@import "layouts/home";
+@import "layouts/posts";
+@import "layouts/pages";
+
+// Globale Anpassungen
+
+// Textauswahl-Farben
+::selection {
+    background: $selection-bg;
+    color: $selection-text;
+}
+
+::-moz-selection {
+    background: $selection-bg;
+    color: $selection-text;
+}

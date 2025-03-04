@@ -1,0 +1,19 @@
+// Styles für die Startseite
+
+// Container für die Landingpage-Sektionen
+.landing-sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: $section-spacing;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+// Zentrieren von Elementen
+.text-center {
+    text-align: center;
+    margin: $section-spacing 0;
+}

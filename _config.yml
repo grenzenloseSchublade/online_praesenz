@@ -156,5 +156,6 @@ exclude:
 
 # Additional Styles
 sass:
+  sass_dir: assets/_sass
   style: compressed
   sourcemap: never

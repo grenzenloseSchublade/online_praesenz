@@ -1,0 +1,19 @@
+// Styles für Buttons und interaktive Elemente
+
+// Kategorie-Buttons
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: $section-spacing;
+}
+
+// Anpassungen für Standard-Buttons
+.btn {
+    // Hier können spezifische Anpassungen für die Standard-Buttons hinzugefügt werden
+    // Die Grundstile werden aus dem Theme übernommen
+    
+    &:hover {
+        color: $hover-color;
+    }
+}
