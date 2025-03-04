@@ -2,9 +2,10 @@
 title: "Die faszinierende Welt der Mandelbrot-Menge"
 permalink: /mandelbrot/
 layout: single
+author_profile: true
 classes: 
   - wide
-  - full-width-page
+  #- full-width-page
 mathjax: true
 toc: true
 toc_label: "Inhalt"
@@ -30,12 +31,9 @@ header:
   visibility: hidden;
 }
 
-/* Stelle sicher, dass die Seite die volle Breite nutzt */
-.page__content {
-  width: 100%;
-  max-width: 100%;
-  padding-right: 0;
-  padding-left: 0;
+/* Erhöhe die Höhe des Header-Bildes */
+.page__hero--overlay {
+  min-height: 250px !important; /* Passe diesen Wert nach Bedarf an */
 }
 
 @media (max-width: 768px) {

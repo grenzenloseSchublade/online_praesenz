@@ -1,13 +1,13 @@
 title: Kraftstoff
 name: Hans Müller
-description: Eine persönliche Website mit Minimal Mistakes Jekyll Theme
+description: Eine ganz persönliche Website auf der interessante Dinge zu finden sind.
 url: "https://grenzenloseSchublade.github.io"
 baseurl: "/online_praesenz"
 repository: "grenzenloseSchublade/online_praesenz"
 logo: "/assets/images/kraftstoff.jpg"
 
 # Theme Einstellungen
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+remote_theme: "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin: "dark" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
@@ -70,8 +70,8 @@ analytics:
 author:
   name: "Hans Müller"
   avatar: "/assets/images/kraftstoff.jpg"
-  bio: "Entwickler und Mathematik-Enthusiast"
-  location: "Deutschland"
+  bio: "Ingenieur, Entwickler und Mathematik-Enthusiast"
+  location: "Deutschland, Ruhrgebiet 45"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"

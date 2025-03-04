@@ -1,6 +1,7 @@
 - section: "Profil"
   icon: "user"
-  content: "Erfahrener Entwickler mit Schwerpunkt auf mathematischen Algorithmen und Visualisierungen. Spezialisiert auf die Implementierung komplexer Systeme und deren Darstellung."
+  content: "Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
+  Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen."
 
 - section: "Berufserfahrung"
   icon: "briefcase"
@@ -25,7 +26,7 @@
         - "Entwicklung von Algorithmen zur Datenanalyse"
         - "Optimierung von Datenbankabfragen"
 
-- section: "Ausbildung"
+- section: "Akademische Ausbildung"
   icon: "graduation-cap"
   education:
     - degree: "Master of Science in Informatik"
@@ -82,21 +83,21 @@
     - language: "Deutsch"
       level: "Muttersprache"
     - language: "Englisch"
-      level: "Fließend (C2)"
-    - language: "Französisch"
-      level: "Fortgeschritten (B2)"
+      level: "Fließend"
+    - language: "Russisch"
+      level: "Grundkenntnisse (A2) - lernend"
     - language: "Spanisch"
-      level: "Grundkenntnisse (A2)"
+      level: "Grundkenntnisse (A0)- lernend"
 
-- section: "Zertifikate & Auszeichnungen"
-  icon: "award"
-  awards:
-    - title: "Best Paper Award"
-      organization: "International Conference on Visualization"
-      date: "2019"
-      description: "Auszeichnung für die Publikation 'Innovative Ansätze zur Visualisierung fraktaler Strukturen'"
+# - section: "Zertifikate & Auszeichnungen"
+#   icon: "award"
+#   awards:
+#     - title: "Best Paper Award"
+#       organization: "International Conference on Visualization"
+#       date: "2019"
+#       description: "Auszeichnung für die Publikation 'Innovative Ansätze zur Visualisierung fraktaler Strukturen'"
 
-    - title: "Certified Python Developer"
-      organization: "Python Software Foundation"
-      date: "2017"
-      description: "Zertifizierung für fortgeschrittene Python-Entwicklung"
+#     - title: "Certified Python Developer"
+#       organization: "Python Software Foundation"
+#       date: "2017"
+#       description: "Zertifizierung für fortgeschrittene Python-Entwicklung"

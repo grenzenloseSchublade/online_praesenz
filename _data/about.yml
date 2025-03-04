@@ -1,25 +1,36 @@
 - section: "Wer bin ich?"
   icon: "user"
-  content: "Ich bin ein leidenschaftlicher Entwickler und Mathematik-Enthusiast. Meine Faszination für Algorithmen, Fraktale und komplexe Systeme hat mich dazu gebracht, diese Website zu erstellen."
+  content: "Ich bin ein leidenschaftlicher Entwickler und Mathematik-Enthusiast. 
+  Meine Faszination für Algorithmen, Fraktale und komplexe Systeme hat mich dazu gebracht, diese Website zu erstellen. Habe Spass am entwicklen, kreieren und umsetzen"
 
 - section: "Meine Interessen"
   icon: "brain"
   interests:
     - category: "Programmierung"
       items:
-        - "Webentwicklung mit modernen Technologien"
+        - "Computer Vision Algorithmen"
+        - "Deep Learning Anwendungen"
         - "Algorithmen und Datenstrukturen"
         - "Mathematische Visualisierungen"
-    - category: "Mathematik"
+    - category: "Physik"
       items:
         - "Fraktale Geometrie"
-        - "Komplexe Dynamische Systeme"
-        - "Numerische Mathematik"
+        - "Quantencomputer"
+        - "Kosmologie"
+        - "Astrophysik"
     - category: "Hobbys"
       items:
-        - "Fotografie"
+        - "Fahrrad fahren"
+        - "Calisthenics"
         - "Wandern in der Natur"
-        - "Schach"
+        - "Yoga"
+        - "Esoterik"
+        - "Fotografie"
+        - "Bier"
+        - "Prokrastination"
+        - "Gesundheit"
+        - "Atmung"
+        - "Meditation"
 
 - section: "Meine Projekte"
   icon: "project-diagram"
@@ -33,7 +44,10 @@
       items:
         - "Blog-Beiträge über interessante mathematische Konzepte"
         - "Interaktive Lernmaterialien"
-        - "Video-Tutorials"
+    - category: "Kultur & Reisen"
+      items:
+        - "Reisen mit dem Rad"
+        - "Essen"
 
 - section: "Kontakt"
   icon: "envelope"
@@ -47,10 +61,10 @@
       icon: "github"
       value: "@grenzenloseSchublade"
       link: "https://github.com/grenzenloseSchublade"
-    - type: "LinkedIn"
-      icon: "linkedin"
-      value: "Ihr Name"
-      link: "https://linkedin.com/in/username"
+    # - type: "LinkedIn"
+    #   icon: "linkedin"
+    #   value: "Ihr Name"
+    #   link: "https://linkedin.com/in/username"
 
 - section: "Zitat"
   icon: "quote-left"

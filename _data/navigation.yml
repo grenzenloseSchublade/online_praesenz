@@ -1,6 +1,4 @@
 main:
-  - title: "Startseite"
-    url: "/"
   - title: "Mandelbrot"
     url: "/mandelbrot/"
   - title: "Blog"
