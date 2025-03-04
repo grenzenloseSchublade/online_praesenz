@@ -53,4 +53,26 @@
             }
         }
     }
+}
+
+.page__hero--overlay {
+  // Erhöhtes Padding am unteren Rand des Mastheaders
+  padding-bottom: 4em; // Standardwert erhöhen
+  
+  @include breakpoint($medium) {
+    padding-bottom: 5em; // Mittlere Bildschirme
+  }
+  
+  @include breakpoint($large) {
+    padding-bottom: 6em; // Große Bildschirme
+  }
+  
+  @include breakpoint($x-large) {
+    padding-bottom: 7em; // Extra große Bildschirme
+  }
+  
+  // Optional: Wenn du möchtest, dass der Inhalt zentriert bleibt
+  .wrapper {
+    padding-bottom: 1.5em; // Zusätzlicher Abstand nach dem letzten Element
+  }
 } 
