@@ -269,9 +269,35 @@
                 });
                 ticking = true;
             }
-        }, { passive: true });
+        });
 
-        // Bei Inaktivität (kein Scrollen) Header nach 1.5 Sekunden wieder einblenden (schneller)
+        // Auf benutzerdefinierte Events vom hybriden Scroll-System hören
+        window.addEventListener('hybridScroll', function (event) {
+            // Wenn es ein programmatischer Scroll ist, die Navigationsleiste entsprechend anpassen
+            if (event.detail && event.detail.programmatic) {
+                const direction = event.detail.direction;
+                
+                // Numerische Richtung: 1 = nach oben, -1 = nach unten
+                if (direction === -1) {
+                    // Bei programmatischem Scroll nach unten die Navigationsleiste ausblenden
+                    if (headerVisible) {
+                        header.classList.remove('masthead--visible');
+                        header.classList.add('masthead--hidden');
+                        headerVisible = false;
+                        console.log('Masthead versteckt (Richtung: nach unten)');
+                    }
+                } else if (direction === 1) {
+                    // Bei programmatischem Scroll nach oben die Navigationsleiste einblenden
+                    if (!headerVisible) {
+                        header.classList.add('masthead--visible');
+                        header.classList.remove('masthead--hidden');
+                        headerVisible = true;
+                    }
+                }
+            }
+        });
+
+        // Inaktivitäts-Timer zurücksetzen
         function resetIdleTimer() {
             clearTimeout(idleTimer);
             idleTimer = setTimeout(function () {

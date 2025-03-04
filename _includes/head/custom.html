@@ -96,8 +96,31 @@
 </style>
 
 <script>
-  // Füge eine Klasse zum Body hinzu, um das Laden zu steuern
-  document.body.classList.add('page-loading');
+  // Warte, bis das DOM geladen ist, bevor auf document.body zugegriffen wird
+  document.addEventListener('DOMContentLoaded', function() {
+    // Füge eine Klasse zum Body hinzu, um das Laden zu steuern
+    document.body.classList.add('page-loading');
+    
+    // Funktion, um die Seite als geladen zu markieren
+    function markPageAsLoaded() {
+      document.body.classList.remove('page-loading');
+      document.body.classList.add('page-loaded');
+    }
+    
+    // Beim ersten Laden der Seite zum Anfang scrollen
+    window.addEventListener('load', function () {
+      // Wenn kein Hash in der URL ist oder die Seite neu geladen wurde, scrolle zum Anfang
+      if (!window.location.hash || (window.performance && window.performance.navigation.type === 1)) {
+        scrollToTop();
+        // Kurze Verzögerung, um sicherzustellen, dass die Seite an den Anfang gescrollt ist
+        setTimeout(function () {
+          markPageAsLoaded();
+        }, 50);
+      } else {
+        markPageAsLoaded();
+      }
+    });
+  });
 
   // Funktion, um die Seite an den Anfang zu scrollen
   function scrollToTop() {
@@ -107,26 +130,6 @@
       behavior: 'auto'
     });
   }
-
-  // Funktion, um die Seite als geladen zu markieren
-  function markPageAsLoaded() {
-    document.body.classList.remove('page-loading');
-    document.body.classList.add('page-loaded');
-  }
-
-  // Beim ersten Laden der Seite zum Anfang scrollen
-  window.addEventListener('load', function () {
-    // Wenn kein Hash in der URL ist oder die Seite neu geladen wurde, scrolle zum Anfang
-    if (!window.location.hash || (window.performance && window.performance.navigation.type === 1)) {
-      scrollToTop();
-      // Kurze Verzögerung, um sicherzustellen, dass die Seite an den Anfang gescrollt ist
-      setTimeout(function () {
-        markPageAsLoaded();
-      }, 50);
-    } else {
-      markPageAsLoaded();
-    }
-  });
 
   document.addEventListener('DOMContentLoaded', function () {
     // Debug-Funktion

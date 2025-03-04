@@ -37,6 +37,13 @@ kramdown:
 head_scripts:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
+# Scripts, die am Ende der Seite geladen werden
+footer_scripts:
+  - https://code.jquery.com/jquery-3.6.0.min.js
+  - /assets/js/main.min.js
+  - /assets/js/enhanced-hybrid-scroll.js
+  - /assets/js/smart-masthead-scroll.js
+
 # Collections
 include:
   - _pages
