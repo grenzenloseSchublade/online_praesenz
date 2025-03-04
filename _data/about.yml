@@ -10,14 +10,17 @@
       items:
         - "Computer Vision Algorithmen"
         - "Deep Learning Anwendungen"
+        - "Machine Learning"
+        - "Data Analytics"
         - "Algorithmen und Datenstrukturen"
         - "Mathematische Visualisierungen"
     - category: "Physik"
       items:
-        - "Fraktale Geometrie"
-        - "Quantencomputer"
         - "Kosmologie"
         - "Astrophysik"
+        - "Fraktale Geometrie"
+        - "Quantencomputer"
+
     - category: "Hobbys"
       items:
         - "Fahrrad fahren"
@@ -68,6 +71,9 @@
 
 - section: "Zitat"
   icon: "quote-left"
+  # quote:
+  #   author: "Galileo Galilei"
+  #   text: "Die Mathematik ist die Sprache, in der Gott das Universum schrieb."
   quote:
-    author: "Galileo Galilei"
-    text: "Die Mathematik ist die Sprache, in der Gott das Universum schrieb."
+    author: "Unknown...?"
+    text: "Überzeugen durch Leistung."

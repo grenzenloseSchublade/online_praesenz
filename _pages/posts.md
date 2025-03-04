@@ -9,7 +9,9 @@ header:
   caption: "Meine Gedanken und Projekte"
 ---
 
-Hier finden Sie alle meine Blogbeiträge zu verschiedenen Themen. Die Beiträge sind nach Datum sortiert, können aber auch nach Kategorien und Tags gefiltert werden.
+Auf dieser Seite findest du eine Sammlung an Blogbeiträgen – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
+
+Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kategorien und Tags durchsuchen.
 
 ## Kategorien
 

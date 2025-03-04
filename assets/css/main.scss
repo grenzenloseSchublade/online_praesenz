@@ -277,3 +277,58 @@ $caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
         }
     }
 }
+
+// Anpassungen für Header und Navigation
+.masthead {
+    // Gesamter Header-Bereich
+    // background-color: $background-dark; // Verwendet deine bereits definierte Variable
+
+    // Anpassung des Titels "Kraftstoff"
+    .site-title {
+        font-size: 1.8em; // Größerer Titel
+        font-weight: bold;
+        // margin-right: 2em; // Mehr Abstand zum Navigationsmenü
+        // padding: 0.3em 0; // Vertikaler Abstand
+
+        // Responsive Anpassung für kleinere Bildschirme
+        @media (max-width: 768px) {
+            font-size: 1.6em;
+            margin-right: 0;
+        }
+    }
+
+    // Anpassung der Navigationsleiste
+    .greedy-nav {
+        background-color: transparent; // Transparenter Hintergrund
+
+        // Navigationslinks
+        .visible-links {
+
+            a {
+                font-size: 1.0em; // Größere Schrift für Navigationslinks
+                padding: 0.5em;
+                margin: 0.2em;
+                font-weight: 500; // Etwas fetter
+
+                &:hover {
+                    color: $hover-color; // Verwendet deine bereits definierte Variable
+                    background-color: rgba(0, 0, 0, 0.2); // Leichter Hintergrund beim Hover
+                }
+
+                // &:before {
+                //     height: 3px; // Dickere Unterstreichung
+                //     background: $link-color; // Verwendet deine bereits definierte Variable
+                // }
+            }
+        }
+
+        // Dropdown-Menü-Button für mobile Ansicht
+        .greedy-nav__toggle {
+            background-color: $link-color;
+
+            &:hover {
+                background-color: $hover-color;
+            }
+        }
+    }
+}
