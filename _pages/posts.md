@@ -13,6 +13,17 @@ Auf dieser Seite findest du eine Sammlung an Blogbeiträgen – eine bunte Misch
 
 Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kategorien und Tags durchsuchen.
 
+<div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
+  <div style="flex: 0 0 64px; margin-right: 1em;">
+    <i class="fas fa-file-alt" style="font-size: 3em; color: #05d9e8;"></i>
+  </div>
+  <div>
+    <h3 style="margin-top: 0; color: #ffffff;">Neu hier? Lerne, wie Blogbeiträge erstellt werden</h3>
+    <p>Erfahre alles über die Technik und den Stil hinter den Blogbeiträgen. Dieser Leitfaden erklärt den gesamten Prozess und zeigt, wie Beiträge eigenständig erstellt werden können.</p>
+    <a href="{{ site.baseurl }}{% post_url 2025-03-04-blogbeitrag-erstellen %}" class="btn btn--primary">Zum Leitfaden <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
 ## Kategorien
 
 <div class="category-buttons">
@@ -21,4 +32,4 @@ Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kateg
   {% endfor %}
 </div>
 
-## Neueste Beiträge 
+## Neueste Beiträge

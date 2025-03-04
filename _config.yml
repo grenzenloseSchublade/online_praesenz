@@ -125,27 +125,33 @@ defaults:
       layout: single
       author_profile: true
 
-# Ausschließen von Dateien und Ordnern
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
 exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - assets/downloads/
   - "*.sublime-project"
   - "*.sublime-workspace"
-  - vendor
-  - .asset-cache
-  - .bundle
-  - .jekyll-cache
-  - .sass-cache
   - assets/js/plugins
   - assets/js/_main.js
   - assets/js/vendor
   - Capfile
   - CHANGELOG
   - config
-  - Gemfile
   - Gruntfile.js
   - gulpfile.js
   - LICENSE
   - log
-  - node_modules
   - package.json
   - package-lock.json
   - Rakefile
