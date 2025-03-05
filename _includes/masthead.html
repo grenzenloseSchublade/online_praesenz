@@ -268,18 +268,13 @@
         cursor: pointer !important;
         padding: 0 !important;
         transition: all 0.3s ease !important;
-        display: block !important; /* Sicherstellen, dass der Button angezeigt wird */
         position: relative !important;
         z-index: 1002 !important; /* Höherer z-index als das Menü */
     }
 
-    /* Wichtig: Diese Klasse nicht für den Toggle-Button verwenden */
-    button.greedy-nav__toggle.hidden {
-        display: block !important; /* Überschreiben der hidden-Klasse für den Toggle-Button */
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
+    /* Hinweis: Die hidden-Klasse wird von der Greedy-Navigation verwendet,
+       um den Toggle-Button ein- und auszublenden. Diese Klasse nicht überschreiben! */
+    
     .greedy-nav__toggle:hover .navicon,
     .greedy-nav__toggle:hover .navicon:before,
     .greedy-nav__toggle:hover .navicon:after {
@@ -396,16 +391,28 @@
     /* Der Hero-Bereich beginnt direkt unter dem Header */
     .page__hero--overlay {
         position: relative !important;
-        min-height: 180px !important;
+        min-height: 240px !important; /* Erhöhte Mindesthöhe für mehr Platz */
         /* Mindesthöhe für kleine Hero-Bilder */
     }
 
     /* Innere Wrapper-Elemente des Hero-Bilds bekommen oberen Abstand */
     .page__hero--overlay .wrapper {
-        padding-top: calc(var(--masthead-height) + 0px) !important;
-        /* Titel höher setzen */
+        padding-top: calc(var(--masthead-height) - 60px) !important;
+        padding-bottom: 40px !important; /* Zusätzlicher Abstand nach unten */
+        /* Titel höher setzen - negativer Wert für mehr Abstand nach oben */
         position: relative !important;
         z-index: 2 !important;
+    }
+
+    /* Responsive Anpassungen für den Hero-Bereich */
+    @media (min-width: 768px) {
+        .page__hero--overlay {
+            min-height: 280px !important; /* Noch mehr Platz auf größeren Bildschirmen */
+        }
+        
+        .page__hero--overlay .wrapper {
+            padding-bottom: 60px !important; /* Mehr Abstand nach unten auf größeren Bildschirmen */
+        }
     }
 
     /* 
@@ -912,80 +919,7 @@
         // Bei Änderung des Themes (falls möglich zu erkennen)
         window.addEventListener('themechange', updateHoverColors);
         
-        // Zusätzliche Funktionalität für das mobile Menü
-        const toggleButton = document.querySelector('.greedy-nav__toggle');
-        const hiddenLinks = document.querySelector('.hidden-links');
-        
-        // Funktion zur Initialisierung des mobilen Menüs
-        function initMobileMenu() {
-            if (!toggleButton || !hiddenLinks) {
-                console.error('Mobile Menü-Elemente nicht gefunden');
-                return;
-            }
-            
-            // Sicherstellen, dass der Toggle-Button sichtbar ist
-            toggleButton.classList.remove('hidden');
-            
-            // Sicherstellen, dass das Menü initial versteckt ist
-            hiddenLinks.classList.add('hidden');
-            
-            console.log('Mobile Menü initialisiert');
-        }
-        
-        // Initialisierung aufrufen
-        initMobileMenu();
-        
-        if (toggleButton && hiddenLinks) {
-            // Debug-Ausgabe zur Fehlersuche
-            console.log('Toggle-Button gefunden:', toggleButton);
-            console.log('Hidden-Links gefunden:', hiddenLinks);
-            console.log('Toggle-Button Klassen:', toggleButton.className);
-            console.log('Hidden-Links Klassen:', hiddenLinks.className);
-            
-            // Event-Listener für den Toggle-Button
-            toggleButton.addEventListener('click', function(event) {
-                // Verhindern, dass das Event weitergeleitet wird
-                event.preventDefault();
-                event.stopPropagation();
-                
-                // Debug-Ausgabe
-                console.log('Toggle-Button geklickt');
-                console.log('Hidden-Links vor Toggle:', hiddenLinks.className);
-                
-                // Toggle der hidden-Klasse
-                hiddenLinks.classList.toggle('hidden');
-                this.classList.toggle('close');
-                
-                // Debug-Ausgabe nach dem Toggle
-                console.log('Hidden-Links nach Toggle:', hiddenLinks.className);
-                
-                return false; // Verhindert weitere Event-Propagation
-            });
-            
-            // Event-Listener für Klicks außerhalb des Menüs
-            document.addEventListener('click', function(event) {
-                // Nur ausführen, wenn das Menü sichtbar ist
-                if (!hiddenLinks.classList.contains('hidden')) {
-                    // Prüfen, ob der Klick außerhalb des Menüs und des Toggle-Buttons war
-                    if (!hiddenLinks.contains(event.target) && !toggleButton.contains(event.target)) {
-                        hiddenLinks.classList.add('hidden');
-                        toggleButton.classList.remove('close');
-                    }
-                }
-            });
-            
-            // Event-Listener für Klicks auf Links im mobilen Menü
-            hiddenLinks.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    hiddenLinks.classList.add('hidden');
-                    toggleButton.classList.remove('close');
-                });
-            });
-        } else {
-            console.error('Mobile Menü-Elemente nicht gefunden:', {
-                toggleButton: toggleButton,
-                hiddenLinks: hiddenLinks
-            });
-        }
+        // Der Code für die mobile Menü-Funktionalität wurde in die Datei
+        // /assets/js/plugins/jquery.greedy-navigation.js ausgelagert
     });
 </script>

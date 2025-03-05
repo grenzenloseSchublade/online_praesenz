@@ -16,10 +16,25 @@
     },
     loader: {
       load: ['[tex]/noerrors', '[tex]/noundefined']
+    },
+    startup: {
+      ready: function() {
+        // Unterdrücke die Warnung für veraltete mathvariant-Attribute
+        MathJax.startup.defaultReady();
+        
+        // Fehlerbehandlung für veraltete Attribute
+        const originalCompileError = MathJax._.input.mathml.MathMLCompile.prototype.error;
+        MathJax._.input.mathml.MathMLCompile.prototype.error = function(node, message) {
+          if (message.match(/mathvariant='script'/)) {
+            return null; // Unterdrücke diese spezifische Warnung
+          }
+          return originalCompileError.call(this, node, message);
+        };
+      }
     }
   };
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endif %}
 
 <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/assets/images/favicon.ico">

@@ -22,7 +22,7 @@
   &--overlay {
     position: relative;
     margin-bottom: 2em;
-    padding: 3em 0;
+    padding: 6em 0;
     clear: both;
     background-size: cover;
     background-repeat: no-repeat;
@@ -59,6 +59,7 @@
     .wrapper {
       position: relative;
       z-index: 2;
+      padding-top: 100px;
     }
     
     // Titel-Stile
@@ -116,10 +117,14 @@
 @media (min-width: 768px) {
   .page__hero {
     &--overlay {
-      padding: 5em 0;
+      padding: 6em 0;
       
       .page__title {
         font-size: 3.5em;
+      }
+      
+      .wrapper {
+        padding-top: 120px;
       }
     }
   }

@@ -38,9 +38,10 @@ kramdown:
       start_line: 1
       background_color: "#2d2d2d"
 
-# MathJax specific settings
-head_scripts:
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+# JavaScript-Dateien, die nach dem Footer geladen werden
+after_footer_scripts:
+  - https://code.jquery.com/jquery-3.6.0.min.js
+  - /assets/js/plugins/jquery.greedy-navigation.js
 
 # Collections
 include:
