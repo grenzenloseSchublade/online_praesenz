@@ -47,9 +47,11 @@ header:
   {% endif %}
 
   {% if section.quotes %}
+    <div class="quotes-container">
     {% for quote in section.quotes %}
       {% include quote.html author=quote.author text=quote.text %}
     {% endfor %}
+    </div>
   {% endif %}
 {% endcapture %}
 

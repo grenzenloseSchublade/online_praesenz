@@ -1,6 +1,8 @@
+<div class="contact-container">
 {% for contact in include.contact_info %}
 <div class="cv-language">
     <span class="cv-language-name"><i class="fas fa-{{ contact.icon }}"></i> {{ contact.type }}</span>
     <span class="cv-language-level"><a href="{{ contact.link }}">{{ contact.value }}</a></span>
 </div>
 {% endfor %}
+</div>

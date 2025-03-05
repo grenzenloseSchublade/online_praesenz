@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-excerpt: "Eine Sammlung an Beiträgen – eine bunte Mischung aus persönlichen Reflexionen, interessanten Themen und Projekten, die mich bewegen."
+excerpt: "Eine Sammlung an Beiträgen – eine bunte Mischung aus persönlichen Reflexionen, interessanten Themen, Projekten und alles was sonst noch bewegt."
 permalink: /posts/
 layout: posts
 author_profile: true
