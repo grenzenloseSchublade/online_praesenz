@@ -1,0 +1,161 @@
+/* 
+ * Hero-Komponente Styles
+ * 
+ * Diese Datei enthält Stile für die Hero-Komponente, insbesondere
+ * für das Hintergrundbild und dessen Caching-Optimierungen.
+ */
+
+// Grundlegende Stile für die Hero-Komponente
+.page__hero {
+  position: relative;
+  margin-bottom: 2em;
+  clear: both;
+  
+  // Bild-Stile
+  &-image {
+    width: 100%;
+    height: auto;
+    -ms-interpolation-mode: bicubic;
+  }
+  
+  // Overlay-Variante
+  &--overlay {
+    position: relative;
+    margin-bottom: 2em;
+    padding: 6em 0;
+    clear: both;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: fadeIn 0.5s ease-in-out;
+    
+    // Optimiertes Laden des Hintergrundbildes
+    &[data-background-image] {
+      // Anfangs kein Hintergrundbild, wird durch JS gesetzt
+      background-image: none;
+      
+      // Platzhalter-Hintergrund während des Ladens
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 1;
+      }
+      
+      // Fade-In-Animation, wenn das Bild geladen ist
+      &.loaded {
+        &::before {
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+      }
+    }
+    
+    // Wrapper für den Inhalt
+    .wrapper {
+      position: relative;
+      z-index: 2;
+      padding-top: 100px;
+    }
+    
+    // Titel-Stile
+    .page__title,
+    .page__meta,
+    .page__lead,
+    .btn {
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    // Titel-Größe
+    .page__title {
+      font-size: 2.5em;
+      
+      @media (min-width: 768px) {
+        font-size: 3em;
+      }
+    }
+    
+    // Lead-Text
+    .page__lead {
+      max-width: 768px;
+      margin: 0;
+      text-align: left;
+    }
+    
+    // Buttons
+    .btn {
+      display: inline-block;
+      margin: 0.5em 0.5em 1.5em 0;
+      
+      &--light-outline {
+        border: 1px solid #fff;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+}
+
+// Fade-In-Animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Optimierungen für verschiedene Bildschirmgrößen
+@media (min-width: 768px) {
+  .page__hero {
+    &--overlay {
+      padding: 6em 0;
+      
+      .page__title {
+        font-size: 3.5em;
+      }
+      
+      .wrapper {
+        padding-top: 120px;
+      }
+    }
+  }
+}
+
+// Optimierungen für High-DPI-Displays
+@media (min-resolution: 2dppx) {
+  .page__hero {
+    &--overlay {
+      background-size: cover;
+    }
+  }
+}
+
+// Print-Optimierungen
+@media print {
+  .page__hero {
+    &--overlay {
+      background-image: none !important;
+      
+      &::before {
+        background-color: transparent;
+      }
+      
+      .page__title,
+      .page__meta,
+      .page__lead,
+      .btn {
+        color: #000;
+        text-shadow: none;
+      }
+    }
+  }
+} 

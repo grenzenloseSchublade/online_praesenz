@@ -1,5 +1,6 @@
 ---
 title: "Über mich"
+excerpt: "Eine kurze Einführung in meine Person und meine Interessen."
 permalink: /about/
 layout: single
 author_profile: true

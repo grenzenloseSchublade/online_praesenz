@@ -1,5 +1,6 @@
 ---
 title: "Curriculum Vitae"
+excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn."
 permalink: /cv/
 layout: single
 author_profile: true
