@@ -45,6 +45,12 @@ header:
   {% if section.quote %}
     {% include quote.html author=section.quote.author text=section.quote.text %}
   {% endif %}
+
+  {% if section.quotes %}
+    {% for quote in section.quotes %}
+      {% include quote.html author=quote.author text=quote.text %}
+    {% endfor %}
+  {% endif %}
 {% endcapture %}
 
 {% include cv-section.html 
