@@ -31,31 +31,31 @@ header:
 
 {% capture inner_content %}
   {% if section.interests %}
-    {% include interests.html interests=section.interests %}
+    {% include about-interests.html interests=section.interests %}
   {% endif %}
 
   {% if section.skills %}
-    {% include skills.html skill_categories=section.skills %}
+    {% include about-skills.html skill_categories=section.skills %}
   {% endif %}
 
   {% if section.contact_info %}
-    {% include contact-info.html contact_info=section.contact_info %}
+    {% include about-contact.html contact_info=section.contact_info %}
   {% endif %}
 
   {% if section.quote %}
-    {% include quote.html author=section.quote.author text=section.quote.text %}
+    {% include about-quote.html author=section.quote.author text=section.quote.text %}
   {% endif %}
 
   {% if section.quotes %}
     <div class="quotes-container">
     {% for quote in section.quotes %}
-      {% include quote.html author=quote.author text=quote.text %}
+      {% include about-quote.html author=quote.author text=quote.text %}
     {% endfor %}
     </div>
   {% endif %}
 {% endcapture %}
 
-{% include cv-section.html 
+{% include profile-section.html 
   icon=section.icon 
   title=section.section 
   content=section.content 

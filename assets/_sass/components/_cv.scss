@@ -253,17 +253,32 @@
 }
 
 @media (max-width: 576px) {
-  .cv-section-content {
-    padding: 1rem;
+  .cv-section {
+    .cv-section-content {
+      padding: 1rem;
+    }
   }
   
-  .cv-entry-header {
-    h3 {
-      font-size: 1.1rem;
+  .cv-entry {
+    .cv-entry-header {
+      h3 {
+        font-size: 1.1rem;
+      }
     }
   }
   
   .contact-container {
     grid-template-columns: 1fr;
+  }
+  
+  // Kleinere Mindestbreite für sehr kleine Bildschirme
+  .skills-container,
+  .interests-container,
+  .quotes-container {
+    .cv-entry,
+    .cv-skill-category,
+    .quote-container {
+      min-width: 100%;
+    }
   }
 } 
