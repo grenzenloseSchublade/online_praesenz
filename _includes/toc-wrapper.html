@@ -19,11 +19,11 @@
         </h4>
       </button>
       <div id="{{ toc_id }}-content" class="toc__menu-wrapper">
-        {% include toc.html sanitize=true html=include.html h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+        {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
       </div>
     {% else %}
       <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "Inhalt" }}</h4></header>
-      {% include toc.html sanitize=true html=include.html h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+      {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
     {% endif %}
   </nav>
 </aside>

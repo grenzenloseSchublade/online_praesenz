@@ -22,15 +22,14 @@
       window.addEventListener('load', () => {
         // Nur registrieren, wenn Service Worker aktiviert ist
         if (config.enableServiceWorker !== false) {
-          // Basis-URL der Website ermitteln
-          const baseUrl = document.querySelector('base')?.href || window.location.origin;
+          // Bestimme den Pfad zum Root der Website
+          const rootPath = getRootPath();
           
-          // Service Worker-Pfad relativ zur Basis-URL
-          const swPath = baseUrl.endsWith('/') 
-            ? baseUrl + 'service-worker.js' 
-            : baseUrl + '/service-worker.js';
+          // Service Worker-Pfad relativ zum Root der Website
+          const swPath = rootPath + 'service-worker.js';
           
-          navigator.serviceWorker.register(swPath)
+          // Registriere den Service Worker mit dem Scope des Root-Verzeichnisses
+          navigator.serviceWorker.register(swPath, { scope: rootPath })
             .then(registration => {
               console.log('ServiceWorker erfolgreich registriert mit Scope:', registration.scope);
               
@@ -87,6 +86,33 @@
           }, 2000);
         }
       });
+    }
+  }
+  
+  /**
+   * Bestimmt den Pfad zum Root der Website
+   * Berücksichtigt die baseurl in Jekyll-Projekten
+   */
+  function getRootPath() {
+    // Aktuelle URL
+    const currentPath = window.location.pathname;
+    
+    // Bestimme den baseurl aus dem HTML-Element (falls vorhanden)
+    const baseUrl = document.documentElement.getAttribute('data-baseurl') || '';
+    
+    if (baseUrl) {
+      // Wenn baseurl gesetzt ist, verwende diesen als Präfix
+      return baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+    } else {
+      // Ohne baseurl: Bestimme den Root-Pfad aus der aktuellen URL
+      // Entferne alles nach dem letzten Slash in der URL
+      const pathParts = currentPath.split('/');
+      
+      // Entferne den letzten Teil (Dateiname oder leerer String)
+      pathParts.pop();
+      
+      // Füge einen Slash am Ende hinzu
+      return pathParts.join('/') + '/';
     }
   }
   
