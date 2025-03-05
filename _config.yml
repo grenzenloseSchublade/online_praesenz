@@ -6,6 +6,11 @@ baseurl: "/online_praesenz"
 repository: "grenzenloseSchublade/online_praesenz"
 logo: "/assets/images/kraftstoff.jpg"
 
+# Bild- und Performance-Einstellungen
+background_image: "/assets/images/background.jpg"
+enable_image_caching: true
+enable_service_worker: true
+
 # Theme Einstellungen
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin: "dark" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"

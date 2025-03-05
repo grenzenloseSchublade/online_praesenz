@@ -1,0 +1,43 @@
+---
+layout: default
+title: Offline
+permalink: /offline.html
+---
+
+<div style="text-align: center; padding: 2em; max-width: 800px; margin: 0 auto;">
+  <h1>Sie sind offline</h1>
+  
+  <p style="font-size: 1.2em; margin: 2em 0;">
+    Es scheint, dass Sie keine Internetverbindung haben. Einige Inhalte und Funktionen sind möglicherweise nicht verfügbar.
+  </p>
+  
+  <div style="margin: 2em 0;">
+    <p>Sie können:</p>
+    <ul style="list-style: none; padding: 0; text-align: left; display: inline-block;">
+      <li style="margin: 1em 0;">
+        <strong>Ihre Internetverbindung überprüfen</strong> und die Seite neu laden
+      </li>
+      <li style="margin: 1em 0;">
+        <strong>Zu bereits besuchten Seiten navigieren</strong>, die im Cache gespeichert sind
+      </li>
+      <li style="margin: 1em 0;">
+        <strong>Später zurückkehren</strong>, wenn Sie wieder online sind
+      </li>
+    </ul>
+  </div>
+  
+  <button onclick="window.location.reload()" style="background-color: #05d9e8; color: #000; border: none; padding: 10px 20px; font-size: 1em; border-radius: 4px; cursor: pointer; margin-top: 1em;">
+    Seite neu laden
+  </button>
+  
+  <p style="margin-top: 3em; font-size: 0.9em; color: #888;">
+    Diese Seite wurde aus dem Cache geladen. Einige Inhalte könnten veraltet sein.
+  </p>
+</div>
+
+<script>
+  // Prüfen, ob der Benutzer wieder online ist
+  window.addEventListener('online', function() {
+    window.location.reload();
+  });
+</script> 
