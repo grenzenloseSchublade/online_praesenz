@@ -18,6 +18,7 @@ header:
 <div class="about-container">
 {% assign sections_by_name = site.data.about | group_by: "section" %}
 
+<div class="about-sections">
 {% for section in site.data.about %}
   {% if section.section != "Kontakt" and section.section != "Inspirierende Zitate" %}
     <span id="{{ section.section | slugify }}" class="section-anchor"></span>
