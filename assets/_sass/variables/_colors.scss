@@ -11,6 +11,8 @@ $code-background: #2d2d2d; // Code-Block Hintergrund
 $h1-color: #ff00ff; // H1 Überschriften
 $h2-color: #ffffff; //#05d9e8; // H2 Überschriften
 $h3-color: #bbfff0; // H3 Überschriften
+$cv-heading-color: #05d9e8; // Überschriftenfarbe für CV und About-Kacheln
+$card-heading-color: #05d9e8; // Überschriftenfarbe für Karten
 
 // Textfarben
 $excerpt-color: #00ffc8; // Untertitel Farbe
@@ -21,3 +23,18 @@ $selection-text: #000000; // Textfarbe für markierten Text
 $caption-bg: rgba(0, 0, 0, 0.5); // Hintergrundfarbe für Captions
 $caption-text: #fff; // Textfarbe für Captions
 $caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
+
+.contact-type {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: var(--primary-color, $link-color); /* Verwendet die CSS-Variable oder SASS-Variable als Fallback */
+}
+
+.contact-value {
+    color: var(--secondary-text-color, #aaa);
+}
+
+.contact-icon {
+    /* andere Eigenschaften */
+    color: var(--accent-color, $link-color);
+}

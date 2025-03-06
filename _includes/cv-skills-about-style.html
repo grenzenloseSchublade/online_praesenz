@@ -1,6 +1,6 @@
-<div class="skills-container">
+<div class="cv-skills-container-about-style">
 {% for skill_category in include.skill_categories %}
-<div class="cv-skill-category">
+<div class="cv-skill-category-about-style">
     <h3>{{ skill_category.category }}</h3>
     <div class="cv-skill-items">
         {% for skill in skill_category.skills %}
@@ -16,4 +16,4 @@
     </div>
 </div>
 {% endfor %}
-</div>
+</div> 

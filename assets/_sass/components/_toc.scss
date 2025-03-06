@@ -113,6 +113,7 @@
     transition: max-height $standard-transition;
     overflow: hidden;
     width: 100%;
+    display: block;
 }
 
 // Einheitliche Schriftgröße und Buttonhöhe für TOC auf Seiten mit 'wide' Klasse

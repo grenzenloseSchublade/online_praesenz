@@ -15,6 +15,10 @@ header:
   caption: "Berufliche und akademische Laufbahn"
 ---
 
+<div class="notice">
+  <p>Diese Seite zeigt meinen Lebenslauf im ursprünglichen Stil. Wenn Sie den Lebenslauf im Stil der About-Seite sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-about-style/">hier</a>.</p>
+</div>
+
 <style>
 /* Stelle sicher, dass die Anker-Links korrekt funktionieren */
 .section-anchor {
@@ -31,27 +35,27 @@ header:
 
 {% capture inner_content %}
   {% if section.experiences %}
-    {% include experiences.html experiences=section.experiences %}
+    {% include cv-experience.html experiences=section.experiences %}
   {% endif %}
 
   {% if section.education %}
-    {% include education.html education=section.education %}
+    {% include cv-education.html education=section.education %}
   {% endif %}
 
   {% if section.skill_categories %}
-    {% include skills.html skill_categories=section.skill_categories %}
+    {% include cv-skills.html skill_categories=section.skill_categories %}
   {% endif %}
 
   {% if section.languages %}
-    {% include languages.html languages=section.languages %}
+    {% include cv-languages.html languages=section.languages %}
   {% endif %}
 
   {% if section.awards %}
-    {% include awards.html awards=section.awards %}
+    {% include cv-awards.html awards=section.awards %}
   {% endif %}
 {% endcapture %}
 
-{% include cv-section.html 
+{% include profile-section.html 
   icon=section.icon 
   title=section.section 
   content=section.content 

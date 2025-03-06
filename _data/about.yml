@@ -1,7 +1,13 @@
 - section: "Wer bin ich?"
   icon: "user"
-  content: "Ich bin ein leidenschaftlicher Entwickler und Mathematik-Enthusiast. 
-  Meine Faszination für Algorithmen, Fraktale und komplexe Systeme hat mich dazu gebracht, diese Website zu erstellen. Habe Spass am entwicklen, kreieren und umsetzen"
+  content: >-
+    Eine lebendige Mischung aus Tatendrang und Tiefsinn, ständig in Bewegung – beim Joggen durch den Wald, auf dem Fahrrad zu neuen Abenteuern oder beim Stand-Up-Paddling (SUP) auf glasklarem Wasser. 
+    <br><br>
+    Die Liebe zur Natur und frischen Luft treibt an, sei es beim Schwimmen in Seen, während ausgedehnter Fahrradurlaube oder beim Erkunden unberührter Pfade. 
+    Sportliche Herausforderungen wie ein Halbmarathon sind kein Hindernis, sondern Motivation – hier verbinden sich Fitness mit dem unbändigen Willen, Ziele zu meistern, garniert mit einer Prise trockenem Humor für die absurden Momente des Scheiterns und Triumphierens.
+    Hinter der aktiven Fassade schlummert ein philosophischer Geist: analytisches Denken trifft auf spielerische Ironie, die gern Konventionen hinterfragt oder Paradoxa des Alltags mit einem Augenzwinkern betrachtet. Tiefes Eintauchen in Themen – ob theoretische Diskurse oder praktische Anwendungen – geschieht nie ohne eine Portion Selbstironie, die auch mal die eigenen Ambitionen liebevoll aufs Korn nimmt. Neugierde macht offen für Neues – esoterische Weisheiten werden ebenso erkundet wie Yoga- und Atemübungen zur inneren Balance, stets mit dem Wissen, dass nicht jede Antwort ernst gemeint sein muss. Handwerkliche Projekte entstehen mit Präzision (genau), doch immer dort, wo Kreativität auf handfestes Können trifft, blitzt ein schelmischer Unterton durch.
+    Leidenschaft gilt dem Erkunden – der Welt, der eigenen Grenzen und der Zwischenräume, in denen Rationalität (analytisch) und Spiritualität (Esoterik) sich auf unerwartete Weise verbinden. Neugier treibt an, stets auf der Suche nach Inspiration, sei es im philosophischen Buch, im Gerstenaroma eines kühlen Biers oder im Wind, der über Seen hinwegfegt. Selbst in dynamischen Momenten findet sich Raum für entspannte Heiterkeit: ein ironischer Kommentar zur eigenen Zielstrebigkeit, ein Lächeln über die Übertreibung des Perfektionismus beim Möbelbau oder die freche Freude daran, vermeintliche Gegensätze wie Theorie und Praxis, Anstrengung und Genuss, einfach zusammenzuspannen.
+    Kurzum: Ein vielseitiger Charakter, der Abenteuer und Reflexion, Handwerk und Intellekt, Herausforderung und Genuss in harmonischen Einklang bringt – immer mit einem Augenzwinkern für die Absurditäten des Lebens und der stillen Freude daran, dass nichts je nur eine einzige Wahrheit braucht.
 
 - section: "Meine Interessen"
   icon: "brain"
@@ -69,11 +75,10 @@
     #   value: "Ihr Name"
     #   link: "https://linkedin.com/in/username"
 
-- section: "Zitat"
+- section: "Inspirierende Zitate"
   icon: "quote-left"
-  # quote:
-  #   author: "Galileo Galilei"
-  #   text: "Die Mathematik ist die Sprache, in der Gott das Universum schrieb."
-  quote:
-    author: "Unknown...?"
-    text: "Überzeugen durch Leistung."
+  quotes:
+    - author: "Unknown...?"
+      text: "Überzeugen durch Leistung."
+    - author: "..."
+      text: "Wer aufhört etwas zu werden, hört auf etwas zu sein."

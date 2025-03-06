@@ -7,6 +7,9 @@
 @import "components/cards";
 @import "components/masthead";
 @import "components/hero";  // Neue Hero-Komponente für optimiertes Bild-Caching
+@import "components/cv";    // CV-Komponente für die About-Seite
+@import "components/about"; // About-Komponente für die About-Seite
+@import "components/cv-about-style"; // CV-About-Style für die CV-Seite im About-Stil
 
 // Layouts importieren
 @import "layouts/home";

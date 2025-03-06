@@ -10,14 +10,16 @@
 const CACHE_NAME = 'kraftstoff-cache-v1';
 
 // Ressourcen, die beim Installieren des Service Workers gecached werden sollen
+// Alle Pfade sind relativ zum Scope des Service Workers (Root der Website)
 const CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/assets/css/main.css',
-  '/assets/js/main.min.js',
-  '/assets/js/image-cache.js',
-  '/assets/js/sw-register.js',
-  '/assets/images/background.jpg'
+  './',
+  './index.html',
+  './offline.html',
+  './assets/css/main.css',
+  './assets/js/main.min.js',
+  './assets/js/image-cache.js',
+  './assets/js/sw-register.js',
+  './assets/images/background.jpg'
 ];
 
 // Installation des Service Workers
@@ -29,10 +31,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('[Service Worker] Cache geöffnet');
-        return cache.addAll(CACHE_URLS.map(url => {
-          // Relativen Pfad zum Basis-URL hinzufügen
-          return url.startsWith('/') ? self.location.origin + url : url;
-        }));
+        return cache.addAll(CACHE_URLS);
       })
       .then(() => {
         console.log('[Service Worker] Alle Ressourcen gecached');
@@ -124,7 +123,7 @@ async function networkFirst(request) {
     
     // Fallback für HTML-Seiten
     if (request.headers.get('Accept').includes('text/html')) {
-      return caches.match('/offline.html');
+      return caches.match('./offline.html');
     }
     
     return new Response('Ressource nicht verfügbar', { status: 404 });

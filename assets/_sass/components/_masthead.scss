@@ -9,9 +9,14 @@
     .site-title {
         font-size: $site-title-font-size; // Größerer Titel
         font-weight: bold;
-        // margin-right: 2em; // Mehr Abstand zum Navigationsmenü
-        // padding: 0.3em 0; // Vertikaler Abstand
-
+        transition: color 0.45s ease; // Sanfter Übergang für die Farbänderung
+        margin-right: 2em;
+        
+        &:hover {
+            color: lighten($hover-color, 30%); // 15% hellere Version der Hover-Farbe
+            text-decoration: none; // Optional: Entfernt die Unterstreichung beim Hover
+        }
+        
         // Responsive Anpassung für kleinere Bildschirme
         @media (max-width: 768px) {
             font-size: 1.6em;
