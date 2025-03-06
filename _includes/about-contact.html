@@ -1,4 +1,3 @@
-<div class="contact-container">
 {% for contact in include.contact_info %}
 <a href="{{ contact.link }}" class="contact-card">
     {% assign icon_type = contact.icon %}
@@ -16,5 +15,4 @@
     </div>
 </a>
 {% endfor %}
-</div>
 
