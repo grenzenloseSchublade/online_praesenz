@@ -49,7 +49,7 @@
     h3 {
       font-size: 1.2rem;
       margin: 0 0 0.3rem 0;
-      color: #05d9e8;
+      color: $card-heading-color;
     }
     
     .cv-entry-meta {
@@ -82,7 +82,7 @@
   h3 {
     font-size: 1.2rem;
     margin: 0 0 1rem 0;
-    color: #05d9e8;
+    color: $card-heading-color;
   }
   
   .cv-skill-items {
@@ -106,7 +106,7 @@
         
         .cv-skill-level {
           height: 100%;
-          background-color: #05d9e8;
+          background-color: $card-heading-color;
           border-radius: 4px;
         }
       }
@@ -149,7 +149,7 @@
     
     i {
       margin-right: 0.5rem;
-      color: #05d9e8;
+      color: $card-heading-color;
       font-size: 1.2em;
       width: 1.5em;
       text-align: center;
@@ -160,12 +160,12 @@
     color: #aaa;
     
     a {
-      color: #05d9e8;
+      color: $card-heading-color;
       text-decoration: none;
       transition: color 0.2s ease;
       
       &:hover {
-        color: lighten(#05d9e8, 10%);
+        color: lighten($card-heading-color, 10%);
         text-decoration: underline;
       }
     }
@@ -197,8 +197,8 @@
 .quote-container {
   margin: 1.5rem 0;
   padding: 1rem;
-  border-left: 4px solid #05d9e8;
-  background-color: rgba(5, 217, 232, 0.05);
+  border-left: 4px solid $card-heading-color;
+  background-color: rgba($card-heading-color, 0.05);
   border-radius: 0 4px 4px 0;
   transition: all 0.3s ease;
   

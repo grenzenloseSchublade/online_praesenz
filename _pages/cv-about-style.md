@@ -32,39 +32,38 @@ header:
 <div class="about-container">
 {% for section in site.data.cv %}
 <span id="{{ section.section | slugify }}" class="section-anchor"></span>
-<h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
+<div class="cv-section-about-style">
+  <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
+  
+  <div class="cv-section-content">
+    {% if section.content %}
+    <p>{{ section.content }}</p>
+    {% endif %}
+    
+    {% if section.experiences %}
+      <div class="cv-entries-container-about-style experiences-container">
+        {% include cv-experience-about-style.html experiences=section.experiences %}
+      </div>
+    {% endif %}
 
-{% capture inner_content %}
-  {% if section.experiences %}
-    <div class="cv-entries-container-about-style">
-      {% include cv-experience-about-style.html experiences=section.experiences %}
-    </div>
-  {% endif %}
+    {% if section.education %}
+      <div class="cv-entries-container-about-style">
+        {% include cv-education-about-style.html education=section.education %}
+      </div>
+    {% endif %}
 
-  {% if section.education %}
-    <div class="cv-entries-container-about-style">
-      {% include cv-education-about-style.html education=section.education %}
-    </div>
-  {% endif %}
+    {% if section.skill_categories %}
+      {% include cv-skills-about-style.html skill_categories=section.skill_categories %}
+    {% endif %}
 
-  {% if section.skill_categories %}
-    {% include cv-skills-about-style.html skill_categories=section.skill_categories %}
-  {% endif %}
+    {% if section.languages %}
+      {% include cv-languages-about-style.html languages=section.languages %}
+    {% endif %}
 
-  {% if section.languages %}
-    {% include cv-languages-about-style.html languages=section.languages %}
-  {% endif %}
-
-  {% if section.awards %}
-    {% include cv-awards-about-style.html awards=section.awards %}
-  {% endif %}
-{% endcapture %}
-
-{% include profile-section-about-style.html 
-  icon=section.icon 
-  title=section.section 
-  content=section.content 
-  inner_content=inner_content %}
-
+    {% if section.awards %}
+      {% include cv-awards-about-style.html awards=section.awards %}
+    {% endif %}
+  </div>
+</div>
 {% endfor %}
 </div> 

@@ -8,15 +8,15 @@
   margin-bottom: 2rem;
   
   .cv-section-content {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    transition: none;
     
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: none;
+      box-shadow: none;
     }
     
     p {
@@ -27,8 +27,11 @@
   
   h2 {
     margin-top: 0;
-    border-bottom: 2px solid #05d9e8;
+    border-bottom: 2px solid $card-heading-color;
     padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: $card-heading-color;
+    font-size: 1.4rem;
 
     i {
       margin-right: 0.5rem;
@@ -40,7 +43,7 @@
 .cv-entry-about-style {
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
-  border-left: 3px solid #05d9e8;
+  border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -58,8 +61,8 @@
     h3 {
       font-size: 1.3rem;
       margin: 0 0 0.3rem 0;
-      color: #05d9e8;
-      border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+      color: $card-heading-color;
+      border-bottom: 1px solid rgba($card-heading-color, 0.3);
       padding-bottom: 0.5rem;
     }
     
@@ -94,11 +97,21 @@
   margin-top: 1rem;
 }
 
+// Spezielle Anpassung für Berufserfahrung - immer untereinander
+.cv-entries-container-about-style.experiences-container {
+  flex-direction: column;
+  
+  .cv-entry-about-style {
+    flex: none;
+    width: 100%;
+  }
+}
+
 // Styling für Fähigkeiten im About-Stil
 .cv-skill-category-about-style {
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
-  border-left: 3px solid #05d9e8;
+  border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -113,8 +126,8 @@
   h3 {
     font-size: 1.3rem;
     margin: 0 0 1rem 0;
-    color: #05d9e8;
-    border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+    color: $card-heading-color;
+    border-bottom: 1px solid rgba($card-heading-color, 0.3);
     padding-bottom: 0.5rem;
   }
   
@@ -135,7 +148,7 @@
         
         .cv-skill-level {
           height: 100%;
-          background-color: #05d9e8;
+          background-color: $card-heading-color;
           border-radius: 4px;
         }
       }
@@ -173,7 +186,7 @@
     
     i {
       margin-right: 0.5rem;
-      color: #05d9e8;
+      color: $card-heading-color;
     }
   }
   
@@ -194,7 +207,7 @@
 .cv-award-about-style {
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
-  border-left: 3px solid #05d9e8;
+  border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -212,8 +225,8 @@
     h3 {
       font-size: 1.3rem;
       margin: 0 0 0.3rem 0;
-      color: #05d9e8;
-      border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+      color: $card-heading-color;
+      border-bottom: 1px solid rgba($card-heading-color, 0.3);
       padding-bottom: 0.5rem;
       
       i {
