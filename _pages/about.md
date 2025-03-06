@@ -19,7 +19,7 @@ header:
 {% for section in site.data.about %}
   <span id="{{ section.section | slugify }}" class="section-anchor"></span>
   <div class="about-section {% if section.section == 'Wer bin ich?' %}section-wer-bin-ich{% elsif section.section == 'Meine Interessen' %}section-meine-interessen{% elsif section.section == 'Meine Projekte' %}section-meine-projekte{% endif %}">
-    <h2><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
+    <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
     
     {% if section.content %}
       <p>{{ section.content }}</p>
