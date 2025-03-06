@@ -1,16 +1,13 @@
 <div class="interests-container">
 {% for interest in include.interests %}
-<div class="cv-entry">
-    <div class="cv-entry-header">
-        <h3>{{ interest.category }}</h3>
-    </div>
-    <div class="cv-entry-content">
-        <ul>
-            {% for item in interest.items %}
-            <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+<div class="interest-card">
+    <h3><i class="fas fa-{% if interest.category == 'Programmierung' %}code{% elsif interest.category == 'Physik' %}atom{% elsif interest.category == 'Hobbys' %}heart{% else %}star{% endif %}"></i> {{ interest.category }}</h3>
+    <ul class="interest-list">
+        {% for item in interest.items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endfor %}
-</div> 
+</div>
+

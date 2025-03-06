@@ -21,3 +21,18 @@ $selection-text: #000000; // Textfarbe für markierten Text
 $caption-bg: rgba(0, 0, 0, 0.5); // Hintergrundfarbe für Captions
 $caption-text: #fff; // Textfarbe für Captions
 $caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
+
+.contact-type {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: var(--primary-color, $link-color); /* Verwendet die CSS-Variable oder SASS-Variable als Fallback */
+}
+
+.contact-value {
+    color: var(--secondary-text-color, #aaa);
+}
+
+.contact-icon {
+    /* andere Eigenschaften */
+    color: var(--accent-color, $link-color);
+}

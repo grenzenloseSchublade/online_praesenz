@@ -1,19 +1,13 @@
 <div class="skills-container">
 {% for skill_category in include.skill_categories %}
-<div class="cv-skill-category">
-    <h3>{{ skill_category.category }}</h3>
-    <div class="cv-skill-items">
-        {% for skill in skill_category.skills %}
-        <div class="cv-skill-item">
-            <span class="cv-skill-name">{{ skill.name }}</span>
-            {% if skill.level %}
-            <div class="cv-skill-bar">
-                <div class="cv-skill-level" style="width: {{ skill.level }}%;"></div>
-            </div>
-            {% endif %}
-        </div>
+<div class="skill-card">
+    <h3><i class="fas fa-{% if skill_category.category contains 'Fraktale' %}chart-line{% elsif skill_category.category contains 'Mathematische' %}calculator{% elsif skill_category.category contains 'Kultur' %}globe{% else %}tools{% endif %}"></i> {{ skill_category.category }}</h3>
+    <ul class="skill-list">
+        {% for item in skill_category.items %}
+        <li>{{ item }}</li>
         {% endfor %}
-    </div>
+    </ul>
 </div>
 {% endfor %}
-</div> 
+</div>
+
