@@ -1,0 +1,13 @@
+{% for edu in include.education %}
+<div class="cv-entry-about-style">
+    <div class="cv-entry-header">
+        <h3>{{ edu.degree }}</h3>
+        <p class="cv-entry-meta">
+            <strong>{{ edu.institution }}</strong> | {{ edu.location }} | {{ edu.period }}
+        </p>
+    </div>
+    <div class="cv-entry-content">
+        <p>{{ edu.description }}</p>
+    </div>
+</div>
+{% endfor %} 

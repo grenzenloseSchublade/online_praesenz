@@ -1,0 +1,260 @@
+/* 
+ * CV-About-Style
+ * Überträgt den Stil der About-Seite auf die CV-Seite, konserviert aber den ursprünglichen Stil
+ */
+
+// Grundlegendes Styling für CV-Sektionen im About-Stil
+.cv-section-about-style {
+  margin-bottom: 2rem;
+  
+  .cv-section-content {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+  }
+  
+  h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #05d9e8;
+    padding-bottom: 0.5rem;
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Styling für Einträge (Erfahrungen, Bildung) im About-Stil
+.cv-entry-about-style {
+  flex: 1 1 250px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid #05d9e8;
+  border-radius: 0 5px 5px 0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .cv-entry-header {
+    margin-bottom: 0.5rem;
+    
+    h3 {
+      font-size: 1.3rem;
+      margin: 0 0 0.3rem 0;
+      color: #05d9e8;
+      border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+      padding-bottom: 0.5rem;
+    }
+    
+    .cv-entry-meta {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin: 0;
+    }
+  }
+  
+  .cv-entry-content {
+    ul {
+      margin: 0.5rem 0 0 0;
+      padding-left: 1.2rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+    
+    p {
+      margin: 0 0 0.8rem 0;
+    }
+  }
+}
+
+// Container für Einträge im About-Stil
+.cv-entries-container-about-style {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+// Styling für Fähigkeiten im About-Stil
+.cv-skill-category-about-style {
+  flex: 1 1 250px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid #05d9e8;
+  border-radius: 0 5px 5px 0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+    margin: 0 0 1rem 0;
+    color: #05d9e8;
+    border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+    padding-bottom: 0.5rem;
+  }
+  
+  .cv-skill-items {
+    .cv-skill-item {
+      margin-bottom: 0.8rem;
+      
+      .cv-skill-name {
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+      
+      .cv-skill-bar {
+        height: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+        
+        .cv-skill-level {
+          height: 100%;
+          background-color: #05d9e8;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
+// Container für Fähigkeiten im About-Stil
+.cv-skills-container-about-style {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+// Styling für Sprachen im About-Stil
+.cv-language-about-style {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  padding: 0.8rem;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .cv-language-name {
+    font-weight: 500;
+    
+    i {
+      margin-right: 0.5rem;
+      color: #05d9e8;
+    }
+  }
+  
+  .cv-language-level {
+    color: #aaa;
+  }
+}
+
+// Container für Sprachen im About-Stil
+.cv-languages-container-about-style {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+// Styling für Auszeichnungen im About-Stil
+.cv-award-about-style {
+  flex: 1 1 250px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid #05d9e8;
+  border-radius: 0 5px 5px 0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .cv-award-header {
+    margin-bottom: 0.5rem;
+    
+    h3 {
+      font-size: 1.3rem;
+      margin: 0 0 0.3rem 0;
+      color: #05d9e8;
+      border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+      padding-bottom: 0.5rem;
+      
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+    
+    .cv-award-meta {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin: 0;
+    }
+  }
+  
+  p {
+    margin: 0.5rem 0 0 0;
+  }
+}
+
+// Container für Auszeichnungen im About-Stil
+.cv-awards-container-about-style {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+// Responsive Anpassungen
+@media (max-width: 768px) {
+  .cv-entries-container-about-style,
+  .cv-skills-container-about-style,
+  .cv-languages-container-about-style,
+  .cv-awards-container-about-style {
+    flex-direction: column;
+  }
+  
+  .cv-entry-about-style,
+  .cv-skill-category-about-style,
+  .cv-language-about-style,
+  .cv-award-about-style {
+    width: 100%;
+    flex: none;
+  }
+} 

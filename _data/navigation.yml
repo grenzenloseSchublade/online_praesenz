@@ -7,6 +7,8 @@ main:
     url: "/about/"
   - title: "Lebenslauf"
     url: "/cv/"
+  - title: "Lebenslauf (About-Stil)"
+    url: "/cv-about-style/"
 
   # Kategorien und Tags auskommentiert, damit sie nicht mehr in der Navigation erscheinen
   # - title: "Kategorien"

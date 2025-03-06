@@ -15,6 +15,10 @@ header:
   caption: "Berufliche und akademische Laufbahn"
 ---
 
+<div class="notice">
+  <p>Diese Seite zeigt meinen Lebenslauf im ursprünglichen Stil. Wenn Sie den Lebenslauf im Stil der About-Seite sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-about-style/">hier</a>.</p>
+</div>
+
 <style>
 /* Stelle sicher, dass die Anker-Links korrekt funktionieren */
 .section-anchor {
