@@ -9,6 +9,7 @@
     <div class="cv-entry-content">
         <p>{{ experience.description }}</p>
         {% if experience.responsibilities %}
+        <p class="responsibilities-heading" style="font-size: 0.85rem; margin-bottom: 0.3rem; color: rgba(255, 255, 255, 0.7); font-weight: 500;">Verantwortlichkeiten:</p>
         <ul>
             {% for responsibility in experience.responsibilities %}
             <li>{{ responsibility }}</li>

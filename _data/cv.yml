@@ -1,81 +1,123 @@
 - section: "Profil"
   icon: "user"
-  content: "Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
-  Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen."
+  content: >-
+      Erfahrener Ingenieur im Bereich Software Entwicklung mit Deep Learning, KI 
+      von der Entwicklung von Prototypen, über schnelle Implementierung und Deployment bis hin zur Integration in produktiven Systeme 
+      mit gleichzeitiger kontinuielricher Weiterentwicklung und Optimierung ala CI/CD.
+      Hat Erfahrung mit der Entwicklung von Webanwendungen und der Integration von Deep Learning Algorithmen 
+      <br> <br> <br>
+
+      Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
+      Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen.
+      Erfahrener Ingenieur, der Hardware und Software versteht und die Grenzen der Technologie kennt. 
+      Mit der Zeit ist der Fokus auf KI Systeme gefallen.
+      Ist faszinierter von systematischer Entwicklung von sauberen Code.
 
 - section: "Berufserfahrung"
   icon: "briefcase"
   experiences:
-    - position: "Senior Entwickler"
-      company: "Technologie GmbH"
-      location: "Berlin, Deutschland"
-      period: "2018 - Heute"
-      description: "Entwicklung von Algorithmen zur Visualisierung komplexer mathematischer Strukturen. Implementierung von Webanwendungen mit modernen Frameworks."
+    - position: "Innovationsingenieur & Entwickler"
+      company: "opta data Innovationlab"
+      location: "Bochum, Deutschland"
+      period: "2020 - Heute"
+      description: " von KI Systemen für die Automatisierung von Prozessen - Prototypen bis Integration in produktive Systeme)"
       responsibilities:
-        - "Leitung eines Teams von 5 Entwicklern"
-        - "Konzeption und Implementierung von Visualisierungstools"
-        - "Optimierung von Algorithmen für Echtzeit-Berechnungen"
+        - "Konzeption, Entwicklung, Implementierung, Deployment"
+        - "Integration von Deep Learning Algorithmen"
+        - "System zur automatisierten <strong>Spracherkennung</strong> und Strukturierung in fachspezifische Datenformate"
+        - "Entwicklung von Frontend (WebUI) und Backend unter Umsetzung von API Schnittstellen"
+        - "Training & Integration von <strong>Deep Learning</strong> Modellen"
+        #- "Kontinuierliche Optimierungen"
+        - "Einhaltung von modernen Entwicklungsmethoden wie <strong>TDD</strong> und <strong>CI/CD</strong>"
+        - "Machbarkeitsanalysen"
 
-    - position: "Entwickler"
-      company: "Daten & Analyse AG"
-      location: "München, Deutschland"
-      period: "2015 - 2018"
-      description: "Entwicklung von Datenanalyse-Tools und Visualisierungen für große Datensätze."
+    - position: "Innovationsingenieur"
+      company: "opta data Institut"
+      location: "Essen, Deutschland"
+      period: "2018 - 2020"
+      description: "Entwicklung und Implementierung von KI Prototypen für Systeme zur Prozessautomatisierung"
       responsibilities:
-        - "Implementierung von Datenvisualisierungen"
-        - "Entwicklung von Algorithmen zur Datenanalyse"
-        - "Optimierung von Datenbankabfragen"
+        - "System zur automatisierten Belegerkennung und -verarbeitung"
+        - "Entwicklung von Algorithmen zur Textlokalisation und Texterkennung"
+        - "Entwicklung mobiler Anwendungen"
+        - "Einhaltung von modernen Entwicklungsmethoden"
+        - "Integration von Computer Vision & Deep Learning Algorithmen"
 
 - section: "Akademische Ausbildung"
   icon: "graduation-cap"
   education:
-    - degree: "Master of Science in Informatik"
-      institution: "Technische Universität Berlin"
-      location: "Berlin, Deutschland"
-      period: "2013 - 2015"
-      description: "Schwerpunkt: Algorithmen und Datenstrukturen, Computergrafik"
+    - degree: "M. Sc. Elektro- und Informationstechnik"
+      institution: "Ruhr-Universität Bochum"
+      location: "Bochum, Deutschland"
+      period: "2015 - 2018"
+      description: "Schwerpunkt: Eingebettete Systeme <br> Abschlussnote: <strong>Sehr Gut</strong>"
+      #<br> Abschlussarbeit: 'Erkennung handgeschriebener Worte mittels CNN / BiRNN für eingebettete Systeme'"
 
-    - degree: "Bachelor of Science in Mathematik"
-      institution: "Universität Hamburg"
-      location: "Hamburg, Deutschland"
-      period: "2010 - 2013"
-      description: "Schwerpunkt: Numerische Mathematik, Differentialgleichungen"
+    - degree: "B. Sc. Elektro- und Informationstechnik"
+      institution: "Ruhr-Universität Bochum"
+      location: "Bochum, Deutschland"
+      period: "2012 - 2015"
+      description: "Grundlagenstudium"
 
 - section: "Technische Fähigkeiten"
   icon: "laptop-code"
   skill_categories:
+# 4 bis 6 anführen -> 1 schlechteres mit angeben
+# TODO setze die Bewertungen so, dass es als referenz von dir gilt (also was kannst du am besten)
     - category: "Programmiersprachen"
       skills:
         - name: "Python"
           level: 95
         - name: "JavaScript"
-          level: 90
-        - name: "C++"
           level: 75
-        - name: "Ruby"
-          level: 60
+        - name: "C/C++"
+          level: 65
+        - name: "SQL"
+          level: 72
+        # - name: "LaTeX"
+        #   level: 90
 
+# 5 bis 6 anführen -> 1 schlechteres mit angeben
     - category: "Frameworks & Bibliotheken"
       skills:
-        - name: "NumPy/SciPy"
+        - name: "NumPy / SciPy"
           level: 90
-        - name: "React"
+        - name: "TensorFlow"
           level: 85
-        - name: "D3.js"
-          level: 80
-        - name: "Jekyll"
+        - name: "PyTorch"
+          level: 65
+        - name: "Vue.js"
+          level: 77
+        - name: "HuggingFace"
           level: 70
-
+        - name: "FastAPI"
+          level: 83
+        # - name: "Plotly"
+        #   level: 70
+        # - name: "Matplotlib"
+        #   level: 80
+        # - name: "Pandas"
+        #   level: 68
+        # - name: "OpenCV"
+        #   level: 65
+          
+# 5 bis 6 anführen -> 1 schlechteres mit angeben
     - category: "Tools & Technologien"
       skills:
-        - name: "Git"
-          level: 95
-        - name: "Docker"
-          level: 80
-        - name: "CI/CD"
+        - name: "Git / Git Actions"
+          level: 93
+        # - name: "Docker"
+        #   level: 80
+        - name: "Container"
+          level: 88
+        - name: "CI / CD"
           level: 75
-        - name: "AWS"
-          level: 70
+        - name: "DVC"
+          level: 50
+        # - name: "TDD"
+        #   level: 70
+        - name: "Agile Methoden"
+          level: 88
 
 - section: "Sprachen"
   icon: "language"
@@ -87,7 +129,7 @@
     - language: "Russisch"
       level: "Grundkenntnisse (A2) - lernend"
     - language: "Spanisch"
-      level: "Grundkenntnisse (A0)- lernend"
+      level: "(A0) - lernend"
 
 # - section: "Zertifikate & Auszeichnungen"
 #   icon: "award"

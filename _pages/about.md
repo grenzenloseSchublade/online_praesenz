@@ -26,11 +26,11 @@ header:
       <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
       
       {% if section.section == "Meine Interessen" %}
-        <p>Hier findest du einen Überblick über meine vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren.</p>
+        <p>Hier ist ein Überblick über die vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren, zu finden.</p>
       {% endif %}
       
       {% if section.section == "Meine Projekte" %}
-        <p>Entdecke einige meiner spannendsten Projekte, an denen ich gearbeitet habe oder aktuell arbeite.</p>
+        <p>Einige der spannendsten Projekte, an denen ich gearbeitet habe oder aktuell arbeite.</p>
       {% endif %}
       
       {% if section.content %}

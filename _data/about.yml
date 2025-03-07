@@ -1,44 +1,50 @@
 - section: "Wer bin ich?"
   icon: "user"
+  # TODO wie in cv.yml ca. 5 prägnante Sätze -> Was bin ich für ein Mensch?
   content: >-
-    Eine lebendige Mischung aus Tatendrang und Tiefsinn, ständig in Bewegung – beim Joggen durch den Wald, auf dem Fahrrad zu neuen Abenteuern oder beim Stand-Up-Paddling (SUP) auf glasklarem Wasser. 
+    Eine dynamische Verbindung aus Tatendrang und Tiefgang, stets *in Bewegung* – beim Waldlauf, Fahrradabenteuern oder SUP auf spiegelndem Wasser. 
+    *Natur* und *frische Luft* sind Antrieb, ob beim Schwimmen, auf Radreisen oder beim Erkunden unwegsamer Pfade. 
+    Sportliche *Herausforderungen* wie Halbmarathons werden mit eisernem Willen und trockener Ironie gemeistert, die selbst im Scheitern Humor findet.
+    <br><br>  
+    Analytischer Scharfsinn trifft auf spielerische *Ironie* – philosophische Reflexionen würzen gern Konventionen oder Alltagsabsurditäten mit Augenzwinkern. 
+    Tiefes Eintauchen in Theorien, Handwerk oder esoterische Praktiken geschieht nie ohne leise Selbstironie, die eigene Ambitionen liebevoll persifliert. 
+    Neugier macht *offen für Neues*: Yoga, Atemtechniken oder präzises Kreieren erhalten stets eine Prise Schelmerei.  
     <br><br>
-    Die Liebe zur Natur und frischen Luft treibt an, sei es beim Schwimmen in Seen, während ausgedehnter Fahrradurlaube oder beim Erkunden unberührter Pfade. 
-    Sportliche Herausforderungen wie ein Halbmarathon sind kein Hindernis, sondern Motivation – hier verbinden sich Fitness mit dem unbändigen Willen, Ziele zu meistern, garniert mit einer Prise trockenem Humor für die absurden Momente des Scheiterns und Triumphierens.
-    Hinter der aktiven Fassade schlummert ein philosophischer Geist: analytisches Denken trifft auf spielerische Ironie, die gern Konventionen hinterfragt oder Paradoxa des Alltags mit einem Augenzwinkern betrachtet. Tiefes Eintauchen in Themen – ob theoretische Diskurse oder praktische Anwendungen – geschieht nie ohne eine Portion Selbstironie, die auch mal die eigenen Ambitionen liebevoll aufs Korn nimmt. Neugierde macht offen für Neues – esoterische Weisheiten werden ebenso erkundet wie Yoga- und Atemübungen zur inneren Balance, stets mit dem Wissen, dass nicht jede Antwort ernst gemeint sein muss. Handwerkliche Projekte entstehen mit Präzision (genau), doch immer dort, wo Kreativität auf handfestes Können trifft, blitzt ein schelmischer Unterton durch.
-    Leidenschaft gilt dem Erkunden – der Welt, der eigenen Grenzen und der Zwischenräume, in denen Rationalität (analytisch) und Spiritualität (Esoterik) sich auf unerwartete Weise verbinden. Neugier treibt an, stets auf der Suche nach Inspiration, sei es im philosophischen Buch, im Gerstenaroma eines kühlen Biers oder im Wind, der über Seen hinwegfegt. Selbst in dynamischen Momenten findet sich Raum für entspannte Heiterkeit: ein ironischer Kommentar zur eigenen Zielstrebigkeit, ein Lächeln über die Übertreibung des Perfektionismus beim Möbelbau oder die freche Freude daran, vermeintliche Gegensätze wie Theorie und Praxis, Anstrengung und Genuss, einfach zusammenzuspannen.
-    Kurzum: Ein vielseitiger Charakter, der Abenteuer und Reflexion, Handwerk und Intellekt, Herausforderung und Genuss in harmonischen Einklang bringt – immer mit einem Augenzwinkern für die Absurditäten des Lebens und der stillen Freude daran, dass nichts je nur eine einzige Wahrheit braucht.
+    Leidenschaft gilt dem *Erkunden* von Grenzen und Zwischenräumen – dort, wo Rationalität und Spiritualität sich überraschend verweben. 
+    Neugier schöpft Inspiration aus Büchern, Bieraromen oder dem Wind über Seen, stets begleitet von heiterer Gelassenheit: 
+    ein ironischer Kommentar zur eigenen Zielstrebigkeit, ein Lächeln über den Perfektionismus beim Möbelbau oder die Freude daran, Gegensätze wie Theorie und Praxis einfach zu verbinden.  
+    <br><br>
+    Jemand, der *Abenteuer* und *Reflexion*, *Schweiß* und *Geist* vereint – immer mit einem Zwinkern für die Vieldeutigkeit des Lebens.
 
 - section: "Meine Interessen"
   icon: "brain"
   interests:
     - category: "Programmierung"
       items:
-        - "Computer Vision Algorithmen"
-        - "Deep Learning Anwendungen"
         - "Machine Learning"
+        - "Computer Vision Algorithmen"
         - "Data Analytics"
+        - "Wissenschaftlich schreiben - Latex (Lyx)"
         - "Algorithmen und Datenstrukturen"
         - "Mathematische Visualisierungen"
-    - category: "Physik"
+    - category: "Physik & Technik"
       items:
-        - "Kosmologie"
-        - "Astrophysik"
+        - "Astronomie"
         - "Fraktale Geometrie"
         - "Quantencomputer"
-
-    - category: "Hobbys"
+        - "Reparatur Fahrrad & Motorrad"
+    - category: "Bewegung"
       items:
         - "Fahrrad fahren"
         - "Calisthenics"
         - "Wandern in der Natur"
+        - "Schwimmen"
+        - "Laufen"
+    - category: "Gesundheit"
+      items:
         - "Yoga"
-        - "Esoterik"
-        - "Fotografie"
-        - "Bier"
-        - "Prokrastination"
-        - "Gesundheit"
-        - "Atmung"
+        - "Kochen"
+        - "Atemtechniken"
         - "Meditation"
 
 - section: "Meine Projekte"
@@ -49,13 +55,19 @@
         - "Interaktive Darstellung der Mandelbrot-Menge"
         - "Julia-Mengen Explorer"
         - "Fraktale Kunst-Generator"
-    - category: "Mathematische Bildung"
+    - category: "Mobile App"
       items:
-        - "Blog-Beiträge über interessante mathematische Konzepte"
-        - "Interaktive Lernmaterialien"
+        - "Erkennung & Digitalisierung von Kassenzetteln"
+        - "Automatisierte Erstellung von Rechnungen"
+        - "Einbindung in bestehendes Haushaltssystem"
+    - category: "Bildung"
+      items:
+        - "Blog-Beiträge über interessante Themen"
+        - "Erstellung von lehrreichen Inhalten"
     - category: "Kultur & Reisen"
       items:
         - "Reisen mit dem Rad"
+        - "Surfen"
         - "Essen"
 
 - section: "Kontakt"

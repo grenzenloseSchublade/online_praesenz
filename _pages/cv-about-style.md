@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae (About-Stil)"
-excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn im Stil der About-Seite."
+excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn."
 permalink: /cv-about-style/
 layout: single
 author_profile: true
@@ -16,7 +16,7 @@ header:
 ---
 
 <div class="notice">
-  <p>Diese Seite zeigt meinen Lebenslauf im Stil der About-Seite. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv/">hier</a>.</p>
+  <p>Diese Seite zeigt den Lebenslauf im Stil der About-Seite. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv/">hier</a>.</p>
 </div>
 
 <div class="about-container">
