@@ -5,10 +5,11 @@ main:
     url: "/posts/"
   - title: "Über mich"
     url: "/about/"
-  - title: "Lebenslauf (About-Stil)"
-    url: "/cv-about-style/"
   - title: "Lebenslauf"
     url: "/cv/"
+  - title: "Lebenslauf (Old)"
+    url: "/cv-old/"
+
 
   # Kategorien und Tags auskommentiert, damit sie nicht mehr in der Navigation erscheinen
   # - title: "Kategorien"

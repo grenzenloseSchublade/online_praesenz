@@ -1,7 +1,7 @@
 ---
-title: "Curriculum Vitae (About-Stil)"
+title: "Curriculum Vitae"
 excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn."
-permalink: /cv-about-style/
+permalink: /cv/
 layout: single
 author_profile: true
 toc: true
