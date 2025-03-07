@@ -19,16 +19,6 @@ header:
   <p>Diese Seite zeigt meinen Lebenslauf im ursprünglichen Stil. Wenn Sie den Lebenslauf im Stil der About-Seite sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-about-style/">hier</a>.</p>
 </div>
 
-<style>
-/* Stelle sicher, dass die Anker-Links korrekt funktionieren */
-.section-anchor {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
-}
-</style>
-
 {% for section in site.data.cv %}
 <span id="{{ section.section | slugify }}" class="section-anchor"></span>
 ## <i class="fas fa-{{ section.icon }}"></i> {{ section.section }}

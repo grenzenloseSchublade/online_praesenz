@@ -1,6 +1,9 @@
 // Zentrale Datei für alle benutzerdefinierten Styles
 // Diese Datei importiert alle Komponenten und Layouts
 
+// Gemeinsame Komponenten zuerst importieren
+@import "components/shared-components";
+
 // Komponenten importieren
 @import "components/toc";
 @import "components/buttons";
