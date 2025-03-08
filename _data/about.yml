@@ -16,6 +16,7 @@
     <br><br>
     Jemand, der *Abenteuer* und *Reflexion*, *Schweiß* und *Geist* vereint – immer mit einem Zwinkern für die Vieldeutigkeit des Lebens.
 
+# TODO prüfen ob die Interessen so passen
 - section: "Meine Interessen"
   icon: "brain"
   interests:
@@ -78,7 +79,7 @@
 
 - section: "Kontakt"
   icon: "envelope"
-  content: "Ich freue mich über jede Form der Zusammenarbeit und Austausch. Sie können mich erreichen über:"
+  content: "Ich freue mich über jede Form der Zusammenarbeit und Austausch."
   contact_info:
     - type: "E-Mail"
       icon: "envelope"

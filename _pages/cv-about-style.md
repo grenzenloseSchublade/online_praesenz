@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
-excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn."
+excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn"
 permalink: /cv/
 layout: single
 author_profile: true
@@ -16,7 +16,7 @@ header:
 ---
 
 <div class="notice">
-  <p>Diese Seite zeigt den Lebenslauf im Stil der About-Seite. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv/">hier</a>.</p>
+  <p>Diese Seite zeigt den Lebenslauf im neuen modernen Stil. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-old/">hier</a>.</p>
 </div>
 
 <div class="about-container">

@@ -1,17 +1,36 @@
 - section: "Profil"
   icon: "user"
+  # TODO konkret schreiben
   content: >-
-      Erfahrener Ingenieur im Bereich Software Entwicklung mit Deep Learning, KI 
-      von der Entwicklung von Prototypen, über schnelle Implementierung und Deployment bis hin zur Integration in produktiven Systeme 
-      mit gleichzeitiger kontinuielricher Weiterentwicklung und Optimierung ala CI/CD.
-      Hat Erfahrung mit der Entwicklung von Webanwendungen und der Integration von Deep Learning Algorithmen 
-      <br> <br> <br>
+      Senior Ingenieur mit 6 Jahren Expertise in der Entwicklung von KI-Systemen – vom Prototyp bis zur Produktivumgebung.
+        Spezialisiert auf neuronale Netze, Deep Learning und Computer Vision mit besonderem Fokus auf:
 
-      Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
-      Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen.
-      Erfahrener Ingenieur, der Hardware und Software versteht und die Grenzen der Technologie kennt. 
-      Mit der Zeit ist der Fokus auf KI Systeme gefallen.
-      Ist faszinierter von systematischer Entwicklung von sauberen Code.
+      • Konzeption und Implementierung maßgeschneiderter KI-Lösungen zur Prozessautomatisierung
+      • Integration von Deep Learning in bestehende Systemlandschaften
+      • Entwicklung von Web-Anwendungen mit modernen Frontend- und Backend-Technologien
+      • Umsetzung von CI/CD-Pipelines für kontinuierliche Optimierung und Deployment
+
+      Als Ingenieur mit tiefem Verständnis für Hardware- und Software-Grenzen verbinde ich technische Exzellenz mit 
+      systematischer, sauberer Codeentwicklung. Stets am Puls der neuesten KI-Trends, setze ich innovative Technologien 
+      in praxistaugliche Lösungen um.
+  # content: >-
+  #     Als Ingenieur seit 6 Jahren im Feld der SW Entwicklung von KI Systemen tätig. 
+  #     Vielfältige Erfahrungen mit Anwendungen von Prototypen bis hin zur Integration in produktive Systeme.
+  #     Am Puls der Zeit und Anwendung / Umsetziung von den neusten Trends in der KI Entwicklung.
+
+  #     Erfahrener Ingenieur im Bereich Software Entwicklung mit Deep Learning, KI 
+  #     von der Entwicklung von Prototypen, über schnelle Implementierung und Deployment bis hin zur Integration in produktiven Systeme 
+  #     mit gleichzeitiger kontinuielricher Weiterentwicklung und Optimierung ala CI/CD.
+  #     Hat Erfahrung mit der Entwicklung von Webanwendungen und der Integration von Deep Learning Algorithmen
+
+      
+  #     <br> <br> <br>
+
+  #     Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
+  #     Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen.
+  #     Erfahrener Ingenieur, der Hardware und Software versteht und die Grenzen der Technologie kennt. 
+  #     Mit der Zeit ist der Fokus auf KI Systeme gefallen.
+  #     Ist faszinierter von systematischer Entwicklung von sauberen Code.
 
 - section: "Berufserfahrung"
   icon: "briefcase"
@@ -20,28 +39,27 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: " von KI Systemen für die Automatisierung von Prozessen - Prototypen bis Integration in produktive Systeme)"
+      # TODO prüfen ob die Beschreibung passt
+      description: "Konzeption und Implementierung innovativer KI-Lösungen zur Optimierung geschäftskritischer Prozessabläufe"
       responsibilities:
-        - "Konzeption, Entwicklung, Implementierung, Deployment"
-        - "Integration von Deep Learning Algorithmen"
-        - "System zur automatisierten <strong>Spracherkennung</strong> und Strukturierung in fachspezifische Datenformate"
-        - "Entwicklung von Frontend (WebUI) und Backend unter Umsetzung von API Schnittstellen"
-        - "Training & Integration von <strong>Deep Learning</strong> Modellen"
-        #- "Kontinuierliche Optimierungen"
-        - "Einhaltung von modernen Entwicklungsmethoden wie <strong>TDD</strong> und <strong>CI/CD</strong>"
-        - "Machbarkeitsanalysen"
+        - "Architektur und Implementierung eines vollständigen Spracherkennungssystems mit automatischer Strukturierung in branchenspezifische Datenformate"
+        - "Optimierung und Integration von <strong>Deep Learning</strong>-Modellen"
+        - "Konzeption und Entwicklung einer responsiven Web-Benutzeroberfläche mit nahtloser Backend-Integration"
+        - "Entwurf und Umsetzung robuster API-Schnittstellen für die systemübergreifende Kommunikation"
+        - "Etablierung moderner Entwicklungspraktiken wie Test-Driven Development und <strong>CI/CD</strong>-Pipelines zur Qualitätssicherung"
 
     - position: "Innovationsingenieur"
       company: "opta data Institut"
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      description: "Entwicklung und Implementierung von KI Prototypen für Systeme zur Prozessautomatisierung"
+      # TODO prüfen ob die Beschreibung passt
+      description: "Konzeption und Umsetzung innovativer KI-Lösungen zur automatisierten Dokumentenverarbeitung und Datenextraktion"
       responsibilities:
-        - "System zur automatisierten Belegerkennung und -verarbeitung"
-        - "Entwicklung von Algorithmen zur Textlokalisation und Texterkennung"
-        - "Entwicklung mobiler Anwendungen"
-        - "Einhaltung von modernen Entwicklungsmethoden"
-        - "Integration von Computer Vision & Deep Learning Algorithmen"
+        - "Entwicklung eines intelligenten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
+        - "Implementierung präziser Algorithmen zur Textlokalisation in Dokumentlayouts"
+        - "Entwicklung einer nativen mobilen Anwendung für die effiziente Belegdigitalisierung im Unternehmenskontext"
+        - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Optimierung der Erkennungsgenauigkeit"
+        - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
 
 - section: "Akademische Ausbildung"
   icon: "graduation-cap"
@@ -63,13 +81,13 @@
   icon: "laptop-code"
   skill_categories:
 # 4 bis 6 anführen -> 1 schlechteres mit angeben
-# TODO setze die Bewertungen so, dass es als referenz von dir gilt (also was kannst du am besten)
+# TODO prüfen ob die Bewertungen so passen
     - category: "Programmiersprachen"
       skills:
         - name: "Python"
           level: 95
         - name: "JavaScript"
-          level: 75
+          level: 77
         - name: "C/C++"
           level: 65
         - name: "SQL"
@@ -83,9 +101,9 @@
         - name: "NumPy / SciPy"
           level: 90
         - name: "TensorFlow"
-          level: 85
+          level: 88
         - name: "PyTorch"
-          level: 65
+          level: 69
         - name: "Vue.js"
           level: 77
         - name: "HuggingFace"
