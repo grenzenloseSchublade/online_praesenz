@@ -167,6 +167,9 @@
           background-color: $card-heading-color;
           border-radius: 4px;
         }
+        .cv-skill-level.cv-skill-special {
+          background-color: $hover-color;
+        }
       }
     }
   }

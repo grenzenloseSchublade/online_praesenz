@@ -8,7 +8,7 @@
             <span class="cv-skill-name">{{ skill.name }}</span>
             {% if skill.level %}
             <div class="cv-skill-bar">
-                <div class="cv-skill-level" style="width: {{ skill.level }}%;"></div>
+                <div class="cv-skill-level {% if skill.special %}cv-skill-special{% endif %}" style="width: {{ skill.level }}%;"></div>
             </div>
             {% endif %}
         </div>
