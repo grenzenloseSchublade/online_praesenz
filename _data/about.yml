@@ -1,27 +1,27 @@
 - section: "Wer bin ich?"
   icon: "user"
-  # TODO wie in cv.yml ca. 5 prägnante Sätze -> Was bin ich für ein Mensch?
+  # TODO nochmal überprüfen 
   content: >-
-    Jemand der gerne in der Natur ist und es liebt sich zu bewegen. 
-    Stand UP paddeln auf dem Fluss. 
-    Fahrrad fahren. Krafttraining im freien. Schwimmen. Der Urlaub betshet auf aktiven Unternhemungen
-
-    Was ist besser: Hunde oder Katzen? Beides!
-    Eine dynamische Verbindung aus Tatendrang und Tiefgang, stets *in Bewegung* – beim Waldlauf, Fahrradabenteuern oder SUP auf spiegelndem Wasser. 
-    *Natur* und *frische Luft* sind Antrieb, ob beim Schwimmen, auf Radreisen oder beim Erkunden unwegsamer Pfade. 
-    Sportliche *Herausforderungen* wie Halbmarathons werden mit eisernem Willen und trockener Ironie gemeistert, die selbst im Scheitern Humor findet.
-    <br><br>  
-    Analytischer Scharfsinn trifft auf spielerische *Ironie* – philosophische Reflexionen würzen gern Konventionen oder Alltagsabsurditäten mit Augenzwinkern. 
-    Tiefes Eintauchen in Theorien, Handwerk oder esoterische Praktiken geschieht nie ohne leise Selbstironie, die eigene Ambitionen liebevoll persifliert. 
-    Neugier macht *offen für Neues*: Yoga, Atemtechniken oder präzises Kreieren erhalten stets eine Prise Schelmerei.  
+    Hallo ich bin Hans, ich widme mich gerne Herausforderungen. Egal ob sie dabei körperlicher, technischer oder gar geistiger Natur sind. 
+    Dabei bin ich immer offen für neue Ideen und Inspirationen, die schnell mal zu neuen Projekten führen können. 
+    Es kam der Zeitpunkt an dem ich den Entschluss fasste all meine Gedanken und Erlebnisse zu sammeln und festzuhalten. 
+    Daher ist diese Seite entstanden. Sie gibt einen Einblick in meine Unternehmungen, Projekte und Gedanken die ich angestellt habe und mich inspirieren.
     <br><br>
-    Leidenschaft gilt dem *Erkunden* von Grenzen und Zwischenräumen – dort, wo Rationalität und Spiritualität sich überraschend verweben. 
-    Neugier schöpft Inspiration aus Büchern, Bieraromen oder dem Wind über Seen, stets begleitet von heiterer Gelassenheit: 
-    ein ironischer Kommentar zur eigenen Zielstrebigkeit, ein Lächeln über den Perfektionismus beim Möbelbau oder die Freude daran, Gegensätze wie Theorie und Praxis einfach zu verbinden.  
-    <br><br>
-    Jemand, der *Abenteuer* und *Reflexion*, *Schweiß* und *Geist* vereint – immer mit einem Zwinkern für die Vieldeutigkeit des Lebens.
+    Ich finde es schwer mich kurz zu beschreiben, weil Menschen sehr komplex sind und nicht so einfach in einem Satz zu erklären sind. 
+    Und zum Anderen kommt hinzu, dass ich extrem neurgierig bin und mich so viele Sachen interessieren. Daher will ich es hierbei auf den Kern beschränken.
+    Ich bin jemand der gerne draussen in der Natur ist und es liebt sich zu bewegen:
+    <br>
+    Stand UP paddeln auf dem Fluss, schwimmen, surfen, Kanu fahren, wandern, spazieren, Fahrradtouren, mountainbiken, Krafttraining im Freien und noch viel mehr.
+    Ausserdem esse und koche ich gerne, unternehme Atemreisen und mache Yoga und beschäftige mich mit dem Denken. 
+    <br>
+    Seit meiner Kindheit begleitet mich dieser Spruch:
+    <br>
+    <p style="text-align: center; border: 2px solid #ccc; padding: 6px; border-radius: 5px; display: flex-center; font-style: italic;">
+      anima sana in corpore sano
+    </p>
 
-# TODO prüfen ob die Interessen so passen
+
+# TODO hier konkret die privaten wichtigen Sachen aufführen
 - section: "Meine Interessen"
   icon: "brain"
   interests:
@@ -31,14 +31,11 @@
         - "Computer Vision Algorithmen"
         - "Data Analytics"
         - "Wissenschaftlich schreiben - Latex (Lyx)"
-        - "Algorithmen und Datenstrukturen"
-        - "Mathematische Visualisierungen"
     - category: "Physik & Technik"
       items:
         - "Astronomie"
-        - "Fraktale Geometrie"
-        - "Quantencomputer"
-        - "Reparatur Fahrrad & Motorrad"
+        - "Quantenphysik & -computer"
+        - "Basteln am Fahrrad & Motorrad"
     - category: "Bewegung"
       items:
         - "Fahrrad fahren"
@@ -53,6 +50,7 @@
         - "Atemtechniken"
         - "Meditation"
 
+# TODO hier konkret die privaten wichtigen Sachen aufführen
 - section: "Meine Projekte"
   icon: "project-diagram"
   skills:
@@ -108,4 +106,3 @@
       text: "Wer glaubt etwas zu sein, hat aufgehört etwas zu werden."
     - author: "Albert Einstein"
       text: "Man sollte alles so einfach wie möglich machen, aber nicht einfacher."
-      
