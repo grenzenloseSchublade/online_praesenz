@@ -19,6 +19,7 @@
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
       description: "Konzeption und Entwicklung vollumfänglicher Software Lösungen mit Deep Learning zur Optimierung von Prozessabläufen"
+      expandable: false # Standard ist true, muss nicht explizit gesetzt werden
       responsibilities:
             # TODO Beschreibung prüfen und anpassen
         - text: "BACKEND - Architektur und Implementierung eines umfänglichen Systems zur automatisierter Strukturierung in branchenspezifische Datenformate mit Spracherkennung"
@@ -54,6 +55,7 @@
       location: "Essen, Deutschland"
       period: "2018 - 2020"
       description: "Entwicklung von Algorithmen und Prototypen unter Verwendung von Deep Learning und Computer Vision"
+      expandable: false # Ausklapp-Funktionalität für diese Karte deaktivieren
       responsibilities:
         - text: "Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
           subitems:

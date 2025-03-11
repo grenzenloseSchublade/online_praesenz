@@ -107,17 +107,90 @@
           font-weight: 600;
         }
         
+        // Styling für ausklappbare Unterpunkte
+        &.has-subitems {
+          position: relative;
+          cursor: pointer;
+          padding-right: 2rem; // Platz für den Pfeil rechts
+          
+          &::after {
+            content: "\f078"; // Font Awesome Pfeil-Icon
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 0.5rem;
+            top: 0.2rem; // Feste Position von oben
+            color: $card-heading-color;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            width: 1rem; // Feste Breite für den Pfeil
+            text-align: center; // Zentrieren des Pfeils
+            height: 1.2rem; // Feste Höhe statt 100%
+            display: flex; // Flexbox für vertikale Zentrierung
+            align-items: center; // Vertikal zentrieren
+            justify-content: center; // Horizontal zentrieren
+          }
+          
+          &.expanded::after {
+            transform: rotate(180deg);
+          }
+          
+          // Hover-Effekt für ausklappbare Elemente
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+          }
+        }
+        
+        // Deaktivierte Ausklapp-Funktionalität
+        &.no-expand {
+          cursor: default;
+          
+          &::after {
+            display: none; // Pfeil ausblenden
+          }
+          
+          &:hover {
+            background-color: transparent; // Kein Hover-Effekt
+          }
+          
+          ul {
+            display: block; // Immer anzeigen
+            margin-top: 0.5rem;
+            padding-top: 0;
+            border-top: none;
+          }
+        }
+        
         ul {
           list-style: none;
           margin-top: 0.5rem;
           margin-bottom: 0.5rem;
           margin-left: 0;
           padding-left: 1rem;
+          display: none; // Standardmäßig ausgeblendet
+          
+          &.expanded {
+            display: block; // Wenn erweitert, dann anzeigen
+            margin-top: 0.7rem; // Mehr Abstand nach oben
+            padding-top: 0.3rem; // Innenabstand oben
+            border-top: 1px dotted rgba(255, 255, 255, 0.1); // Trennlinie oben
+          }
+          
+          // Animationseffekt beim Ein-/Ausklappen
+          transition: max-height 0.3s ease-in-out;
+          overflow: hidden;
           
           li {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             margin-bottom: 0.3rem;
             color: rgba(255, 255, 255, 0.7);
+            padding-left: 0;
+            position: relative;
+            transition: color 0.2s ease;
+            
+            &:hover {
+              color: rgba(255, 255, 255, 0.9);
+            }
             
             &::before {
               content: "◦";
@@ -125,6 +198,10 @@
               left: -1rem;
               color: darken($card-heading-color, 10%);
               font-size: 0.9em;
+            }
+            
+            &:last-child {
+              margin-bottom: 0.1rem; // Weniger Abstand beim letzten Element
             }
           }
         }

@@ -1,5 +1,5 @@
 {% for education in include.educations %}
-<div class="cv-entry-about-style">
+<div class="cv-entry-about-style" {% if education.expandable == false %}data-expandable="false"{% endif %}>
     <div class="cv-entry-header">
         <h3>{{ education.degree }}</h3>
         <p class="cv-entry-meta">
@@ -11,8 +11,8 @@
         {% if education.achievements %}
         <p class="achievements-heading" style="font-size: 0.85rem; margin-bottom: 0.3rem; color: rgba(255, 255, 255, 0.7); font-weight: 500;">Besondere Erfolge:</p>
         <ul>{% for achievement in education.achievements %}
-            <li>{% if achievement.text %}{{ achievement.text | markdownify | remove: '<p>' | remove: '</p>' }}{% if achievement.subitems %}
-                <ul>{% for subitem in achievement.subitems %}
+            <li {% if achievement.subitems %}class="has-subitems" data-expandable="true"{% endif %}>{% if achievement.text %}{{ achievement.text | markdownify | remove: '<p>' | remove: '</p>' }}{% if achievement.subitems %}
+                <ul class="subitems">{% for subitem in achievement.subitems %}
                     <li>{{ subitem | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}
                 </ul>{% endif %}{% else %}{{ achievement | markdownify | remove: '<p>' | remove: '</p>' }}{% endif %}</li>{% endfor %}
         </ul>
