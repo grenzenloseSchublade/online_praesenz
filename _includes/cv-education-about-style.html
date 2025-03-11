@@ -1,13 +1,22 @@
-{% for edu in include.education %}
+{% for education in include.educations %}
 <div class="cv-entry-about-style">
     <div class="cv-entry-header">
-        <h3>{{ edu.degree }}</h3>
+        <h3>{{ education.degree }}</h3>
         <p class="cv-entry-meta">
-            <strong>{{ edu.institution }}</strong> | {{ edu.location }} | {{ edu.period }}
+            <strong>{{ education.institution }}</strong> | {{ education.location }} | {{ education.period }}
         </p>
     </div>
     <div class="cv-entry-content">
-        <p>{{ edu.description }}</p>
+        <p>{{ education.description | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+        {% if education.achievements %}
+        <p class="achievements-heading" style="font-size: 0.85rem; margin-bottom: 0.3rem; color: rgba(255, 255, 255, 0.7); font-weight: 500;">Besondere Erfolge:</p>
+        <ul>{% for achievement in education.achievements %}
+            <li>{% if achievement.text %}{{ achievement.text | markdownify | remove: '<p>' | remove: '</p>' }}{% if achievement.subitems %}
+                <ul>{% for subitem in achievement.subitems %}
+                    <li>{{ subitem | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}
+                </ul>{% endif %}{% else %}{{ achievement | markdownify | remove: '<p>' | remove: '</p>' }}{% endif %}</li>{% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </div>
 {% endfor %} 

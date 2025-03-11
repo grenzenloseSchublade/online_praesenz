@@ -38,7 +38,7 @@ header:
 
     {% if section.education %}
       <div class="cv-entries-container-about-style">
-        {% include cv-education-about-style.html education=section.education %}
+        {% include cv-education-about-style.html educations=section.education %}
       </div>
     {% endif %}
 

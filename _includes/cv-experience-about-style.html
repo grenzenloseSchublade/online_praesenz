@@ -9,11 +9,12 @@
     <div class="cv-entry-content">
         <p>{{ experience.description }}</p>
         {% if experience.responsibilities %}
-        <p class="responsibilities-heading" style="font-size: 0.85rem; margin-bottom: 0.3rem; color: rgba(255, 255, 255, 0.7); font-weight: 500;">Verantwortlichkeiten:</p>
-        <ul>
-            {% for responsibility in experience.responsibilities %}
-            <li>{{ responsibility }}</li>
-            {% endfor %}
+        <p class="responsibilities-heading" style="font-size: 0.85rem; margin-bottom: 0.3rem; color: rgba(255, 255, 255, 0.7); font-weight: 500;">Besondere Erfolge:</p>
+        <ul>{% for responsibility in experience.responsibilities %}
+            <li>{% if responsibility.text %}{{ responsibility.text | markdownify | remove: '<p>' | remove: '</p>' }}{% if responsibility.subitems %}
+                <ul>{% for subitem in responsibility.subitems %}
+                    <li>{{ subitem | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}
+                </ul>{% endif %}{% else %}{{ responsibility | markdownify | remove: '<p>' | remove: '</p>' }}{% endif %}</li>{% endfor %}
         </ul>
         {% endif %}
     </div>

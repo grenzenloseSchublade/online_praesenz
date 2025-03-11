@@ -1,36 +1,15 @@
 - section: "Profil"
   icon: "user"
-  # TODO konkret schreiben
+  # TODO nochmal prüfen ob die Beschreibung passt
   content: >-
-      Senior Ingenieur mit 6 Jahren Expertise in der Entwicklung von KI-Systemen – vom Prototyp bis zur Produktivumgebung.
-        Spezialisiert auf neuronale Netze, Deep Learning und Computer Vision mit besonderem Fokus auf:
+        Ingenieur mit über sechs Jahren Expertise in der Entwicklung vollumfänglicher Software Lösungen mit besonderem Fokus auf KI-Systemen – 
+        angefangen bei der Entwicklung von Prototypen bis hin zum Deployment in Produktivumgebungen.
+        Hat vielfältige praktische Erfahrungen primär im Bereich der Backend Entwicklung gesammelt, als auch im Feld der Frontend Entwicklung
+        und hat zusätzlich ein breites Spektrum an DevOps Praxiserfahrungen gesammelt.
+        <br> <br>
+        War sowohl in der Forschung als auch in der Industrie unterwegs und ist damit auf dem neuesten Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
+        Besitzt eine grosse Faszination für den Prozess der Umsetzung komplexer und herausfordernder Probleme in praxistaugliche Lösungen. 
 
-      • Konzeption und Implementierung maßgeschneiderter KI-Lösungen zur Prozessautomatisierung
-      • Integration von Deep Learning in bestehende Systemlandschaften
-      • Entwicklung von Web-Anwendungen mit modernen Frontend- und Backend-Technologien
-      • Umsetzung von CI/CD-Pipelines für kontinuierliche Optimierung und Deployment
-
-      Als Ingenieur mit tiefem Verständnis für Hardware- und Software-Grenzen verbinde ich technische Exzellenz mit 
-      systematischer, sauberer Codeentwicklung. Stets am Puls der neuesten KI-Trends, setze ich innovative Technologien 
-      in praxistaugliche Lösungen um.
-  # content: >-
-  #     Als Ingenieur seit 6 Jahren im Feld der SW Entwicklung von KI Systemen tätig. 
-  #     Vielfältige Erfahrungen mit Anwendungen von Prototypen bis hin zur Integration in produktive Systeme.
-  #     Am Puls der Zeit und Anwendung / Umsetziung von den neusten Trends in der KI Entwicklung.
-
-  #     Erfahrener Ingenieur im Bereich Software Entwicklung mit Deep Learning, KI 
-  #     von der Entwicklung von Prototypen, über schnelle Implementierung und Deployment bis hin zur Integration in produktiven Systeme 
-  #     mit gleichzeitiger kontinuielricher Weiterentwicklung und Optimierung ala CI/CD.
-  #     Hat Erfahrung mit der Entwicklung von Webanwendungen und der Integration von Deep Learning Algorithmen
-
-      
-  #     <br> <br> <br>
-
-  #     Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
-  #     Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen.
-  #     Erfahrener Ingenieur, der Hardware und Software versteht und die Grenzen der Technologie kennt. 
-  #     Mit der Zeit ist der Fokus auf KI Systeme gefallen.
-  #     Ist faszinierter von systematischer Entwicklung von sauberen Code.
 
 - section: "Berufserfahrung"
   icon: "briefcase"
@@ -39,26 +18,53 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      # TODO prüfen ob die Beschreibung passt
-      description: "Konzeption und Implementierung innovativer KI-Lösungen zur Optimierung geschäftskritischer Prozessabläufe"
+      description: "Konzeption und Entwicklung vollumfänglicher Software Lösungen mit Deep Learning zur Optimierung von Prozessabläufen"
       responsibilities:
-        - "Architektur und Implementierung eines vollständigen Spracherkennungssystems mit automatischer Strukturierung in branchenspezifische Datenformate"
-        - "Optimierung und Integration von <strong>Deep Learning</strong>-Modellen"
-        - "Konzeption und Entwicklung einer responsiven Web-Benutzeroberfläche mit nahtloser Backend-Integration"
-        - "Entwurf und Umsetzung robuster API-Schnittstellen für die systemübergreifende Kommunikation"
+            # TODO Beschreibung prüfen und anpassen
+        - text: "BACKEND - Architektur und Implementierung eines umfänglichen Systems zur automatisierter Strukturierung in branchenspezifische Datenformate mit Spracherkennung"
+          subitems:
+            - "Entwicklung eines <strong>Transformer-basierten</strong> Modells zur Spracherkennung"
+            - "Integration mit bestehenden Datenbanksystemen"
+            - "Optimierung der Erkennungsgenauigkeit"
+            - "Entwicklung und Deployment plattformunabhängiger, intuitive WebUI für die Benutzung"
+            - "Bis zur Produktive alpha testphase gebracht "
+            - "Erstellung von Buildpipelines für die automatische Erstellung und Bereitstellung von Docker Images"
+        - text: "FRONTEND - Konzeption und Entwicklung einer responsiven Web-Benutzeroberfläche mit nahtloser Backend-Integration"
+          subitems:
+            - "Implementierung mit Vue.js und FastAPI"
+            - "Entwicklung einer intuitiven Benutzeroberfläche für die Dokumentenverarbeitung"
+            - "Entwurf und Umsetzung robuster API-Schnittstellen für die systemübergreifende Kommunikation"
+        - text: "BACK/-FRONTEND - Tool zur Auswertung und Bewertung von LLM Modellen"
+          subitems:
+            - "Pipeline um taskspezifisch LLM Modelle auszuwerten und zu bewerten"
+            - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Auswertung"
+            - "Detaillierte Auswertung und Visualisierung von Daten zur Laufzeit "
+        - text: "FORSCHUNG - Optimierung und Integration von <strong>Deep Learning</strong>-Modellen"
+          subitems:
+          - "Training von Deep Learning Modellen für die Spracherkennung"
+          - "Integration von Deep Learning Modellen in das vorhandene System"
+          - "Optimierung der Erkennungsgenauigkeit auf über 95%"
+        
         - "Etablierung moderner Entwicklungspraktiken wie Test-Driven Development und <strong>CI/CD</strong>-Pipelines zur Qualitätssicherung"
+        - "Entwicklung von Buildpipelines für die automatische Erstellung und Bereitstellung von Docker Images"
+        - "Einführung von DVC für die übergreifende Versionierung und Verwaltung von Daten"
 
     - position: "Innovationsingenieur"
-      company: "opta data Institut"
+      company: "opta data Institut e.V."
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      # TODO prüfen ob die Beschreibung passt
-      description: "Konzeption und Umsetzung innovativer KI-Lösungen zur automatisierten Dokumentenverarbeitung und Datenextraktion"
+      description: "Entwicklung von Algorithmen und Prototypen unter Verwendung von Deep Learning und Computer Vision"
       responsibilities:
-        - "Entwicklung eines intelligenten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
-        - "Implementierung präziser Algorithmen zur Textlokalisation in Dokumentlayouts"
-        - "Entwicklung einer nativen mobilen Anwendung für die effiziente Belegdigitalisierung im Unternehmenskontext"
-        - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Optimierung der Erkennungsgenauigkeit"
+        - text: "Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
+          subitems:
+            - "Entwicklung von Algorithmen zur präzisen Textlokalisation in Dokumentlayouts"
+            - "Optimierung der Texterkennung durch Qualitätsverbesserung der Daten mit Computer Vision Techniken"
+            - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Steigerung der Erkennungsgenauigkeit [92%]"
+        - text: "Entwicklung einer mobilen Anwendung für die effiziente Digitalisierung von Belegen im Unternehmenskontext"
+          subitems:
+            - "Anwendung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten / kontrastarmen Hintergründen"
+            - "Entwicklung einer intuitiven Benutzeroberfläche für die Dokumentenverarbeitung"
+        - "Entwicklung von Protoypen als Machbarkeitsstudien für potenzielle Anwendungsfälle"
         - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
 
 - section: "Akademische Ausbildung"
@@ -100,6 +106,7 @@
       skills:
         - name: "NumPy / SciPy"
           level: 90
+          special: true # Skill Bar Color in hover-color
         - name: "TensorFlow"
           level: 88
         - name: "PyTorch"
@@ -129,9 +136,9 @@
         #   level: 80
         - name: "Container"
           level: 88
-          special: true # Skill Bar Color in hover-color
         - name: "CI / CD"
-          level: 75
+          level: 79
+          special: true # Skill Bar Color in hover-color
         - name: "DVC"
           level: 50
         # - name: "TDD"

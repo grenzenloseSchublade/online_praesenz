@@ -2,6 +2,11 @@
   icon: "user"
   # TODO wie in cv.yml ca. 5 prägnante Sätze -> Was bin ich für ein Mensch?
   content: >-
+    Jemand der gerne in der Natur ist und es liebt sich zu bewegen. 
+    Stand UP paddeln auf dem Fluss. 
+    Fahrrad fahren. Krafttraining im freien. Schwimmen. Der Urlaub betshet auf aktiven Unternhemungen
+
+    Was ist besser: Hunde oder Katzen? Beides!
     Eine dynamische Verbindung aus Tatendrang und Tiefgang, stets *in Bewegung* – beim Waldlauf, Fahrradabenteuern oder SUP auf spiegelndem Wasser. 
     *Natur* und *frische Luft* sind Antrieb, ob beim Schwimmen, auf Radreisen oder beim Erkunden unwegsamer Pfade. 
     Sportliche *Herausforderungen* wie Halbmarathons werden mit eisernem Willen und trockener Ironie gemeistert, die selbst im Scheitern Humor findet.
@@ -99,5 +104,8 @@
   quotes:
     - author: "Unknown...?"
       text: "Überzeugen durch Leistung."
-    - author: "..."
-      text: "Wer aufhört etwas zu werden, hört auf etwas zu sein."
+    - author: "Sokrates"
+      text: "Wer glaubt etwas zu sein, hat aufgehört etwas zu werden."
+    - author: "Albert Einstein"
+      text: "Man sollte alles so einfach wie möglich machen, aber nicht einfacher."
+      
