@@ -12,7 +12,7 @@ toc_collapse: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
-  caption: "Berufliche und akademische Laufbahn"
+  caption: "Beruf und Ausbildung"
 ---
 
 <div class="notice">

@@ -2,48 +2,53 @@
   icon: "user"
 
   # TODO Hier evtl. noch etwas genauer rein, was ich getan habe? N paar Fachbegriffe?
+  # TODO -> FUllstack Entwickler
   content: >-
-        Ingenieur mit über sechs Jahren Expertise in der Entwicklung vollumfänglicher Software Lösungen mit besonderem Fokus auf KI-Systemen – 
-        angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern bis hin zum Deployment in Produktivumgebungen.
-        Hat vielfältige praktische Erfahrungen primär im Bereich der Backend Entwicklung, als auch ferner im Feld der Frontend Entwicklung gesammelt
-        und hat zusätzlich ein breites Spektrum an DevOps Praxiserfahrungen.
+        Ingenieur mit Abschluss eines Studiums der Elektro- und Informationstechnik M.Sc. mit dem Schwerpunkt <em>Eingebettete Systeme</em>.
+        Mittlerweile über sechs Jahre Erfahrung in der Entwicklung vollumfänglicher Software Lösungen mit Integration von KI Komponenten – 
+        angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern bis hin zum Deployment oder Integration in Produktivumgebungen.
+        Sammelte vielfältige praktische Erfahrungen im Bereich der Backend Entwicklung, als auch im Feld der Frontend Entwicklung 
+        und hat zusätzlich ein breites Spektrum an DevOps Praxiserfahrungen. 
+        So wurde über die Jahre ein breites Spektrum an Fähigkeiten angeeignet, welche denen eines Full-Stack Entwicklers entsprechen.
         <br> <br>
-        War sowohl in der Forschung als auch in der Industrie unterwegs und ist damit auf dem neuesten Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
-        War an verschiedenen Projekten beteiligt und kennt die unterschiedlichen Dynamiken von kleinen und grossen Teams. 
-        Besitzt eine grosse Faszination für den Prozess der Umsetzung komplexer und herausfordernder Probleme in praxistaugliche Lösungen. 
+        Es sind sowohl Forschung als auch Industrie bekannt und ist damit auf dem neuesten Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
+        Hatte Beteiligungen an verschiedensten Projekten und ist sich der unterschiedlichen Dynamiken von kleinen und grossen Teams bewusst. 
+        Eine grosse Faszination geht von [dem Prozess selbst] der Umsetzung komplexer und herausfordernder Probleme in praxistaugliche Lösungen aus.
 
 
 - section: "Berufserfahrung"
   icon: "briefcase"
   experiences:
-    - position: "Innovationsingenieur & Entwickler"
+    - position: "Softwareingenieur"
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: "Konzeption und Entwicklung vollumfänglicher Software Lösungen mit Deep Learning zur Optimierung von Prozessabläufen"
+      description: "Konzeption vollumfänglicher Software Lösungen mit Integration von Deep Learning zur Optimierung von Prozessabläufen. Entwicklung von Algorithmen und Webanwendungen mit modernen Frameworks."
       expandable: true # Standard ist true
 
     # TODO Beschreibung prüfen und anpassen
       responsibilities:
-        - text: "[BACKEND] System zur automatisierten Datenaufnahme und -verarbeitung in Gesundheitsfachberufen zur Reduktion von Dokumentationsaufwand"
+      # [BACKEND] 
+        - text: "Entwicklung eines Systems zur automatisierten Datenaufnahme und -verarbeitung in Gesundheitsfachberufen"
           subitems:
-            - "Spracherkennung mittels Encode-Decoder-Modellen mit Attention Mechanismen"
-            - "Semantische Analyse und Strukturierung mit LLMs  in branchenspezifische Datenformate"
-            - "Konzeption und Implementierung von API Schnittstellen mit FastAPI zur systemübergreifenden Integration"
+            - "Integration von Spracherkennung mittels Encoder-Decoder Modell mit Attention Mechanismen"
+            - "Semantische Analyse und Strukturierung mit LLMs in branchenspezifische Datenformate"
+            - "Konzeption und Implementierung von API Schnittstellen zur systemübergreifenden Integration"
             - "Entwicklung und Integration eines Datenbanksystems zur Speicherung von Anwendungsdaten zu Optimierungszwecken"
-            - "Erstellung einer Buildpipeline für die automatische Erstellung und Bereitstellung von Docker Images"
-            - "Deployment als produktive Anwendung in der Alpha-Version"
-        
-        - text: "[FRONTEND] Konzeption und Implementierung einer responsiven Web-Benutzeroberfläche für branchenspezifische Dokumentationsarbeiten"
+            - "Erstellung einer Buildpipeline für die kontinuierliche und automatische Erstellung und Bereitstellung von Docker Images"
+            - "Deployment als produktive Anwendung in der Alpha-Version: Praktische Eprobung zur Reduktion des Zeitaufwandes von Dokumentationsarbeiten"
+        # [FRONTEND]
+        - text: "Konzeption und Implementierung einer responsiven Web-Benutzeroberfläche für branchenspezifische Dokumentationsarbeiten"
           subitems:
             - "Entwicklung einer intuitiven Benutzeroberfläche zur automatisierten Erstellung von Dokumentationen"
-            - "Deployment einer plattformunabhängigen Vue.js Applikation"
+            - "Deployment einer plattformunabhängigen Webanwendung"
             - "Integration oben genannter System API-Schnittstellen"
             - "Vollautomatisierter Ablauf mit Speech-to-Text und Überführung in branchenspezifische Masken"
             - "Skalierbare Umsetzung zur schnellen Adaption auf verschiedenste Dokumentationstypen"
             - "Zu jedem Zeitpunkt Möglichkeit der manuellen Korrektur der automatisch erstellten Dokumentationen"
 
-        - text: "[BACK- / FRONTEND] Tool zur Bewertung und Gegenüberstellung von KI Modellen"
+        # [BACK- / FRONTEND]
+        - text: "Entwicklung einer Anwendung zur Auswertung und visuellen Gegenüberstellung von KI Modellen"
           subitems:
             - "Visuelle Gegenüberstellung von mehreren Speech-to-Text oder LLM Modellen"
             - "Skalierbare Umsetzung zur schnellen Adaption auf weitere Modelltypen oder Daten"
@@ -51,40 +56,63 @@
             - "Datenschutzkonforme Pseudonymisierung von Daten"
             - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Darstellung der Auswertung"
             - "Detaillierte Auswertung und Visualisierung von Daten und Metriken zur Laufzeit"
-            
-        - text: "[FORSCHUNG] Entwicklung und Optimierung von <strong>Deep Learning</strong> Modellen"
+
+        # [ZUSATZ] -> Bei Bedarf
+        # - text: "Replikation & Erweiterung der Telematik-Infrastruktur: 
+        #   subitems:
+        #     - "Normkonforme Nachbildung des IT-Systems des deutschen Gesundheitswesens mit Fokus auf Standards"
+        #     - "Erweiterung der Telematik-Infrastruktur um neue Funktionen und Services"
+
+        # [FORSCHUNG]
+        - text: "Entwicklung und Optimierung von <strong>Deep Learning</strong> Modellen"
           subitems:
             - "Sprachsynythese durch dreistufiges TTS System (zu der Zeit nicht so weit verbreitet)"
             - "Training mittels RemoteComputing unterschiedlicher Deep Learning Modelle des TTS Systems"
             - "Optimierungen im Bereich der Modell Architekturen für die Sprachsynthese"
             - "Aufbereitung und Augmentation von Daten für das Training"
-            - "Rauschreduktion von Sprachaufnahmen mit Deep Learning Modell"
+            - "Aufbereitung von Sprachaufnahmen mit Deep Learning Ansätzen"
 
-        - "Etablierung moderner Entwicklungspraktiken wie Test-Driven Development und <strong>CI / CD</strong> Pipelines zur Qualitätssicherung"
-        - "Entwicklung von Buildpipelines für die automatische Erstellung und Bereitstellung von Docker Images"
-        - "Einführung von DVC für die übergreifende Versionierung und Verwaltung von Daten"
-        - "Kommunikation mit Kunden und Kundenanwendern zur Anpassung des Nutzungsumfangs und Nutzerbedarfs"
+        # [DEV OPS]
+        - text: "Etablierung moderner Entwicklungspraktiken und Automatisierungen"
+          subitems:
+            - "Umsetzung von Test-Driven Development und <strong>CI / CD</strong> Pipelines"
+            - "Implementierung von Buildpipelines für die automatische Bereitstellung von Docker Images"
+            - "Einführung von DVC für die übergreifende Versionierung und Verwaltung von Daten"
+
+        # [SOZIAL]
+        - text: "Selbstständiges agiles Projektmanagement" 
+          subitems:
+            - "Kontinuierliche Kommunikation zur Spezifizierung von Anforderungen und Nutzerbedarf"
+            - "Ausführliche Dokumentation gesamter Prozesse"
+            - "Kundenkommunikation zur Anpassung des Nutzungsumfangs und Nutzerbedarfs"
 
     - position: "Innovationsingenieur"
       company: "opta data Institut e.V."
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      description: "Entwicklung von Algorithmen und Prototypen unter Verwendung von Deep Learning und Computer Vision"
-      expandable: false # Ausklapp-Funktionalität für diese Karte deaktivieren
+      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision."
+      expandable: true # Ausklapp-Funktionalität für diese Karte deaktivieren
 
        # TODO Beschreibung prüfen und anpassen
       responsibilities:
+        # [BACKEND]
         - text: "Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
           subitems:
-            - "Entwicklung von Algorithmen zur präzisen Textlokalisation in Dokumentlayouts"
+            - "Entwicklung von Algorithmen zur präzisen Textlokalisation und -segmentierung im Dokumentlayout"
+            - "Integration von OCR Algorithmen zur Texterkennung"
+            - "Erprobung im produktiven Betrieb"
             - "Optimierung der Texterkennung durch Qualitätsverbesserung der Daten mit Computer Vision Techniken"
             - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Steigerung der Erkennungsgenauigkeit [92%]"
+        # [FRONTEND]
         - text: "Entwicklung einer mobilen Anwendung für die effiziente Digitalisierung von Belegen im Unternehmenskontext"
           subitems:
-            - "Anwendung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten / kontrastarmen Hintergründen"
+            - "Umsetzung plattformübergreifender App mit Xamarin Framework"
+            - "Anwendung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten und kontrastarmen Hintergründen"
             - "Entwicklung einer intuitiven Benutzeroberfläche für die Dokumentenverarbeitung"
-        - "Entwicklung von Protoypen als Machbarkeitsstudien für potenzielle Anwendungsfälle"
-        - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
+        # [FORSCHUNG]
+        - text: "Entwicklung von Protoypen als Machbarkeitsstudien für potenzielle Anwendungsfälle"
+          subitems:
+            - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
 
 - section: "Akademische Ausbildung"
   icon: "graduation-cap"
@@ -113,9 +141,9 @@
     - category: "Programmiersprachen"
       skills:
         - name: "Python"
-          level: 95
+          level: 92
         - name: "JavaScript"
-          level: 81
+          level: 83
         - name: "C/C++"
           level: 65
         - name: "SQL"
@@ -129,16 +157,16 @@
     - category: "Frameworks & Bibliotheken"
       skills:
         - name: "NumPy / SciPy"
-          level: 90
+          level: 92
           special: true # Skill Bar Color in hover-color
         - name: "TensorFlow"
-          level: 88
-        - name: "SQLite" #"PyTorch"
-          level: 69
-        - name: "Vue.js"
-          level: 77
+          level: 85
+        - name: "SpringBoot" 
+          level: 72
+        - name: "Vue"
+          level: 85
         - name: "HuggingFace"
-          level: 70
+          level: 75
         - name: "FastAPI"
           level: 83
           
@@ -163,12 +191,26 @@
         - name: "CI / CD"
           level: 83
           special: true # Skill Bar Color in hover-color
-        - name: "DVC"
-          level: 60
-        # - name: "TDD"
-        #   level: 70
+        - name: "TDD"
+          level: 73
+        - name: "REST"
+          level: 69
         - name: "Agile Methoden"
           level: 88
+
+# TODO Prüfen und Frameworks an richtige Stelle verschieben
+    - category: "Softwareentwicklung"
+      skills:
+        - name: "UNIX / Linux"
+          level: 93
+        - name: "VS Code"
+          level: 85
+        - name: "IntelliJ"
+          level: 79
+        - name: "PyCharm"
+          level: 81
+          
+          
 
 - section: "Sprachen"
   icon: "language"
