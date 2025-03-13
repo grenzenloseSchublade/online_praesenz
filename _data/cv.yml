@@ -23,7 +23,8 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: "Konzeption vollumfänglicher Software Lösungen mit Integration von Deep Learning zur Optimierung von Prozessabläufen. Entwicklung von Algorithmen und Webanwendungen mit modernen Frameworks."
+      description: "Konzeption und Entwicklung produktiver, standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung 
+      und Optimierung von kundenspezifischen Unternehmensprozessen.<br> Einhaltung moderner Arbeitsweisen und Einsatz zukunftssicherer Frameworks & Technologien."
       expandable: true # Standard ist true
 
     # TODO Beschreibung prüfen und anpassen
@@ -82,7 +83,7 @@
         # [SOZIAL]
         - text: "Selbstständiges agiles Projektmanagement" 
           subitems:
-            - "Kontinuierliche Kommunikation zur Spezifizierung von Anforderungen und Nutzerbedarf"
+            - "Kontinuierliche Kommunikation zur Spezifizierung von Anforderungen"
             - "Ausführliche Dokumentation gesamter Prozesse"
             - "Kundenkommunikation zur Anpassung des Nutzungsumfangs und Nutzerbedarfs"
 
@@ -90,7 +91,7 @@
       company: "opta data Institut e.V."
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision."
+      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision zur Automatisierung von Unternehmensprozessen."
       expandable: true # Ausklapp-Funktionalität für diese Karte deaktivieren
 
        # TODO Beschreibung prüfen und anpassen
