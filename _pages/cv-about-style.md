@@ -27,7 +27,7 @@ header:
   
   <div class="cv-section-content">
     {% if section.content %}
-    <p>{{ section.content }}</p>
+    <p>{{ section.content | markdownify | remove: '<p>' | remove: '</p>' }}</p>
     {% endif %}
     
     {% if section.experiences %}

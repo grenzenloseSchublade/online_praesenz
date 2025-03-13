@@ -4,7 +4,7 @@
   # TODO Hier evtl. noch etwas genauer rein, was ich getan habe? N paar Fachbegriffe?
   # TODO -> FUllstack Entwickler
   content: >-
-        Ingenieur mit Abschluss eines Studiums der Elektro- und Informationstechnik M.Sc. mit dem Schwerpunkt <em>Eingebettete Systeme</em>.
+        Ingenieur mit Abschluss eines **Studiums** der Elektro- und Informationstechnik M.Sc. mit dem Schwerpunkt *Eingebettete Systeme*.
         Mittlerweile über sechs Jahre Erfahrung in der Entwicklung vollumfänglicher Software Lösungen mit Integration von KI Komponenten – 
         angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern bis hin zum Deployment oder Integration in Produktivumgebungen.
         Sammelte vielfältige praktische Erfahrungen im Bereich der Backend Entwicklung, als auch im Feld der Frontend Entwicklung 
@@ -23,7 +23,7 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: "Konzeption und Entwicklung produktiver, standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung 
+      description: "Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung 
       und Optimierung von kundenspezifischen Unternehmensprozessen.<br> Einhaltung moderner Arbeitsweisen und Einsatz zukunftssicherer Frameworks & Technologien."
       expandable: true # Standard ist true
 
@@ -91,7 +91,7 @@
       company: "opta data Institut e.V."
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision zur Automatisierung von Unternehmensprozessen."
+      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision zur Automatisierung von Prozessabläufen."
       expandable: true # Ausklapp-Funktionalität für diese Karte deaktivieren
 
        # TODO Beschreibung prüfen und anpassen
