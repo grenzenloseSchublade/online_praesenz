@@ -1,11 +1,11 @@
 /* 
  * CV-Komponenten Styling
- * Responsive Styles für die About-Seite und CV-Komponenten
+ * Responsive Styles für die CV-Seite im Originalstil
  */
 
 // Grundlegendes Styling für CV-Sektionen
 .cv-section {
-  margin-bottom: 2rem;
+  @extend %section-base;
   
   .cv-section-content {
     background-color: rgba(255, 255, 255, 0.05);
@@ -26,13 +26,9 @@
     
     // Flexbox-Container für Interessen-Einträge
     .interests-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-top: 1rem;
+      @include flex-container(1.5rem, 300px);
       
       .cv-entry {
-        flex: 1 1 300px; // Flexible Breite mit Mindestbreite von 300px
         margin-bottom: 0; // Überschreibe den Standard-Margin, da wir jetzt Gap verwenden
       }
     }
@@ -61,12 +57,7 @@
   
   .cv-entry-content {
     ul {
-      margin: 0;
-      padding-left: 1.2rem;
-      
-      li {
-        margin-bottom: 0.5rem;
-      }
+      @extend %list-base;
     }
     
     p {
@@ -80,9 +71,9 @@
   margin-bottom: 1.5rem;
   
   h3 {
+    @extend %heading-base;
     font-size: 1.2rem;
-    margin: 0 0 1rem 0;
-    color: $card-heading-color;
+    margin-bottom: 1rem;
   }
   
   .cv-skill-items {
@@ -116,13 +107,9 @@
 
 // Flexbox-Container für Skill-Kategorien
 .skills-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  @include flex-container(1.5rem, 300px);
   
   .cv-skill-category {
-    flex: 1 1 300px; // Flexible Breite mit Mindestbreite von 300px
     margin-bottom: 0; // Überschreibe den Standard-Margin, da wir jetzt Gap verwenden
   }
 }
@@ -136,12 +123,10 @@
   padding: 0.8rem;
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.03);
-  transition: all 0.3s ease;
+  @include hover-effect(-2px);
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .cv-language-name {
@@ -174,61 +159,27 @@
 
 // Kontaktinformationen Container
 .contact-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  @include grid-container(1rem, 300px);
 }
 
 // Zitate Container
 .quotes-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  @include flex-container(1.5rem, 300px);
   
   .quote-container {
-    flex: 1 1 300px; // Flexible Breite mit Mindestbreite von 300px
     margin: 0; // Überschreibe den Standard-Margin, da wir jetzt Gap verwenden
   }
 }
 
 // Styling für Zitate
 .quote-container {
+  @extend %quote-base;
   margin: 1.5rem 0;
   padding: 1rem;
   border-left: 4px solid $card-heading-color;
   background-color: rgba($card-heading-color, 0.05);
   border-radius: 0 4px 4px 0;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-  }
-  
-  .quote-text {
-    margin: 0;
-    padding: 0;
-    font-style: italic;
-    font-size: 1.1em;
-    line-height: 1.6;
-    
-    p {
-      margin: 0;
-    }
-  }
-  
-  .quote-author {
-    margin-top: 0.8rem;
-    text-align: right;
-    font-weight: bold;
-    
-    p {
-      margin: 0;
-      color: #ccc;
-    }
-  }
+  @include hover-effect(-2px);
 }
 
 // Responsive Anpassungen
@@ -251,11 +202,14 @@
   .quotes-container {
     flex-direction: column;
     
-    .cv-entry,
-    .cv-skill-category,
-    .quote-container {
-      flex: 1 1 100%;
+    > * {
+      flex: none;
+      width: 100%;
     }
+  }
+  
+  .contact-container {
+    grid-template-columns: 1fr;
   }
 }
 

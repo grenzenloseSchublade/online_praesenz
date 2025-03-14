@@ -10,7 +10,7 @@ header:
   caption: "Gedanken und Projekte"
 ---
 
-Auf dieser Seite findest du eine Sammlung an Blogbeiträgen – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
+Auf dieser Seite sind eine Sammlung an Blogbeiträgen zu finden – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
 
 Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kategorien und Tags durchsuchen.
 
@@ -19,9 +19,9 @@ Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kateg
     <i class="fas fa-file-alt" style="font-size: 3em; color: #05d9e8;"></i>
   </div>
   <div>
-    <h3 style="margin-top: 0; color: #ffffff;">Neu hier? Lerne, wie Blogbeiträge erstellt werden</h3>
-    <p>Erfahre alles über die Technik und den Stil hinter den Blogbeiträgen. Dieser Leitfaden erklärt den gesamten Prozess und zeigt, wie Beiträge eigenständig erstellt werden können.</p>
-    <a href="{{ site.baseurl }}{% post_url 2025-03-04-blogbeitrag-erstellen %}" class="btn btn--primary">Zum Leitfaden <i class="fas fa-arrow-right"></i></a>
+    <h3 style="margin-top: 0; color: #ffffff;">Neu hier? Lernen Sie, wie Blogbeiträge erstellt werden</h3>
+    <p>Erfahren Sie alles über die Technik und den Stil hinter den Blogbeiträgen. Dieser Leitfaden erklärt den gesamten Prozess und zeigt, wie Beiträge eigenständig erstellt werden können.</p>
+    <a href="{{ site.baseurl }}{% post_url 2025-03-04-blogbeitrag-erstellen %}" class="btn notice--info" >Zum Leitfaden <i class="fas fa-arrow-right"></i></a>
   </div>
 </div>
 

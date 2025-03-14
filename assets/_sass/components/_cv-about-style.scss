@@ -5,7 +5,7 @@
 
 // Grundlegendes Styling für CV-Sektionen im About-Stil
 .cv-section-about-style {
-  margin-bottom: 2rem;
+  @extend %section-base;
   
   .cv-section-content {
     background-color: transparent;
@@ -26,32 +26,24 @@
   }
   
   h2 {
-    margin-top: 0;
     border-bottom: 2px solid $card-heading-color;
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
     color: $card-heading-color;
     font-size: 1.4rem;
-
-    i {
-      margin-right: 0.5rem;
-    }
   }
 }
 
 // Styling für Einträge (Erfahrungen, Bildung) im About-Stil
 .cv-entry-about-style {
+  @extend %card-base;
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
   border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
-  padding: 1rem;
   margin-bottom: 1rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.3);
   }
   
@@ -59,9 +51,9 @@
     margin-bottom: 0.5rem;
     
     h3 {
-      font-size: 1.3rem;
-      margin: 0 0 0.3rem 0;
-      color: $card-heading-color;
+      @extend %heading-base;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
       border-bottom: 1px solid rgba($card-heading-color, 0.3);
       padding-bottom: 0.5rem;
     }
@@ -70,31 +62,157 @@
       font-size: 0.9rem;
       color: #aaa;
       margin: 0;
+      font-weight: 400;
+      letter-spacing: 0.02em;
     }
   }
   
   .cv-entry-content {
-    ul {
-      margin: 0.5rem 0 0 0;
-      padding-left: 1.2rem;
+    p {
+      margin: 0 0 0.8rem 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
       
-      li {
-        margin-bottom: 0.5rem;
+      strong, b {
+        color: $card-heading-color;
+        font-weight: 600;
       }
     }
     
-    p {
-      margin: 0 0 0.8rem 0;
+    ul {
+      list-style: none;
+      padding-left: 1.2rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      
+      li {
+        position: relative;
+        padding-left: 0;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.8);
+        
+        &::before {
+          content: "•";
+          position: absolute;
+          left: -1.2rem;
+          color: $card-heading-color;
+          font-weight: bold;
+        }
+        
+        strong, b {
+          color: $card-heading-color;
+          font-weight: 600;
+        }
+        
+        // Styling für ausklappbare Unterpunkte
+        &.has-subitems {
+          position: relative;
+          cursor: pointer;
+          padding-right: 2rem; // Platz für den Pfeil rechts
+          
+          &::after {
+            content: "\f078"; // Font Awesome Pfeil-Icon
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 0.5rem;
+            top: 0.2rem; // Feste Position von oben
+            color: $card-heading-color;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            width: 1rem; // Feste Breite für den Pfeil
+            text-align: center; // Zentrieren des Pfeils
+            height: 1.2rem; // Feste Höhe statt 100%
+            display: flex; // Flexbox für vertikale Zentrierung
+            align-items: center; // Vertikal zentrieren
+            justify-content: center; // Horizontal zentrieren
+          }
+          
+          &.expanded::after {
+            transform: rotate(180deg);
+          }
+          
+          // Hover-Effekt für ausklappbare Elemente
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+          }
+        }
+        
+        // Deaktivierte Ausklapp-Funktionalität
+        &.no-expand {
+          cursor: default;
+          
+          &::after {
+            display: none; // Pfeil ausblenden
+          }
+          
+          &:hover {
+            background-color: transparent; // Kein Hover-Effekt
+          }
+          
+          ul {
+            display: block; // Immer anzeigen
+            margin-top: 0.5rem;
+            padding-top: 0;
+            border-top: none;
+          }
+        }
+        
+        ul {
+          list-style: none;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+          margin-left: 0;
+          padding-left: 1rem;
+          display: none; // Standardmäßig ausgeblendet
+          
+          &.expanded {
+            display: block; // Wenn erweitert, dann anzeigen
+            margin-top: 0.7rem; // Mehr Abstand nach oben
+            padding-top: 0.3rem; // Innenabstand oben
+            border-top: 1px dotted rgba(255, 255, 255, 0.1); // Trennlinie oben
+          }
+          
+          // Animationseffekt beim Ein-/Ausklappen
+          transition: max-height 0.3s ease-in-out;
+          overflow: hidden;
+          
+          li {
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            padding-left: 0;
+            position: relative;
+            transition: color 0.2s ease;
+            
+            &:hover {
+              color: rgba(255, 255, 255, 0.9);
+            }
+            
+            &::before {
+              content: "◦";
+              position: absolute;
+              left: -1rem;
+              color: darken($card-heading-color, 10%);
+              font-size: 0.9em;
+            }
+            
+            &:last-child {
+              margin-bottom: 0.1rem; // Weniger Abstand beim letzten Element
+            }
+          }
+        }
+      }
     }
   }
 }
 
 // Container für Einträge im About-Stil
 .cv-entries-container-about-style {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
+  @include flex-container;
 }
 
 // Spezielle Anpassung für Berufserfahrung - immer untereinander
@@ -109,24 +227,21 @@
 
 // Styling für Fähigkeiten im About-Stil
 .cv-skill-category-about-style {
+  @extend %card-base;
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
   border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
-  padding: 1rem;
   margin-bottom: 1rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.3);
   }
   
   h3 {
-    font-size: 1.3rem;
-    margin: 0 0 1rem 0;
-    color: $card-heading-color;
+    @extend %heading-base;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid rgba($card-heading-color, 0.3);
     padding-bottom: 0.5rem;
   }
@@ -151,6 +266,9 @@
           background-color: $card-heading-color;
           border-radius: 4px;
         }
+        .cv-skill-level.cv-skill-special {
+          background-color: $hover-color;
+        }
       }
     }
   }
@@ -158,10 +276,7 @@
 
 // Container für Fähigkeiten im About-Stil
 .cv-skills-container-about-style {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
+  @include flex-container;
 }
 
 // Styling für Sprachen im About-Stil
@@ -173,11 +288,9 @@
   padding: 0.8rem;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  @include hover-effect(-3px);
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.3);
   }
   
@@ -205,17 +318,14 @@
 
 // Styling für Auszeichnungen im About-Stil
 .cv-award-about-style {
+  @extend %card-base;
   flex: 1 1 250px;
   background-color: rgba(0, 0, 0, 0.2);
   border-left: 3px solid $card-heading-color;
   border-radius: 0 5px 5px 0;
-  padding: 1rem;
   margin-bottom: 1rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.3);
   }
   
@@ -223,15 +333,11 @@
     margin-bottom: 0.5rem;
     
     h3 {
+      @extend %heading-base;
       font-size: 1.3rem;
-      margin: 0 0 0.3rem 0;
-      color: $card-heading-color;
+      margin-bottom: 0.3rem;
       border-bottom: 1px solid rgba($card-heading-color, 0.3);
       padding-bottom: 0.5rem;
-      
-      i {
-        margin-right: 0.5rem;
-      }
     }
     
     .cv-award-meta {
@@ -248,26 +354,28 @@
 
 // Container für Auszeichnungen im About-Stil
 .cv-awards-container-about-style {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
+  @include flex-container;
 }
 
 // Responsive Anpassungen
 @media (max-width: 768px) {
   .cv-entries-container-about-style,
   .cv-skills-container-about-style,
-  .cv-languages-container-about-style,
   .cv-awards-container-about-style {
     flex-direction: column;
+    
+    > * {
+      flex: none;
+      width: 100%;
+    }
   }
   
-  .cv-entry-about-style,
-  .cv-skill-category-about-style,
-  .cv-language-about-style,
-  .cv-award-about-style {
-    width: 100%;
-    flex: none;
+  .cv-language-about-style {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .cv-language-level {
+      margin-top: 0.3rem;
+    }
   }
 } 

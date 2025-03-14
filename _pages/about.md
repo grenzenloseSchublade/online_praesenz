@@ -18,19 +18,42 @@ header:
 <div class="about-container">
 {% assign sections_by_name = site.data.about | group_by: "section" %}
 
-<div class="about-sections">
+<div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
+  <details>
+    <summary style="display: flex; align-items: center; cursor: pointer;">
+      <div style="flex: 0 0 64px; margin-right: 1em;">
+        <i class="fas fa-file-alt" style="font-size: 3em; color: #05d9e8;"></i>
+      </div>
+      <h3 style="margin: 0; color: #ffffff;">Wie gehts es weiter? Lesen Sie hier, was mit dieser Seite passieren wird.</h3>
+    </summary>
+    <div style="margin-top: 1em;">
+      <p>
+        Auch wenn es anfänglich eine Zeit dauern wird dieses Vorhaben, all die verschiedenen Projekte und Gedanken entsprechend aufzubereiten und zu dokumentieren,  
+        so ist es mir wichtig diese Dinge auch für mich selbst festzuhalten. So steht an erster Stelle Qualität und Einträge werden ohne Zeitdruck und unter Wohlbefinden erstellt und umgesetzt.
+
+        Für ein Projekt bringe ich mir im Allgemeinen schrittweise autodidaktisch Grundlagen und alle notwendigen Fähigkeiten bei. 
+        Dabei ist es wichtig, dass ich mich selbst motiviere und die Herausforderungen so lange angehen, bis ich das gewünschte Ergebnis erreicht habe.
+        Daher wird keinerlei Zeitrahmen für die Aktualisierung dieser Seite angegeben.
+        <br>
+        <br>
+        <strong>Ich hoffe, dass Ihnen diese Seite gefällt und Sie viel Freude daran haben.</strong>
+      </p>
+    </div>
+  </details>
+</div>
+
 {% for section in site.data.about %}
   {% if section.section != "Kontakt" and section.section != "Inspirierende Zitate" %}
     <span id="{{ section.section | slugify }}" class="section-anchor"></span>
     <div class="about-section {% if section.section == 'Wer bin ich?' %}section-wer-bin-ich{% elsif section.section == 'Meine Interessen' %}section-meine-interessen{% elsif section.section == 'Meine Projekte' %}section-meine-projekte{% endif %}">
       <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
-      
+
       {% if section.section == "Meine Interessen" %}
-        <p>Hier findest du einen Überblick über meine vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren.</p>
+        <p>Hier ist ein Überblick über die vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren, zu finden.</p>
       {% endif %}
       
       {% if section.section == "Meine Projekte" %}
-        <p>Entdecke einige meiner spannendsten Projekte, an denen ich gearbeitet habe oder aktuell arbeite.</p>
+        <p>Einige der spannendsten Projekte, an denen ich gearbeitet habe oder aktuell arbeite.</p>
       {% endif %}
       
       {% if section.content %}

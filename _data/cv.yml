@@ -1,82 +1,221 @@
 - section: "Profil"
   icon: "user"
-  content: "Senior Ingenieur mit Schwerpunkt auf Entwicklung von KI Systemen: Beginnend bei der Analyse von Daten, über die Auswahl von Algorithmen, Architekturen und individuellen Anpassungen bis hin zur Erprobung im Produktivsystem. 
-  Spezialisiert auf neuronale Netze (manchmal auch Deep Learning genannt) und Computer Vision Algorithmen."
+
+  content: >-
+        Ingenieur mit Abschluss eines Studiums der Elektro- und Informationstechnik M.Sc. mit dem Schwerpunkt *Eingebettete Systeme*.
+        Über sechs Jahre Erfahrung in der Entwicklung vollumfänglicher Software Lösungen mit Integration von KI Komponenten – 
+        angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern bis hin zum Deployment oder Integration in Produktivumgebungen.
+        Sammelte vielfältige praktische Erfahrungen im Bereich der Backend Entwicklung, als auch im Feld der Frontend Entwicklung 
+        und hat zusätzlich ein breites Spektrum an DevOps Praxiserfahrungen. 
+        Ergänzend zu den Ingenieursqualifikationen wurde über die Jahre ein breites Spektrum an Fähigkeiten angeeignet, welche denen eines Full-Stack Entwicklers entsprechen.
+        <br> <br>
+        Es sind sowohl Forschung als auch Industrie bekannt und ist damit auf dem neuesten Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
+        Hatte Beteiligungen an verschiedensten Projekten und ist sich der unterschiedlichen Dynamiken von kleinen und grossen Teams bewusst. 
+        Eine grosse Faszination geht von [dem Prozess selbst] der Umsetzung komplexer und herausfordernder Probleme in praxistaugliche Lösungen aus.
+
 
 - section: "Berufserfahrung"
   icon: "briefcase"
   experiences:
-    - position: "Senior Entwickler"
-      company: "Technologie GmbH"
-      location: "Berlin, Deutschland"
-      period: "2018 - Heute"
-      description: "Entwicklung von Algorithmen zur Visualisierung komplexer mathematischer Strukturen. Implementierung von Webanwendungen mit modernen Frameworks."
-      responsibilities:
-        - "Leitung eines Teams von 5 Entwicklern"
-        - "Konzeption und Implementierung von Visualisierungstools"
-        - "Optimierung von Algorithmen für Echtzeit-Berechnungen"
+    - position: "Softwareingenieur"
+      company: "opta data Innovationlab"
+      location: "Bochum, Deutschland"
+      period: "2020 - Heute"
+      description: "Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung 
+      und Optimierung von kundenspezifischen Unternehmensprozessen. <br>
+      Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien."
+      expandable: true # Standard ist true
 
-    - position: "Entwickler"
-      company: "Daten & Analyse AG"
-      location: "München, Deutschland"
-      period: "2015 - 2018"
-      description: "Entwicklung von Datenanalyse-Tools und Visualisierungen für große Datensätze."
+    # TODO Beschreibung prüfen und anpassen -> nicht zu genau / akribisch sein 
       responsibilities:
-        - "Implementierung von Datenvisualisierungen"
-        - "Entwicklung von Algorithmen zur Datenanalyse"
-        - "Optimierung von Datenbankabfragen"
+      # [BACKEND] -> System zur automatisierten Dokumentationsarbeit in Gesundheitsfachberufen
+        - text: "Entwicklung eines Systems zur automatisierten Datenaufnahme und -verarbeitung in Gesundheitsfachberufen"
+          subitems:
+            - "Integration von Spracherkennung mittels Encoder-Decoder Modell mit Attention Mechanismen"
+            - "Semantische Analyse und Strukturierung mit LLMs in branchenspezifische Datenformate"
+            - "Konzeption und Implementierung von API Schnittstellen zur systemübergreifenden Integration"
+            - "Entwicklung und Integration eines Datenbanksystems zur Speicherung von Anwendungsdaten zu Optimierungszwecken"
+            - "Erstellung einer Buildpipeline für die kontinuierliche und automatische Erstellung und Bereitstellung von Docker Images"
+            - "Deployment als produktive Anwendung in der Alpha-Version: Praktische Eprobung zur Reduktion des Zeitaufwandes von Dokumentationsarbeiten"
+        # [FRONTEND]
+        - text: "Konzeption und Implementierung einer responsiven Web Anwendung für branchenspezifische Dokumentationsarbeiten"
+          subitems:
+            - "Entwicklung einer intuitiven Benutzeroberfläche zur automatisierten Erstellung von Dokumentationen"
+            - "Deployment einer plattformunabhängigen Webanwendung"
+            - "Integration oben genannter System API-Schnittstellen"
+            - "Vollautomatisierter Ablauf mit Speech-to-Text und Überführung in branchenspezifische Masken"
+            - "Skalierbare Umsetzung zur schnellen Adaption auf verschiedenste Dokumentationstypen"
+            - "Zu jedem Zeitpunkt Möglichkeit der manuellen Korrektur der automatisch erstellten Dokumentationen"
+
+        # [BACK- / FRONTEND]
+        - text: "Entwicklung eines Systems zur Auswertung und visuellen Gegenüberstellung von KI Modellen"
+          subitems:
+            - "Visuelle Gegenüberstellung von mehreren Speech-to-Text oder LLM Modellen"
+            - "Skalierbare Umsetzung zur schnellen Adaption auf weitere Modelltypen oder Daten"
+            - "Adjustierbare taskspezifische Auswertung von LLM Modellen in lokaler Pipeline" 
+            - "Datenschutzkonforme Pseudonymisierung von Daten"
+            - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Darstellung der Auswertung"
+            - "Detaillierte Auswertung und Visualisierung von Daten und Metriken zur Laufzeit"
+
+      # [BACKEND / ZUSATZ] -> Normkonforme Nachbildung des IT-Systems des deutschen Gesundheitswesens mit Fokus auf Standards
+        - text: "Entwicklung eines normkonformen Systems zur Abbildung und Integration der Telematik-Infrastruktur" 
+          subitems:
+            - "Umsetzung als SpringBoot Anwendung mit Fokus auf Standards"
+            - "Spezifizierung von REST Schnittstellen zur Integration des Telematik-Systemen"
+            - "Integration von FHIR Ressourcen"
+            - "Erweiterung des Systems um normübergreifende Funktionen und Services"
+            - "Integration im Produktivumfeld mit spezialisierter Hardware"
+
+        # [FORSCHUNG]
+        - text: "Entwicklung und Optimierung von <strong>Deep Learning</strong> Modellen"
+          subitems:
+            - "Sprachsynythese durch dreistufiges TTS System (zu der Zeit nicht so weit verbreitet)"
+            - "Training mittels RemoteComputing unterschiedlicher Deep Learning Modelle des TTS Systems"
+            - "Optimierungen im Bereich der Modell Architekturen für die Sprachsynthese"
+            - "Aufbereitung und Augmentation von Daten für das Training"
+            - "Aufbereitung von Sprachaufnahmen mit Deep Learning Ansätzen"
+
+        # [DEV OPS]
+        - text: "Etablierung moderner Entwicklungspraktiken und Automatisierungen"
+          subitems:
+            - "Umsetzung von Test-Driven Development und <strong>CI / CD</strong> Pipelines"
+            - "Implementierung von Buildpipelines für die automatische Bereitstellung von Docker Images"
+            - "Einführung von DVC für die übergreifende Versionierung und Verwaltung von Daten"
+
+        # [SOZIAL]
+        - text: "Agiles Projektmanagement" 
+          subitems:
+            - "Selbstständige kontinuierliche Kommunikation mit Verantwortlichen für die Spezifizierung von Anforderungen"
+            - "Ausführliche Dokumentation aller Prozesse"
+            - "Kundenkommunikation zur Anpassung des Nutzungsumfangs und Nutzerbedarfs"
+
+    - position: "Innovationsingenieur"
+      company: "opta data Institut e.V."
+      location: "Essen, Deutschland"
+      period: "2018 - 2020"
+      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision zur Automatisierung von Prozessabläufen."
+      expandable: true # Ausklapp-Funktionalität für diese Karte deaktivieren
+
+       # TODO Beschreibung prüfen und anpassen
+      responsibilities:
+        # [BACKEND]
+        - text: "Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
+          subitems:
+            - "Entwicklung von Algorithmen zur präzisen Textlokalisation und -segmentierung im Dokumentlayout"
+            - "Integration von OCR Algorithmen zur Texterkennung"
+            - "Erprobung der Lösung im produktiven Betrieb"
+            - "Optimierung der Texterkennung durch Qualitätsverbesserung der Daten mit Computer Vision Techniken"
+            - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Steigerung der Erkennungsgenauigkeit [92%]"
+        # [FRONTEND]
+        - text: "Entwicklung einer mobilen Anwendung für die effiziente Digitalisierung von Belegen im Unternehmenskontext"
+          subitems:
+            - "Umsetzung plattformübergreifender App mit Xamarin Framework"
+            - "Anwendung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten und kontrastarmen Hintergründen"
+            - "Entwicklung einer intuitiven Benutzeroberfläche für die Dokumentenverarbeitung"
+        # [FORSCHUNG]
+        - text: "Entwicklung von Protoypen als Machbarkeitsstudien für potenzielle Anwendungsfälle"
+          subitems:
+            - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
 
 - section: "Akademische Ausbildung"
   icon: "graduation-cap"
   education:
-    - degree: "Master of Science in Informatik"
-      institution: "Technische Universität Berlin"
-      location: "Berlin, Deutschland"
-      period: "2013 - 2015"
-      description: "Schwerpunkt: Algorithmen und Datenstrukturen, Computergrafik"
+    - degree: "M. Sc. Elektro- und Informationstechnik"
+      institution: "Ruhr-Universität Bochum"
+      location: "Bochum, Deutschland"
+      period: "2015 - 2018"
+      description: "Schwerpunkt: Eingebettete Systeme <br> Abschlussnote: <strong>Sehr Gut</strong>" 
+      #<br> Note Abschlussarbeit: <strong>Ausgezeichnet</strong>"
+      #<br> Thema Abschlussarbeit: 'Erkennung handgeschriebener Worte mittels CNN / BiRNN für eingebettete Systeme'"
 
-    - degree: "Bachelor of Science in Mathematik"
-      institution: "Universität Hamburg"
-      location: "Hamburg, Deutschland"
-      period: "2010 - 2013"
-      description: "Schwerpunkt: Numerische Mathematik, Differentialgleichungen"
+    - degree: "B. Sc. Elektro- und Informationstechnik"
+      institution: "Ruhr-Universität Bochum"
+      location: "Bochum, Deutschland"
+      period: "2012 - 2015"
+      description: "Grundlagenstudium" 
+      #<br> Note Abschlussarbeit: <strong>Sehr Gut</strong>"
+      #<br> Thema Abschlussarbeit: 'Elektrische Charakterisierung einer Halbleiter Nanostruktur.'"
 
 - section: "Technische Fähigkeiten"
   icon: "laptop-code"
   skill_categories:
+# 4 bis 6 anführen -> 1 schlechteres mit angeben
+# TODO NOCHMAL schauen was hier genau rein soll und wichtig ist -> prüfen ob die Bewertungen so passen
     - category: "Programmiersprachen"
       skills:
         - name: "Python"
-          level: 95
+          level: 92
         - name: "JavaScript"
-          level: 90
-        - name: "C++"
-          level: 75
-        - name: "Ruby"
-          level: 60
+          level: 83
+        - name: "C/C++"
+          level: 65
+        - name: "HTML"
+          level: 77
+        - name: "SQL"
+          level: 72
+        # - name: "LaTeX"
+        #   level: 90
 
+# 5 bis 6 anführen -> 1 schlechteres mit angeben
     - category: "Frameworks & Bibliotheken"
       skills:
-        - name: "NumPy/SciPy"
-          level: 90
-        - name: "React"
-          level: 85
-        - name: "D3.js"
-          level: 80
-        - name: "Jekyll"
+        - name: "Vue"
+          level: 88
+          special: true # Skill Bar Color in hover-color
+        - name: "SpringBoot" 
           level: 70
+        - name: "TensorFlow"
+          level: 81
+        - name: "Node"
+          level: 77
+        - name: "FastAPI"
+          level: 88
 
+        # TODO Prüfen ob diese Bibliotheken wichtig sind
+        # - name: "NumPy / SciPy"
+        #   level: 92
+        # - name: "Plotly"
+        #   level: 68
+        # - name: "Matplotlib"
+        #   level: 80
+        # - name: "Pandas"
+        #   level: 68
+        # - name: "OpenCV"
+        #   level: 77
+          
+# 5 bis 6 anführen -> 1 schlechteres mit angeben
     - category: "Tools & Technologien"
       skills:
         - name: "Git"
-          level: 95
+          level: 93
         - name: "Docker"
-          level: 80
-        - name: "CI/CD"
+          level: 81
+        - name: "DevContainer"
+          level: 92
+        - name: "CI / CD"
+          level: 83
+          special: true # Skill Bar Color in hover-color
+        - name: "TDD"
           level: 75
-        - name: "AWS"
-          level: 70
+        - name: "Scrum / Kanban"
+          level: 88
+        - name: "REST"
+          level: 69
 
+    - category: "Softwareentwicklung"
+      skills:
+        - name: "UNIX / Linux"
+          level: 93
+        - name: "Bash"
+          level: 88
+        - name: "VS Code"
+          level: 85
+        - name: "IntelliJ"
+          level: 77
+        - name: "PyCharm"
+          level: 81
+          
+          
 - section: "Sprachen"
   icon: "language"
   languages:
@@ -87,7 +226,7 @@
     - language: "Russisch"
       level: "Grundkenntnisse (A2) - lernend"
     - language: "Spanisch"
-      level: "Grundkenntnisse (A0)- lernend"
+      level: "(A0) - lernend"
 
 # - section: "Zertifikate & Auszeichnungen"
 #   icon: "award"
