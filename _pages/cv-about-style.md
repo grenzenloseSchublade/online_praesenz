@@ -15,9 +15,9 @@ header:
   caption: "Beruf und Ausbildung"
 ---
 
-<div class="notice">
+<!-- <div class="notice">
   <p>Diese Seite zeigt den Lebenslauf im neuen modernen Stil. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-old/">hier</a>.</p>
-</div>
+</div> -->
 
 <div class="about-container">
 {% for section in site.data.cv %}

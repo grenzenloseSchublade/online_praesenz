@@ -7,11 +7,11 @@ main:
     url: "/about/"
   - title: "Lebenslauf"
     url: "/cv/"
-  - title: "Lebenslauf (Old)"
-    url: "/cv-old/"
-
+  
 
   # Kategorien und Tags auskommentiert, damit sie nicht mehr in der Navigation erscheinen
+  # - title: "Lebenslauf (Old)"
+  #   url: "/cv-old/"
   # - title: "Kategorien"
   #   url: "/categories/"
   # - title: "Tags"
