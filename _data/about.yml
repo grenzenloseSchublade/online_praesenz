@@ -49,6 +49,8 @@
         - "Yoga"
         - "Kochen"
         - "Atemtechniken"
+        - "Kochen"
+        - "Atemtechniken"
         - "Meditation"
 
 # TODO hier konkret die privaten wichtigen Sachen aufführen
@@ -74,6 +76,8 @@
         - "Dokumentation (TODO)"
     - category: "Bildung"
       items:
+        - "Blog-Beiträge über interessante Themen"
+        - "Erstellung von lehrreichen Inhalten"
         - "Blog-Beiträge über interessante Themen"
         - "Erstellung von lehrreichen Inhalten"
     - category: "Kultur & Reisen"
