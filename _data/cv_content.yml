@@ -9,7 +9,7 @@
         und hat zusätzlich ein breites Spektrum an **DevOps** Praxiserfahrungen. 
         Ergänzend zu den Ingenieursqualifikationen wurde über die Jahre ein breites Spektrum an Fähigkeiten angeeignet, welche denen eines **Full-Stack** Entwicklers entsprechen.
         <br> <br>
-        Es sind sowohl Forschung als auch Industrie bekannt und ist damit auf dem neuesten Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
+        Es sind sowohl Forschung als auch Industrie bekannt und hat damit einen aktuellen Stand der Technik und weiss gleichzeitig um die Hürden der Praxis.
         Hatte Beteiligungen an verschiedensten Projekten und ist sich der unterschiedlichen Dynamiken von kleinen und grossen Teams bewusst. 
         Eine grosse Faszination geht von [dem Prozess selbst] der Umsetzung komplexer und herausfordernder Probleme in praxistaugliche Lösungen aus.
 
@@ -21,8 +21,9 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: "Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung und Optimierung von kundenspezifischen Unternehmensprozessen. 
-      <br>Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien."
+      description: >- 
+        Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung und Optimierung von kundenspezifischen Unternehmensprozessen. 
+        <br>Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien.
       expandable: true # Standard ist true
 
     # TODO Beschreibung prüfen und anpassen -> nicht zu genau / akribisch sein 
