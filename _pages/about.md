@@ -4,11 +4,11 @@ excerpt: "Eine kurze Einführung in meine Person und meine Interessen."
 permalink: /about/
 layout: single
 author_profile: true
-toc: true
-toc_label: "Inhalt"
-toc_icon: "user-circle"
-toc_collapse: true
-toc_sticky: true
+toc: false
+# toc_label: "Inhalt"
+# toc_icon: "user-circle"
+# toc_collapse: true
+# toc_sticky: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
@@ -48,12 +48,13 @@ header:
     <div class="about-section {% if section.section == 'Wer bin ich?' %}section-wer-bin-ich{% elsif section.section == 'Meine Interessen' %}section-meine-interessen{% elsif section.section == 'Meine Projekte' %}section-meine-projekte{% endif %}">
       <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>
 
+
       {% if section.section == "Meine Interessen" %}
-        <p>Hier ist ein Überblick über die vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren, zu finden.</p>
+        <p>Hier ist ein Überblick über die vielfältigen Interessen und Leidenschaften, die mich antreiben und inspirieren.</p>
       {% endif %}
       
       {% if section.section == "Meine Projekte" %}
-        <p>Einige der spannendsten Projekte, an denen ich gearbeitet habe oder aktuell arbeite.</p>
+        <p>Einige der spannendsten Projekte, mit denen ich mich beschäftigt habe.</p>
       {% endif %}
       
       {% if section.content %}

@@ -1,16 +1,15 @@
 ---
-title: "Die faszinierende Geschichte des Döners und ein kulinarischer Streifzug durch Berlin"
-excerpt: "Eine Reise durch die Geschichte des beliebten Fast-Foods und ein Vergleich der besten Dönerläden in Berlin."
+title: "Die faszinierende Geschichte des Gyros und ein kulinarischer Streifzug durch Berlin"
+excerpt: "Eine Reise durch die Geschichte des beliebten Fast-Foods und ein Vergleich der besten Gyrosläden in Berlin."
 header:
-  overlay_image: /assets/images/doener-header.jpg
+  overlay_image: /assets/images/gyros-header.jpg
   overlay_filter: 0.5
   caption: "Foto: [**Unsplash**](https://unsplash.com)"
 categories:
   - Kulinarik
   - Stadtleben
 tags:
-  - Döner
-  - Berlin
+  - Gyros
   - Essen
   - Testbericht
   - Kulturgeschichte
@@ -96,7 +95,7 @@ toc_sticky: true
 </style>
 
 <span id="einfuehrung" class="section-anchor"></span>
-## Die Geschichte des Döners: Von Istanbul nach Berlin
+## Die Geschichte des Gyros: Von Istanbul nach Berlin
 
 Der Döner Kebab, wie wir ihn heute kennen, hat eine faszinierende Entwicklungsgeschichte, die von den Straßen Istanbuls bis in die Metropolen Europas reicht. Was heute als eines der beliebtesten Fast-Food-Gerichte Deutschlands gilt, hat seine Wurzeln tief in der osmanischen Küchentradition.
 
