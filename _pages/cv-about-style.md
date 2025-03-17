@@ -20,7 +20,7 @@ header:
 </div> -->
 
 <div class="about-container">
-{% for section in site.data.cv %}
+{% for section in site.data.cv_content %}
 <span id="{{ section.section | slugify }}" class="section-anchor"></span>
 <div class="cv-section-about-style">
   <h2 id="{{ section.section | slugify }}-heading"><i class="fas fa-{{ section.icon }}"></i> {{ section.section }}</h2>

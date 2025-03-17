@@ -8,10 +8,9 @@
     Daher ist diese Seite entstanden. Sie gibt einen Einblick in meine Unternehmungen, Projekte und Gedanken die ich angestellt habe und mich inspirieren.
 
 
-    Ich finde es schwer mich kurz zu beschreiben, weil Menschen sehr komplex sind und nicht so einfach in einem Satz zu erklären sind. 
-    Und zum Anderen kommt hinzu, dass ich extrem neurgierig bin und mich so viele Sachen interessieren. Daher will ich es hierbei auf den Kern beschränken.
+    Ich finde es schwer mich kurz zu beschreiben, weil Menschen generell sehr komplex sind und nicht so einfach in einem Satz zu erklären sind. 
+    Hinzu kommt, dass ich extrem neugierig bin und ich vielen Sachen nachgehe. Daher will ich es hierbei auf den Kern beschränken.
     Ich bin jemand der gerne draussen in der Natur ist und es liebt sich zu bewegen:
-    <br>
     Stand Up paddeln auf dem Fluss, schwimmen, surfen, Kanu fahren, wandern, spazieren, Fahrradtouren, mountainbiken, Krafttraining im Freien und noch viel mehr.
     Ausserdem esse und koche ich gerne, unternehme Atemreisen und mache Yoga und beschäftige mich mit dem Denken. 
     <br> 
@@ -23,7 +22,6 @@
     </div>
 
 
-
 # TODO hier konkret die privaten wichtigen Sachen aufführen
 - section: "Meine Interessen"
   icon: "brain"
@@ -32,8 +30,8 @@
       items:
         - "Machine Learning"
         - "Computer Vision Algorithmen"
-        - "Data Analytics"
-        - "Wissenschaftlich schreiben - Latex (Lyx)"
+        # - "Data Analytics"
+        - "Wissenschaftlich schreiben" # - Latex (Lyx)"
     - category: "Physik & Technik"
       items:
         - "Astronomie"
@@ -62,6 +60,7 @@
         - "Interaktive Darstellung der Mandelbrot-Menge"
         - "Julia-Mengen Explorer"
         - "Fraktale Kunst-Generator"
+        - "Dokumentation (TODO)"
     - category: "Mobile App"
       items:
         - "Erkennung & Digitalisierung von Kassenzetteln"
@@ -81,7 +80,7 @@
       items:
         - "Reisen mit dem Rad"
         - "Surfen"
-        - "Essen"
+        - "Regionales Essen"
 
 - section: "Kontakt"
   icon: "envelope"
@@ -105,7 +104,8 @@
   quotes:
     - author: "Unknown...?"
       text: "Überzeugen durch Leistung."
-    - author: "Sokrates"
-      text: "Wer glaubt etwas zu sein, hat aufgehört etwas zu werden."
     - author: "Albert Einstein"
       text: "Man sollte alles so einfach wie möglich machen, aber nicht einfacher."
+    - author: "Sokrates"
+      text: "Wer glaubt etwas zu sein, hat aufgehört etwas zu werden."
+

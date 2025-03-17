@@ -21,9 +21,8 @@
       company: "opta data Innovationlab"
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
-      description: "Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung 
-      und Optimierung von kundenspezifischen Unternehmensprozessen. <br>
-      Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien."
+      description: "Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung und Optimierung von kundenspezifischen Unternehmensprozessen. 
+      <br>Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien."
       expandable: true # Standard ist true
 
     # TODO Beschreibung prüfen und anpassen -> nicht zu genau / akribisch sein 
