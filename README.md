@@ -2,19 +2,13 @@
 
 Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Theme erstellt wurde.
 
+
 ## TODO
-- about me mit inhalt füllen
-- lebenslauf mit inhalt füllen
+- Aufräumen komplettes Projekt
+- Dokumentation READMEs reduzieren und verbessern
+- Mobiles Erlebnis prüfen und optimieren
 - 
-- Touch funktion für Zoom Mandelbrotmenge vernünftig umsetzen
-- 
-- clean up python scripts
-  - mandelbrot calculation
-  - julia calculation
-  - mandelbrot animation
-  - julia animation
-
-
+ 
  
 ## Installation
 
