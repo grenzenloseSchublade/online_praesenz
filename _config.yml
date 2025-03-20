@@ -1,10 +1,10 @@
-title: Kraft #stoff
+title: Hans Müller # Kraftstoff
 name: Hans Müller
 description: Eine ganz persönliche Website auf der interessante Dinge zu finden sind.
 url: "https://grenzenloseSchublade.github.io"
 baseurl: "/online_praesenz"
 repository: "grenzenloseSchublade/online_praesenz"
-logo: "/assets/images/WebSite_Logo_3.png"
+logo: "/assets/images/Logo.jpg"
 
 # Bild- und Performance-Einstellungen
 background_image: "/assets/images/background.jpg"
