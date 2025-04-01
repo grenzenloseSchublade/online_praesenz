@@ -2,15 +2,17 @@
 
 Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Theme erstellt wurde.
 
+## Projektübersicht
+
+Diese Website kombiniert Jekyll mit dem Minimal Mistakes Theme, um eine ansprechende und funktionale Plattform zu bieten.
 
 ## TODO
-- Aufräumen komplettes Projekt
-- Dokumentation READMEs reduzieren und verbessern
-- Mobiles Erlebnis prüfen und optimieren
-- 
- 
- 
-## Installation
+
+- TOC prüfen und optimieren
+- Bilder und Grafiken optimieren
+- Mobiles Erlebnis prüfen und optimieren (Seite Mandelbrot)
+
+## Installation und Einrichtung
 
 1. Stellen Sie sicher, dass Ruby (Version 2.5.0 oder höher) installiert ist:
    ```bash
@@ -230,4 +232,182 @@ Für GitHub Pages:
 
 - [Minimal Mistakes Dokumentation](https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/)
 - [Jekyll Dokumentation](https://jekyllrb.com/docs/)
-- [MathJax Dokumentation](https://docs.mathjax.org/) 
+- [MathJax Dokumentation](https://docs.mathjax.org/)
+
+## Best Practices
+
+1. **Trennung von Inhalt und Präsentation**:
+   - Speichere strukturierte Daten in YAML-Dateien im `_data/` Verzeichnis
+   - Verwende Includes für die Darstellung
+   - Halte Markdown-Dateien sauber und fokussiert auf den Inhalt
+
+2. **Wiederverwendbarkeit**:
+   - Erstelle generische Includes, die in verschiedenen Kontexten verwendet werden können
+   - Parametrisiere Includes, um sie flexibel zu halten
+
+3. **Konsistenz**:
+   - Verwende einheitliche Benennungskonventionen
+   - Halte die Struktur der Datendateien konsistent
+
+4. **Erweiterbarkeit**:
+   - Dokumentiere neue Includes und deren Parameter
+   - Halte die Struktur modular, um einfache Erweiterungen zu ermöglichen
+
+## Beispiel: Neue Seite mit benutzerdefinierten Daten
+
+### 1. Datendatei erstellen (`_data/projekte.yml`):
+
+```yaml
+- section: "Aktuelle Projekte"
+  icon: "rocket"
+  content: "Hier sind meine aktuellen Projekte."
+  projekte:
+    - titel: "Projekt A"
+      beschreibung: "Beschreibung des Projekts A"
+      technologien: ["HTML", "CSS", "JavaScript"]
+      link: "https://example.com/projektA"
+    - titel: "Projekt B"
+      beschreibung: "Beschreibung des Projekts B"
+      technologien: ["Python", "Django", "PostgreSQL"]
+      link: "https://example.com/projektB"
+```
+
+### 2. Include erstellen (`_includes/projekte.html`):
+
+```html
+{% for projekt in include.projekte %}
+<div class="cv-entry">
+  <div class="cv-entry-header">
+    <h3>{{ projekt.titel }}</h3>
+  </div>
+  <div class="cv-entry-content">
+    <p>{{ projekt.beschreibung }}</p>
+    <p><strong>Technologien:</strong> {{ projekt.technologien | join: ", " }}</p>
+    <p><a href="{{ projekt.link }}" target="_blank">Projekt ansehen</a></p>
+  </div>
+</div>
+{% endfor %}
+```
+
+### 3. Markdown-Datei erstellen (`_pages/projekte.md`):
+
+```yaml
+---
+title: "Meine Projekte"
+permalink: /projekte/
+layout: single
+author_profile: true
+toc: true
+toc_label: "Inhalt"
+toc_sticky: true
+---
+
+{% for section in site.data.projekte %}
+<section id="{{ section.section | slugify }}" class="projekte-section">
+  <h2>{{ section.section }}</h2>
+
+  {% capture inner_content %}
+    {% if section.projekte %}
+      {% include projekte.html projekte=section.projekte %}
+    {% endif %}
+  {% endcapture %}
+
+  {% include cv-section.html 
+    icon=section.icon 
+    title=section.section 
+    content=section.content 
+    inner_content=inner_content %}
+</section>
+{% endfor %}
+```
+
+## Inhaltsverzeichnis (TOC)
+
+Das Inhaltsverzeichnis (Table of Contents, TOC) wird automatisch aus den Überschriften der Seite generiert. Es gibt zwei Möglichkeiten, ein TOC zu verwenden:
+
+### Natives TOC mit Minimal Mistakes
+
+Das native TOC von Minimal Mistakes kann über die Front Matter aktiviert werden:
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"  # Optional: Passt die Beschriftung an
+toc_icon: "list"     # Optional: Fügt ein Icon hinzu
+toc_sticky: true     # Optional: Macht das TOC scrollbar
+---
+```
+
+### Ausklappbares TOC
+
+Das ausklappbare TOC erweitert das native TOC von Minimal Mistakes um eine Ausklapp-Funktionalität. Es kann über die Front Matter aktiviert werden:
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"  # Wird vom ausklappbaren TOC verwendet
+toc_icon: "list"     # Wird vom ausklappbaren TOC verwendet
+toc_collapse: true   # Macht das TOC ausklappbar
+---
+```
+
+### Parameter des ausklappbaren TOC
+
+Das ausklappbare TOC unterstützt alle Parameter des nativen TOC von Minimal Mistakes:
+
+- `toc`: Aktiviert das TOC (muss `true` sein)
+- `toc_label`: Die Beschriftung des TOC (Standard: "Inhalt")
+- `toc_icon`: Das Icon für das TOC (Standard: "file-alt")
+- `toc_sticky`: Wenn `true`, bleibt das TOC beim Scrollen sichtbar
+- `toc_collapse`: Wenn `true`, wird das TOC ausklappbar gemacht
+
+### Beispiele
+
+#### Standard-TOC
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+---
+```
+
+#### Ausklappbares TOC
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_collapse: true
+---
+```
+
+#### Ausklappbares TOC mit Sticky-Funktion
+
+```yaml
+---
+title: "Seitentitel"
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_collapse: true
+toc_sticky: true
+---
+```
+
+### Automatische Erkennung des Farbschemas
+
+Das ausklappbare TOC erkennt automatisch, ob die Seite ein dunkles oder helles Farbschema verwendet, und passt sein Erscheinungsbild entsprechend an. Es verwendet dafür mehrere Methoden:
+
+1. Prüfung der Hintergrundfarbe des `<body>`-Elements
+2. Prüfung der Hintergrundfarbe des `.page__content`-Elements
+3. Prüfung, ob bestimmte Elemente vorhanden sind, die auf ein dunkles Design hinweisen
+4. Prüfung, ob das Minimal Mistakes Skin "dark" ist
+
+### Speicherung des Zustands
+
+Der Zustand des ausklappbaren TOC (ausgeklappt oder eingeklappt) wird im `localStorage` des Browsers gespeichert, sodass er beim nächsten Besuch der Seite wiederhergestellt wird. 

@@ -4,7 +4,7 @@
   content: >-
         Ingenieur mit Abschluss eines Studiums der Elektro- und Informationstechnik M.Sc. mit dem Schwerpunkt *Eingebettete Systeme*.
         Über sechs Jahre Erfahrung in der Entwicklung vollumfänglicher Software Lösungen mit KI Komponenten – 
-        angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern bis hin zum Deployment oder Integration in Produktivumgebungen.
+        angefangen bei der Entwicklung von Prototypen über die Spezifizierung des Nutzungsumfanges mit Stakeholdern und das Training selbst eigener KI Modelle bis hin zum Deployment oder Integration in Produktivumgebungen.
         Sammelte vielfältige praktische Erfahrungen im Bereich der **Backend** Entwicklung, als auch im Feld der **Frontend** Entwicklung 
         und hat zusätzlich ein breites Spektrum an **DevOps** Praxiserfahrungen. 
         Ergänzend zu den Ingenieursqualifikationen wurde über die Jahre ein breites Spektrum an Fähigkeiten angeeignet, welche denen eines **Full-Stack** Entwicklers entsprechen.
@@ -41,7 +41,7 @@
         - text: "Konzeption und Implementierung einer responsiven Web Anwendung für branchenspezifische Dokumentationsarbeiten"
           subitems:
             - "Entwicklung einer intuitiven Benutzeroberfläche zur automatisierten Erstellung von Dokumentationen"
-            - "Deployment einer plattformunabhängigen Webanwendung"
+            - "Deployment einer plattformunabhängigen Vue.js Anwendung"
             - "Integration oben genannter System API-Schnittstellen"
             - "Vollautomatisierter Ablauf mit Speech-to-Text und Überführung in branchenspezifische Masken"
             - "Skalierbare Umsetzung zur schnellen Adaption auf verschiedenste Dokumentationstypen"
@@ -50,12 +50,12 @@
         # [BACK- / FRONTEND]
         - text: "Entwicklung eines Systems zur Auswertung und visuellen Gegenüberstellung von KI Modellen"
           subitems:
+            - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Darstellung der Auswertung"
+            - "Detaillierte Auswertung und Visualisierung von Daten und Metriken zur Laufzeit"
             - "Visuelle Gegenüberstellung von mehreren Speech-to-Text oder LLM Modellen"
             - "Skalierbare Umsetzung zur schnellen Adaption auf weitere Modelltypen oder Daten"
             - "Adjustierbare taskspezifische Auswertung von LLM Modellen in lokaler Pipeline" 
             - "Datenschutzkonforme Pseudonymisierung von Daten"
-            - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Darstellung der Auswertung"
-            - "Detaillierte Auswertung und Visualisierung von Daten und Metriken zur Laufzeit"
 
       # [BACKEND / ZUSATZ] -> Normkonforme Nachbildung des IT-Systems des deutschen Gesundheitswesens mit Fokus auf Standards
         - text: "Entwicklung eines normkonformen Systems zur Abbildung und Integration der Telematik-Infrastruktur" 
@@ -70,7 +70,7 @@
         - text: "Entwicklung und Optimierung von <strong>Deep Learning</strong> Modellen"
           subitems:
             - "Sprachsynythese durch dreistufiges TTS System (zu der Zeit nicht so weit verbreitet)"
-            - "Training mittels RemoteComputing unterschiedlicher Deep Learning Modelle des TTS Systems"
+            - "Training mittels RemoteComputing unterschiedlicher Deep Learning Modelle"
             - "Optimierungen im Bereich der Modell Architekturen für die Sprachsynthese"
             - "Aufbereitung und Augmentation von Daten für das Training"
             - "Aufbereitung von Sprachaufnahmen mit Deep Learning Ansätzen"
@@ -166,6 +166,8 @@
           level: 73
         - name: "TensorFlow"
           level: 84
+        - name: "NumPy / SciPy"
+          level: 90
         - name: "Node"
           level: 77
         - name: "FastAPI"

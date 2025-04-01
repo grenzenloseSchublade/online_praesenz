@@ -51,4 +51,4 @@ Das Projekt enthält mehrere Skripte zur Generierung von Fraktalen:
 
 ### Hauptskript
 
-```
+Das Hauptskript zur Generierung von Fraktalen ist in Python geschrieben und nutzt die oben genannten Bibliotheken, um komplexe Fraktalbilder zu erstellen und zu visualisieren.
