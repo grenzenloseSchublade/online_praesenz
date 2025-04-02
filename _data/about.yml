@@ -1,22 +1,22 @@
 - section: "Wer bin ich?"
   icon: "user"
-  # TODO nochmal überprüfen 
   content: >-
-    Hallo ich bin Hans, ich widme mich gerne Herausforderungen. Egal ob sie dabei körperlicher, technischer oder gar geistiger Natur sind. 
-    Dabei bin ich immer offen für neue Ideen und Inspirationen, die schnell mal zu neuen Projekten führen können. 
-    Es kam der Zeitpunkt an dem ich den Entschluss fasste all meine Gedanken und Erlebnisse zu sammeln und festzuhalten. 
-    Daher ist diese Seite entstanden. Sie gibt einen Einblick in meine Unternehmungen, Projekte und Gedanken die ich angestellt habe und mich inspirieren.
 
+    Guten Tag, mein Name ist Hans. 
+    Ich bin stets bereit, Herausforderungen anzunehmen und zu meistern. Egal, ob körperlich, technisch oder geistig – ich bin dabei.
+    <br> <br>
+    Nicht immer bin ich mir sicher, wie ich mich am besten beschreiben soll, da Menschen sehr komplexe Wesen sind, die nicht in einem Satz erklärt werden können. 
+    Zudem bin ich sehr neugierig und habe viele Interessen und daher möchte ich mich auf die wesentlichen Aspekte beschränken.
+    <br> <br>
+    Ich bin immer offen für neue Ideen und Inspirationen, die zu neuen Projekten führen können. 
+    Irgendwann fasste ich den Entschluss, all meine Gedanken und Erlebnisse zu sammeln und festzuhalten. 
+    So ist diese Seite entstanden, auf der ich einige meiner Unternehmungen, Projekte und Gedanken teile und damit eventuell andere Menschen inspirieren kann.
+    Ich genieße es sehr, Zeit in der Natur zu verbringen und mich zu bewegen: Stand Up Paddling auf dem Fluss, Schwimmen, Surfen, Kanu fahren, Wandern, Spazieren, Fahrradtouren, Mountainbiken, Krafttraining im Freien und noch vieles mehr...
+    Darüber hinaus schätze ich es, kulinarische Erlebnisse zu erfahren, Atemreisen zu machen, Yoga zu praktizieren und mich mit dem Denken zu beschäftigen.
+    <br> <br>
 
-    Ich finde es schwer mich kurz zu beschreiben, weil Menschen generell sehr komplex sind und nicht so einfach in einem Satz zu erklären sind. 
-    Hinzu kommt, dass ich extrem neugierig bin und ich vielen Sachen nachgehe. Daher will ich es hierbei auf den Kern beschränken.
-    Ich bin jemand der gerne draussen in der Natur ist und es liebt sich zu bewegen:
-    Stand Up paddeln auf dem Fluss, schwimmen, surfen, Kanu fahren, wandern, spazieren, Fahrradtouren, mountainbiken, Krafttraining im Freien und noch viel mehr.
-    Ausserdem esse und koche ich gerne, unternehme Atemreisen und mache Yoga und beschäftige mich mit dem Denken. 
-    <br> 
-    Seit meiner Kindheit begleitet mich besonders dieser Satz:
     <div style="text-align: center; display: flex; justify-content: center; align-items: center;">
-      <p style="text-align: center; border: 2px solid #ccc; padding: 10px; border-radius: 5px; display: inline-block; font-style: italic; margin: 4px auto;">
+      <p style="text-align: center; border: 2px solid; #ccc; padding: 10px; border-radius: 5px; display: inline-block; font-style: italic; margin: 4px auto; font-size: clamp(1rem, 2vw, 1.5rem);">
         anima sana in corpore sano
       </p>
     </div>
@@ -61,7 +61,7 @@
       items:
         - "Interaktive Darstellung der Mandelbrot-Menge"
         - "Julia-Mengen Explorer"
-        - "Fraktale Kunst-Generator"
+        #- "Fraktale Kunst-Generator"
         - "Dokumentation (TODO)"
     - category: "Mobile App"
       items:
@@ -78,8 +78,7 @@
       items:
         - "Blog-Beiträge über interessante Themen"
         - "Erstellung von lehrreichen Inhalten"
-        - "Blog-Beiträge über interessante Themen"
-        - "Erstellung von lehrreichen Inhalten"
+
     - category: "Kultur & Reisen"
       items:
         - "Reisen mit dem Rad"
