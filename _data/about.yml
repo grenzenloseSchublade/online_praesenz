@@ -63,17 +63,20 @@
         - "Julia-Mengen Explorer"
         #- "Fraktale Kunst-Generator"
         - "Dokumentation (TODO)"
+        
     - category: "Mobile App"
       items:
         - "Erkennung & Digitalisierung von Kassenzetteln"
         - "Automatisierte Erstellung von Rechnungen"
         - "Einbindung in bestehendes Haushaltssystem"
+
     - category: "Internetpräsenz"
       items:
         - "Recherche und Entscheidung zu nutzenden Frameworks"
         - "Implementierung und Deployment"
         - "Umsetzung von Designfragen"
         - "Dokumentation (TODO)"
+
     - category: "Bildung"
       items:
         - "Blog-Beiträge über interessante Themen"
