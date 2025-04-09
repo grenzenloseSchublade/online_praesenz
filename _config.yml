@@ -74,7 +74,7 @@ analytics:
 
 # Site Author
 author:
-  name: "Hans Müller M.Sc."
+  name: "Hans Müller"
   avatar: "/assets/images/WebSite_Logo_3.png"
   bio: "Ingenieur, Entwickler,<br> Naturfreund"
   location: "Deutschland, 45"
@@ -82,9 +82,12 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/grenzenloseSchublade"
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:ihre@email.de"
+    - label: "Linked In"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/hans-m%C3%BCller-39a133359/"
+    # - label: "Email"
+    #   icon: "fas fa-fw fa-envelope-square"
+    #   url: "mailto:ihre@email.de"
 
 # Build settings
 highlighter: rouge

@@ -2,12 +2,13 @@
 title: "Die faszinierende Geschichte des Gyros und ein kulinarischer Streifzug"
 excerpt: "Eine Reise durch die Geschichte des beliebten Fast-Foods und ein Vergleich der besten Gyrosläden in Berlin."
 header:
-  overlay_image: /assets/images/gyros-header.jpg
+  #overlay_image: /assets/images/gyros-header.jpg
   overlay_filter: 0.5
   caption: "Foto: [**Unsplash**](https://unsplash.com)"
 categories:
   - Kulinarik
   - Stadtleben
+author_profile: false
 tags:
   - Gyros
   - Essen

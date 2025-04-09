@@ -2,7 +2,7 @@
 title: "Blog"
 excerpt: "Eine Sammlung an Beiträgen – eine bunte Mischung aus persönlichen Reflexionen, interessanten Themen, Projekten und alles was sonst noch bewegt."
 permalink: /posts/
-layout: posts
+layout: single
 author_profile: true
 header:
   overlay_image: /assets/images/background.jpg
@@ -12,7 +12,7 @@ header:
 
 Auf dieser Seite sind eine Sammlung an Blogbeiträgen zu finden – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
 
-Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kategorien und Tags durchsuchen.
+
 
 <div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
   <div style="flex: 0 0 64px; margin-right: 1em;">
@@ -25,12 +25,39 @@ Die Artikel sind chronologisch sortiert, lassen sich aber auch bequem nach Kateg
   </div>
 </div>
 
-## Kategorien
-
-<div class="category-buttons">
-  {% for category in site.categories %}
-    <a href="{{ site.baseurl }}/categories/#{{ category[0] | slugify }}" class="btn btn--primary">{{ category[0] }}</a>
-  {% endfor %}
+<div class="category-filter-container">
+  <span class="filter-label">Die Artikel sind chronologisch sortiert und können nach Kategorien gefiltert werden:</span>
+  <div class="category-buttons" style="margin-top: 1em;">
+    <a href="#" class="btn btn--primary filter-category active" data-category="all">Alle</a>
+    {% for category in site.categories %}
+      <a href="#" class="btn btn--primary filter-category" data-category="{{ category[0] | slugify }}">{{ category[0] }}</a>
+    {% endfor %}
+  </div>
 </div>
 
-## Neueste Beiträge
+<div id="posts-container">
+  <!-- Jahres-Gruppen-Ansicht -->
+  <div id="yearly-groups-view">
+    {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+    {% for year in postsByYear %}
+      <section id="year-{{ year.name }}" class="taxonomy__section">
+        <h2 class="archive__subtitle">{{ year.name }}</h2>
+        <div class="entries-{{ site.entries_layout | default: 'list' }}">
+          {% for post in year.items %}
+            <div class="post-item" data-categories="{% for category in post.categories %}{{ category | slugify }} {% endfor %}">
+              {% include archive-single.html %}
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+  
+  <!-- Leere Kategorie Meldung -->
+  <div id="empty-category-message" class="notice notice--warning" style="display: none;">
+    <p><i class="fas fa-exclamation-circle"></i> Keine Beiträge in dieser Kategorie gefunden.</p>
+  </div>
+</div>
+
+<!-- Kategoriefilterung einbinden -->
+<script src="{{ site.baseurl }}/assets/js/category-filter.js"></script>
