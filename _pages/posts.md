@@ -1,18 +1,16 @@
 ---
 title: "Blog"
-excerpt: "Eine Sammlung an Beiträgen – eine bunte Mischung aus persönlichen Reflexionen, interessanten Themen, Projekten und alles was sonst noch bewegt."
+excerpt: "Eine Sammlung von Beiträgen - eine vielfältige Mischung aus persönlichen Gedanken, interessanten Themen, Projekten und weiteren relevanten Aspekten, die bewegen und inspirieren."
 permalink: /posts/
 layout: single
-author_profile: true
+author_profile: false
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "Gedanken und Projekte"
 ---
 
-Auf dieser Seite sind eine Sammlung an Blogbeiträgen zu finden – eine bunte Mischung aus persönlichen Reflexionen und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden, entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen erscheinen neue Beiträge, wenn die Zeit es zulässt – Qualität steht über Regelmäßigkeit.
-
-
+Auf dieser Seite finden Sie eine Sammlung von Blogbeiträgen - eine bunte Mischung aus persönlichen Gedanken und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen, erscheinen neue Beiträge, wenn es die Zeit zulässt - **Qualität geht vor Regelmäßigkeit**.
 
 <div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
   <div style="flex: 0 0 64px; margin-right: 1em;">

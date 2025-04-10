@@ -11,14 +11,14 @@ tags:
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
-  caption: "Ein Einblick in die Technik hinter unseren Blogbeiträgen"
+  caption: "Ein Einblick in die Technik hinter den Blogbeiträgen"
 toc: true
 toc_label: "Inhalt"
 toc_icon: "file-alt"
 toc_sticky: true
 ---
 
-In diesem Beitrag gebe ich einen Einblick in die Technik und den Stil, der hinter den Blogbeiträgen auf dieser Website steht. Wenn du einen Beitrag vorschlagen möchtest, erfährst du hier, wie der technische Prozess abläuft und welche Formatierungsmöglichkeiten zur Verfügung stehen.
+In diesem Beitrag wird ein Einblick in die Technik und den Stil gegeben, der hinter den Blogbeiträgen auf dieser Website steht. Wenn Sie einen Beitrag vorschlagen möchten, erfahren Sie hier, wie der technische Prozess abläuft und welche Formatierungsmöglichkeiten zur Verfügung stehen.
 
 ## Die technische Grundlage
 
@@ -31,7 +31,7 @@ Diese Website basiert auf [Jekyll](https://jekyllrb.com/), einem statischen Webs
 
 ## Das Post-Template
 
-Für jeden Blogbeitrag verwenden wir ein standardisiertes Template, das unter `_templates/post-template.md` gespeichert ist. Dieses Template gewährleistet ein einheitliches Erscheinungsbild und enthält alle notwendigen Strukturelemente.
+Für jeden Blogbeitrag wird ein standardisiertes Template verwendet, das unter `_templates/post-template.md` gespeichert ist. Dieses Template gewährleistet ein einheitliches Erscheinungsbild und enthält alle notwendigen Strukturelemente.
 
 <a href="{{ site.baseurl }}/assets/downloads/post-template.md" class="btn btn--primary btn--large" download><i class="fas fa-download"></i> Template herunterladen</a>
 
@@ -76,7 +76,7 @@ Der Bereich am Anfang jedes Blogbeitrags, der von `---` umschlossen ist, wird al
 
 ## Markdown-Formatierung
 
-Der Inhalt unserer Blogbeiträge wird in Markdown geschrieben, einer einfachen Auszeichnungssprache. Hier sind die wichtigsten Formatierungsmöglichkeiten, die wir verwenden:
+Der Inhalt der Blogbeiträge wird in Markdown geschrieben, einer einfachen Auszeichnungssprache. Hier sind die wichtigsten Formatierungsmöglichkeiten, die verwendet werden:
 
 ### Überschriften
 
@@ -110,7 +110,7 @@ Der Inhalt unserer Blogbeiträge wird in Markdown geschrieben, einer einfachen A
 
 ```markdown
 [Linktext](https://www.beispiel.de)
-[Link zu einem anderen Beitrag]({% post_url 2024-03-12-erster-beitrag %})
+[Link zu einem anderen Beitrag]({% post_url 2025-02-15-erster-beitrag %})
 ```
 
 ### Bilder
@@ -149,7 +149,7 @@ def hello_world():
 
 ## Bilder in Blogbeiträgen
 
-Bilder sind ein wichtiger Bestandteil unserer Blogbeiträge. Sie werden im Verzeichnis `assets/images/posts/` gespeichert und können wie folgt eingebunden werden:
+Bilder sind ein wichtiger Bestandteil der Blogbeiträge. Sie werden im Verzeichnis `assets/images/posts/` gespeichert und können wie folgt eingebunden werden:
 
 ```markdown
 ![Beschreibung]({{ site.url }}{{ site.baseurl }}/assets/images/posts/mein-bild.jpg)
@@ -165,27 +165,27 @@ header:
 
 ## Einen Blogbeitrag vorschlagen
 
-Wenn du einen Blogbeitrag für diese Website vorschlagen möchtest, gehe bitte wie folgt vor:
+Wenn Sie einen Blogbeitrag für diese Website vorschlagen möchten, gehen Sie bitte wie folgt vor:
 
-1. **Kontaktiere den Administrator**: Sende eine E-Mail an den Website-Administrator (mich) mit deinem Vorschlag.
-2. **Bereite deinen Inhalt vor**: Wenn möglich, formatiere deinen Beitrag bereits in Markdown und orientiere dich am oben beschriebenen Stil. Du kannst dafür das [Template herunterladen](#das-post-template) und als Grundlage verwenden.
-3. **Füge Metadaten hinzu**: Schlage Kategorien, Tags und ggf. Bilder für deinen Beitrag vor.
+1. **Kontaktiere den Administrator**: Senden Sie eine E-Mail an den Website-Administrator (mich) mit Ihrem Vorschlag.
+2. **Bereite Ihren Inhalt vor**: Wenn möglich, formatieren Sie Ihren Beitrag bereits in Markdown und orientieren Sie sich am oben beschriebenen Stil. Sie können das [Template herunterladen](#das-post-template) und als Grundlage verwenden.
+3. **Füge Metadaten hinzu**: Schlagen Sie Kategorien, Tags und ggf. Bilder für Ihren Beitrag vor.
 
-Als Administrator werde ich deinen Beitrag prüfen, ggf. anpassen und auf der Website veröffentlichen. Nur Administratoren haben direkten Zugriff auf das Repository und können Beiträge hinzufügen.
+Als Administrator werde ich Ihren Beitrag prüfen, ggf. anpassen und auf der Website veröffentlichen. Nur Administratoren haben direkten Zugriff auf das Repository und können Beiträge hinzufügen.
 
 ## Qualitätsstandards für Blogbeiträge
 
-Um die Qualität und Konsistenz unserer Blogbeiträge zu gewährleisten, beachten wir folgende Standards:
+Um die Qualität und Konsistenz der Blogbeiträge zu gewährleisten, werden folgende Standards beachtet:
 
 1. **Klare Struktur**: Jeder Beitrag hat eine logische Gliederung mit Überschriften.
-2. **Kurze Absätze**: Wir halten Absätze kurz und prägnant für bessere Lesbarkeit.
-3. **Visuelle Elemente**: Wo sinnvoll, fügen wir Bilder, Diagramme oder Code-Beispiele ein.
-4. **Konsistenter Stil**: Wir verwenden einen einheitlichen Schreibstil.
+2. **Kurze Absätze**: Halten Sie Absätze kurz und prägnant für bessere Lesbarkeit.
+3. **Visuelle Elemente**: Wo sinnvoll, fügen Sie Bilder, Diagramme oder Code-Beispiele ein.
+4. **Konsistenter Stil**: Verwenden Sie einen einheitlichen Schreibstil.
 5. **Sorgfältige Korrektur**: Alle Beiträge werden auf Rechtschreib- und Grammatikfehler geprüft.
-6. **Relevante Metadaten**: Wir wählen passende Kategorien und Tags für bessere Auffindbarkeit.
+6. **Relevante Metadaten**: Wählen Sie passende Kategorien und Tags für bessere Auffindbarkeit.
 
 ## Fazit
 
-Die Blogbeiträge auf dieser Website folgen einem durchdachten technischen und stilistischen Konzept. Durch die Verwendung von Jekyll, Markdown und dem Minimal Mistakes Theme können wir ansprechende, gut strukturierte Inhalte präsentieren.
+Die Blogbeiträge auf dieser Website folgen einem durchdachten technischen und stilistischen Konzept. Durch die Verwendung von Jekyll, Markdown und dem Minimal Mistakes Theme können Sie ansprechende, gut strukturierte Inhalte präsentieren.
 
-Wenn du Fragen zur Technik hinter unseren Blogbeiträgen hast oder einen eigenen Beitrag vorschlagen möchtest, kontaktiere mich gerne direkt. Ich freue mich über dein Interesse! 
+Wenn Sie Fragen zur Technik hinter den Blogbeiträgen haben oder einen eigenen Beitrag vorschlagen möchten, kontaktieren Sie mich gerne direkt. Ich freue mich über Ihr Interesse!
