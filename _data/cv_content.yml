@@ -3,12 +3,12 @@
 
   content: >-
 
-        Ich bin Ingenieur und **Machine Learning** Experte. An der *Ruhr-Uni Bochum* habe ich ein Studium der **Elektro- und Informationstechnik** M.Sc. mit dem Schwerpunkt *Eingebettete Systeme* abgeschlossen. 
+        Ich bin Ingenieur und **Machine Learning** Experte. An der Ruhr-Uni Bochum habe ich ein Studium der **Elektro- und Informationstechnik** M.Sc. mit dem Schwerpunkt *Eingebettete Systeme* abgeschlossen. 
         <br> <br>
         Über einen Zeitraum von sechs Jahren habe ich umfassende Erfahrung in der Entwicklung vollständiger Softwarelösungen gesammelt, die Komponenten künstlicher Intelligenz (KI) umfassen und sich über sämtliche Phasen des Entwicklungsprozesses erstrecken. 
-        Dies beinhlatet die Entwicklung von Prototypen, die Spezifizierung des Nutzungsumfanges in Kooperation mit relevanten Stakeholdern, die Entwicklung und Optimierung eigener KI Modelle sowie das Deployment bzw. die Integration in Produktivumgebungen.
+        Dies beinhaltet die Entwicklung von Prototypen, die Spezifizierung des Nutzungsumfanges in Kooperation mit relevanten Stakeholdern, die Entwicklung und Optimierung eigener KI Modelle sowie das Deployment bzw. die Integration in Produktivumgebungen.
         <br>
-        Ergänzend zu den Ingenieursqualifikationen wurden im Laufe der Jahre umfassende Fähigkeiten erworben, die denen eines **Full-Stack-Entwicklers** (Frontend, Backend, DevOps) entsprechen.
+        Ergänzend zu den Ingenieursqualifikationen wurden im Laufe der Jahre umfassende Fähigkeiten erworben, die denen eines **Full-Stack-Entwicklers** (Frontend, Backend, DevOps / MLOps) entsprechen.
         <br> <br>
         Sowohl in der Forschung als auch in der Industrie habe ich umfassende praktische Erfahrungen gesammelt, sodass ich über aktuelle technische Kenntnisse und auch die Fähigkeit verfüge, praktische Herausforderungen zu bewältigen. 
         Darüber hinaus halte ich Beteiligungen an einer Vielzahl von Projekten und habe umfangreiche Erfahrung in der Arbeit mit Teams unterschiedlicher Größe.
@@ -24,55 +24,82 @@
       location: "Bochum, Deutschland"
       period: "2020 - Heute"
       description: >- 
-        Konzeption und Entwicklung standardkonformer Software Lösungen mit Integration von Deep Learning Modellen zur Automatisierung und Optimierung von kundenspezifischen Unternehmensprozessen. 
-        <br>Etablierung moderner Entwicklungspraktiken & Arbeitsweisen sowie Einsatz zukunftssicherer Frameworks & Technologien.
+        Konzeption und Entwicklung von Softwarelösungen auf Basis von (eigenentwickelten) Deep Learning Modellen zur Automatisierung 
+        und Optimierung von kundenspezifischen Geschäftsprozessen unter Anwendung moderner Entwicklungspraktiken und -methoden 
+        sowie zukunftsweisender Frameworks und Technologien.
       expandable: true # Standard ist true
 
-    # TODO Beschreibung prüfen und anpassen -> nicht zu genau / akribisch sein 
+
+    # TODO Generell die Beteiligung UND Mitwirkung der gesamten Prozesskette hervorheben
+
+    # TODO Beschreibung prüfen und anpassen -> Gerne technische Aspekte mkit reinbrignen
+    # TODO Tiefgehende Erfahrungen mit Remote Computing von modellen hervorheben
+    # TODO NLP Sachen beschreiben
+    # TODO DevOps / MLops Sachen benennen
+
       responsibilities:
       # [BACKEND] -> System zur automatisierten Dokumentationsarbeit in Gesundheitsfachberufen
-        - text: "Entwicklung eines Systems zur automatisierten Datenaufnahme und -verarbeitung in Gesundheitsfachberufen"
+        - text: "Vollständige Entwicklung eines Systems zur automatisierten Datenaufnahme und -verarbeitung in Gesundheitsfachberufen"
           subitems:
             - "Integration von Spracherkennung mittels Encoder-Decoder Modell mit Attention Mechanismen"
             - "Semantische Analyse und Strukturierung mit LLMs in branchenspezifische Datenformate"
-            - "Konzeption und Implementierung von API Schnittstellen zur systemübergreifenden Integration"
-            - "Entwicklung und Integration eines Datenbanksystems zur Speicherung von Anwendungsdaten zu Optimierungszwecken"
+            - "Konzeption und Implementierung von API Schnittstellen mit **FastAPI** zur systemübergreifenden Integration"
+            - "Entwicklung und Implementierung eines Datenbanksystems zur Speicherung von Anwendungsdaten zu Optimierungszwecken"
             - "Erstellung einer Buildpipeline für die kontinuierliche und automatische Erstellung und Bereitstellung von Docker Images"
-            - "Deployment als produktive Anwendung in der Alpha-Version: Praktische Eprobung zur Reduktion des Zeitaufwandes von Dokumentationsarbeiten"
+            - "Deployment als produktive Anwendung in der Alpha-Version: Praktische Erprobung zur Reduktion des Zeitaufwandes von Dokumentationsarbeiten"
         # [FRONTEND]
-        - text: "Konzeption und Implementierung einer responsiven Web Anwendung für branchenspezifische Dokumentationsarbeiten"
+        - text: "Vollständige Konzeption und Implementierung einer responsiven Web Anwendung für branchenspezifische Dokumentationsarbeiten"
           subitems:
             - "Entwicklung einer intuitiven Benutzeroberfläche zur automatisierten Erstellung von Dokumentationen"
             - "Deployment einer plattformunabhängigen Vue.js Anwendung"
-            - "Integration oben genannter System API-Schnittstellen"
-            - "Vollautomatisierter Ablauf mit Speech-to-Text und Überführung in branchenspezifische Masken"
+            - "Integration oben benannter System API-Schnittstellen"
+            - "Vollautomatisierter Ablauf mit Speech-to-Text und Überführung der Dokumentation in branchenspezifische Masken"
             - "Skalierbare Umsetzung zur schnellen Adaption auf verschiedenste Dokumentationstypen"
-            - "Zu jedem Zeitpunkt Möglichkeit der manuellen Korrektur der automatisch erstellten Dokumentationen"
+            - "Beibehaltung der Möglichkeit der manuellen Korrektur der automatisch erstellten Dokumentation"
+            - "Nutzung von **Keycloak** für die Verwaltung und Berechtigungen von Benutzern"
 
-        # [BACK- / FRONTEND]
-        - text: "Entwicklung eines Systems zur Auswertung und visuellen Gegenüberstellung von KI Modellen"
+        # [BACKEND / FRONTEND]
+        - text: "Vollständige Entwicklung eines Systems zur aufgabenbezogenen Bewertung und zum visuellen Vergleich von KI Modellen"
           subitems:
-            - "Grafische Oberfläche mit vielfältigen Konfigurationsmöglichkeiten zur Darstellung der Auswertung"
-            - "Detaillierte Auswertung und Visualisierung von Daten und Metriken zur Laufzeit"
+            - "Erstellung einer grafischen Oberfläche mit tkInter in Python"
+            - "Vielfältige Konfigurationsmöglichkeiten zur detaillierten Auswertung und Visualisierung von verschiedenen Metriken zur Laufzeit"
             - "Visuelle Gegenüberstellung von mehreren Speech-to-Text oder LLM Modellen"
-            - "Skalierbare Umsetzung zur schnellen Adaption auf weitere Modelltypen oder Daten"
-            - "Adjustierbare taskspezifische Auswertung von LLM Modellen in lokaler Pipeline" 
-            - "Datenschutzkonforme Pseudonymisierung von Daten"
+            - "Skalierbare Umsetzung zur schnellen Adaption auf weitere Modelltypen, Daten oder Aufgaben"
+            - "Vollständige Entwicklung einer lokalen Pipeline zur adjustierbaren taskspezifischen Auswertung von LLM Modellen"
+            - "Umsetzung mittels Hugingface und Integration von **DVC** für die Versionierung und Verwaltung von Daten" 
+            - "Datenschutzkonforme Pseudonymisierung von Daten mit dem Framework **spaCy**"
+            - "Erstellung einer wissenschaftlichen Abhandlung zur theoretischen Einschätzung von Metriken von LLM Modellen"
 
+      # TODO Beschreibung prüfen und anpassen
       # [BACKEND / ZUSATZ] -> Normkonforme Nachbildung des IT-Systems des deutschen Gesundheitswesens mit Fokus auf Standards
         - text: "Entwicklung eines normkonformen Systems zur Abbildung und Integration der Telematik-Infrastruktur" 
           subitems:
             - "Umsetzung als SpringBoot Anwendung mit Fokus auf Standards"
-            - "Spezifizierung von REST Schnittstellen zur Integration des Telematik-Systemen"
+            - "Spezifizierung von REST Schnittstellen zur Integration des Telematik-Systems"
             - "Integration von FHIR Ressourcen"
             - "Erweiterung des Systems um normübergreifende Funktionen und Services"
             - "Integration im Produktivumfeld mit spezialisierter Hardware"
+        # [BACKEND]
 
-        # [FORSCHUNG]
-        - text: "Entwicklung und Optimierung von <strong>Deep Learning</strong> Modellen"
+        # TODO verrauschte bzw. qualititiv schlechte Bilder 
+        - text: "Vollumfängliche Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
           subitems:
-            - "Sprachsynythese durch dreistufiges TTS System (zu der Zeit nicht so weit verbreitet)"
-            - "Training mittels RemoteComputing unterschiedlicher Deep Learning Modelle"
+            - "Entwicklung und Optimierung der Lösung mit Deep Learning in Python"
+            - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen"
+            - "Entwicklung von Algorithmen zur präzisen Textlokalisation und -segmentierung im Dokumentlayout mit OpenCV"
+            # - "Implementierung von OCR Algorithmen zur Optimierung der Texterkennung mit OpenCV"
+            - "KI basierte Klassifizierung von unterschiedlichen Belegtypen mit Genauigkeit von [98%]"
+            - "Rotationserkennung und -korrektur mittels Deep Learning"
+            - "Optimierung der Texterkennung durch Qualitätsverbesserung der Daten mit Computer Vision Techniken"
+            - "Integration und Erprobung der Lösung mit einer Erkennungsgenauigkeit von [94%] im produktiven Betrieb"
+
+        # TODO Beschreibung prüfen und anpassen
+        # [FORSCHUNG]
+        - text: "Entwicklung und Optimierung von **Deep Learning** Modellen im NLP Kontext"
+          subitems:
+            - "Sprachsynythese durch dreistufiges Text-to-Speech TTS System (zu der Zeit nicht so weit verbreitet)"
+            - "Training mittels Remote Computing von unterschiedlichen Deep Learning Modellen"
+            - "Konfiguration der Hardware (GPUs) für das Training und die Optimierung von TensorFlow Modellarchitekturen"
             - "Optimierungen im Bereich der Modell Architekturen für die Sprachsynthese"
             - "Aufbereitung und Augmentation von Daten für das Training"
             - "Aufbereitung von Sprachaufnahmen mit Deep Learning Ansätzen"
@@ -80,10 +107,11 @@
         # [DEV OPS]
         - text: "Etablierung moderner Entwicklungspraktiken und Automatisierungen"
           subitems:
-            - "Umsetzung von Test-Driven Development und <strong>CI / CD</strong> Pipelines"
-            - "Implementierung von Buildpipelines für die automatische Bereitstellung von Docker Images"
-            - "Einführung von DVC für die übergreifende Versionierung und Verwaltung von Daten"
-
+            - "Erstellung und Verteilung von Entwicklungsumgebungen mittels **DevContainer** und GitHub Codespaces"
+            - "Umsetzung von Test-Driven Development und Erstellung von **CI / CD Pipelines**"
+            - "Implementierung von Buildpipelines mit GitHub Actions für die automatische Bereitstellung von Docker Images"
+            - "Einführung von **DVC** für die übergreifende Versionierung und Verwaltung von Daten und das Tracking von Experimenten"
+            
         # [SOZIAL]
         - text: "Agiles Projektmanagement" 
           subitems:
@@ -95,29 +123,28 @@
       company: "opta data Institut e.V."
       location: "Essen, Deutschland"
       period: "2018 - 2020"
-      description: "Entwicklung von Algorithmen und Prototypen mit Deep Learning und Computer Vision zur Automatisierung von Prozessabläufen."
-      expandable: true # Ausklapp-Funktionalität für diese Karte deaktivieren
+      description: "Entwicklung von Algorithmen und Prototypen mit Computer Vision für die Prozessautomatisierung." #Deep Learning und 
+      expandable: false
 
        # TODO Beschreibung prüfen und anpassen
       responsibilities:
-        # [BACKEND]
-        - text: "Entwicklung eines KI gestützten Systems zur automatisierten Erkennung und Verarbeitung verschiedener Belegtypen"
+        # [FRONTEND & BACKEND]
+        - text: "Konzeption und gesamte Entwicklung einer mobilen Applikation zur Digitalisierung von Belegen im Unternehmenskontext"
           subitems:
-            - "Entwicklung von Algorithmen zur präzisen Textlokalisation und -segmentierung im Dokumentlayout"
-            - "Integration von OCR Algorithmen zur Texterkennung"
-            - "Erprobung der Lösung im produktiven Betrieb"
-            - "Optimierung der Texterkennung durch Qualitätsverbesserung der Daten mit Computer Vision Techniken"
-            - "Integration spezialisierter <strong>Computer Vision</strong> und Deep Learning Algorithmen zur Steigerung der Erkennungsgenauigkeit [92%]"
-        # [FRONTEND]
-        - text: "Entwicklung einer mobilen Anwendung für die effiziente Digitalisierung von Belegen im Unternehmenskontext"
-          subitems:
-            - "Umsetzung plattformübergreifender App mit Xamarin Framework"
-            - "Anwendung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten und kontrastarmen Hintergründen"
+            - "Umsetzung als plattformübergreifende App mit Xamarin Framework in C#"
+            - "Implementierung der Algorithmen in C / C++ mit OpenCV"
             - "Entwicklung einer intuitiven Benutzeroberfläche für die Dokumentenverarbeitung"
+            - "Entwicklung von Computer Vision Algorithmen zur robusten Erkennung von Dokumenten vor verauschten und kontrastarmen Hintergründen"
+            - "Automatische Erkennung und Extraktion der Region of Interest (ROI) und zusätzlich optionaler manueller Korrekturfunktion"
+            - "Automatischer Ausgleich von perspektivischen Verzerrungen mittels Homographie"
+            - "Optimierung des Kontrastes und der Bildqualität mittels Edge Detection" 
         # [FORSCHUNG]
-        - text: "Entwicklung von Protoypen als Machbarkeitsstudien für potenzielle Anwendungsfälle"
+        - text: "Entwicklung von Protoypen als Machbarkeitsstudien zur Identifizierung potenzieller Anwendungsfälle"
           subitems:
             - "Durchführung detaillierter technischer Machbarkeitsanalysen zur Entscheidungsfindung"
+            - "Evaluierung und statistische Analysen grosser Datenmengen"
+            - "Säuberung und Augmentation von Daten"
+
 
 - section: "Akademische Ausbildung"
   icon: "graduation-cap"
