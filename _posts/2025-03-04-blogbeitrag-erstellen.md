@@ -18,10 +18,10 @@ toc: true
 toc_label: "Inhalt"
 toc_icon: "file-alt"
 toc_sticky: true
-excerpt: "Ein Einblick in die Technik und den Stil, der hinter den Blogbeiträgen auf dieser Website stehen"
+excerpt: "Ein Einblick in die Technik und den Stil, die hinter den Blogbeiträgen auf dieser Website stehen"
 ---
 
-In diesem Beitrag wird ein Einblick in die Technik und den Stil gegeben, der hinter den Blogbeiträgen auf dieser Website steht. Wenn Sie einen Beitrag vorschlagen möchten, erfahren Sie hier, wie der technische Prozess abläuft und welche Formatierungsmöglichkeiten zur Verfügung stehen.
+In diesem Beitrag wird ein Einblick in die Technik und den Stil gegeben, die hinter den Blogbeiträgen auf dieser Website stehen. Wenn Sie einen Beitrag vorschlagen möchten, erfahren Sie hier, wie der technische Prozess abläuft und welche Formatierungsmöglichkeiten zur Verfügung stehen.
 
 ## Die technische Grundlage
 
