@@ -1,6 +1,8 @@
 ---
-title: "Wie Blogbeiträge auf dieser Website erstellt werden"
+title: "Blogbeiträge auf dieser Website erstellen"
 date: 2025-03-04
+last_modified_at: 2025-09-05
+author_profile: true
 categories:
   - Tutorial
 tags:
@@ -16,6 +18,7 @@ toc: true
 toc_label: "Inhalt"
 toc_icon: "file-alt"
 toc_sticky: true
+excerpt: "Ein Einblick in die Technik und den Stil, der hinter den Blogbeiträgen auf dieser Website stehen"
 ---
 
 In diesem Beitrag wird ein Einblick in die Technik und den Stil gegeben, der hinter den Blogbeiträgen auf dieser Website steht. Wenn Sie einen Beitrag vorschlagen möchten, erfahren Sie hier, wie der technische Prozess abläuft und welche Formatierungsmöglichkeiten zur Verfügung stehen.

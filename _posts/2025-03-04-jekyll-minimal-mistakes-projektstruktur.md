@@ -1,6 +1,8 @@
 ---
-title: "Die Kunst der Balance: Jekyll, Minimal Mistakes und die Projektstruktur"
+title: "Entwicklung einer ersten Website"
 date: 2025-03-04
+last_modified_at: 2025-09-05
+author_profile: true
 categories:
   - Webentwicklung
 tags:
@@ -17,19 +19,34 @@ header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "Projektstruktur und Entwicklungsprozess"
-excerpt: "Eine Analyse der Projektstruktur mit Jekyll und Minimal Mistakes - zwischen Konfigurationsfreiheit und Entwicklungseffizienz"
+excerpt: "Eine Analyse der Entwicklung meiner ersten (dieser) Website - zwischen Konfigurationsfreiheit und Entwicklungseffizienz"
 ---
+
+In diesem Beitrag wird der Prozess der Entwicklung dieser Website analysiert und die kleinen Stolpersteine beschrieben, die während der Umsetzung aufgetreten sind. Möglicherweise dient dieser Beitrag als Nachschlagewerk für andere, die ebenfalls ein ähnliches Vorhaben umsetzen wollen.
 
 ## Die Entscheidung für Jekyll und Minimal Mistakes
 
-Als ich mich entschied, eine neue Website zu erstellen, stand ich vor der klassischen Entwicklerfrage: Welches Framework oder CMS soll ich verwenden? Nach einiger Recherche fiel meine Wahl auf Jekyll mit dem Minimal Mistakes Theme. Diese Entscheidung basierte auf mehreren Faktoren:
+Als ich mich entschied, eine Website für mich und über mich zu erstellen, habe ich mir selbst einige Vorgaben gesetzt. Die Seite...
+
+- ...darf keine (laufenden) Kosten verursachen.
+- ...dem heutigen, modernen Anforderungen im Design und der Usability entsprechen.
+- ...wartbar und erweiterbar sein.
+- ...vollumfänglich individuell gestaltbar sein.
+
+und ich wollte dabei alles selbst machen. Oder zumindest alles machen können.
+
+Nach einiger Recherche fiel meine Wahl auf Jekyll mit dem Minimal Mistakes Theme. Diese Entscheidung basierte auf mehreren Faktoren:
 
 1. **Statische Website-Generierung**: Keine Datenbank, keine komplexe Serverinfrastruktur, nur statische Dateien
 2. **Markdown-basierte Inhalte**: Einfache, lesbare Syntax für die Inhaltserstellung
 3. **Flexibilität**: Anpassbar an meine spezifischen Bedürfnisse
 4. **GitHub Pages Integration**: Einfaches Hosting und Deployment
+5. **Open Source**: Freie und aktive Entwicklung
+6. **Community**: Aktive Entwickler und Unterstützung
+7. **Dokumentation**: Ausführliche Dokumentation und Beispiele
 
-Besonders das Minimal Mistakes Theme von Michael Rose überzeugte mich durch seine Kombination aus schlichtem Design, umfangreicher Dokumentation und aktiver Community. Mit über 12.700 Stars und 26.200 Forks auf GitHub ist es eines der beliebtesten Jekyll-Themes - und das aus gutem Grund.
+Besonders das Minimal Mistakes Theme von Michael Rose überzeugte mich durch seine Kombination aus schlichtem Design, umfangreicher Dokumentation und aktiver Community. Mit über 12.700 Stars und 26.200 Forks auf GitHub ist es eines der beliebtesten Jekyll-Themes. 
+Mit dem Theme besteht die Möglichkeit mit sehr wenig Aufwand eine vollumfängliche klassische Website zu erstellen. Mit gewissem Mehraufwand kann man jedoch auch eine individuelle, moderne, dynamische Website erstellen, wie ich es vorhabe und hier machen möchte.
 
 ## Die Projektstruktur verstehen
 
@@ -216,4 +233,4 @@ Die Arbeit mit Jekyll und Minimal Mistakes hat mir gezeigt, dass die wahre Kunst
 
 Die datengesteuerte Struktur, die ich implementiert habe, bietet eine solide Grundlage für zukünftige Erweiterungen. Anstatt mich in endlosen Konfigurationsoptionen zu verlieren, kann ich mich auf das konzentrieren, was wirklich wichtig ist: Qualitative Inhalte zu erstellen und sie in einer benutzerfreundlichen, wartbaren Struktur zu präsentieren.
 
-Für zukünftige Projekte werde ich diesen Ansatz beibehalten: Klare Prioritäten setzen, eine solide Datenstruktur definieren und iterativ verbessern. Die Balance zwischen Konfigurationsfreiheit und Entwicklungseffizienz ist der Schlüssel zu erfolgreichen Projekten - nicht nur mit Jekyll, sondern in der Softwareentwicklung allgemein. 
+Für zukünftige Projekte werde ich diesen Ansatz beibehalten: Klare Prioritäten setzen, eine solide Datenstruktur definieren und iterativ verbessern. Die Balance zwischen Konfigurationsfreiheit und Entwicklungseffizienz ist der Schlüssel zu erfolgreichen Projekten - nicht nur mit Jekyll, sondern in der Softwareentwicklung allgemein.
