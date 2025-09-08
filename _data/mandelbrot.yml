@@ -95,20 +95,22 @@ sections:
     content: >-
       Die Mandelbrot-Menge $\\mathscr{M}$ ist die Menge aller komplexen Zahlen $c$, für die die durch $z_{n+1} = z_n^2 + c$, $z_0=0$ definierte Folge ${z_n}$ für $n\\to\\infty$ betragsmäßig beschränkt bleibt:
       
-      <br> <br>
-      $$\mathscr{M} = \{c \in \mathbb{C} : \limsup_{n \to \infty} \lvert z_n \rvert \leq 2\}$$
-      <br> <br>
+      <div style="text-align: center;">
+        $$\mathscr{M} = \{c \in \mathbb{C} : \limsup_{n \to \infty} \lvert z_n \rvert \leq 2\}$$
+      </div>
 
       Die iterative Konstruktion der Mandelbrot-Menge ist mathematisch elegant und zugleich äußerst effizient in computergestützten Anwendungen.
       Sie führt direkt zu faszinierenden Visualisierungen und mathematischen Fragestellungen über Stabilität, Chaotik und Konvergenz.
 
     subsections:
       - title: "Iteration und Stabilitätskriterium: Konzeptuelle Vertiefung"
-        content: >-
+        content: |-
           Die Erzeugung eines Punktes der Mandelbrot-Menge erfolgt durch die iterative Anwendung:
-          <br> <br>
-          $$z_{n+1} = z_n^2 + c$$
-          <br> <br>
+         
+          <div style="text-align: center;">
+            $$z_{n+1} = z_n^2 + c$$
+          </div>
+         
           Beginnend mit $z_0 = 0$ wird diese Regel für jeden Punkt $c$ der komplexen Ebene ausgeführt.
           Bleibt die Folge ${z_n}$ für beliebig viele Iterationsschritte betragsmäßig unterhalb einer Schranke (meist $2$), zählt $c$ zur Mandelbrot-Menge.
           Andernfalls wird die Divergenzgeschwindigkeit farbkodiert und $c$ liegt außerhalb.
