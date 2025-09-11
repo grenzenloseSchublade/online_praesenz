@@ -19,7 +19,7 @@ Auf dieser Seite finden Sie eine Sammlung von Blogbeiträgen - eine bunte Mischu
   <div>
     <h3 style="margin-top: 0; color: #ffffff;">Neu hier? Lernen Sie, wie Blogbeiträge erstellt werden</h3>
     <p>Erfahren Sie alles über die Technik und den Stil hinter den Blogbeiträgen. Dieser Leitfaden erklärt den gesamten Prozess und zeigt, wie Beiträge eigenständig erstellt werden können.</p>
-    <a href="{{ site.baseurl }}{% post_url 2025-03-04-blogbeitrag-erstellen %}" class="btn notice--info" >Zum Leitfaden <i class="fas fa-arrow-right"></i></a>
+    <a href="{{ "/posts/blogbeitrag-erstellen/" | relative_url }}" class="btn notice--info" >Zum Leitfaden <i class="fas fa-arrow-right"></i></a>
   </div>
 </div>
 

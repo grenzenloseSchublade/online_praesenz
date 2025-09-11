@@ -8,7 +8,7 @@ tags:
   - Update
 ---
 
-Dies ist ein erster Blogbeitrag zu Testzwecken mit Jekyll und dem Minimal Mistakes Theme.
+Dies ist ein erster Blogbeitrag zu Testzwecken mit Jekyll und dem Minimal Mistakes Theme. Zusätzlich dient dieser zur (beispielhaften) Darstellung von internen und externen Referenzierungen von  Blogbeiträgen in einem Anleitungsbeitrag.
 
 ## Überschrift 2
 
@@ -28,7 +28,6 @@ Hier ist ein Beispiel für eine Tabelle:
 | Text A   | Text B   | Text C   |
 | Daten 1  | Daten 2  | Daten 3  |
 
-
 ### Code-Beispiele
 
 ```python
@@ -40,4 +39,4 @@ def hello_world():
 
 Sie können auch Bilder einfügen:
 
-![Beispielbild]({{ site.url }}{{ site.baseurl }}/assets/images/WebSite_Logo_3.png){: width="300px" height="auto"}
+![Beispielbild]({{ "/assets/images/WebSite_Logo_3.png" | relative_url }}){: width="300px" height="auto"}

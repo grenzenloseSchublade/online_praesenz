@@ -48,7 +48,7 @@ def hello_world():
 
 Sie können Bilder einfügen:
 
-![Beschreibung des Bildes]({{ site.url }}{{ site.baseurl }}/assets/images/posts/beispiel-bild.jpg)
+![Beschreibung des Bildes]({{ "/assets/images/posts/beispiel-bild.jpg" | relative_url }})
 
 ## Links
 

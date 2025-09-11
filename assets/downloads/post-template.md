@@ -49,11 +49,13 @@ def hello_world():
 
 Sie können Bilder einfügen:
 
-![Beschreibung des Bildes]({{ site.url }}{{ site.baseurl }}/assets/images/posts/beispiel-bild.jpg)
+![Beschreibung des Bildes]({{ "/assets/images/posts/beispiel-bild.jpg" | relative_url }})
 
 ## Links
 
-Sie können [Links zu anderen Seiten](https://example.com) oder [zu anderen Beiträgen]({% post_url 2024-03-12-erster-beitrag %}) einfügen.
+```
+Sie können [Links zu anderen Seiten](https://example.com) oder [zu anderen Beiträgen]({% raw %}{% post_url name-des-beitrages %}{% endraw %}) einfügen.
+```
 
 ## Zitate
 
