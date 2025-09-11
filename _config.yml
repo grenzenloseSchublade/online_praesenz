@@ -76,7 +76,7 @@ analytics:
 author:
   name: "Hans Müller"
   avatar: "/assets/images/WebSite_Logo_3.png"
-  bio: "Ingenieur, Entwickler,<br> Naturfreund"
+  bio: "Ingenieur & Entwickler"
   location: "Deutschland, 45"
   links:
     - label: "GitHub"
@@ -96,7 +96,7 @@ excerpt_separator: "\n\n"
 incremental: false
 
 # Outputting
-permalink: /:categories/:title/
+permalink: /posts/:title/
 paginate: 5
 paginate_path: /page:num/
 timezone: Europe/Berlin
