@@ -190,20 +190,51 @@ Markdown ist eine leichtgewichtige Markup-Sprache. Die wesentlichen Syntax-Eleme
 
 ### Externe und interne Verlinkung
 
+**Externe Links:**
+
 ```markdown
 [Externe Referenz](https://google.de)
 ```
-führt zu: [Externe Referenz](https://beispiel-domain.de)
+
+Ergebnis: [Externe Referenz](https://google.de)
+
+**Externe Links in neuem Tab öffnen:**
+
+```markdown
+[Externe Referenz](https://google.de){:target="_blank" rel="noopener noreferrer"}
+```
+
+Ergebnis: [Externe Referenz](https://google.de){:target="_blank" rel="noopener noreferrer"}
+
+**Interne Links:**
 
 ```markdown
 {% raw %}[Interne Querverweise]({{ "/posts/erster-beitrag/" | relative_url }}){% endraw %}
 ```
-Führt zu: [Interne Querverweise]({{ "/posts/erster-beitrag/" | relative_url }})
+
+Ergebnis: [Interne Querverweise]({{ "/posts/erster-beitrag/" | relative_url }})
 
 ### Code-Integration
 
+**Inline-Code:**
+
 ```markdown
 `Inline-Code` für kurze Befehle oder Variablen
+```
+
+Ergebnis: `Inline-Code` für kurze Befehle oder Variablen
+
+**Code-Blöcke:**
+
+<pre><code>
+```python
+# Syntax-highlightete Code-Blöcke
+def demonstrate_functionality():
+    return "Erweiterte Beispiele mit Sprachunterstützung"
+```
+</code></pre>
+
+Ergebnis:
 
 ```python
 # Syntax-highlightete Code-Blöcke
@@ -218,7 +249,14 @@ def demonstrate_functionality():
 > können mehrzeilig dargestellt werden
 ```
 
+Ergebnis:
+
+> Fachliche Zitate und Referenzen
+> können mehrzeilig dargestellt werden
+
 ### Tabellarische Datenorganisation
+
+**Einfache Tabelle:**
 
 ```markdown
 | Parameter | Datentyp | Beschreibung |
@@ -226,6 +264,27 @@ def demonstrate_functionality():
 | title     | String   | Beitragstitel |
 | date      | ISO-Date | Publikationsdatum |
 ```
+
+Ergebnis:
+
+| Parameter | Datentyp | Beschreibung |
+|-----------|----------|--------------|
+| title     | String   | Beitragstitel |
+| date      | ISO-Date | Publikationsdatum |
+
+**Erweiterte Tabellen mit Ausrichtung:**
+
+```markdown
+| Linksbündig | Zentriert | Rechtsbündig |
+|:------------|:---------:|-------------:|
+| Text        | Text      | Text         |
+```
+
+Ergebnis:
+
+| Linksbündig | Zentriert | Rechtsbündig |
+|:------------|:---------:|-------------:|
+| Text        | Text      | Text         |
 
 ### Bildintegration
 
@@ -244,3 +303,71 @@ header:
   overlay_filter: 0.5
   caption: "Kontextuelle Bildbeschreibung"
 ```
+
+### Strukturierung und Navigation
+
+**Horizontale Trennlinien:**
+
+```markdown
+---
+```
+
+Ergebnis:
+
+---
+
+**Task Lists (Checkboxen):**
+
+```markdown
+- [x] Erledigte Aufgabe
+- [ ] Offene Aufgabe
+- [ ] Weitere Aufgabe
+```
+
+Ergebnis:
+
+- [x] Erledigte Aufgabe
+- [ ] Offene Aufgabe
+- [ ] Weitere Aufgabe
+
+### Erweiterte Funktionen
+
+**Fußnoten:**
+
+Anmerkung: Fussnoten werden am Ende einer Seite angezeigt.
+
+```markdown
+Text mit Fußnote[^1] und weiterer Referenz[^2]
+
+[^1]: Erste Fußnote
+[^2]: Zweite Fußnote
+```
+
+Ergebnis: Text mit Fußnote[^1] und weiterer Referenz[^2]
+
+[^1]: Erste Fußnote
+[^2]: Zweite Fußnote
+
+**HTML-Integration:**
+
+```markdown
+<details>
+<summary>Klickbarer Bereich</summary>
+Versteckter Inhalt wird hier angezeigt
+</details>
+```
+
+Ergebnis:
+
+<details>
+<summary>Klickbarer Bereich</summary>
+Versteckter Inhalt wird hier angezeigt
+</details>
+
+**Emoji-Support:**
+
+```markdown
+:smile: :rocket: :warning: :bulb:
+```
+
+Ergebnis: :smile: :rocket: :warning: :bulb:
