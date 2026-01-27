@@ -6,11 +6,12 @@ self.onmessage = function (e) {
     const realPart = data.realPart;
     const imagPart = data.imagPart;
     const maxIterations = data.maxIterations;
-    const colorScheme = data.colorScheme;
+    const colorPalette = data.colorPalette;
     const viewX = data.viewX;
     const viewY = data.viewY;
     const zoomLevel = data.zoomLevel;
-    const colorPalettes = data.colorPalettes;
+    const requestId = data.requestId;
+    const includeIterationData = !!data.includeIterationData;
 
     // Chunk-Informationen
     const startY = data.startY;
@@ -19,32 +20,31 @@ self.onmessage = function (e) {
 
     // Berechne den Julia-Set für diesen Chunk
     const result = calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
-        colorScheme, viewX, viewY, zoomLevel,
-        colorPalettes, startY, endY);
+        colorPalette, viewX, viewY, zoomLevel,
+        startY, endY, includeIterationData);
 
     // Sende das Ergebnis zurück
     self.postMessage({
+        requestId: requestId,
         imageData: result.imageData,
         startY: startY,
         endY: endY,
         workerId: workerId,
-        iterationData: result.iterationData
+        iterationChunk: result.iterationChunk
     });
 };
 
 // Berechnet einen Chunk des Julia-Sets
 function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
-    colorScheme, viewX, viewY, zoomLevel,
-    colorPalettes, startY, endY) {
+    colorPalette, viewX, viewY, zoomLevel,
+    startY, endY, includeIterationData) {
     // Erstelle ImageData für diesen Chunk
     const imageData = new ImageData(width, endY - startY);
 
     // Speichere Iterationsdaten für Echtzeit-Informationen
-    const iterationData = {
-        width: width,
-        height: height,
-        data: new Uint16Array(width * height)
-    };
+    const iterationChunk = includeIterationData
+        ? new Uint16Array(width * (endY - startY))
+        : null;
 
     // Berechne Grenzen basierend auf Zoom und Ansicht
     const xRange = 3.0 / zoomLevel;
@@ -53,7 +53,6 @@ function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
     const yMin = viewY - yRange / 2;
 
     // Vorberechnete Farben für bessere Performance
-    const colorPalette = colorPalettes[colorScheme];
     const precomputedColors = precomputeColors(colorPalette, maxIterations);
 
     // Für jeden Pixel in diesem Chunk
@@ -86,7 +85,9 @@ function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
             }
 
             // Speichere Iterationsdaten für Echtzeit-Informationen
-            iterationData.data[y * width + x] = iteration;
+            if (iterationChunk) {
+                iterationChunk[(y - startY) * width + x] = iteration;
+            }
 
             // Berechne Farbe basierend auf Iteration
             let color;
@@ -120,7 +121,7 @@ function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
 
     return {
         imageData: imageData,
-        iterationData: iterationData
+        iterationChunk: iterationChunk
     };
 }
 

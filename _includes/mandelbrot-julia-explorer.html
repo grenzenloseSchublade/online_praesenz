@@ -18,14 +18,14 @@
   </div>
   <div class="explorer-controls">
     <div class="controls-basic">
-      <div class="control-group">
-      <label for="explorerMaxIter">Iterationen:</label>
+      <div class="control-row">
+        <label for="explorerMaxIter">Iterationen:</label>
         <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
-      <span id="explorerIterValue" class="info-value value-chip">80</span>
+        <span id="explorerIterValue" class="info-value value-chip">80</span>
       </div>
-      <div class="color-controls-group">
+      <div class="color-controls-row">
         <div class="color-control-item">
-        <label for="explorerColorScheme">Farben:</label>
+          <label for="explorerColorScheme">Farben:</label>
           <select id="explorerColorScheme">
             <option value="blau-rot">Blau-Rot</option>
             <option value="cyberpunk">Cyberpunk</option>
@@ -39,7 +39,7 @@
           </select>
         </div>
       </div>
-      <div class="control-group button-group">
+      <div class="button-row">
         <button id="resetExplorer" title="Zurücksetzen" aria-label="Zurücksetzen">
           <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
           <span class="btn-text">Reset</span>
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="controls-advanced">
-      <div class="color-controls-group">
+      <div class="color-controls-row">
         <div class="color-control-item">
           <label for="explorerColorIntensity">Intensität:</label>
           <button id="explorerColorIntensity" class="toggle-button" title="Farbintensität" aria-label="Farbintensität">
@@ -55,8 +55,15 @@
             <span class="btn-text">Subtil</span>
           </button>
         </div>
+        <div class="color-control-item">
+          <label for="explorerAllowExtremeZoom">Extremzoom:</label>
+          <button id="explorerAllowExtremeZoom" class="toggle-button" title="Extremzoom erlauben" aria-label="Extremzoom erlauben">
+            <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+            <span class="btn-text">Aus</span>
+          </button>
+        </div>
       </div>
-      <div class="control-group button-group">
+      <div class="button-row">
         <button id="saveExplorerImage" title="Bild speichern" aria-label="Bild speichern">
           <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
           <span class="btn-text">Export</span>
@@ -71,6 +78,7 @@
       <div class="canvas-container">
         <canvas id="mandelbrotCanvas" width="800" height="450"></canvas>
         <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
+        <div class="zoom-warning" id="mandelbrotZoomWarning">Extremzoom aktiv – Details koennen instabil sein.</div>
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
         <div class="mobile-zoom-control" id="mandelbrotMobileZoom">
@@ -90,6 +98,7 @@
       <div class="canvas-container">
         <canvas id="explorerJuliaCanvas" width="800" height="450"></canvas>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
+        <div class="zoom-warning" id="explorerJuliaZoomWarning">Extremzoom aktiv – Details koennen instabil sein.</div>
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
         <div class="mobile-zoom-control" id="juliaMobileZoom">
@@ -144,9 +153,6 @@
   }
   
   .explorer-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-bottom: 15px;
     padding: 15px;
     background: #2a2a2a;
@@ -253,49 +259,58 @@
     }
   }
   
-  .control-group {
+  .control-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 1 1 300px;
+    margin-bottom: 0;
+    flex-wrap: wrap;
   }
 
-  .control-group label {
-    min-width: 110px;
-    font-size: 14px;
+  .control-row label {
+    width: 150px;
     color: #ddd;
+    font-size: 14px;
+    text-align: left;
   }
-  
-  .button-group {
-    justify-content: flex-start;
-  }
-  
-  .color-controls-group {
+
+  .color-controls-row {
     display: flex;
-    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 0;
+    flex-wrap: wrap;
     gap: 12px;
-    flex: 1 1 600px;
   }
-  
+
   .color-control-item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
     flex: 1;
+    min-width: 200px;
+    gap: 6px;
   }
-  
+
   .color-control-item label {
+    width: 100%;
     color: #ddd;
     font-size: 14px;
     text-align: left;
     margin-bottom: 4px;
   }
-  
+
   .color-control-item select,
   .color-control-item button {
     width: 100%;
     max-width: 200px;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    justify-content: flex-start;
+    grid-column: 1 / -1;
   }
   
   /* Media Query für mobile Geräte */
@@ -310,29 +325,10 @@
       box-sizing: border-box;
     }
     
-    .color-control-item select,
-    .color-control-item button {
-      max-width: 100%;
-      min-width: auto;
-    }
-    
-    .color-controls-group {
-      flex-direction: column;
-    }
-    
-    .toggle-button {
-      min-width: auto;
-      width: 100%;
-    }
-    
     .explorer-controls {
       padding: 10px;
     }
-    
-    .control-group {
-      flex: 1 1 100%;
-    }
-    
+
     .explorer-column {
       min-width: 100%;
       flex: 1 1 100%;
@@ -382,6 +378,7 @@
     width: 100%;
     border-radius: 4px;
     overflow: hidden;
+    margin: 0 auto;
   }
   
   #mandelbrotCanvas, #explorerJuliaCanvas {
@@ -390,14 +387,37 @@
     height: auto;
     border-radius: 4px;
     cursor: crosshair;
-    max-height: 50vh;
+    max-height: 60vh;
     aspect-ratio: 16/9;
-    min-height: 220px;
+    min-height: 240px;
+  }
+
+  .zoom-box {
+    position: absolute;
+    border: 2px dashed #ff00ff;
+    background: rgba(255, 0, 255, 0.15);
+    pointer-events: none;
+    display: none;
+    box-sizing: border-box;
+    z-index: 5;
+  }
+
+  .zoom-warning {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffd1d1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+    z-index: 6;
   }
 
   @media (max-width: 768px) {
     #mandelbrotCanvas, #explorerJuliaCanvas {
-      max-height: 60vh;
+      max-height: 65vh;
       min-height: 200px;
     }
   }
@@ -455,6 +475,7 @@
     padding: 8px 12px;
     border-radius: 999px;
     cursor: pointer;
+    font-size: 14px;
     transition: background 0.2s, transform 0.1s, border-color 0.2s;
     display: inline-flex;
     align-items: center;
@@ -516,7 +537,7 @@
   option,
   optgroup {
     background: rgba(255, 255, 255, 0.06);
-    color: #eacfb4;
+    color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 8px 12px;
     border-radius: 999px;
@@ -628,8 +649,646 @@
   }
 </style>
 
+<script src="{{ site.baseurl }}/assets/js/fractal-renderer.js"></script>
+<script>
+window.__fractalNewExplorer = true;
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.explorer-container');
+  const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
+  const mandelbrotLoading = document.getElementById('mandelbrotLoading');
+  const juliaCanvas = document.getElementById('explorerJuliaCanvas');
+  const juliaLoading = document.getElementById('juliaLoading');
+
+  const maxIterSlider = document.getElementById('explorerMaxIter');
+  const iterValueSpan = document.getElementById('explorerIterValue');
+  const colorSchemeSelect = document.getElementById('explorerColorScheme');
+  const colorIntensityButton = document.getElementById('explorerColorIntensity');
+  const allowExtremeZoomButton = document.getElementById('explorerAllowExtremeZoom');
+  const resetButton = document.getElementById('resetExplorer');
+  const saveImageButton = document.getElementById('saveExplorerImage');
+  const juliaParamSpan = document.getElementById('juliaParameter');
+
+  const advancedToggleButton = document.getElementById('explorerAdvancedToggle');
+  const focusModeButton = document.getElementById('explorerFocusMode');
+  const fullscreenButton = document.getElementById('explorerFullscreen');
+
+  const mandelbrotZoomIn = container.querySelector('#mandelbrotZoomIn');
+  const mandelbrotZoomOut = container.querySelector('#mandelbrotZoomOut');
+  const mandelbrotZoomLevel = container.querySelector('#mandelbrotZoomLevel');
+  const juliaZoomIn = container.querySelector('#juliaZoomIn');
+  const juliaZoomOut = container.querySelector('#juliaZoomOut');
+  const juliaZoomLevel = container.querySelector('#juliaZoomLevel');
+  const mandelbrotMobileZoom = container.querySelector('#mandelbrotMobileZoom');
+  const juliaMobileZoom = container.querySelector('#juliaMobileZoom');
+  const mandelbrotZoomWarning = document.getElementById('mandelbrotZoomWarning');
+  const explorerJuliaZoomWarning = document.getElementById('explorerJuliaZoomWarning');
+
+  const state = {
+    maxIterations: parseInt(maxIterSlider.value, 10),
+    colorScheme: colorSchemeSelect.value,
+    useIntense: false,
+    allowExtremeZoom: false,
+    mandelbrot: { viewX: -0.5, viewY: 0, zoomLevel: 1 },
+    julia: { viewX: 0, viewY: 0, zoomLevel: 1, realPart: -0.7, imagPart: 0.27015 }
+  };
+
+  const MIN_ZOOM = 0.5;
+  const MAX_ZOOM_DEFAULT = 5000;
+  const MAX_ZOOM_EXTREME = 500000;
+  const ZOOM_WARNING_THRESHOLD = 100000;
+
+  const mandelbrotRenderer = new FractalRenderer({
+    canvas: mandelbrotCanvas,
+    loadingIndicator: mandelbrotLoading,
+    workerUrl: '{{ site.baseurl }}/assets/js/mandelbrot-worker.js',
+    type: 'mandelbrot',
+    allowIterationData: false,
+    maxWorkers: FractalUtils.isMobileDevice() ? 2 : Math.min(navigator.hardwareConcurrency || 2, 4),
+    maxCanvasPixels: 1920 * 1080,
+    previewScale: 0.6
+  });
+
+  const juliaRenderer = new FractalRenderer({
+    canvas: juliaCanvas,
+    loadingIndicator: juliaLoading,
+    workerUrl: '{{ site.baseurl }}/assets/js/julia-worker.js',
+    type: 'julia',
+    allowIterationData: false,
+    maxWorkers: FractalUtils.isMobileDevice() ? 2 : Math.min(navigator.hardwareConcurrency || 2, 4),
+    maxCanvasPixels: 1920 * 1080,
+    previewScale: 0.6
+  });
+
+  function getMaxZoom() {
+    return state.allowExtremeZoom ? MAX_ZOOM_EXTREME : MAX_ZOOM_DEFAULT;
+  }
+
+  function updateZoomWarnings() {
+    if (mandelbrotZoomWarning) {
+      mandelbrotZoomWarning.style.display = state.mandelbrot.zoomLevel >= ZOOM_WARNING_THRESHOLD ? 'block' : 'none';
+    }
+    if (explorerJuliaZoomWarning) {
+      explorerJuliaZoomWarning.style.display = state.julia.zoomLevel >= ZOOM_WARNING_THRESHOLD ? 'block' : 'none';
+    }
+  }
+
+  mandelbrotRenderer.onViewUpdate = (view) => {
+    if (mandelbrotZoomLevel) mandelbrotZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
+    updateZoomWarnings();
+  };
+  juliaRenderer.onViewUpdate = (view) => {
+    if (juliaZoomLevel) juliaZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
+    updateZoomWarnings();
+  };
+
+  function setButtonLabel(button, label) {
+    if (!button) return;
+    const text = button.querySelector('.btn-text');
+    if (text) text.textContent = label;
+  }
+
+  function syncRendererState() {
+    const palettes = state.useIntense ? FractalPalettes.intense : FractalPalettes.standard;
+    if (!palettes[state.colorScheme]) {
+      state.colorScheme = 'blau-rot';
+      colorSchemeSelect.value = state.colorScheme;
+    }
+    mandelbrotRenderer.setState({
+      viewX: state.mandelbrot.viewX,
+      viewY: state.mandelbrot.viewY,
+      zoomLevel: state.mandelbrot.zoomLevel,
+      maxIterations: state.maxIterations,
+      colorScheme: state.colorScheme,
+      colorPalettes: palettes
+    });
+    juliaRenderer.setState({
+      viewX: state.julia.viewX,
+      viewY: state.julia.viewY,
+      zoomLevel: state.julia.zoomLevel,
+      maxIterations: state.maxIterations,
+      colorScheme: state.colorScheme,
+      colorPalettes: palettes,
+      realPart: state.julia.realPart,
+      imagPart: state.julia.imagPart
+    });
+  }
+
+  function requestRender(renderer, options) {
+    const settings = options || {};
+    syncRendererState();
+    if (settings.preview) renderer.drawPreview();
+    if (settings.immediate) {
+      renderer.render({ preview: false, reason: settings.reason || 'immediate' });
+    } else {
+      renderer.scheduleRender({ debounce: settings.debounce || 200, reason: settings.reason || 'scheduled' });
+    }
+  }
+
+  function resizeAndRender() {
+    mandelbrotRenderer.resizeToContainer(mandelbrotCanvas.parentElement);
+    juliaRenderer.resizeToContainer(juliaCanvas.parentElement);
+    requestRender(mandelbrotRenderer, { immediate: true, reason: 'resize' });
+    requestRender(juliaRenderer, { immediate: true, reason: 'resize' });
+  }
+
+  function getCanvasCoords(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (event.clientX - rect.left) * scaleX,
+      y: (event.clientY - rect.top) * scaleY
+    };
+  }
+
+  function getCssCoords(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  function getOrCreateZoomBox(canvas) {
+    if (!canvas.__zoomBox) {
+      const zoomBox = document.createElement('div');
+      zoomBox.className = 'zoom-box';
+      canvas.parentElement.appendChild(zoomBox);
+      canvas.__zoomBox = zoomBox;
+    }
+    return canvas.__zoomBox;
+  }
+
+  function screenToComplex(stateView, canvas, pos) {
+    const xRange = 3 / stateView.zoomLevel;
+    const yRange = 3 / stateView.zoomLevel;
+    return {
+      cx: stateView.viewX - xRange / 2 + (pos.x / canvas.width) * xRange,
+      cy: stateView.viewY - yRange / 2 + (pos.y / canvas.height) * yRange
+    };
+  }
+
+  function animateZoomTo(stateView, renderer, targetZoom, center, canvas) {
+    const xRangeNew = 3 / targetZoom;
+    const yRangeNew = 3 / targetZoom;
+    const complexAtCursor = screenToComplex(stateView, canvas, center);
+    const targetViewX = complexAtCursor.cx - (center.x / canvas.width) * xRangeNew + xRangeNew / 2;
+    const targetViewY = complexAtCursor.cy - (center.y / canvas.height) * yRangeNew + yRangeNew / 2;
+    renderer.animateTo({ viewX: targetViewX, viewY: targetViewY, zoomLevel: targetZoom }, 140);
+    stateView.viewX = targetViewX;
+    stateView.viewY = targetViewY;
+    stateView.zoomLevel = targetZoom;
+  }
+
+  function updateJuliaParameterText() {
+    if (juliaParamSpan) {
+      juliaParamSpan.textContent = `${state.julia.realPart.toFixed(3)} + ${state.julia.imagPart.toFixed(3)}i`;
+    }
+  }
+
+  maxIterSlider.addEventListener('input', function() {
+    state.maxIterations = parseInt(this.value, 10);
+    iterValueSpan.textContent = this.value;
+    requestRender(mandelbrotRenderer, { preview: true, debounce: 220, reason: 'iterations' });
+    requestRender(juliaRenderer, { preview: true, debounce: 220, reason: 'iterations' });
+  });
+
+  colorSchemeSelect.addEventListener('change', function() {
+    state.colorScheme = this.value;
+    requestRender(mandelbrotRenderer, { preview: true, debounce: 200, reason: 'palette' });
+    requestRender(juliaRenderer, { preview: true, debounce: 200, reason: 'palette' });
+  });
+
+  if (colorIntensityButton) {
+    colorIntensityButton.addEventListener('click', function() {
+      state.useIntense = !state.useIntense;
+      this.classList.toggle('active', state.useIntense);
+      setButtonLabel(colorIntensityButton, state.useIntense ? 'Intensiv' : 'Subtil');
+      requestRender(mandelbrotRenderer, { preview: true, debounce: 200, reason: 'palette' });
+      requestRender(juliaRenderer, { preview: true, debounce: 200, reason: 'palette' });
+    });
+  }
+
+  if (allowExtremeZoomButton) {
+    allowExtremeZoomButton.addEventListener('click', function() {
+      state.allowExtremeZoom = !state.allowExtremeZoom;
+      this.classList.toggle('active', state.allowExtremeZoom);
+      setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
+      if (!state.allowExtremeZoom) {
+        const maxZoom = MAX_ZOOM_DEFAULT;
+        if (state.mandelbrot.zoomLevel > maxZoom) {
+          state.mandelbrot.zoomLevel = maxZoom;
+          mandelbrotRenderer.animateTo({ viewX: state.mandelbrot.viewX, viewY: state.mandelbrot.viewY, zoomLevel: state.mandelbrot.zoomLevel }, 160);
+        }
+        if (state.julia.zoomLevel > maxZoom) {
+          state.julia.zoomLevel = maxZoom;
+          juliaRenderer.animateTo({ viewX: state.julia.viewX, viewY: state.julia.viewY, zoomLevel: state.julia.zoomLevel }, 160);
+        }
+        requestRender(mandelbrotRenderer, { immediate: true, reason: 'limit-clamp' });
+        requestRender(juliaRenderer, { immediate: true, reason: 'limit-clamp' });
+      }
+      updateZoomWarnings();
+    });
+  }
+
+  resetButton.addEventListener('click', function() {
+    state.mandelbrot.viewX = -0.5;
+    state.mandelbrot.viewY = 0;
+    state.mandelbrot.zoomLevel = 1;
+    state.julia.viewX = 0;
+    state.julia.viewY = 0;
+    state.julia.zoomLevel = 1;
+    state.julia.realPart = -0.7;
+    state.julia.imagPart = 0.27015;
+    updateJuliaParameterText();
+    mandelbrotRenderer.animateTo({ viewX: -0.5, viewY: 0, zoomLevel: 1 }, 180);
+    juliaRenderer.animateTo({ viewX: 0, viewY: 0, zoomLevel: 1 }, 180);
+    requestRender(mandelbrotRenderer, { immediate: true, reason: 'reset' });
+    requestRender(juliaRenderer, { immediate: true, reason: 'reset' });
+  });
+
+  saveImageButton.addEventListener('click', function() {
+    const link = document.createElement('a');
+    link.download = 'mandelbrot-julia-explorer.png';
+    const mergeCanvas = document.createElement('canvas');
+    const width = Math.max(mandelbrotCanvas.width, juliaCanvas.width);
+    const height = mandelbrotCanvas.height + juliaCanvas.height;
+    mergeCanvas.width = width;
+    mergeCanvas.height = height;
+    const ctx = mergeCanvas.getContext('2d');
+    ctx.drawImage(mandelbrotCanvas, 0, 0);
+    ctx.drawImage(juliaCanvas, 0, mandelbrotCanvas.height);
+    link.href = mergeCanvas.toDataURL('image/png');
+    link.click();
+  });
+
+  if (advancedToggleButton) {
+    advancedToggleButton.addEventListener('click', function() {
+      container.classList.toggle('advanced-open');
+      this.classList.toggle('active', container.classList.contains('advanced-open'));
+    });
+  }
+
+  if (focusModeButton) {
+    focusModeButton.addEventListener('click', function() {
+      container.classList.toggle('focus-mode');
+      this.classList.toggle('active', container.classList.contains('focus-mode'));
+    });
+  }
+
+  if (fullscreenButton) {
+    fullscreenButton.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        container.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    });
+    document.addEventListener('fullscreenchange', function() {
+      const isFullscreen = !!document.fullscreenElement;
+      container.classList.toggle('fullscreen-mode', isFullscreen);
+      setButtonLabel(fullscreenButton, isFullscreen ? 'Vollbild aus' : 'Vollbild');
+      setTimeout(resizeAndRender, 80);
+    });
+  }
+
+  if (mandelbrotZoomIn) {
+    mandelbrotZoomIn.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.mandelbrot.zoomLevel * 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, { x: mandelbrotCanvas.width / 2, y: mandelbrotCanvas.height / 2 }, mandelbrotCanvas);
+      requestRender(mandelbrotRenderer, { debounce: 200, reason: 'zoom-in' });
+    });
+  }
+  if (mandelbrotZoomOut) {
+    mandelbrotZoomOut.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.mandelbrot.zoomLevel / 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, { x: mandelbrotCanvas.width / 2, y: mandelbrotCanvas.height / 2 }, mandelbrotCanvas);
+      requestRender(mandelbrotRenderer, { debounce: 200, reason: 'zoom-out' });
+    });
+  }
+  if (juliaZoomIn) {
+    juliaZoomIn.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.julia.zoomLevel * 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(state.julia, juliaRenderer, targetZoom, { x: juliaCanvas.width / 2, y: juliaCanvas.height / 2 }, juliaCanvas);
+      requestRender(juliaRenderer, { debounce: 200, reason: 'zoom-in' });
+    });
+  }
+  if (juliaZoomOut) {
+    juliaZoomOut.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.julia.zoomLevel / 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(state.julia, juliaRenderer, targetZoom, { x: juliaCanvas.width / 2, y: juliaCanvas.height / 2 }, juliaCanvas);
+      requestRender(juliaRenderer, { debounce: 200, reason: 'zoom-out' });
+    });
+  }
+
+  let mandelbrotPanning = false;
+  let juliaPanning = false;
+  let mandelbrotLast = null;
+  let juliaLast = null;
+  let mandelbrotZoomBoxStart = null;
+  let mandelbrotZoomBoxStartCss = null;
+  let juliaZoomBoxStart = null;
+  let juliaZoomBoxStartCss = null;
+  let mandelbrotPointerId = null;
+  let juliaPointerId = null;
+  let mandelbrotDidDrag = false;
+  let mandelbrotClickTimer = null;
+  let isSpacePanning = false;
+
+  mandelbrotCanvas.addEventListener('pointerdown', function(event) {
+    if (mandelbrotPointerId !== null) return;
+    mandelbrotPointerId = event.pointerId;
+    mandelbrotCanvas.setPointerCapture(event.pointerId);
+    mandelbrotDidDrag = false;
+    const canvasPos = getCanvasCoords(mandelbrotCanvas, event);
+    const cssPos = getCssCoords(mandelbrotCanvas, event);
+    if (event.button === 2 || isSpacePanning) {
+      mandelbrotPanning = true;
+      mandelbrotLast = canvasPos;
+      return;
+    }
+    if (event.button !== 0) return;
+    mandelbrotZoomBoxStart = canvasPos;
+    mandelbrotZoomBoxStartCss = cssPos;
+    const zoomBox = getOrCreateZoomBox(mandelbrotCanvas);
+    zoomBox.style.display = 'block';
+    zoomBox.style.left = cssPos.x + 'px';
+    zoomBox.style.top = cssPos.y + 'px';
+    zoomBox.style.width = '0px';
+    zoomBox.style.height = '0px';
+  });
+  mandelbrotCanvas.addEventListener('pointermove', function(event) {
+    if (mandelbrotPointerId !== event.pointerId) return;
+    const canvasPos = getCanvasCoords(mandelbrotCanvas, event);
+    const cssPos = getCssCoords(mandelbrotCanvas, event);
+    if (mandelbrotZoomBoxStart && mandelbrotZoomBoxStartCss) {
+      const zoomBox = getOrCreateZoomBox(mandelbrotCanvas);
+      const left = Math.min(cssPos.x, mandelbrotZoomBoxStartCss.x);
+      const top = Math.min(cssPos.y, mandelbrotZoomBoxStartCss.y);
+      const width = Math.abs(cssPos.x - mandelbrotZoomBoxStartCss.x);
+      const height = Math.abs(cssPos.y - mandelbrotZoomBoxStartCss.y);
+      zoomBox.style.left = left + 'px';
+      zoomBox.style.top = top + 'px';
+      zoomBox.style.width = width + 'px';
+      zoomBox.style.height = height + 'px';
+      mandelbrotDidDrag = width > 2 || height > 2;
+      return;
+    }
+    if (!mandelbrotPanning || !mandelbrotLast) return;
+    const dx = canvasPos.x - mandelbrotLast.x;
+    const dy = canvasPos.y - mandelbrotLast.y;
+    if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+      mandelbrotDidDrag = true;
+    }
+    const xRange = 3 / state.mandelbrot.zoomLevel;
+    const yRange = 3 / state.mandelbrot.zoomLevel;
+    state.mandelbrot.viewX -= (dx / mandelbrotCanvas.width) * xRange;
+    state.mandelbrot.viewY -= (dy / mandelbrotCanvas.height) * yRange;
+    mandelbrotLast = canvasPos;
+    mandelbrotRenderer.setState({
+      viewX: state.mandelbrot.viewX,
+      viewY: state.mandelbrot.viewY,
+      zoomLevel: state.mandelbrot.zoomLevel
+    });
+    mandelbrotRenderer.drawPreview();
+    mandelbrotRenderer.scheduleRender({ debounce: 180, reason: 'pan' });
+  });
+  mandelbrotCanvas.addEventListener('pointerup', function(event) {
+    if (mandelbrotPointerId !== event.pointerId) return;
+    const canvasPos = getCanvasCoords(mandelbrotCanvas, event);
+    if (mandelbrotZoomBoxStart && mandelbrotZoomBoxStartCss) {
+      const zoomBox = getOrCreateZoomBox(mandelbrotCanvas);
+      zoomBox.style.display = 'none';
+      const width = Math.abs(canvasPos.x - mandelbrotZoomBoxStart.x);
+      const height = Math.abs(canvasPos.y - mandelbrotZoomBoxStart.y);
+      if (width > 10 && height > 10) {
+        const centerX = (canvasPos.x + mandelbrotZoomBoxStart.x) / 2;
+        const centerY = (canvasPos.y + mandelbrotZoomBoxStart.y) / 2;
+        const zoomX = mandelbrotCanvas.width / width;
+        const zoomY = mandelbrotCanvas.height / height;
+        const targetZoom = FractalUtils.clamp(state.mandelbrot.zoomLevel * Math.min(zoomX, zoomY), MIN_ZOOM, getMaxZoom());
+        animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, { x: centerX, y: centerY }, mandelbrotCanvas);
+        requestRender(mandelbrotRenderer, { debounce: 180, reason: 'zoom-box' });
+        mandelbrotDidDrag = true;
+      }
+    }
+    mandelbrotZoomBoxStart = null;
+    mandelbrotZoomBoxStartCss = null;
+    mandelbrotPanning = false;
+    mandelbrotLast = null;
+    mandelbrotPointerId = null;
+  });
+  mandelbrotCanvas.addEventListener('pointercancel', function(event) {
+    if (mandelbrotPointerId !== event.pointerId) return;
+    mandelbrotPanning = false;
+    mandelbrotLast = null;
+    mandelbrotZoomBoxStart = null;
+    mandelbrotZoomBoxStartCss = null;
+    mandelbrotPointerId = null;
+    const zoomBox = mandelbrotCanvas.__zoomBox;
+    if (zoomBox) zoomBox.style.display = 'none';
+  });
+
+  juliaCanvas.addEventListener('pointerdown', function(event) {
+    if (juliaPointerId !== null) return;
+    juliaPointerId = event.pointerId;
+    juliaCanvas.setPointerCapture(event.pointerId);
+    const canvasPos = getCanvasCoords(juliaCanvas, event);
+    const cssPos = getCssCoords(juliaCanvas, event);
+    if (event.button === 2 || isSpacePanning) {
+      juliaPanning = true;
+      juliaLast = canvasPos;
+      return;
+    }
+    if (event.button !== 0) return;
+    juliaZoomBoxStart = canvasPos;
+    juliaZoomBoxStartCss = cssPos;
+    const zoomBox = getOrCreateZoomBox(juliaCanvas);
+    zoomBox.style.display = 'block';
+    zoomBox.style.left = cssPos.x + 'px';
+    zoomBox.style.top = cssPos.y + 'px';
+    zoomBox.style.width = '0px';
+    zoomBox.style.height = '0px';
+  });
+  juliaCanvas.addEventListener('pointermove', function(event) {
+    if (juliaPointerId !== event.pointerId) return;
+    const canvasPos = getCanvasCoords(juliaCanvas, event);
+    const cssPos = getCssCoords(juliaCanvas, event);
+    if (juliaZoomBoxStart && juliaZoomBoxStartCss) {
+      const zoomBox = getOrCreateZoomBox(juliaCanvas);
+      const left = Math.min(cssPos.x, juliaZoomBoxStartCss.x);
+      const top = Math.min(cssPos.y, juliaZoomBoxStartCss.y);
+      const width = Math.abs(cssPos.x - juliaZoomBoxStartCss.x);
+      const height = Math.abs(cssPos.y - juliaZoomBoxStartCss.y);
+      zoomBox.style.left = left + 'px';
+      zoomBox.style.top = top + 'px';
+      zoomBox.style.width = width + 'px';
+      zoomBox.style.height = height + 'px';
+      return;
+    }
+    if (!juliaPanning || !juliaLast) return;
+    const dx = canvasPos.x - juliaLast.x;
+    const dy = canvasPos.y - juliaLast.y;
+    const xRange = 3 / state.julia.zoomLevel;
+    const yRange = 3 / state.julia.zoomLevel;
+    state.julia.viewX -= (dx / juliaCanvas.width) * xRange;
+    state.julia.viewY -= (dy / juliaCanvas.height) * yRange;
+    juliaLast = canvasPos;
+    juliaRenderer.setState({
+      viewX: state.julia.viewX,
+      viewY: state.julia.viewY,
+      zoomLevel: state.julia.zoomLevel
+    });
+    juliaRenderer.drawPreview();
+    juliaRenderer.scheduleRender({ debounce: 180, reason: 'pan' });
+  });
+  juliaCanvas.addEventListener('pointerup', function(event) {
+    if (juliaPointerId !== event.pointerId) return;
+    const canvasPos = getCanvasCoords(juliaCanvas, event);
+    if (juliaZoomBoxStart && juliaZoomBoxStartCss) {
+      const zoomBox = getOrCreateZoomBox(juliaCanvas);
+      zoomBox.style.display = 'none';
+      const width = Math.abs(canvasPos.x - juliaZoomBoxStart.x);
+      const height = Math.abs(canvasPos.y - juliaZoomBoxStart.y);
+      if (width > 10 && height > 10) {
+        const centerX = (canvasPos.x + juliaZoomBoxStart.x) / 2;
+        const centerY = (canvasPos.y + juliaZoomBoxStart.y) / 2;
+        const zoomX = juliaCanvas.width / width;
+        const zoomY = juliaCanvas.height / height;
+        const targetZoom = FractalUtils.clamp(state.julia.zoomLevel * Math.min(zoomX, zoomY), MIN_ZOOM, getMaxZoom());
+        animateZoomTo(state.julia, juliaRenderer, targetZoom, { x: centerX, y: centerY }, juliaCanvas);
+        requestRender(juliaRenderer, { debounce: 180, reason: 'zoom-box' });
+      }
+    }
+    juliaZoomBoxStart = null;
+    juliaZoomBoxStartCss = null;
+    juliaPanning = false;
+    juliaLast = null;
+    juliaPointerId = null;
+  });
+  juliaCanvas.addEventListener('pointercancel', function(event) {
+    if (juliaPointerId !== event.pointerId) return;
+    juliaPanning = false;
+    juliaLast = null;
+    juliaZoomBoxStart = null;
+    juliaZoomBoxStartCss = null;
+    juliaPointerId = null;
+    const zoomBox = juliaCanvas.__zoomBox;
+    if (zoomBox) zoomBox.style.display = 'none';
+  });
+
+  mandelbrotCanvas.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+  });
+
+  juliaCanvas.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+  });
+
+  window.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+      isSpacePanning = true;
+    }
+  });
+
+  window.addEventListener('keyup', function(event) {
+    if (event.code === 'Space') {
+      isSpacePanning = false;
+    }
+  });
+
+  mandelbrotCanvas.addEventListener('click', function(event) {
+    if (mandelbrotDidDrag) {
+      mandelbrotDidDrag = false;
+      return;
+    }
+    if (mandelbrotClickTimer) {
+      clearTimeout(mandelbrotClickTimer);
+      mandelbrotClickTimer = null;
+    }
+    const clickEvent = event;
+    mandelbrotClickTimer = setTimeout(() => {
+      const pos = getCanvasCoords(mandelbrotCanvas, clickEvent);
+      const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
+      state.julia.realPart = complex.cx;
+      state.julia.imagPart = complex.cy;
+      updateJuliaParameterText();
+      requestRender(juliaRenderer, { immediate: true, reason: 'julia-c' });
+      mandelbrotClickTimer = null;
+    }, 220);
+  });
+
+  mandelbrotCanvas.addEventListener('wheel', function(event) {
+    event.preventDefault();
+    const pos = getCanvasCoords(mandelbrotCanvas, event);
+    const zoomFactor = Math.exp(-event.deltaY * 0.0016);
+    const targetZoom = FractalUtils.clamp(state.mandelbrot.zoomLevel * zoomFactor, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, pos, mandelbrotCanvas);
+    requestRender(mandelbrotRenderer, { debounce: 220, reason: 'wheel' });
+  }, { passive: false });
+
+  mandelbrotCanvas.addEventListener('dblclick', function(event) {
+    event.preventDefault();
+    if (mandelbrotClickTimer) {
+      clearTimeout(mandelbrotClickTimer);
+      mandelbrotClickTimer = null;
+    }
+    const pos = getCanvasCoords(mandelbrotCanvas, event);
+    const targetZoom = FractalUtils.clamp(state.mandelbrot.zoomLevel / 2, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, pos, mandelbrotCanvas);
+    requestRender(mandelbrotRenderer, { debounce: 180, reason: 'dblclick-out' });
+  });
+
+  juliaCanvas.addEventListener('wheel', function(event) {
+    event.preventDefault();
+    const pos = getCanvasCoords(juliaCanvas, event);
+    const zoomFactor = Math.exp(-event.deltaY * 0.0016);
+    const targetZoom = FractalUtils.clamp(state.julia.zoomLevel * zoomFactor, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(state.julia, juliaRenderer, targetZoom, pos, juliaCanvas);
+    requestRender(juliaRenderer, { debounce: 220, reason: 'wheel' });
+  }, { passive: false });
+
+  juliaCanvas.addEventListener('dblclick', function(event) {
+    event.preventDefault();
+    const pos = getCanvasCoords(juliaCanvas, event);
+    const targetZoom = FractalUtils.clamp(state.julia.zoomLevel / 2, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(state.julia, juliaRenderer, targetZoom, pos, juliaCanvas);
+    requestRender(juliaRenderer, { debounce: 180, reason: 'dblclick-out' });
+  });
+
+  function updateMobileControls() {
+    const isMobile = FractalUtils.isMobileDevice() || window.innerWidth <= 768;
+    if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = isMobile ? 'flex' : 'none';
+    if (juliaMobileZoom) juliaMobileZoom.style.display = isMobile ? 'flex' : 'none';
+  }
+
+  window.addEventListener('resize', function() {
+    updateMobileControls();
+    resizeAndRender();
+  });
+
+  if (typeof ResizeObserver !== 'undefined') {
+    const resizeObserver = new ResizeObserver(() => resizeAndRender());
+    resizeObserver.observe(mandelbrotCanvas.parentElement);
+    resizeObserver.observe(juliaCanvas.parentElement);
+  }
+
+  iterValueSpan.textContent = maxIterSlider.value;
+  if (allowExtremeZoomButton) {
+    setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
+  }
+  updateJuliaParameterText();
+  updateZoomWarnings();
+  updateMobileControls();
+  resizeAndRender();
+});
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  if (window.__fractalNewExplorer) {
+    return;
+  }
   // Canvas und Kontext für Mandelbrot
   const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
   const mandelbrotCtx = mandelbrotCanvas.getContext('2d');

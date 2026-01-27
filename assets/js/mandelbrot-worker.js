@@ -4,13 +4,14 @@ self.onmessage = function (e) {
     const width = data.width;
     const height = data.height;
     const maxIterations = data.maxIterations;
-    const colorScheme = data.colorScheme;
-    const colorPalettes = data.colorPalettes;
+    const colorPalette = data.colorPalette;
 
     // Neue Parameter für Zoom und Panning
     const viewX = data.viewX || -0.5; // Standardwert: Zentrum der Mandelbrot-Menge
     const viewY = data.viewY || 0;
     const zoomLevel = data.zoomLevel || 1;
+    const requestId = data.requestId;
+    const includeIterationData = !!data.includeIterationData;
 
     // Chunk-Informationen
     const startY = data.startY;
@@ -19,34 +20,33 @@ self.onmessage = function (e) {
 
     // Berechne den Mandelbrot-Set für diesen Chunk
     const result = calculateMandelbrotChunk(width, height, maxIterations,
-        colorScheme, colorPalettes,
+        colorPalette,
         startY, endY,
-        viewX, viewY, zoomLevel);
+        viewX, viewY, zoomLevel, includeIterationData);
 
     // Sende das Ergebnis zurück
     self.postMessage({
+        requestId: requestId,
         imageData: result.imageData,
         startY: startY,
         endY: endY,
         workerId: workerId,
-        iterationData: result.iterationData
+        iterationChunk: result.iterationChunk
     });
 };
 
 // Berechnet einen Chunk des Mandelbrot-Sets
 function calculateMandelbrotChunk(width, height, maxIterations,
-    colorScheme, colorPalettes,
+    colorPalette,
     startY, endY,
-    viewX, viewY, zoomLevel) {
+    viewX, viewY, zoomLevel, includeIterationData) {
     // Erstelle ImageData für diesen Chunk
     const imageData = new ImageData(width, endY - startY);
 
     // Speichere Iterationsdaten für Echtzeit-Informationen
-    const iterationData = {
-        width: width,
-        height: height,
-        data: new Uint16Array(width * height)
-    };
+    const iterationChunk = includeIterationData
+        ? new Uint16Array(width * (endY - startY))
+        : null;
 
     // Berechne Grenzen basierend auf Zoom und Ansicht
     const xRange = 3.0 / zoomLevel;
@@ -55,7 +55,6 @@ function calculateMandelbrotChunk(width, height, maxIterations,
     const yMin = viewY - yRange / 2;
 
     // Vorberechnete Farben für bessere Performance
-    const colorPalette = colorPalettes[colorScheme];
     const precomputedColors = precomputeColors(colorPalette, maxIterations);
 
     // Für jeden Pixel in diesem Chunk
@@ -88,7 +87,9 @@ function calculateMandelbrotChunk(width, height, maxIterations,
             }
 
             // Speichere Iterationsdaten für Echtzeit-Informationen
-            iterationData.data[y * width + x] = iteration;
+            if (iterationChunk) {
+                iterationChunk[(y - startY) * width + x] = iteration;
+            }
 
             // Berechne Farbe basierend auf Iteration
             let color;
@@ -122,7 +123,7 @@ function calculateMandelbrotChunk(width, height, maxIterations,
 
     return {
         imageData: imageData,
-        iterationData: iterationData
+        iterationChunk: iterationChunk
     };
 }
 

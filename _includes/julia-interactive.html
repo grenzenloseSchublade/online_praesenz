@@ -69,6 +69,13 @@
             <span class="btn-text">Subtil</span>
           </button>
         </div>
+        <div class="color-control-item">
+          <label for="allowExtremeZoom">Extremzoom:</label>
+          <button id="allowExtremeZoom" class="toggle-button" title="Extremzoom erlauben" aria-label="Extremzoom erlauben">
+            <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+            <span class="btn-text">Aus</span>
+          </button>
+        </div>
       </div>
       <div class="button-row">
         <button id="defaultValues" title="Standardwerte" aria-label="Standardwerte">
@@ -91,6 +98,7 @@
     <canvas id="juliaCanvas" width="960" height="540"></canvas>
     <div id="zoomBox" class="zoom-box"></div>
     <div class="loading-indicator" id="loadingIndicator">Berechne...</div>
+    <div class="zoom-warning" id="zoomWarning">Extremzoom aktiv – Details koennen instabil sein.</div>
     
     <!-- Seitlicher Zoom-Regler für Smartphones -->
     <div class="mobile-zoom-control" id="juliaMobileZoom">
@@ -261,6 +269,14 @@
 
   .julia-container.focus-mode .canvas-overlay {
     display: none;
+  }
+
+  .julia-container.fullscreen-mode .canvas-overlay {
+    display: flex;
+  }
+
+  .julia-container.fullscreen-mode.focus-mode .canvas-overlay {
+    display: flex;
   }
 
   .julia-container.fullscreen-mode {
@@ -490,6 +506,19 @@
     pointer-events: none;
     display: none;
   }
+
+  .zoom-warning {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffd1d1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+    z-index: 6;
+  }
   
   .explanation-container {
     margin-top: 20px;
@@ -695,8 +724,562 @@ optgroup {
   }
 </style>
 
+<script src="{{ site.baseurl }}/assets/js/fractal-renderer.js"></script>
+<script>
+window.__fractalNewJulia = true;
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.julia-container');
+  const canvas = document.getElementById('juliaCanvas');
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  const zoomBox = document.getElementById('zoomBox');
+
+  const realPartSlider = document.getElementById('realPart');
+  const imagPartSlider = document.getElementById('imagPart');
+  const maxIterSlider = document.getElementById('maxIterations');
+  const colorSchemeSelect = document.getElementById('colorScheme');
+  const colorIntensityButton = document.getElementById('colorIntensity');
+  const applyButton = document.getElementById('applySettings');
+  const defaultValuesButton = document.getElementById('defaultValues');
+  const resetZoomButton = document.getElementById('resetZoom');
+  const saveImageButton = document.getElementById('saveImage');
+  const advancedToggleButton = document.getElementById('juliaAdvancedToggle');
+  const focusModeButton = document.getElementById('juliaFocusMode');
+  const fullscreenButton = document.getElementById('juliaFullscreen');
+  const zoomInButton = container.querySelector('#juliaZoomIn');
+  const zoomOutButton = container.querySelector('#juliaZoomOut');
+  const juliaZoomLevel = container.querySelector('#juliaZoomLevel');
+  const juliaMobileZoom = container.querySelector('#juliaMobileZoom');
+  const allowExtremeZoomButton = document.getElementById('allowExtremeZoom');
+  const zoomWarning = document.getElementById('zoomWarning');
+
+  const realValueSpan = document.getElementById('realValue');
+  const imagValueSpan = document.getElementById('imagValue');
+  const iterValueSpan = document.getElementById('iterValue');
+  const positionInfoSpan = document.getElementById('positionInfo');
+  const zoomInfoSpan = document.getElementById('zoomInfo');
+  const mousePositionSpan = document.getElementById('mousePosition');
+  const complexValueSpan = document.getElementById('complexValue');
+  const iterationInfoSpan = document.getElementById('iterationInfo');
+
+  const defaultSettings = {
+    realPart: -0.7,
+    imagPart: 0.27015,
+    maxIterations: 250,
+    colorScheme: 'retrowave'
+  };
+
+  const state = {
+    realPart: defaultSettings.realPart,
+    imagPart: defaultSettings.imagPart,
+    maxIterations: defaultSettings.maxIterations,
+    colorScheme: defaultSettings.colorScheme,
+    useIntense: false,
+    allowExtremeZoom: false,
+    viewX: 0,
+    viewY: 0,
+    zoomLevel: 1
+  };
+
+  const MIN_ZOOM = 0.5;
+  const MAX_ZOOM_DEFAULT = 5000;
+  const MAX_ZOOM_EXTREME = 500000;
+  const ZOOM_WARNING_THRESHOLD = 100000;
+
+  const renderer = new FractalRenderer({
+    canvas,
+    loadingIndicator,
+    workerUrl: '{{ site.baseurl }}/assets/js/julia-worker.js',
+    type: 'julia',
+    allowIterationData: true,
+    maxWorkers: FractalUtils.isMobileDevice() ? 2 : (navigator.hardwareConcurrency || 4),
+    maxCanvasPixels: 1920 * 1080,
+    previewScale: 0.55
+  });
+
+  function getMaxZoom() {
+    return state.allowExtremeZoom ? MAX_ZOOM_EXTREME : MAX_ZOOM_DEFAULT;
+  }
+
+  function updateZoomWarning() {
+    if (!zoomWarning) return;
+    zoomWarning.style.display = state.zoomLevel >= ZOOM_WARNING_THRESHOLD ? 'block' : 'none';
+  }
+
+  renderer.onViewUpdate = (view) => {
+    zoomInfoSpan.textContent = FractalUtils.formatZoomLevel(view.zoomLevel);
+    if (juliaZoomLevel) juliaZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
+    updateZoomWarning();
+  };
+
+  function setButtonLabel(button, label) {
+    if (!button) return;
+    const text = button.querySelector('.btn-text');
+    if (text) text.textContent = label;
+  }
+
+  function syncRendererState() {
+    const palettes = state.useIntense ? FractalPalettes.intense : FractalPalettes.standard;
+    if (!palettes[state.colorScheme]) {
+      state.colorScheme = 'blau-rot';
+      colorSchemeSelect.value = state.colorScheme;
+    }
+    renderer.setState({
+      viewX: state.viewX,
+      viewY: state.viewY,
+      zoomLevel: state.zoomLevel,
+      maxIterations: state.maxIterations,
+      colorScheme: state.colorScheme,
+      colorPalettes: palettes,
+      realPart: state.realPart,
+      imagPart: state.imagPart
+    });
+  }
+
+  function requestRender(options) {
+    const settings = options || {};
+    syncRendererState();
+    if (settings.preview) {
+      renderer.drawPreview();
+    }
+    if (settings.immediate) {
+      renderer.render({ preview: false, reason: settings.reason || 'immediate' });
+    } else {
+      renderer.scheduleRender({ debounce: settings.debounce || 200, reason: settings.reason || 'scheduled' });
+    }
+  }
+
+  function resizeAndRender() {
+    const container = canvas.parentElement;
+    renderer.resizeToContainer(container);
+    requestRender({ immediate: true, reason: 'resize' });
+  }
+
+  function screenToComplex(canvasX, canvasY) {
+    const xRange = 3 / state.zoomLevel;
+    const yRange = 3 / state.zoomLevel;
+    return {
+      cx: state.viewX - xRange / 2 + (canvasX / canvas.width) * xRange,
+      cy: state.viewY - yRange / 2 + (canvasY / canvas.height) * yRange
+    };
+  }
+
+  function getCanvasCoords(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (event.clientX - rect.left) * scaleX,
+      y: (event.clientY - rect.top) * scaleY
+    };
+  }
+
+  function updateInfoFromEvent(event) {
+    const pos = getCanvasCoords(event);
+    const complex = screenToComplex(pos.x, pos.y);
+    if (mousePositionSpan) mousePositionSpan.textContent = `${Math.round(pos.x)} / ${Math.round(pos.y)}`;
+    if (complexValueSpan) complexValueSpan.textContent = `${complex.cx.toFixed(4)} + ${complex.cy.toFixed(4)}i`;
+    if (positionInfoSpan) positionInfoSpan.textContent = `${complex.cx.toFixed(4)} + ${complex.cy.toFixed(4)}i`;
+    if (iterationInfoSpan) {
+      const iteration = renderer.getIterationAt(pos.x, pos.y);
+      iterationInfoSpan.textContent = iteration === null ? '–' : iteration;
+    }
+  }
+
+  function animateZoomTo(targetZoom, centerX, centerY) {
+    const xRangeNew = 3 / targetZoom;
+    const yRangeNew = 3 / targetZoom;
+    const complexAtCursor = screenToComplex(centerX, centerY);
+    const targetViewX = complexAtCursor.cx - (centerX / canvas.width) * xRangeNew + xRangeNew / 2;
+    const targetViewY = complexAtCursor.cy - (centerY / canvas.height) * yRangeNew + yRangeNew / 2;
+    renderer.animateTo({ viewX: targetViewX, viewY: targetViewY, zoomLevel: targetZoom }, 140);
+    state.viewX = targetViewX;
+    state.viewY = targetViewY;
+    state.zoomLevel = targetZoom;
+  }
+
+  function adjustFontSize() {
+    const infoPanel = document.querySelector('.info-panel');
+    if (!infoPanel) return;
+    const textElements = document.querySelectorAll('.info-row');
+    const containerWidth = infoPanel.offsetWidth - 20;
+    textElements.forEach(element => {
+      let fontSize = 16;
+      element.style.fontSize = fontSize + 'px';
+      while (element.scrollWidth > containerWidth && fontSize > 8) {
+        fontSize -= 0.5;
+        element.style.fontSize = fontSize + 'px';
+      }
+    });
+  }
+
+  realPartSlider.addEventListener('input', function() {
+    realValueSpan.textContent = this.value;
+    state.realPart = parseFloat(this.value);
+  });
+
+  imagPartSlider.addEventListener('input', function() {
+    imagValueSpan.textContent = this.value;
+    state.imagPart = parseFloat(this.value);
+  });
+
+  maxIterSlider.addEventListener('input', function() {
+    iterValueSpan.textContent = this.value;
+    state.maxIterations = parseInt(this.value, 10);
+    requestRender({ preview: true, debounce: 220, reason: 'iterations' });
+  });
+
+  applyButton.addEventListener('click', function() {
+    state.colorScheme = colorSchemeSelect.value;
+    requestRender({ immediate: true, reason: 'apply' });
+  });
+
+  defaultValuesButton.addEventListener('click', function() {
+    realPartSlider.value = defaultSettings.realPart;
+    imagPartSlider.value = defaultSettings.imagPart;
+    maxIterSlider.value = defaultSettings.maxIterations;
+    colorSchemeSelect.value = defaultSettings.colorScheme;
+    realValueSpan.textContent = defaultSettings.realPart;
+    imagValueSpan.textContent = defaultSettings.imagPart;
+    iterValueSpan.textContent = defaultSettings.maxIterations;
+    state.realPart = defaultSettings.realPart;
+    state.imagPart = defaultSettings.imagPart;
+    state.maxIterations = defaultSettings.maxIterations;
+    state.colorScheme = defaultSettings.colorScheme;
+    requestRender({ immediate: true, reason: 'defaults' });
+  });
+
+  resetZoomButton.addEventListener('click', function() {
+    state.viewX = 0;
+    state.viewY = 0;
+    state.zoomLevel = 1;
+    renderer.animateTo({ viewX: 0, viewY: 0, zoomLevel: 1 }, 180);
+    requestRender({ immediate: true, reason: 'reset' });
+  });
+
+  saveImageButton.addEventListener('click', function() {
+    const link = document.createElement('a');
+    link.download = 'julia-menge.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  if (colorIntensityButton) {
+    colorIntensityButton.addEventListener('click', function() {
+      state.useIntense = !state.useIntense;
+      this.classList.toggle('active', state.useIntense);
+      setButtonLabel(colorIntensityButton, state.useIntense ? 'Intensiv' : 'Subtil');
+      requestRender({ preview: true, debounce: 200, reason: 'palette' });
+    });
+  }
+
+  if (allowExtremeZoomButton) {
+    allowExtremeZoomButton.addEventListener('click', function() {
+      state.allowExtremeZoom = !state.allowExtremeZoom;
+      this.classList.toggle('active', state.allowExtremeZoom);
+      setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
+      if (!state.allowExtremeZoom && state.zoomLevel > MAX_ZOOM_DEFAULT) {
+        state.zoomLevel = MAX_ZOOM_DEFAULT;
+        renderer.animateTo({ viewX: state.viewX, viewY: state.viewY, zoomLevel: state.zoomLevel }, 160);
+        requestRender({ immediate: true, reason: 'limit-clamp' });
+      }
+      updateZoomWarning();
+    });
+  }
+
+  if (advancedToggleButton) {
+    advancedToggleButton.addEventListener('click', function() {
+      container.classList.toggle('advanced-open');
+      this.classList.toggle('active', container.classList.contains('advanced-open'));
+    });
+  }
+
+  if (focusModeButton) {
+    focusModeButton.addEventListener('click', function() {
+      container.classList.toggle('focus-mode');
+      this.classList.toggle('active', container.classList.contains('focus-mode'));
+    });
+  }
+
+  if (fullscreenButton) {
+    fullscreenButton.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        container.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    });
+    document.addEventListener('fullscreenchange', function() {
+      const isFullscreen = !!document.fullscreenElement;
+      container.classList.toggle('fullscreen-mode', isFullscreen);
+      setButtonLabel(fullscreenButton, isFullscreen ? 'Vollbild aus' : 'Vollbild');
+      setTimeout(resizeAndRender, 80);
+    });
+  }
+
+  if (zoomInButton) {
+    zoomInButton.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.zoomLevel * 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(targetZoom, canvas.width / 2, canvas.height / 2);
+      requestRender({ debounce: 200, reason: 'zoom-in' });
+    });
+  }
+
+  if (zoomOutButton) {
+    zoomOutButton.addEventListener('click', function() {
+      const targetZoom = FractalUtils.clamp(state.zoomLevel / 1.2, MIN_ZOOM, getMaxZoom());
+      animateZoomTo(targetZoom, canvas.width / 2, canvas.height / 2);
+      requestRender({ debounce: 200, reason: 'zoom-out' });
+    });
+  }
+
+  let isPanning = false;
+  let lastPan = null;
+  let isDrawingZoomBox = false;
+  let zoomBoxStart = null;
+  let zoomBoxStartCss = null;
+  let activePointerId = null;
+  let isSpacePanning = false;
+
+  function getCssCoords(event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  function beginZoomBox(cssPos, canvasPos) {
+    isDrawingZoomBox = true;
+    zoomBoxStart = canvasPos;
+    zoomBoxStartCss = cssPos;
+    zoomBox.style.display = 'block';
+    zoomBox.style.left = cssPos.x + 'px';
+    zoomBox.style.top = cssPos.y + 'px';
+    zoomBox.style.width = '0px';
+    zoomBox.style.height = '0px';
+  }
+
+  function updateZoomBox(cssPos) {
+    if (!zoomBoxStartCss) return;
+    const left = Math.min(cssPos.x, zoomBoxStartCss.x);
+    const top = Math.min(cssPos.y, zoomBoxStartCss.y);
+    const width = Math.abs(cssPos.x - zoomBoxStartCss.x);
+    const height = Math.abs(cssPos.y - zoomBoxStartCss.y);
+    zoomBox.style.left = left + 'px';
+    zoomBox.style.top = top + 'px';
+    zoomBox.style.width = width + 'px';
+    zoomBox.style.height = height + 'px';
+    return { width, height };
+  }
+
+  function endZoomBox(canvasPos, cssPos) {
+    if (!zoomBoxStart || !zoomBoxStartCss) return;
+    const size = updateZoomBox(cssPos);
+    zoomBox.style.display = 'none';
+    isDrawingZoomBox = false;
+    if (size && size.width > 10 && size.height > 10) {
+      const centerX = (canvasPos.x + zoomBoxStart.x) / 2;
+      const centerY = (canvasPos.y + zoomBoxStart.y) / 2;
+      const zoomX = canvas.width / Math.abs(canvasPos.x - zoomBoxStart.x);
+      const zoomY = canvas.height / Math.abs(canvasPos.y - zoomBoxStart.y);
+      const targetZoom = FractalUtils.clamp(state.zoomLevel * Math.min(zoomX, zoomY), MIN_ZOOM, getMaxZoom());
+      animateZoomTo(targetZoom, centerX, centerY);
+      requestRender({ debounce: 180, reason: 'zoom-box' });
+    }
+    zoomBoxStart = null;
+    zoomBoxStartCss = null;
+  }
+
+  canvas.addEventListener('pointerdown', function(event) {
+    if (activePointerId !== null) return;
+    activePointerId = event.pointerId;
+    canvas.setPointerCapture(event.pointerId);
+    const canvasPos = getCanvasCoords(event);
+    const cssPos = getCssCoords(event);
+    if (event.button === 2 || isSpacePanning) {
+      isPanning = true;
+      lastPan = canvasPos;
+      return;
+    }
+    if (event.button !== 0) return;
+    beginZoomBox(cssPos, canvasPos);
+  });
+
+  canvas.addEventListener('pointermove', function(event) {
+    if (activePointerId !== event.pointerId) return;
+    updateInfoFromEvent(event);
+    if (isDrawingZoomBox && zoomBoxStart) {
+      updateZoomBox(getCssCoords(event));
+      return;
+    }
+    if (isPanning && lastPan) {
+      const canvasPos = getCanvasCoords(event);
+      const dx = canvasPos.x - lastPan.x;
+      const dy = canvasPos.y - lastPan.y;
+      const xRange = 3 / state.zoomLevel;
+      const yRange = 3 / state.zoomLevel;
+      state.viewX -= (dx / canvas.width) * xRange;
+      state.viewY -= (dy / canvas.height) * yRange;
+      lastPan = canvasPos;
+      renderer.setState({ viewX: state.viewX, viewY: state.viewY, zoomLevel: state.zoomLevel });
+      renderer.drawPreview();
+      renderer.scheduleRender({ debounce: 180, reason: 'pan' });
+    }
+  });
+
+  canvas.addEventListener('pointerup', function(event) {
+    if (activePointerId !== event.pointerId) return;
+    const canvasPos = getCanvasCoords(event);
+    if (isDrawingZoomBox && zoomBoxStart) {
+      endZoomBox(canvasPos, getCssCoords(event));
+    }
+    isPanning = false;
+    activePointerId = null;
+  });
+
+  canvas.addEventListener('pointercancel', function(event) {
+    if (activePointerId !== event.pointerId) return;
+    isPanning = false;
+    isDrawingZoomBox = false;
+    zoomBox.style.display = 'none';
+    zoomBoxStart = null;
+    zoomBoxStartCss = null;
+    activePointerId = null;
+  });
+
+  canvas.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+  });
+
+  window.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+      isSpacePanning = true;
+    }
+  });
+
+  window.addEventListener('keyup', function(event) {
+    if (event.code === 'Space') {
+      isSpacePanning = false;
+    }
+  });
+
+  canvas.addEventListener('wheel', function(event) {
+    event.preventDefault();
+    const pos = getCanvasCoords(event);
+    const zoomFactor = Math.exp(-event.deltaY * 0.0016);
+    const targetZoom = FractalUtils.clamp(state.zoomLevel * zoomFactor, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(targetZoom, pos.x, pos.y);
+    requestRender({ debounce: 220, reason: 'wheel' });
+  }, { passive: false });
+
+  canvas.addEventListener('dblclick', function(event) {
+    event.preventDefault();
+    const pos = getCanvasCoords(event);
+    const targetZoom = FractalUtils.clamp(state.zoomLevel / 2, MIN_ZOOM, getMaxZoom());
+    animateZoomTo(targetZoom, pos.x, pos.y);
+    requestRender({ debounce: 180, reason: 'dblclick-out' });
+  });
+
+  let lastTouchDistance = 0;
+  let lastTouchCenter = null;
+  let lastTouchTime = 0;
+
+  canvas.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 2) {
+      const [t1, t2] = event.touches;
+      lastTouchDistance = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      lastTouchCenter = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2
+      };
+    } else if (event.touches.length === 1) {
+      const rect = canvas.getBoundingClientRect();
+      lastPan = {
+        x: (event.touches[0].clientX - rect.left) * (canvas.width / rect.width),
+        y: (event.touches[0].clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+    const now = performance.now();
+    if (now - lastTouchTime < 30) return;
+    lastTouchTime = now;
+    const rect = canvas.getBoundingClientRect();
+    if (event.touches.length === 2 && lastTouchCenter) {
+      const [t1, t2] = event.touches;
+      const distance = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      const center = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2
+      };
+      const zoomFactor = distance / (lastTouchDistance || distance);
+      const targetZoom = FractalUtils.clamp(state.zoomLevel * zoomFactor, MIN_ZOOM, getMaxZoom());
+      const canvasX = (center.x - rect.left) * (canvas.width / rect.width);
+      const canvasY = (center.y - rect.top) * (canvas.height / rect.height);
+      animateZoomTo(targetZoom, canvasX, canvasY);
+      lastTouchDistance = distance;
+      lastTouchCenter = center;
+      requestRender({ debounce: 220, reason: 'pinch' });
+    } else if (event.touches.length === 1 && lastPan) {
+      const x = (event.touches[0].clientX - rect.left) * (canvas.width / rect.width);
+      const y = (event.touches[0].clientY - rect.top) * (canvas.height / rect.height);
+      const dx = x - lastPan.x;
+      const dy = y - lastPan.y;
+      const xRange = 3 / state.zoomLevel;
+      const yRange = 3 / state.zoomLevel;
+      state.viewX -= (dx / canvas.width) * xRange;
+      state.viewY -= (dy / canvas.height) * yRange;
+      lastPan = { x, y };
+      renderer.setState({ viewX: state.viewX, viewY: state.viewY, zoomLevel: state.zoomLevel });
+      renderer.drawPreview();
+      renderer.scheduleRender({ debounce: 200, reason: 'pan-touch' });
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', function() {
+    lastPan = null;
+    lastTouchCenter = null;
+    lastTouchDistance = 0;
+  });
+
+  function updateMobileControls() {
+    if (!juliaMobileZoom) return;
+    const isMobile = FractalUtils.isMobileDevice() || window.innerWidth <= 768;
+    juliaMobileZoom.style.display = isMobile ? 'flex' : 'none';
+  }
+
+  window.addEventListener('resize', function() {
+    adjustFontSize();
+    updateMobileControls();
+    resizeAndRender();
+  });
+
+  if (typeof ResizeObserver !== 'undefined') {
+    const resizeObserver = new ResizeObserver(() => resizeAndRender());
+    resizeObserver.observe(canvas.parentElement);
+  }
+
+  realValueSpan.textContent = state.realPart;
+  imagValueSpan.textContent = state.imagPart;
+  iterValueSpan.textContent = state.maxIterations;
+  colorSchemeSelect.value = state.colorScheme;
+  if (allowExtremeZoomButton) {
+    setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
+  }
+  updateZoomWarning();
+  adjustFontSize();
+  updateMobileControls();
+  resizeAndRender();
+});
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  if (window.__fractalNewJulia) {
+    return;
+  }
   // Hilfsfunktion zur Formatierung der Zoom-Stufe
   function formatZoomLevel(level) {
     if (level >= 10) {
