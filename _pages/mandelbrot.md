@@ -48,6 +48,18 @@ header:
   .page__content {
     padding: 0;
   }
+
+  .julia-container,
+  .explorer-container {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    border-radius: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
 }
 </style>
 

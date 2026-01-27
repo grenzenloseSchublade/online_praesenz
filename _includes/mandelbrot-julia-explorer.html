@@ -2,35 +2,66 @@
 <div class="explorer-container" id="explorer-container">
   <a id="explorer-container-anchor" class="anchor-target"></a>
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
+  <div class="explorer-toolbar">
+    <button id="explorerAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
+      <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
+      <span class="btn-text">Erweitert</span>
+    </button>
+    <button id="explorerFocusMode" class="toggle-button" title="Fokusmodus" aria-label="Fokusmodus">
+      <span class="icon"><i class="fas fa-crosshairs" aria-hidden="true"></i></span>
+      <span class="btn-text">Fokus</span>
+    </button>
+    <button id="explorerFullscreen" class="toggle-button" title="Vollbild" aria-label="Vollbild">
+      <span class="icon"><i class="fas fa-expand" aria-hidden="true"></i></span>
+      <span class="btn-text">Vollbild</span>
+    </button>
+  </div>
   <div class="explorer-controls">
-    <div class="control-group">
-      <label for="explorerMaxIter">Max. Iterationen:</label>
-      <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
-      <span id="explorerIterValue" class="info-value">80</span>
-    </div>
-    <div class="color-controls-group">
-      <div class="color-control-item">
-        <label for="explorerColorScheme">Farbschema:</label>
-        <select id="explorerColorScheme">
-          <option value="blau-rot">Blau-Rot</option>
-          <option value="cyberpunk">Cyberpunk</option>
-          <option value="retrowave" selected>Retrowave</option>
-          <option value="feuer">Feuer</option>
-          <option value="ozean">Ozean</option>
-          <option value="monochrom">Monochrom</option>
-          <option value="regenbogen">Regenbogen</option>
-          <option value="ultraviolett">Ultraviolett</option>
-          <option value="goldgrün">Gold-Grün</option>
-        </select>
+    <div class="controls-basic">
+      <div class="control-group">
+      <label for="explorerMaxIter">Iterationen:</label>
+        <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
+      <span id="explorerIterValue" class="info-value value-chip">80</span>
       </div>
-      <div class="color-control-item">
-        <label for="explorerColorIntensity">Farbintensität:</label>
-        <button id="explorerColorIntensity" class="toggle-button">Subtil</button>
+      <div class="color-controls-group">
+        <div class="color-control-item">
+        <label for="explorerColorScheme">Farben:</label>
+          <select id="explorerColorScheme">
+            <option value="blau-rot">Blau-Rot</option>
+            <option value="cyberpunk">Cyberpunk</option>
+            <option value="retrowave" selected>Retrowave</option>
+            <option value="feuer">Feuer</option>
+            <option value="ozean">Ozean</option>
+            <option value="monochrom">Monochrom</option>
+            <option value="regenbogen">Regenbogen</option>
+            <option value="ultraviolett">Ultraviolett</option>
+            <option value="goldgrün">Gold-Grün</option>
+          </select>
+        </div>
+      </div>
+      <div class="control-group button-group">
+        <button id="resetExplorer" title="Zurücksetzen" aria-label="Zurücksetzen">
+          <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+          <span class="btn-text">Reset</span>
+        </button>
       </div>
     </div>
-    <div class="control-group button-group">
-      <button id="resetExplorer">Zurücksetzen</button>
-      <button id="saveExplorerImage">Bild speichern</button>
+    <div class="controls-advanced">
+      <div class="color-controls-group">
+        <div class="color-control-item">
+          <label for="explorerColorIntensity">Intensität:</label>
+          <button id="explorerColorIntensity" class="toggle-button" title="Farbintensität" aria-label="Farbintensität">
+            <span class="icon"><i class="fas fa-adjust" aria-hidden="true"></i></span>
+            <span class="btn-text">Subtil</span>
+          </button>
+        </div>
+      </div>
+      <div class="control-group button-group">
+        <button id="saveExplorerImage" title="Bild speichern" aria-label="Bild speichern">
+          <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
+          <span class="btn-text">Export</span>
+        </button>
+      </div>
     </div>
   </div>
   
@@ -38,7 +69,7 @@
     <div class="explorer-column">
       <h3 class="explorer-title">Mandelbrot-Menge</h3>
       <div class="canvas-container">
-        <canvas id="mandelbrotCanvas" width="640" height="360"></canvas>
+        <canvas id="mandelbrotCanvas" width="800" height="450"></canvas>
         <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
@@ -57,7 +88,7 @@
     <div class="explorer-column">
       <h3 class="explorer-title">Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h3>
       <div class="canvas-container">
-        <canvas id="explorerJuliaCanvas" width="640" height="360"></canvas>
+        <canvas id="explorerJuliaCanvas" width="800" height="450"></canvas>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
         
         <!-- Seitlicher Zoom-Regler für Smartphones -->
@@ -121,12 +152,118 @@
     background: #2a2a2a;
     border-radius: 6px;
   }
+
+  .explorer-toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    justify-content: flex-start;
+  }
+
+  .explorer-toolbar .icon {
+    margin-right: 6px;
+  }
+
+  .btn-text {
+    white-space: nowrap;
+  }
+
+  .controls-basic,
+  .controls-advanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .controls-advanced {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #3a3a3a;
+  }
+
+  .explorer-container.advanced-open .controls-advanced {
+    display: block;
+  }
+
+  .explorer-container.advanced-open .info-panel {
+    display: block;
+  }
+
+  .explorer-container.focus-mode {
+    padding: 10px;
+  }
+
+  .explorer-container.focus-mode .explorer-controls,
+  .explorer-container.focus-mode .info-panel {
+    display: none;
+  }
+
+  .explorer-container.focus-mode .explorer-row {
+    gap: 10px;
+  }
+
+  .explorer-container.fullscreen-mode {
+    position: relative;
+  }
+
+  .explorer-container.fullscreen-mode,
+  .explorer-container.fullscreen-mode .canvas-container {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .explorer-container.fullscreen-mode .canvas-container {
+    height: calc(100vh - 24px);
+  }
+
+  .explorer-container.fullscreen-mode #mandelbrotCanvas,
+  .explorer-container.fullscreen-mode #explorerJuliaCanvas {
+    max-height: 100vh;
+    min-height: auto;
+  }
+
+  .explorer-container.fullscreen-mode .explorer-toolbar,
+  .explorer-container.fullscreen-mode .explorer-controls {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    z-index: 200;
+    background: rgba(34, 34, 34, 0.9);
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .explorer-container.fullscreen-mode .explorer-toolbar {
+    top: 12px;
+  }
+
+  .explorer-container.fullscreen-mode .explorer-controls {
+    top: 64px;
+    max-height: 55vh;
+    overflow: auto;
+  }
+
+
+  @media (max-width: 768px) {
+    .explorer-toolbar {
+      justify-content: space-between;
+    }
+  }
   
   .control-group {
     display: flex;
     align-items: center;
     gap: 10px;
     flex: 1 1 300px;
+  }
+
+  .control-group label {
+    min-width: 110px;
+    font-size: 14px;
+    color: #ddd;
   }
   
   .button-group {
@@ -200,6 +337,10 @@
       min-width: 100%;
       flex: 1 1 100%;
     }
+
+    .btn-text {
+      display: none;
+    }
   }
   
   .explorer-row {
@@ -211,7 +352,7 @@
   
   .explorer-column {
     flex: 1 1 300px;
-    min-width: 300px;
+    min-width: 260px;
   }
   
   .explorer-title {
@@ -249,8 +390,16 @@
     height: auto;
     border-radius: 4px;
     cursor: crosshair;
-    max-height: 350px;
+    max-height: 50vh;
     aspect-ratio: 16/9;
+    min-height: 220px;
+  }
+
+  @media (max-width: 768px) {
+    #mandelbrotCanvas, #explorerJuliaCanvas {
+      max-height: 60vh;
+      min-height: 200px;
+    }
   }
   
   .loading-indicator {
@@ -274,6 +423,7 @@
     font-size: 16px;
     line-height: 1.5;
     text-align: left;
+    display: none;
   }
   
   .info-panel p {
@@ -285,67 +435,111 @@
     color: #fff;
     font-size: 16px;
   }
-  
-  button {
-    background: #444;
+
+  .value-chip {
+    min-width: 56px;
+    padding: 4px 8px;
     color: #eacfb4;
-    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  .explorer-container button {
+    background: rgba(255, 255, 255, 0.04);
+    color: #eacfb4;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 999px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
+    transition: background 0.2s, transform 0.1s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  
-  button:hover {
-    background: #555;
+
+  .explorer-container button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
   }
-  
-  button:active {
+
+  .explorer-container button:active {
     transform: scale(0.98);
   }
   
   input[type="range"] {
     flex: 1;
     height: 6px;
-    background: #444;
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
     -webkit-appearance: none;
+    appearance: none;
+    margin: 0 10px;
+    min-width: 160px;
   }
-  
+
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 16px;
     height: 16px;
-    background: #0066cc;
+    background: #4aa3ff;
     border-radius: 50%;
     cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.25);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #4aa3ff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.25);
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
   }
   
-  select {
-    background: #444;
+  select,
+  option,
+  optgroup {
+    background: rgba(255, 255, 255, 0.06);
     color: #eacfb4;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 999px;
     font-family: inherit;
-    font-size: inherit;
+    font-size: 14px;
+    line-height: 1.2;
   }
   
   /* Toggle-Button Styling */
   .toggle-button {
-    background: #444;
+    background: rgba(255, 255, 255, 0.04);
     color: #ddd;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 999px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     min-width: 80px;
     text-align: center;
   }
   
   .toggle-button.active {
-    background: #0066cc;
+    background: rgba(0, 102, 204, 0.35);
     color: white;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
   }
@@ -452,6 +646,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const colorIntensityButton = document.getElementById('explorerColorIntensity');
   const resetButton = document.getElementById('resetExplorer');
   const saveImageButton = document.getElementById('saveExplorerImage');
+  const advancedToggleButton = document.getElementById('explorerAdvancedToggle');
+  const focusModeButton = document.getElementById('explorerFocusMode');
+  const fullscreenButton = document.getElementById('explorerFullscreen');
   
   // Anzeige-Elemente
   const iterValueSpan = document.getElementById('explorerIterValue');
@@ -813,11 +1010,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Button-Zustand aktualisieren
     if (useIntensePalettes) {
-      this.textContent = 'Intensiv';
+      setButtonLabel(this, 'Intensiv');
       this.classList.add('active');
       activePalettes = intensePalettes;
     } else {
-      this.textContent = 'Subtil';
+      setButtonLabel(this, 'Subtil');
       this.classList.remove('active');
       activePalettes = colorPalettes;
     }
@@ -882,6 +1079,75 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialisierung
   iterValueSpan.textContent = maxIterations;
+
+  function setButtonLabel(button, text) {
+    if (!button) return;
+    const label = button.querySelector('.btn-text');
+    if (label) {
+      label.textContent = text;
+    } else {
+      button.textContent = text;
+    }
+  }
+
+  // Erweiterte Steuerungen ein-/ausblenden
+  function setAdvancedOpen(enabled) {
+    const container = document.querySelector('.explorer-container');
+    if (!container || !advancedToggleButton) return;
+    container.classList.toggle('advanced-open', enabled);
+    setButtonLabel(advancedToggleButton, enabled ? 'Erweitert aus' : 'Erweitert');
+  }
+
+  if (advancedToggleButton) {
+    advancedToggleButton.addEventListener('click', function() {
+      const container = document.querySelector('.explorer-container');
+      if (!container) return;
+      setAdvancedOpen(!container.classList.contains('advanced-open'));
+    });
+  }
+
+  // Fokusmodus (kartenkompatibel, platzsparend)
+  function setFocusMode(enabled) {
+    const container = document.querySelector('.explorer-container');
+    if (!container || !focusModeButton) return;
+    container.classList.toggle('focus-mode', enabled);
+    setButtonLabel(focusModeButton, enabled ? 'Fokus aus' : 'Fokus');
+  }
+
+  if (focusModeButton) {
+    focusModeButton.addEventListener('click', function() {
+      const container = document.querySelector('.explorer-container');
+      if (!container) return;
+      setFocusMode(!container.classList.contains('focus-mode'));
+    });
+  }
+
+  if (isMobileDevice() || window.innerWidth <= 768) {
+    setFocusMode(true);
+  }
+
+  // Vollbildmodus
+  if (fullscreenButton) {
+    fullscreenButton.addEventListener('click', function() {
+      const container = document.querySelector('.explorer-container');
+      if (!container) return;
+      if (!document.fullscreenElement) {
+        container.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', function() {
+      const isFullscreen = !!document.fullscreenElement;
+      setButtonLabel(fullscreenButton, isFullscreen ? 'Vollbild aus' : 'Vollbild');
+      const container = document.querySelector('.explorer-container');
+      if (container) {
+        container.classList.toggle('fullscreen-mode', isFullscreen);
+      }
+      adjustCanvasResolution();
+    });
+  }
   
   // Erste Berechnung
   calculateMandelbrot();
@@ -1141,24 +1407,34 @@ document.addEventListener('DOMContentLoaded', function() {
   function adjustCanvasResolution() {
     // Prüfe, ob es sich um ein Mobilgerät handelt
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      // Reduziere die Auflösung für bessere Performance
-      const scaleFactor = 0.75; // 75% der ursprünglichen Auflösung
-      
-      // Mandelbrot-Canvas anpassen
-      const originalMandelbrotWidth = mandelbrotCanvas.width;
-      const originalMandelbrotHeight = mandelbrotCanvas.height;
-      mandelbrotCanvas.width = Math.floor(originalMandelbrotWidth * scaleFactor);
-      mandelbrotCanvas.height = Math.floor(originalMandelbrotHeight * scaleFactor);
-      
-      // Julia-Canvas anpassen
-      const originalJuliaWidth = juliaCanvas.width;
-      const originalJuliaHeight = juliaCanvas.height;
-      juliaCanvas.width = Math.floor(originalJuliaWidth * scaleFactor);
-      juliaCanvas.height = Math.floor(originalJuliaHeight * scaleFactor);
-      
-      // Neuberechnung mit reduzierter Auflösung
+
+    const mandelbrotContainer = mandelbrotCanvas.parentElement;
+    const juliaContainer = juliaCanvas.parentElement;
+    if (!mandelbrotContainer || !juliaContainer) return;
+
+    const containerWidth = Math.floor(Math.min(
+      mandelbrotContainer.clientWidth || 0,
+      juliaContainer.clientWidth || 0
+    ));
+    if (!containerWidth) return;
+
+    const maxWidth = isMobile ? 720 : 800;
+    const minWidth = isMobile ? 320 : 480;
+    const targetWidth = Math.max(minWidth, Math.min(maxWidth, containerWidth));
+    const targetHeight = Math.floor(targetWidth * 9 / 16);
+
+    const needsResize =
+      mandelbrotCanvas.width !== targetWidth ||
+      mandelbrotCanvas.height !== targetHeight ||
+      juliaCanvas.width !== targetWidth ||
+      juliaCanvas.height !== targetHeight;
+
+    if (needsResize) {
+      mandelbrotCanvas.width = targetWidth;
+      mandelbrotCanvas.height = targetHeight;
+      juliaCanvas.width = targetWidth;
+      juliaCanvas.height = targetHeight;
+
       calculateMandelbrot();
       calculateJulia();
     }
