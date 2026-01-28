@@ -12,7 +12,7 @@ enable_image_caching: true
 enable_service_worker: true
 
 # Theme Einstellungen
-remote_theme: "mmistakes/minimal-mistakes@4.26.2"
+remote_theme: "mmistakes/minimal-mistakes@4.27.3"
 minimal_mistakes_skin: "dark" # "default", air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
@@ -40,7 +40,7 @@ kramdown:
 
 # JavaScript-Dateien, die nach dem Footer geladen werden
 after_footer_scripts:
-  - https://code.jquery.com/jquery-3.6.0.min.js
+  - https://code.jquery.com/jquery-3.7.1.min.js
   - /assets/js/plugins/jquery.greedy-navigation.js
 
 # Collections
@@ -152,7 +152,6 @@ exclude:
   - vendor/ruby/
   - "*.sublime-project"
   - "*.sublime-workspace"
-  - assets/js/plugins
   - assets/js/_main.js
   - assets/js/vendor
   - Capfile
