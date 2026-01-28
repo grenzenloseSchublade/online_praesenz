@@ -483,6 +483,7 @@
     aspect-ratio: 16/9;
     max-height: 60vh;
     min-height: 240px;
+    touch-action: none;
   }
 
   @media (max-width: 768px) {
@@ -1102,6 +1103,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   canvas.addEventListener('pointerdown', function(event) {
+    if (event.pointerType === 'touch') return;
     if (activePointerId !== null) return;
     activePointerId = event.pointerId;
     canvas.setPointerCapture(event.pointerId);
@@ -1117,6 +1119,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   canvas.addEventListener('pointermove', function(event) {
+    if (event.pointerType === 'touch') return;
     if (activePointerId !== event.pointerId) return;
     updateInfoFromEvent(event);
     if (isDrawingZoomBox && zoomBoxStart) {
@@ -1139,6 +1142,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   canvas.addEventListener('pointerup', function(event) {
+    if (event.pointerType === 'touch') return;
     if (activePointerId !== event.pointerId) return;
     const canvasPos = getCanvasCoords(event);
     if (isDrawingZoomBox && zoomBoxStart) {
@@ -1149,6 +1153,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   canvas.addEventListener('pointercancel', function(event) {
+    if (event.pointerType === 'touch') return;
     if (activePointerId !== event.pointerId) return;
     isPanning = false;
     isDrawingZoomBox = false;
