@@ -21,7 +21,7 @@ header:
 <style>
   #blog-entries .post-item {
     border-radius: 8px;
-    padding: 0.25em 0.6em;
+    padding: 0.15em 0.2em; // 0.1em 0.3em
     transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   }
 
@@ -53,10 +53,8 @@ header:
       style="min-width: 220px; flex: 1 1 260px; padding: 0.55em 0.7em; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: #fff;">
     <button id="blog-search-clear" class="btn btn--primary" type="button">Zurücksetzen</button>
   </div>
-  <div style="margin-top: 0.75em;">
-    <a href="{{ '/archiv/' | relative_url }}" class="btn btn--primary">Archiv</a>
-    <a href="{{ '/categories/' | relative_url }}" class="btn btn--info">Kategorien</a>
-    <a href="{{ '/tags/' | relative_url }}" class="btn btn--info">Tags</a>
+  <div style="margin-top: 0.75em; margin-bottom: 1.5em;">
+    <a href="{{ '/archiv/' | relative_url }}" class="btn btn--primary btn--large" style="box-shadow: 0 6px 16px rgba(0,0,0,0.35); letter-spacing: 0.02em;">Archiv</a>
   </div>
 </div>
 
