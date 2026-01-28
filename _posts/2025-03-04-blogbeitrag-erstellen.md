@@ -28,8 +28,15 @@ excerpt: "Eine systematische Darstellung der technischen Grundlagen und methodis
 
 Im Folgenden wird die technische Infrastruktur und methodischen Ansätze, die der Erstellung strukturierter Blogbeiträge auf dieser Website zugrunde liegen, analysiert und beschrieben. Zusätzlich wird die Erstellung von Blogbeiträgen selbst erklärt. Es wird ein Leitfaden für die Erstellung von Blogbeiträgen auf dieser Website bereitgestellt und erleichtert so den Einstieg.
 
-Wenn Sie sich bereits auskennen, können Sie direkt mit dem Template fortfahren.
-<a href="{{ "assets/downloads/post-template.md" | relative_url }}" class="btn btn--primary btn--small" download="post-template.md"><i class="fas fa-download"></i>Template</a>
+Wenn Sie sich bereits auskennen, können Sie direkt mit dem <a href="{{ "assets/downloads/post-template.md" | relative_url }}" class="inline-download" download="post-template.md" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35em; padding: 0.15em 0.5em; border-radius: 999px; border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.2); color: #eaeaea; transition: color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;"><span style="text-decoration: underline;">Template.md</span></a> fortfahren.
+
+<style>
+  .inline-download:hover {
+    color: #f0f;
+    box-shadow: 0 0 0 1px #f0f, 0 6px 14px rgba(240, 0, 255, 0.3);
+    background-color: rgba(240, 0, 255, 0.08);
+  }
+</style>
 
 ## Technische Systemarchitektur
 
