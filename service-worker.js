@@ -1,3 +1,5 @@
+---
+---
 /**
  * Service Worker für Offline-Caching
  * 
@@ -6,8 +8,9 @@
  * Offline-Funktionalität zu ermöglichen.
  */
 
-// Cache-Name mit Versionsnummer
-const CACHE_NAME = 'kraftstoff-cache-v1';
+// Cache-Name mit Build-Version
+const CACHE_VERSION = '{{ site.time | date: "%Y%m%d%H%M" }}';
+const CACHE_NAME = `kraftstoff-cache-${CACHE_VERSION}`;
 
 // Ressourcen, die beim Installieren des Service Workers gecached werden sollen
 // Alle Pfade sind relativ zum Scope des Service Workers (Root der Website)

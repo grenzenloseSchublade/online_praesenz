@@ -1,0 +1,38 @@
+---
+title: "Archiv"
+excerpt: "Alle Blogbeiträge chronologisch nach Jahren."
+permalink: /archiv/
+layout: single
+author_profile: false
+header:
+  overlay_image: /assets/images/background.jpg
+  overlay_filter: 0.5
+  caption: "Archiv"
+---
+
+Im Archiv finden Sie alle Beiträge nach Jahren gruppiert. Für die neuesten Beiträge mit Pagination wechseln Sie zur Blog‑Übersicht.
+
+<div class="category-filter-container">
+  <span class="filter-label">Jahresübersicht:</span>
+  <div class="category-buttons" style="margin-top: 1em;">
+    {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+    {% for year in postsByYear %}
+      <a href="#year-{{ year.name }}" class="btn btn--primary">{{ year.name }}</a>
+    {% endfor %}
+  </div>
+  <div style="margin-top: 0.75em;">
+    <a href="{{ '/posts/' | relative_url }}" class="btn btn--info">Zur Blog‑Übersicht</a>
+  </div>
+</div>
+
+{% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+{% for year in postsByYear %}
+  <section id="year-{{ year.name }}" class="taxonomy__section">
+    <h2 class="archive__subtitle">{{ year.name }}</h2>
+    <div class="entries-{{ site.entries_layout | default: 'list' }}">
+      {% for post in year.items %}
+        {% include archive-single.html %}
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}

@@ -40,8 +40,7 @@ kramdown:
 
 # JavaScript-Dateien, die nach dem Footer geladen werden
 after_footer_scripts:
-  - https://code.jquery.com/jquery-3.7.1.min.js
-  - /assets/js/plugins/jquery.greedy-navigation.js
+  - /assets/js/greedy-navigation.js
 
 # Collections
 include:
@@ -97,13 +96,16 @@ incremental: false
 
 # Outputting
 permalink: /posts/:title/
-paginate: 5
-paginate_path: /page:num/
+pagination:
+  enabled: true
+  per_page: 6
+  permalink: /posts/page:num/
+  title: ":title"
 timezone: Europe/Berlin
 
 # Plugins
 plugins:
-  - jekyll-paginate
+  - jekyll-paginate-v2
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed

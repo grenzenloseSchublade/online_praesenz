@@ -4,6 +4,12 @@ excerpt: "Eine Sammlung von Beiträgen - eine vielfältige Mischung aus persönl
 permalink: /posts/
 layout: single
 author_profile: false
+pagination:
+  enabled: true
+  collection: posts
+  per_page: 6
+  sort_field: "date"
+  sort_reverse: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
@@ -23,39 +29,26 @@ Auf dieser Seite finden Sie eine Sammlung von Blogbeiträgen - eine bunte Mischu
   </div>
 </div>
 
+{% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+
 <div class="category-filter-container">
-  <span class="filter-label">Die Artikel sind chronologisch sortiert und können nach Kategorien gefiltert werden:</span>
+  <span class="filter-label">Schnellzugriff nach Jahr:</span>
   <div class="category-buttons" style="margin-top: 1em;">
-    <a href="#" class="btn btn--primary filter-category active" data-category="all">Alle</a>
-    {% for category in site.categories %}
-      <a href="#" class="btn btn--primary filter-category" data-category="{{ category[0] | slugify }}">{{ category[0] }}</a>
-    {% endfor %}
-  </div>
-</div>
-
-<div id="posts-container">
-  <!-- Jahres-Gruppen-Ansicht -->
-  <div id="yearly-groups-view">
-    {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
     {% for year in postsByYear %}
-      <section id="year-{{ year.name }}" class="taxonomy__section">
-        <h2 class="archive__subtitle">{{ year.name }}</h2>
-        <div class="entries-{{ site.entries_layout | default: 'list' }}">
-          {% for post in year.items %}
-            <div class="post-item" data-categories="{% for category in post.categories %}{{ category | slugify }} {% endfor %}">
-              {% include archive-single.html %}
-            </div>
-          {% endfor %}
-        </div>
-      </section>
+      <a href="{{ '/archiv/#year-' | append: year.name | relative_url }}" class="btn btn--primary">{{ year.name }}</a>
     {% endfor %}
   </div>
-  
-  <!-- Leere Kategorie Meldung -->
-  <div id="empty-category-message" class="notice notice--warning" style="display: none;">
-    <p><i class="fas fa-exclamation-circle"></i> Keine Beiträge in dieser Kategorie gefunden.</p>
+  <div style="margin-top: 0.75em;">
+    <a href="{{ '/archiv/' | relative_url }}" class="btn btn--info">Zum vollständigen Archiv</a>
+    <a href="{{ '/categories/' | relative_url }}" class="btn btn--info">Kategorien</a>
+    <a href="{{ '/tags/' | relative_url }}" class="btn btn--info">Tags</a>
   </div>
 </div>
 
-<!-- Kategoriefilterung einbinden -->
-<script src="{{ site.baseurl }}/assets/js/category-filter.js"></script>
+<div class="entries-{{ site.entries_layout | default: 'list' }}">
+  {% for post in paginator.posts %}
+    {% include archive-single.html %}
+  {% endfor %}
+</div>
+
+{% include paginator.html %}
