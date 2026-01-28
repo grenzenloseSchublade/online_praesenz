@@ -120,32 +120,33 @@ kramdown:
   syntax_highlighter: rouge
   input: GFM
 
-# MathJax specific settings
+# MathJax specific settings (MathJax 4)
 head_scripts:
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-chtml.js
 ```
 
 ### 2. _includes/head/custom.html
 ```html
 {% if page.mathjax %}
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$'], ['\\[','\\]']],
-    processEscapes: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-  },
-  messageStyle: "none",
-  TeX: {
-    equationNumbers: { autoNumber: "AMS" },
-    extensions: ["AMSmath.js", "AMSsymbols.js"]
-  },
-  CommonHTML: { linebreaks: { automatic: true } },
-  "HTML-CSS": { linebreaks: { automatic: true } },
-  SVG: { linebreaks: { automatic: true } }
-});
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      packages: { '[+]': ['noerrors'] }
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      ignoreHtmlClass: 'tex2jax_ignore',
+      processHtmlClass: 'tex2jax_process',
+      renderActions: { assistiveMml: [] },
+      menuOptions: { settings: { assistiveMml: false } }
+    },
+    loader: { load: ['[tex]/noerrors'] }
+  };
 </script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-chtml.js"></script>
 {% endif %}
 ```
 
@@ -176,7 +177,7 @@ Wenn mathematische Formeln nicht korrekt angezeigt werden:
 
 2. Überprüfen Sie die folgenden Punkte:
    - `mathjax: true` ist im Frontmatter der Seite gesetzt
-   - Die MathJax-Version in `_config.yml` ist korrekt (2.7.7 empfohlen)
+   - Die MathJax-Version in `_includes/head/custom.html` ist korrekt (4.1.0 empfohlen)
    - Die LaTeX-Syntax verwendet `$$` für Display-Math und `$` für Inline-Math
    - Der Browser-Cache wurde geleert
 

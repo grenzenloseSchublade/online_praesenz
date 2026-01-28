@@ -7,15 +7,23 @@
       inlineMath: [['$', '$'], ['\\(', '\\)']],
       displayMath: [['$$', '$$'], ['\\[', '\\]']],
       processEscapes: true,
-      packages: ['base', 'ams', 'noerrors', 'noundefined']
+      packages: { '[+]': ['noerrors'] }
     },
     options: {
       skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
       ignoreHtmlClass: 'tex2jax_ignore',
-      processHtmlClass: 'tex2jax_process'
+      processHtmlClass: 'tex2jax_process',
+      renderActions: {
+        assistiveMml: []
+      },
+      menuOptions: {
+        settings: {
+          assistiveMml: false
+        }
+      }
     },
     loader: {
-      load: ['[tex]/noerrors', '[tex]/noundefined']
+      load: ['[tex]/noerrors']
     },
     startup: {
       ready: function() {
@@ -23,18 +31,20 @@
         MathJax.startup.defaultReady();
         
         // Fehlerbehandlung für veraltete Attribute
-        const originalCompileError = MathJax._.input.mathml.MathMLCompile.prototype.error;
-        MathJax._.input.mathml.MathMLCompile.prototype.error = function(node, message) {
-          if (message.match(/mathvariant='script'/)) {
-            return null; // Unterdrücke diese spezifische Warnung
-          }
-          return originalCompileError.call(this, node, message);
-        };
+        if (MathJax._?.input?.mathml?.MathMLCompile?.prototype?.error) {
+          const originalCompileError = MathJax._.input.mathml.MathMLCompile.prototype.error;
+          MathJax._.input.mathml.MathMLCompile.prototype.error = function(node, message) {
+            if (message.match(/mathvariant='script'/)) {
+              return null; // Unterdrücke diese spezifische Warnung
+            }
+            return originalCompileError.call(this, node, message);
+          };
+        }
       }
     }
   };
 </script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-chtml.js"></script>
 {% endif %}
 
 <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/assets/images/favicon.ico">
@@ -129,11 +139,6 @@
     }
   });
 </script>
-
-<!-- Preload wichtiger Ressourcen -->
-{% if site.background_image %}
-  <link rel="preload" href="{{ site.background_image | relative_url }}" as="image">
-{% endif %}
 
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
 

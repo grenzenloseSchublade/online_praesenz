@@ -6,9 +6,9 @@
     {% include head/custom.html %}
     
     <!-- Preload wichtiger Ressourcen -->
-    <link rel="preload" href="{{ '/assets/js/main.min.js' | relative_url }}" as="script">
+    <link rel="prefetch" href="{{ '/assets/js/main.min.js' | relative_url }}" as="script">
     {% if site.background_image %}
-      <link rel="preload" href="{{ site.background_image | relative_url }}" as="image">
+      <link rel="prefetch" href="{{ site.background_image | relative_url }}" as="image">
     {% endif %}
   </head>
 
