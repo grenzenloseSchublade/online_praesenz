@@ -218,8 +218,18 @@
         this.renderCtx.clearRect(0, 0, renderWidth, renderHeight);
 
         const paletteMap = this.state.colorPalettes || standardPalettes;
-        const colorPalette = paletteMap[this.state.colorScheme] || paletteMap['blau-rot'];
-        const effectiveIterations = Math.max(10, Math.round(this.state.maxIterations * (preview ? 0.7 : this.iterationScale)));
+        const fallbackPalette = paletteMap['blau-rot'] || standardPalettes['blau-rot'];
+        const selectedPalette = paletteMap[this.state.colorScheme];
+        const colorPalette = Array.isArray(selectedPalette) && selectedPalette.length >= 2
+          ? selectedPalette
+          : fallbackPalette;
+        const rawIterations = Number.isFinite(this.state.maxIterations)
+          ? this.state.maxIterations
+          : this.state.maxIterations == null
+            ? 200
+            : Number(this.state.maxIterations);
+        const safeIterations = Number.isFinite(rawIterations) ? rawIterations : 200;
+        const effectiveIterations = Math.max(10, Math.round(safeIterations * (preview ? 0.7 : this.iterationScale)));
         const numWorkers = Math.max(1, Math.min(this.maxWorkers, Math.ceil(renderHeight / 128)));
         const chunkHeight = Math.ceil(renderHeight / numWorkers);
         const iterationBuffer = (!preview && this.allowIterationData)

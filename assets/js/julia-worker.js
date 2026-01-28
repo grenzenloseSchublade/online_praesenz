@@ -19,8 +19,13 @@ self.onmessage = function (e) {
     const workerId = data.workerId;
 
     // Berechne den Julia-Set für diesen Chunk
-    const result = calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
-        colorPalette, viewX, viewY, zoomLevel,
+    const safeIterations = Number.isFinite(maxIterations) ? maxIterations : 200;
+    const safePalette = Array.isArray(colorPalette) && colorPalette.length >= 2
+        ? colorPalette
+        : ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'];
+
+    const result = calculateJuliaChunk(width, height, realPart, imagPart, safeIterations,
+        safePalette, viewX, viewY, zoomLevel,
         startY, endY, includeIterationData);
 
     // Sende das Ergebnis zurück
@@ -53,7 +58,11 @@ function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
     const yMin = viewY - yRange / 2;
 
     // Vorberechnete Farben für bessere Performance
-    const precomputedColors = precomputeColors(colorPalette, maxIterations);
+    const fallbackColor = [0, 0, 0, 255];
+    let precomputedColors = precomputeColors(colorPalette, maxIterations);
+    if (!Array.isArray(precomputedColors) || precomputedColors.length === 0) {
+        precomputedColors = [fallbackColor];
+    }
 
     // Für jeden Pixel in diesem Chunk
     for (let y = startY; y < endY; y++) {
@@ -105,7 +114,11 @@ function calculateJuliaChunk(width, height, realPart, imagPart, maxIterations,
                 const normalized = Math.sqrt(smoothed / maxIterations);
 
                 // Kubische Interpolation für weichere Übergänge
-                color = precomputedColors[Math.min(Math.floor(normalized * (precomputedColors.length - 1)), precomputedColors.length - 1)];
+                let colorIndex = Math.floor(normalized * (precomputedColors.length - 1));
+                if (!Number.isFinite(colorIndex)) {
+                    colorIndex = 0;
+                }
+                color = precomputedColors[Math.min(colorIndex, precomputedColors.length - 1)] || fallbackColor;
             }
 
             // Setze Pixel im ImageData
