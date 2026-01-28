@@ -40,7 +40,7 @@ header:
 @media (max-width: 768px) {
   .page__inner-wrap {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     padding-right: 0;
     padding-left: 0;
   }
@@ -51,10 +51,10 @@ header:
 
   .julia-container,
   .explorer-container {
-    width: 100vw;
-    max-width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
     border-radius: 0;
     padding-left: 12px;
     padding-right: 12px;

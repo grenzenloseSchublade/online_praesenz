@@ -334,8 +334,18 @@
       flex: 1 1 100%;
     }
 
+    .explorer-toolbar button {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    .explorer-toolbar .icon {
+      margin-right: 4px;
+    }
+
     .btn-text {
-      display: none;
+      display: inline;
+      font-size: 11px;
     }
   }
   
@@ -390,6 +400,7 @@
     max-height: 60vh;
     aspect-ratio: 16/9;
     min-height: 240px;
+    touch-action: none;
   }
 
   .zoom-box {
@@ -417,8 +428,8 @@
 
   @media (max-width: 768px) {
     #mandelbrotCanvas, #explorerJuliaCanvas {
-      max-height: 65vh;
-      min-height: 200px;
+      max-height: 55vh;
+      min-height: 180px;
     }
   }
   
@@ -489,6 +500,13 @@
 
   .explorer-container button:active {
     transform: scale(0.98);
+  }
+
+  .explorer-container button:focus-visible,
+  .explorer-container button:active {
+    background: rgba(0, 102, 204, 0.22);
+    border-color: rgba(0, 102, 204, 0.5);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.18);
   }
   
   input[type="range"] {
@@ -583,22 +601,25 @@
   
   @media (max-width: 768px) {
     .mobile-zoom-control {
-      right: 5px;
-      padding: 4px 2px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 10px;
+      right: 8px;
+      top: auto;
+      bottom: 10px;
+      transform: none;
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 14px;
     }
     
     .zoom-button {
-      width: 24px;
-      height: 24px;
-      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
     }
     
     .zoom-level-display {
-      font-size: 11px;
-      padding: 1px 4px;
-      margin: 2px 0;
+      font-size: 12px;
+      padding: 2px 6px;
+      margin: 0 2px;
     }
   }
   
@@ -607,6 +628,13 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .zoom-buttons-container {
+      flex-direction: row;
+      gap: 6px;
+    }
   }
   
   .zoom-button {
@@ -809,6 +837,33 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
+  function getTouchCanvasCoords(canvas, touch) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (touch.clientX - rect.left) * scaleX,
+      y: (touch.clientY - rect.top) * scaleY
+    };
+  }
+
+  function getTouchCenter(canvas, touches) {
+    if (!touches || touches.length < 2) return null;
+    const p1 = getTouchCanvasCoords(canvas, touches[0]);
+    const p2 = getTouchCanvasCoords(canvas, touches[1]);
+    return {
+      x: (p1.x + p2.x) / 2,
+      y: (p1.y + p2.y) / 2
+    };
+  }
+
+  function getTouchDistance(touches) {
+    if (!touches || touches.length < 2) return 0;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+
   function getOrCreateZoomBox(canvas) {
     if (!canvas.__zoomBox) {
       const zoomBox = document.createElement('div');
@@ -844,6 +899,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (juliaParamSpan) {
       juliaParamSpan.textContent = `${state.julia.realPart.toFixed(3)} + ${state.julia.imagPart.toFixed(3)}i`;
     }
+  }
+
+  function applyMandelbrotTap(pos) {
+    const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
+    state.julia.realPart = complex.cx;
+    state.julia.imagPart = complex.cy;
+    updateJuliaParameterText();
+    requestRender(juliaRenderer, { immediate: true, reason: 'julia-c' });
   }
 
   maxIterSlider.addEventListener('input', function() {
@@ -996,6 +1059,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let isSpacePanning = false;
 
   mandelbrotCanvas.addEventListener('pointerdown', function(event) {
+    if (event.pointerType === 'touch') return;
     if (mandelbrotPointerId !== null) return;
     mandelbrotPointerId = event.pointerId;
     mandelbrotCanvas.setPointerCapture(event.pointerId);
@@ -1090,6 +1154,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   juliaCanvas.addEventListener('pointerdown', function(event) {
+    if (event.pointerType === 'touch') return;
     if (juliaPointerId !== null) return;
     juliaPointerId = event.pointerId;
     juliaCanvas.setPointerCapture(event.pointerId);
@@ -1209,11 +1274,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const clickEvent = event;
     mandelbrotClickTimer = setTimeout(() => {
       const pos = getCanvasCoords(mandelbrotCanvas, clickEvent);
-      const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
-      state.julia.realPart = complex.cx;
-      state.julia.imagPart = complex.cy;
-      updateJuliaParameterText();
-      requestRender(juliaRenderer, { immediate: true, reason: 'julia-c' });
+      applyMandelbrotTap(pos);
       mandelbrotClickTimer = null;
     }, 220);
   });
@@ -1255,6 +1316,149 @@ document.addEventListener('DOMContentLoaded', function() {
     animateZoomTo(state.julia, juliaRenderer, targetZoom, pos, juliaCanvas);
     requestRender(juliaRenderer, { debounce: 180, reason: 'dblclick-out' });
   });
+
+  let mandelbrotTouchPanning = false;
+  let mandelbrotTouchLast = null;
+  let mandelbrotTouchMoved = false;
+  let mandelbrotTouchTapStart = null;
+  const mandelbrotPinch = { active: false, startDist: 0, startZoom: 1 };
+
+  mandelbrotCanvas.addEventListener('touchstart', function(event) {
+    event.preventDefault();
+    if (event.touches.length === 2) {
+      mandelbrotPinch.active = true;
+      mandelbrotPinch.startDist = getTouchDistance(event.touches);
+      mandelbrotPinch.startZoom = state.mandelbrot.zoomLevel;
+      mandelbrotTouchPanning = false;
+      mandelbrotTouchMoved = true;
+      return;
+    }
+    if (event.touches.length === 1) {
+      mandelbrotTouchPanning = true;
+      mandelbrotTouchMoved = false;
+      mandelbrotTouchLast = getTouchCanvasCoords(mandelbrotCanvas, event.touches[0]);
+      mandelbrotTouchTapStart = { time: performance.now(), pos: mandelbrotTouchLast };
+    }
+  }, { passive: false });
+
+  mandelbrotCanvas.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+    if (mandelbrotPinch.active && event.touches.length === 2) {
+      const distance = getTouchDistance(event.touches);
+      if (!mandelbrotPinch.startDist) mandelbrotPinch.startDist = distance;
+      const zoomFactor = distance / mandelbrotPinch.startDist;
+      const targetZoom = FractalUtils.clamp(mandelbrotPinch.startZoom * zoomFactor, MIN_ZOOM, getMaxZoom());
+      const center = getTouchCenter(mandelbrotCanvas, event.touches);
+      if (center) {
+        animateZoomTo(state.mandelbrot, mandelbrotRenderer, targetZoom, center, mandelbrotCanvas);
+        requestRender(mandelbrotRenderer, { debounce: 120, reason: 'pinch' });
+      }
+      return;
+    }
+    if (!mandelbrotTouchPanning || event.touches.length !== 1 || !mandelbrotTouchLast) return;
+    const newPos = getTouchCanvasCoords(mandelbrotCanvas, event.touches[0]);
+    const dx = newPos.x - mandelbrotTouchLast.x;
+    const dy = newPos.y - mandelbrotTouchLast.y;
+    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+      mandelbrotTouchMoved = true;
+    }
+    const xRange = 3 / state.mandelbrot.zoomLevel;
+    const yRange = 3 / state.mandelbrot.zoomLevel;
+    state.mandelbrot.viewX -= (dx / mandelbrotCanvas.width) * xRange;
+    state.mandelbrot.viewY -= (dy / mandelbrotCanvas.height) * yRange;
+    mandelbrotTouchLast = newPos;
+    mandelbrotRenderer.setState({
+      viewX: state.mandelbrot.viewX,
+      viewY: state.mandelbrot.viewY,
+      zoomLevel: state.mandelbrot.zoomLevel
+    });
+    mandelbrotRenderer.drawPreview();
+    mandelbrotRenderer.scheduleRender({ debounce: 160, reason: 'pan-touch' });
+  }, { passive: false });
+
+  mandelbrotCanvas.addEventListener('touchend', function(event) {
+    event.preventDefault();
+    if (mandelbrotPinch.active && event.touches.length < 2) {
+      mandelbrotPinch.active = false;
+      mandelbrotPinch.startDist = 0;
+      mandelbrotPinch.startZoom = state.mandelbrot.zoomLevel;
+    }
+    if (event.touches.length === 0 && mandelbrotTouchPanning) {
+      if (!mandelbrotTouchMoved && mandelbrotTouchTapStart) {
+        const tapAge = performance.now() - mandelbrotTouchTapStart.time;
+        if (tapAge < 300) {
+          applyMandelbrotTap(mandelbrotTouchTapStart.pos);
+        }
+      }
+      mandelbrotTouchPanning = false;
+      mandelbrotTouchLast = null;
+      mandelbrotTouchTapStart = null;
+    }
+  }, { passive: false });
+
+  let juliaTouchPanning = false;
+  let juliaTouchLast = null;
+  const juliaPinch = { active: false, startDist: 0, startZoom: 1 };
+
+  juliaCanvas.addEventListener('touchstart', function(event) {
+    event.preventDefault();
+    if (event.touches.length === 2) {
+      juliaPinch.active = true;
+      juliaPinch.startDist = getTouchDistance(event.touches);
+      juliaPinch.startZoom = state.julia.zoomLevel;
+      juliaTouchPanning = false;
+      return;
+    }
+    if (event.touches.length === 1) {
+      juliaTouchPanning = true;
+      juliaTouchLast = getTouchCanvasCoords(juliaCanvas, event.touches[0]);
+    }
+  }, { passive: false });
+
+  juliaCanvas.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+    if (juliaPinch.active && event.touches.length === 2) {
+      const distance = getTouchDistance(event.touches);
+      if (!juliaPinch.startDist) juliaPinch.startDist = distance;
+      const zoomFactor = distance / juliaPinch.startDist;
+      const targetZoom = FractalUtils.clamp(juliaPinch.startZoom * zoomFactor, MIN_ZOOM, getMaxZoom());
+      const center = getTouchCenter(juliaCanvas, event.touches);
+      if (center) {
+        animateZoomTo(state.julia, juliaRenderer, targetZoom, center, juliaCanvas);
+        requestRender(juliaRenderer, { debounce: 120, reason: 'pinch' });
+      }
+      return;
+    }
+    if (!juliaTouchPanning || event.touches.length !== 1 || !juliaTouchLast) return;
+    const newPos = getTouchCanvasCoords(juliaCanvas, event.touches[0]);
+    const dx = newPos.x - juliaTouchLast.x;
+    const dy = newPos.y - juliaTouchLast.y;
+    const xRange = 3 / state.julia.zoomLevel;
+    const yRange = 3 / state.julia.zoomLevel;
+    state.julia.viewX -= (dx / juliaCanvas.width) * xRange;
+    state.julia.viewY -= (dy / juliaCanvas.height) * yRange;
+    juliaTouchLast = newPos;
+    juliaRenderer.setState({
+      viewX: state.julia.viewX,
+      viewY: state.julia.viewY,
+      zoomLevel: state.julia.zoomLevel
+    });
+    juliaRenderer.drawPreview();
+    juliaRenderer.scheduleRender({ debounce: 160, reason: 'pan-touch' });
+  }, { passive: false });
+
+  juliaCanvas.addEventListener('touchend', function(event) {
+    event.preventDefault();
+    if (juliaPinch.active && event.touches.length < 2) {
+      juliaPinch.active = false;
+      juliaPinch.startDist = 0;
+      juliaPinch.startZoom = state.julia.zoomLevel;
+    }
+    if (event.touches.length === 0) {
+      juliaTouchPanning = false;
+      juliaTouchLast = null;
+    }
+  }, { passive: false });
 
   function updateMobileControls() {
     const isMobile = FractalUtils.isMobileDevice() || window.innerWidth <= 768;
