@@ -18,24 +18,6 @@ header:
 
 {{ "Auf dieser Seite finden Sie eine Sammlung von Blogbeiträgen - eine bunte Mischung aus persönlichen Gedanken und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen, erscheinen neue Beiträge, wenn es die Zeit zulässt - **Qualität geht vor Regelmäßigkeit**." | markdownify }}
 
-<style>
-  #blog-entries .post-item {
-    border-radius: 8px;
-    padding: 0.15em 0.2em; // 0.1em 0.3em
-    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
-  }
-
-  #blog-entries .post-item:hover {
-    box-shadow: 0 0 0 1px #f0f, 0 8px 18px rgba(240, 0, 255, 0.3);
-    background-color: rgba(240, 0, 255, 0.06);
-    transform: translateY(-1px);
-  }
-
-  #blog-entries .post-item:hover .archive__item-title a {
-    color: #f0f;
-  }
-</style>
-
 <div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
   <div style="flex: 0 0 64px; margin-right: 1em;">
     <i class="fas fa-file-alt" style="font-size: 3em; color: #05d9e8;"></i>
