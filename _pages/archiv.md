@@ -14,13 +14,13 @@ Im Archiv finden Sie alle Beiträge nach Jahren gruppiert. Für die neuesten Bei
 
 <div class="category-filter-container">
   <span class="filter-label">Jahresübersicht:</span>
-  <div class="category-buttons" style="margin-top: 1em;">
+  <div class="category-buttons archive-filter-buttons">
     {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
     {% for year in postsByYear %}
       <a href="#year-{{ year.name }}" class="btn btn--primary">{{ year.name }}</a>
     {% endfor %}
   </div>
-  <div style="margin-top: 0.75em;">
+  <div class="archive-nav-actions">
     <a href="{{ '/posts/' | relative_url }}" class="btn btn--info">Zur Blog‑Übersicht</a>
   </div>
 </div>

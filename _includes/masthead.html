@@ -1,6 +1,6 @@
 {% capture logo_path %}{{ site.logo }}{% endcapture %}
 
-<div class="masthead masthead--visible">
+<div class="masthead">
     <div class="masthead__inner-wrap">
         <div class="masthead__menu">
             <nav id="site-nav" class="greedy-nav">
@@ -40,87 +40,3 @@
 </div>
 
 <!-- Masthead-Styles wurden nach assets/_sass/components/_masthead.scss verschoben -->
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Masthead Funktionalität
-        const header = document.querySelector('.masthead');
-
-        // Sicherheitscheck
-        if (!header) {
-            console.error('Masthead-Element nicht gefunden');
-            return;
-        }
-
-        function updateMastheadHeight() {
-            const rootStyles = getComputedStyle(document.documentElement);
-            const preferredHeight = Math.max(
-                60,
-                Math.round(parseFloat(rootStyles.getPropertyValue('--masthead-height')) || 72)
-            );
-            const measuredHeight = Math.max(preferredHeight, Math.round(header.offsetHeight || preferredHeight));
-            document.documentElement.style.setProperty('--masthead-height', measuredHeight + 'px');
-            header.style.height = measuredHeight + 'px';
-            header.style.minHeight = measuredHeight + 'px';
-            return measuredHeight;
-        }
-
-        const mastheadHeight = updateMastheadHeight();
-        
-        // Scrollverhalten optimieren
-        let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        let ticking = false;
-        let headerVisible = true;
-        const scrollThreshold = mastheadHeight / 2;
-
-        // Funktion zum Aktualisieren der Header-Sichtbarkeit
-        function updateHeaderVisibility() {
-            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollDifference = currentScrollTop - lastScrollTop;
-            
-            // Bestimme die Scroll-Richtung mit Schwellenwert für kleine Bewegungen
-            const currentDirection = scrollDifference > 1 ? 1 : (scrollDifference < -1 ? -1 : 0);
-
-            if (currentDirection > 0 && currentScrollTop > scrollThreshold) {
-                if (headerVisible) {
-                    header.classList.remove('masthead--visible');
-                    header.classList.add('masthead--hidden');
-                    headerVisible = false;
-                }
-            } else if (currentDirection < 0) {
-                if (!headerVisible) {
-                    header.classList.add('masthead--visible');
-                    header.classList.remove('masthead--hidden');
-                    headerVisible = true;
-                }
-            }
-
-            lastScrollTop = currentScrollTop;
-            ticking = false;
-        }
-        // Scroll-Event-Behandlung
-        
-        window.addEventListener(
-            'scroll',
-            function () {
-                if (!ticking) {
-                    window.requestAnimationFrame(updateHeaderVisibility);
-                    ticking = true;
-                }
-            },
-            { passive: true }
-        );
-
-        let resizeTimeout;
-        window.addEventListener(
-            'resize',
-            function () {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = window.setTimeout(function () {
-                    updateMastheadHeight();
-                }, 150);
-            },
-            { passive: true }
-        );
-    });
-</script>

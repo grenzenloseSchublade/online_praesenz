@@ -41,6 +41,7 @@ kramdown:
 # JavaScript-Dateien, die nach dem Footer geladen werden
 after_footer_scripts:
   - /assets/js/greedy-navigation.js
+  - /assets/js/blog-search.js
 
 # Collections
 include:

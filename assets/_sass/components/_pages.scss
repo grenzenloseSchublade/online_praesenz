@@ -1,0 +1,142 @@
+// Seiten-spezifische Styles und gemeinsame Helfer
+
+// Einheitliche Sprungmarken-Offsets für Anker/TOC
+.section-anchor {
+  display: block;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  scroll-margin-top: var(--anchor-offset, 96px);
+}
+
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4 {
+  scroll-margin-top: var(--anchor-offset, 96px);
+}
+
+.julia-container,
+.explorer-container {
+  scroll-margin-top: var(--anchor-offset, 96px);
+}
+
+:target {
+  scroll-margin-top: var(--anchor-offset, 96px);
+}
+
+// Feature-Boxen (z.B. Posts/Über mich)
+.feature-box {
+  padding: 1.5em;
+  margin: 2em 0;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 5px solid #05d9e8;
+}
+
+.feature-box--with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.feature-box__icon {
+  flex: 0 0 64px;
+  margin-right: 1em;
+}
+
+.feature-box__icon i {
+  font-size: 3em;
+  color: #05d9e8;
+}
+
+.feature-box__title {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+// About-Intro im Detail-Block
+.about-intro__summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.about-intro__title {
+  margin: 0;
+  color: #ffffff;
+}
+
+.about-intro__content {
+  margin-top: 1em;
+}
+
+// Blog/Archiv Filter- und Suchbereich
+.blog-filter-row {
+  display: flex;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.blog-search-input {
+  min-width: 220px;
+  flex: 1 1 260px;
+  padding: 0.55em 0.7em;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.blog-filter-actions {
+  margin-top: 0.75em;
+  margin-bottom: 1.5em;
+}
+
+.blog-archive-button {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.02em;
+}
+
+.blog-empty-message {
+  display: none;
+  margin-top: 1em;
+}
+
+.archive-filter-buttons {
+  margin-top: 1em;
+}
+
+.archive-nav-actions {
+  margin-top: 0.75em;
+}
+
+// Mandelbrot-Seite: Layout-Korrekturen fuer mobil
+.mandelbrot-page .page__hero--overlay {
+  min-height: 250px !important;
+}
+
+@media (max-width: 768px) {
+  .mandelbrot-page .page__inner-wrap {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .mandelbrot-page .page__content {
+    padding: 0;
+  }
+
+  .mandelbrot-page .julia-container,
+  .mandelbrot-page .explorer-container {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
+}

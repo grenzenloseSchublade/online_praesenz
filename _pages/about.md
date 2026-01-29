@@ -18,15 +18,15 @@ header:
 <div class="about-container">
 {% assign sections_by_name = site.data.about | group_by: "section" %}
 
-<div class="notice--info feature-box" style="padding: 1.5em; margin: 2em 0; border-radius: 5px; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid #05d9e8;">
+<div class="notice--info feature-box about-intro">
   <details>
-    <summary style="display: flex; align-items: center; cursor: pointer;">
-      <div style="flex: 0 0 64px; margin-right: 1em;">
-        <i class="fas fa-file-alt" style="font-size: 3em; color: #05d9e8;"></i>
+    <summary class="about-intro__summary">
+      <div class="feature-box__icon">
+        <i class="fas fa-file-alt"></i>
       </div>
-      <h3 style="margin: 0; color: #ffffff;">Wie gehts es weiter? Lesen Sie hier, was mit dieser Seite passieren wird.</h3>
+      <h3 class="about-intro__title">Wie gehts es weiter? Lesen Sie hier, was mit dieser Seite passieren wird.</h3>
     </summary>
-    <div style="margin-top: 1em;">
+    <div class="about-intro__content">
       <p>
         Auch wenn es anfänglich eine Zeit dauern wird dieses Vorhaben, all die verschiedenen Projekte und Gedanken entsprechend aufzubereiten und zu dokumentieren,  
         so ist es mir wichtig diese Dinge auch für mich selbst festzuhalten. So steht an erster Stelle Qualität und Einträge werden ohne Zeitdruck und unter Wohlbefinden erstellt und umgesetzt.

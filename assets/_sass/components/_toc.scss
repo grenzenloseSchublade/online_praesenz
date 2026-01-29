@@ -160,3 +160,12 @@
         padding: 0.25rem 0.75rem;
     }
 }
+
+// TOC nach unten versetzen, damit der feste Header nicht ueberlappt
+.sidebar__right.sticky {
+    top: calc(var(--masthead-height) + 16px);
+}
+
+.sidebar__right.sticky .toc__menu {
+    max-height: calc(100vh - var(--masthead-height) - 6em);
+}

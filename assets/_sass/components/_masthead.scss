@@ -274,6 +274,7 @@
   --hover-indicator-height: 3px;
   --hover-indicator-color: #05d9e8;
   --masthead-height: 76px;
+  --anchor-offset: calc(var(--masthead-height) + 20px);
   --content-spacing: 0.8rem;
 }
 
@@ -297,15 +298,16 @@
 }
 
 .masthead--hidden {
-  transform: translateY(-100%) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .masthead--visible {
   transform: translateY(0) !important;
   opacity: 1 !important;
 }
+
 
 .masthead__inner-wrap {
   padding: 0 1em !important;

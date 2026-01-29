@@ -16,7 +16,7 @@ header:
 ---
 
 <!-- <div class="notice">
-  <p>Diese Seite zeigt den Lebenslauf im neuen modernen Stil. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ site.baseurl }}/cv-old/">hier</a>.</p>
+  <p>Diese Seite zeigt den Lebenslauf im neuen modernen Stil. Wenn Sie den Lebenslauf im ursprünglichen Stil sehen möchten, klicken Sie bitte <a href="{{ '/cv-old/' | relative_url }}">hier</a>.</p>
 </div> -->
 
 <div class="about-container">

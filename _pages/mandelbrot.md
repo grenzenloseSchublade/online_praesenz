@@ -6,6 +6,7 @@ layout: single
 author_profile: true
 classes: 
   - wide
+  - mandelbrot-page
   #- full-width-page
 mathjax: true
 toc: true
@@ -22,46 +23,6 @@ header:
     - label: "Mandelbrot-Julia-Explorer"
       url: "/mandelbrot/#explorer-container"
 ---
-
-<style>
-/* Stelle sicher, dass die Anker-Links korrekt funktionieren */
-.section-anchor {
-  display: block;
-  position: relative;
-  top: -100px;
-  visibility: hidden;
-}
-
-/* Erhöhe die Höhe des Header-Bildes */
-.page__hero--overlay {
-  min-height: 250px !important; /* Passe diesen Wert nach Bedarf an */
-}
-
-@media (max-width: 768px) {
-  .page__inner-wrap {
-    width: 100%;
-    max-width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-  }
-  
-  .page__content {
-    padding: 0;
-  }
-
-  .julia-container,
-  .explorer-container {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    border-radius: 0;
-    padding-left: 12px;
-    padding-right: 12px;
-    box-sizing: border-box;
-  }
-}
-</style>
 
 {% for section in site.data.mandelbrot.sections %}
 <span id="{% if section.anchor %}{{ section.anchor }}{% else %}{{ section.section | slugify }}{% endif %}" class="section-anchor"></span>

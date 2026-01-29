@@ -13,7 +13,7 @@ sections:
 
   - section: "Julia-Mengen: Interaktive Visualisierung und mathematische Grundlagen"
     icon: "cube"
-    anchor: "julia-container"
+    anchor: "julia-section"
     content: >-
       Die Julia-Menge steht in direkter Beziehung zur Mandelbrot-Menge und illustriert anschaulich die Vielfalt komplexer Dynamik für unterschiedliche Parameter $c$.
       Verschiedene Julia-Mengen verdeutlichen, wie stark die Struktur des Fraktals durch die Auswahl des Parameters beeinflusst wird.
@@ -57,7 +57,7 @@ sections:
 
   - section: "Mandelbrot-Julia-Explorer: Interaktiv den Zusammenhang erforschen"
     icon: "search-plus"
-    anchor: "explorer-container"
+    anchor: "explorer-section"
     content: >-
       Mithilfe interaktiver Visualisierungen lässt sich der Zusammenhang zwischen Mandelbrot-Menge und Julia-Mengen direkt erforschen:
       Die Auswahl eines Punktes $c$ in der komplexen Ebene innerhalb der Mandelbrot-Menge erzeugt die zugehörige Julia-Menge.
