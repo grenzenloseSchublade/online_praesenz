@@ -16,10 +16,10 @@
     ],
     "remoteEnv": {
         "GH_TOKEN": "${localEnv:GH_TOKEN}",
-        "PATH": "${containerEnv:PATH}:/workspaces/online_praesenz/vendor/bundle/ruby/3.4.0/bin"
+        "PATH": "${containerEnv:PATH}:/workspaces/auflinie/vendor/bundle/ruby/3.4.0/bin"
     },
     "postCreateCommand": "sh .devcontainer/post-create.sh && pip install --upgrade pip && bundle install",
-    "postStartCommand": "find /workspaces/online_praesenz/vendor/bundle -name jekyll -type f -exec chmod +x {} \\;",
+    "postStartCommand": "find /workspaces/auflinie/vendor/bundle -name jekyll -type f -exec chmod +x {} \\;",
     "customizations": {
         "vscode": {
             "extensions": [

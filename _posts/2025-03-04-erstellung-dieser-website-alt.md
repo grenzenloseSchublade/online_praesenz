@@ -55,7 +55,7 @@ Das Theme erlaubt schon mit der Grundkonfiguration eine klassisch gegliederte We
 Die Jekyll-Projektstruktur ist ein Musterbeispiel für Clean Code und Wartbarkeit. Inhalte (_posts, _pages) sind strikt getrennt von Templates (_layouts, includes) und Daten (_data-Ordner). Nach einigen Tagen des Experimentierens zeigte sich, wie sehr diese Struktur Skalierung und Anpassung erleichtert:
 
 ```bash
-online_praesenz/
+auflinie/
 ├── _data/
 ├── _includes/
 ├── _layouts/
@@ -132,9 +132,9 @@ Die Installation von Jekyll gestaltete sich komplex. Die Lösung zur fehlenden A
 ```json
 {
   "remoteEnv": {
-    "PATH": "${containerEnv:PATH}:/workspaces/online_praesenz/vendor/bundle/ruby/3.4.0/bin"
+    "PATH": "${containerEnv:PATH}:/workspaces/auflinie/vendor/bundle/ruby/3.4.0/bin"
   },
-  "postStartCommand": "find /workspaces/online_praesenz/vendor/bundle -name jekyll -type f -exec chmod +x {} \;"
+  "postStartCommand": "find /workspaces/auflinie/vendor/bundle -name jekyll -type f -exec chmod +x {} \;"
 }
 ```
 

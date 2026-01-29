@@ -177,7 +177,7 @@ bundle exec jekyll serve \
   --drafts \
   --unpublished
 
-# Website verfügbar unter: http://localhost:4000/online_praesenz/
+# Website verfügbar unter: http://localhost:4000/auflinie/
 ```
 
 **Build-Optimierungen und Performance-Tuning:**
@@ -218,7 +218,7 @@ Die Projektstruktur folgt den Jekyll-Konventionen und wurde für optimale Wartba
 **Detaillierte Jekyll-Architektur:**
 
 ```
-online_praesenz/
+auflinie/
 ├── _config.yml                    # Hauptkonfiguration mit allen Einstellungen
 ├── _data/                         # Strukturierte Daten in YAML-Format
 │   ├── navigation.yml             # Hauptnavigation und Menüstruktur
@@ -293,9 +293,9 @@ Die erweiterte Theme-Customization umfasst die Navigation und Menüstruktur mit 
 **GitHub Pages Integration:**
 ```yaml
 # Repository und URL-Konfiguration
-repository: "grenzenloseSchublade/online_praesenz"
+repository: "grenzenloseSchublade/auflinie"
 url: "https://grenzenloseSchublade.github.io"
-baseurl: "/online_praesenz"  # Wichtig für GitHub Pages Subdirectory
+baseurl: "/auflinie"  # Wichtig für GitHub Pages Subdirectory
 
 # Author-Informationen
 author:

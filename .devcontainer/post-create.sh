@@ -8,7 +8,7 @@ echo "==================================================================="
 
 # Workspace-Berechtigungen setzen
 echo "Setze Berechtigungen für den Workspace..."
-WORKSPACE_DIR="/workspaces/online_praesenz"
+WORKSPACE_DIR="/workspaces/auflinie"
 
 # Verzeichnisse erstellen
 mkdir -p assets/images/fractals
