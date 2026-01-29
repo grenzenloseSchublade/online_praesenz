@@ -9,6 +9,7 @@
     border-radius: $border-radius;
     -webkit-box-shadow: $box-shadow;
     box-shadow: $box-shadow;
+    overflow: hidden;
 
     .nav__title {
         color: #fff;
@@ -17,8 +18,9 @@
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
         padding: 0.5em;
-        font-weight: bold;
-        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: none;
     }
 
     // Scrollspy marks toc items as .active when they are in focus
@@ -36,22 +38,37 @@
     list-style: none;
     font-size: $type-size-6;
 
-    @include breakpoint($large) {
-        font-size: $type-size-7;
-    }
-
     a {
         display: block;
         padding: 0.25rem 0.75rem;
         color: $text-color;
-        font-weight: bold;
+        font-weight: 600;
         line-height: 1.5;
+        text-decoration: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background-color $standard-transition, color $standard-transition;
 
         &:hover {
             color: $link-color;
             background-color: rgba(0, 0, 0, 0.2);
         }
+
+        &:focus-visible {
+            outline: 2px solid $link-color;
+            outline-offset: 2px;
+        }
+    }
+
+    li ul {
+        margin: 0.2rem 0 0.35rem;
+        padding-left: 0.5rem;
+        border-left: 1px solid rgba($border-color, 0.4);
+    }
+
+    li ul a {
+        font-weight: 500;
+        font-size: 1em;
+        line-height: 1.5;
     }
 
     li ul>li a {
@@ -105,15 +122,27 @@
     display: inline-block;
 }
 
-.toc-toggle.collapsed .toc-toggle-icon {
+.toc-toggle[aria-expanded="false"] .toc-toggle-icon {
     transform: rotate(180deg);
 }
 
 .toc__menu-wrapper {
-    transition: max-height $standard-transition;
     overflow: hidden;
     width: 100%;
     display: block;
+    max-height: 9999px;
+    opacity: 1;
+    transition: max-height $standard-transition, opacity $standard-transition;
+}
+
+.toc__menu-wrapper.is-collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.toc-toggle:focus-visible .nav__title {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
 }
 
 // Einheitliche Schriftgröße und Buttonhöhe für TOC auf Seiten mit 'wide' Klasse
@@ -126,10 +155,6 @@
 
 .wide .toc__menu {
     font-size: $type-size-6;
-
-    @include breakpoint($large) {
-        font-size: $type-size-6;
-    }
 
     a {
         padding: 0.25rem 0.75rem;
