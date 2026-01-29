@@ -6,6 +6,53 @@ echo "==================================================================="
 echo "Willkommen zur Python 3.11 & Jekyll Entwicklungsumgebung!"
 echo "==================================================================="
 
+
+echo "Installing Ruby 3.4 build dependencies..."
+sudo apt-get update
+sudo apt-get install -y \
+    autoconf \
+    bison \
+    build-essential \
+    libssl-dev \
+    libyaml-dev \
+    libreadline-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libffi-dev \
+    libgdbm-dev \
+    libgdbm6 \
+    git \
+    curl
+
+echo "Installing rbenv..."
+if [ ! -d "$HOME/.rbenv" ]; then
+    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+fi
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# rbenv dauerhaft in die Shell integrieren
+if ! grep -q 'rbenv init' ~/.bashrc; then
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+fi
+
+echo "Installing ruby-build plugin..."
+if [ ! -d "$HOME/.rbenv/plugins/ruby-build" ]; then
+    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+fi
+
+echo "Installing Ruby 3.4.1 (this takes 3-5 minutes on first build)..."
+rbenv install 3.4.1 --skip-existing
+rbenv global 3.4.1
+
+echo "Installing Bundler..."
+gem install bundler
+
+echo "Ruby $(ruby -v) installed successfully!"
+
+
 # Workspace-Berechtigungen setzen
 echo "Setze Berechtigungen für den Workspace..."
 WORKSPACE_DIR="/workspaces/auflinie"

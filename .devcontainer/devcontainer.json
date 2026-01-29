@@ -3,23 +3,23 @@
     "image": "mcr.microsoft.com/devcontainers/python:3.11",
     "features": {
         "ghcr.io/devcontainers/features/node:1": {
-            "version": "lts"
-        },
-        "ghcr.io/devcontainers/features/ruby:1": {
-            "version": "latest"
+            "version": "lts",
+            "installYarnUsingApt": false
         },
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
+    "onCreateCommand": "sudo rm -f /etc/apt/sources.list.d/yarn.list /etc/apt/sources.list.d/*yarn* /etc/apt/trusted.gpg.d/yarn.gpg 2>/dev/null || true",
+    "postCreateCommand": "sh .devcontainer/post-create.sh",
+    "postAttachCommand": "pip install --upgrade pip && bundle install",
     "forwardPorts": [
         4000,
         8888
     ],
     "remoteEnv": {
         "GH_TOKEN": "${localEnv:GH_TOKEN}",
-        "PATH": "${containerEnv:PATH}:/workspaces/auflinie/vendor/bundle/ruby/3.4.0/bin"
+        "PATH": "${containerEnv:PATH}:${containerWorkspaceFolder}/vendor/bundle/ruby/3.4.0/bin"
     },
-    "postCreateCommand": "sh .devcontainer/post-create.sh && pip install --upgrade pip && bundle install",
-    "postStartCommand": "find /workspaces/auflinie/vendor/bundle -name jekyll -type f -exec chmod +x {} \\;",
+    "postStartCommand": "sh -c 'find ${containerWorkspaceFolder}/vendor/bundle -name jekyll -type f -exec chmod +x {} \\; 2>/dev/null || true'",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -35,3 +35,4 @@
     },
     "remoteUser": "vscode"
 }
+
