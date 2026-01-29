@@ -9,11 +9,16 @@
     .site-title {
         font-size: $site-title-font-size; // Größerer Titel
         font-weight: bold;
-        transition: color 0.45s ease; // Sanfter Übergang für die Farbänderung
+        transition: color 0.45s ease, text-shadow 0.45s ease; // Sanfter Übergang für Farbe/Glow
         margin-right: 2em;
         
         &:hover {
-            color: lighten($hover-color, 30%); // 15% hellere Version der Hover-Farbe
+            color: inherit;
+            text-shadow: 0 0 6px rgba(255, 0, 204, 1),
+              0 0 16px rgba(255, 0, 204, 0.95),
+              0 0 34px rgba(255, 0, 204, 0.75),
+              0 0 60px rgba(255, 0, 204, 0.5),
+              0 0 90px rgba(255, 0, 204, 0.35);
             text-decoration: none; // Optional: Entfernt die Unterstreichung beim Hover
         }
         
@@ -86,10 +91,11 @@
 :root {
   --primary-color: #3498db;
   --primary-color-rgb: 52, 152, 219;
-  --hover-bg-opacity: 0.1;
-  --hover-indicator-height: 4px;
+  --hover-bg-color-rgb: 0, 255, 255;
+  --hover-bg-opacity: 0.08;
+  --hover-indicator-height: 3px;
   --hover-indicator-color: #05d9e8;
-  --masthead-height: 50px;
+  --masthead-height: 76px;
   --content-spacing: 0.8rem;
 }
 
@@ -163,7 +169,7 @@
   padding: 0 0.75em !important;
   position: relative !important;
   z-index: 2 !important;
-  transition: color 0.2s ease-in-out !important;
+  transition: color 0.15s ease-in-out !important;
 }
 
 .visible-links li a:before {
@@ -173,10 +179,11 @@
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background-color: rgba(var(--primary-color-rgb, 52, 152, 219), var(--hover-bg-opacity, 0.3)) !important;
+  background-color: rgba(var(--hover-bg-color-rgb, 5, 217, 232), var(--hover-bg-opacity, 0.3)) !important;
   transform: scaleY(0) !important;
   transform-origin: bottom center !important;
-  transition: transform 0.2s ease-in-out !important;
+  transition: transform 0.15s ease-in-out !important;
+  border-radius: 0 !important;
   z-index: -1 !important;
 }
 
@@ -190,11 +197,12 @@
   position: absolute !important;
   left: 0 !important;
   bottom: 0 !important;
-  height: var(--hover-indicator-height, 4px) !important;
+  height: var(--hover-indicator-height, 3px) !important;
   width: 100% !important;
   background-color: var(--hover-indicator-color, #05d9e8) !important;
   transform: scaleX(0) !important;
-  transition: transform 0.2s ease-in-out !important;
+  transition: transform 0.15s ease-in-out !important;
+  border-radius: 0 !important;
 }
 
 .visible-links li a:hover:after,
@@ -205,17 +213,20 @@
 .hidden-links {
   position: absolute !important;
   top: 100% !important;
-  right: 0 !important;
-  margin-top: 15px !important;
-  padding: 5px !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 4px !important;
-  background: rgba(0, 0, 0, 0.8) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  right: 50% !important;
+  transform: translateX(50%) !important;
+  margin-top: 10px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
   z-index: 1001 !important;
   min-width: 200px !important;
+  width: 92vw !important;
+  max-width: 360px !important;
 }
 
 .hidden-links.hidden {
@@ -225,13 +236,14 @@
 .hidden-links::before {
   content: "" !important;
   position: absolute !important;
-  top: -10px !important;
-  right: 10px !important;
+  top: -8px !important;
+  right: 50% !important;
+  transform: translateX(50%) !important;
   width: 0 !important;
   height: 0 !important;
   border-style: solid !important;
-  border-width: 0 10px 10px 10px !important;
-  border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent !important;
+  border-width: 0 8px 8px 8px !important;
+  border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent !important;
   z-index: 0 !important;
 }
 
@@ -243,13 +255,14 @@
 
 .hidden-links li a {
   display: block !important;
-  padding: 10px 15px !important;
-  color: #fff !important;
-  font-size: 0.9em !important;
+  padding: 12px 14px !important;
+  color: #f5f5f5 !important;
+  font-size: 0.95em !important;
   text-decoration: none !important;
-  transition: all 0.2s ease-in-out !important;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
   position: relative !important;
   z-index: 1 !important;
+  border-radius: 8px !important;
 }
 
 .hidden-links li a:before {
@@ -292,16 +305,15 @@
   background-color: transparent !important;
   border: none !important;
   cursor: pointer !important;
-  padding: 0 !important;
-  transition: all 0.3s ease !important;
+  padding: 0.15em 0.35em !important;
+  transition: background-color 0.15s ease !important;
   position: relative !important;
   z-index: 1002 !important;
+  border-radius: 8px !important;
 }
 
-.greedy-nav__toggle:hover .navicon,
-.greedy-nav__toggle:hover .navicon:before,
-.greedy-nav__toggle:hover .navicon:after {
-  background-color: var(--hover-indicator-color, #05d9e8) !important;
+.greedy-nav__toggle:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 .navicon {

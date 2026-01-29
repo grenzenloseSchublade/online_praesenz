@@ -20,13 +20,6 @@
                     </li>
                     {%- endfor -%}
                 </ul>
-                {% if site.search == true %}
-                <button class="search__toggle" type="button">
-                    <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle
-                        search" }}</span>
-                    <i class="fas fa-search"></i>
-                </button>
-                {% endif %}
                 <button class="greedy-nav__toggle" type="button">
                     <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu"
                         }}</span>
@@ -51,132 +44,26 @@
             return;
         }
 
-        // Performance-Optimierung: Verwende passive Event-Listener wo möglich
-        const supportsPassive = (function() {
-            let result = false;
-            try {
-                const opts = Object.defineProperty({}, 'passive', {
-                    get: function() {
-                        result = true;
-                        return true;
-                    }
-                });
-                window.addEventListener('testPassive', null, opts);
-                window.removeEventListener('testPassive', null, opts);
-            } catch (e) {}
-            return result;
-        })();
-
-        const passiveOption = supportsPassive ? { passive: true } : false;
-        const nonPassiveOption = supportsPassive ? { passive: false } : false;
-
-        // Funktion zur Ermittlung der Scrollschrittgröße
-        function getScrollLineHeight() {
-            // Standard-Scrollschrittgröße (kann je nach Browser variieren)
-            let scrollLineHeight = 40;
-            
-            // Versuche, die tatsächliche Scrollschrittgröße zu ermitteln
-            if ('chrome' in window) {
-                // Chrome verwendet normalerweise 40px pro Scrollschritt
-                scrollLineHeight = 40;
-            } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
-                // Firefox verwendet normalerweise 3 Zeilen pro Scrollschritt
-                scrollLineHeight = 48; // ca. 16px pro Zeile
-            } else if (navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1) {
-                // Safari (nicht Chrome)
-                scrollLineHeight = 40;
-            }
-            
-            // Experimentelle Methode zur Bestimmung der tatsächlichen Scrollschrittgröße
-            try {
-                // Nur ausführen, wenn document.body verfügbar ist
-                if (document.body) {
-                    // Erstelle ein temporäres Element zum Testen
-                    const testDiv = document.createElement('div');
-                    testDiv.style.cssText = 'position: absolute; top: -9999px; width: 100px; height: 100px; overflow: scroll;';
-                    document.body.appendChild(testDiv);
-                    
-                    // Füge ein Wheel-Event-Listener hinzu
-                    let wheelDeltaY = 0;
-                    const wheelHandler = function(e) {
-                        // Erfasse die Delta-Y-Werte (Scrollschrittgröße)
-                        if (e.deltaY && Math.abs(e.deltaY) > 0) {
-                            wheelDeltaY = Math.abs(e.deltaY);
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }
-                    };
-                    
-                    testDiv.addEventListener('wheel', wheelHandler, nonPassiveOption);
-                    
-                    // Simuliere ein Wheel-Event (funktioniert nicht immer, aber ein Versuch)
-                    try {
-                        const wheelEvent = new WheelEvent('wheel', { 
-                            deltaY: 100,
-                            cancelable: true,
-                            bubbles: true
-                        });
-                        testDiv.dispatchEvent(wheelEvent);
-                    } catch (e) {
-                        console.log('Konnte Wheel-Event nicht simulieren:', e);
-                    }
-                    
-                    // Entferne den Event-Listener und das Element
-                    testDiv.removeEventListener('wheel', wheelHandler, nonPassiveOption);
-                    document.body.removeChild(testDiv);
-                    
-                    // Wenn ein Wert erfasst wurde, verwende ihn
-                    if (wheelDeltaY > 0) {
-                        scrollLineHeight = wheelDeltaY;
-                    }
-                }
-            } catch (e) {
-                console.log('Konnte Scrollschrittgröße nicht experimentell ermitteln:', e);
-            }
-            
-            // Mindesthöhe sicherstellen und Maximalwert begrenzen
-            return Math.min(Math.max(scrollLineHeight, 40), 100);
+        function updateMastheadHeight() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const preferredHeight = Math.max(
+                60,
+                Math.round(parseFloat(rootStyles.getPropertyValue('--masthead-height')) || 72)
+            );
+            const measuredHeight = Math.max(preferredHeight, Math.round(header.offsetHeight || preferredHeight));
+            document.documentElement.style.setProperty('--masthead-height', measuredHeight + 'px');
+            header.style.height = measuredHeight + 'px';
+            header.style.minHeight = measuredHeight + 'px';
+            return measuredHeight;
         }
 
-        // Funktion zum Anpassen der Hover-Effekte an die Scrollhöhe
-        function updateHoverEffects(height) {
-            // Setze die Höhe des Indikators proportional zur Gesamthöhe
-            // Für kleine Höhen (z.B. 40px) verwenden wir 3px, für größere (z.B. 80px) 5px
-            const indicatorHeight = Math.max(3, Math.min(5, Math.floor(height / 15)));
-            document.documentElement.style.setProperty('--hover-indicator-height', indicatorHeight + 'px');
-            
-            // Passe die Transparenz des Hover-Hintergrunds an
-            // Bei kleineren Höhen etwas stärker (0.15), bei größeren schwächer (0.08)
-            const opacity = Math.max(0.08, Math.min(0.15, 0.15 - (height - 40) * 0.001));
-            document.documentElement.style.setProperty('--hover-bg-opacity', opacity.toFixed(2));
-        }
-        
-        // Scrollschrittgröße ermitteln und als CSS-Variable setzen
-        const scrollHeight = getScrollLineHeight();
-        document.documentElement.style.setProperty('--masthead-height', scrollHeight + 'px');
-        
-        // Masthead-Höhe anpassen
-        header.style.height = scrollHeight + 'px';
-        header.style.minHeight = scrollHeight + 'px';
-        
-        // Hover-Effekte an die Scrollhöhe anpassen
-        updateHoverEffects(scrollHeight);
-        
-        // Navigationsbuttons anpassen
-        const navLinks = document.querySelectorAll('.visible-links li a');
-        navLinks.forEach(function(link) {
-            // Sicherstellen, dass die Links die richtige Höhe haben
-            link.style.height = '100%';
-        });
+        const mastheadHeight = updateMastheadHeight();
         
         // Scrollverhalten optimieren
-        let lastScrollTop = 0;
+        let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         let ticking = false;
         let headerVisible = true;
-        const scrollThreshold = scrollHeight / 2; // Schwellenwert basierend auf Scrollhöhe
-        let idleTimer = null;
-        let lastScrollDirection = 0; // 0: neutral, 1: nach unten, -1: nach oben
-        let enableIdleTimer = false; // Boolean zum Ein-/Ausschalten des Idle-Timers
+        const scrollThreshold = mastheadHeight / 2;
 
         // Funktion zum Aktualisieren der Header-Sichtbarkeit
         function updateHeaderVisibility() {
@@ -186,302 +73,46 @@
             // Bestimme die Scroll-Richtung mit Schwellenwert für kleine Bewegungen
             const currentDirection = scrollDifference > 1 ? 1 : (scrollDifference < -1 ? -1 : 0);
 
-            // Nur reagieren, wenn die Richtung sich ändert oder signifikant ist
-            if (currentDirection !== 0) {
-                if (currentDirection > 0 && currentScrollTop > scrollThreshold) {
-                // Nach unten scrollen und über dem Schwellenwert
+            if (currentDirection > 0 && currentScrollTop > scrollThreshold) {
                 if (headerVisible) {
                     header.classList.remove('masthead--visible');
                     header.classList.add('masthead--hidden');
                     headerVisible = false;
                 }
-                } else if (currentDirection < 0) {
-                // Nach oben scrollen: Header immer einblenden
+            } else if (currentDirection < 0) {
                 if (!headerVisible) {
                     header.classList.add('masthead--visible');
                     header.classList.remove('masthead--hidden');
                     headerVisible = true;
                 }
-                }
-                
-                lastScrollDirection = currentDirection;
             }
 
             lastScrollTop = currentScrollTop;
             ticking = false;
         }
-        // Bei Inaktivität (kein Scrollen) Header nach 3.5 Sekunden wieder einblenden
-        function resetIdleTimer() {
-            // Wenn der Idle-Timer deaktiviert ist, nichts tun
-            if (!enableIdleTimer) return;
-            
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(function () {
-                if (!headerVisible) {
-                    header.classList.add('masthead--visible');
-                    header.classList.remove('masthead--hidden');
-                    headerVisible = true;
+        // Scroll-Event-Behandlung
+        
+        window.addEventListener(
+            'scroll',
+            function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateHeaderVisibility);
+                    ticking = true;
                 }
-            }, 3500); // Wiedereinblenden bei Inaktivität
-        }
-        
-        // Funktion zum Ein-/Ausschalten des Idle-Timers
-        function toggleIdleTimer(enable) {
-            enableIdleTimer = enable;
-            
-            // Wenn der Timer deaktiviert wird, laufenden Timer löschen
-            if (!enable && idleTimer) {
-                clearTimeout(idleTimer);
-                idleTimer = null;
-            }
-        }
+            },
+            { passive: true }
+        );
 
-        // Optimierte Scroll-Event-Behandlung mit Throttling
-        let scrollTimeout;
-        let lastScrollTime = Date.now();
-        const scrollThrottleDelay = 10; // ms zwischen Scroll-Events
-        
-        window.addEventListener('scroll', function() {
-            // Throttling basierend auf Zeit
-            const now = Date.now();
-            if (now - lastScrollTime < scrollThrottleDelay) {
-                return;
-            }
-            lastScrollTime = now;
-            
-            // Timer für Inaktivität zurücksetzen
-            resetIdleTimer();
-            
-            // RequestAnimationFrame für flüssige Animation
-            if (!ticking) {
-                window.requestAnimationFrame(function() {
-                    updateHeaderVisibility();
-                });
-                ticking = true;
-            }
-        }, passiveOption);
-
-        // Zusätzliche Event-Listener, die den Header wieder einblenden können
-        ['mousemove', 'keydown', 'touchstart', 'click'].forEach(function(event) {
-            document.addEventListener(event, resetIdleTimer, passiveOption);
-        });
-
-        // Bei Änderung der Fenstergröße die Scrollschrittgröße neu berechnen
         let resizeTimeout;
-        window.addEventListener('resize', function() {
-            // Debounce: Nur einmal nach Ende des Resize-Vorgangs ausführen
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
-                try {
-                    // Scrollschrittgröße neu berechnen
-                    const newScrollHeight = getScrollLineHeight();
-                    document.documentElement.style.setProperty('--masthead-height', newScrollHeight + 'px');
-                    
-                    // Masthead-Höhe anpassen
-                    header.style.height = newScrollHeight + 'px';
-                    header.style.minHeight = newScrollHeight + 'px';
-                    
-                    // Hover-Effekte an die neue Höhe anpassen
-                    updateHoverEffects(newScrollHeight);
-                } catch (e) {
-                    console.error('Fehler beim Anpassen der Masthead-Höhe:', e);
-                }
-            }, 250);
-        }, passiveOption);
-
-        // Tastaturkürzel zum Ein-/Ausschalten des Idle-Timers (nur für Entwicklung)
-        // Strg+Alt+I schaltet den Idle-Timer um
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.altKey && e.key === 'i') {
-                enableIdleTimer = !enableIdleTimer;
-                console.log('Idle-Timer ' + (enableIdleTimer ? 'aktiviert' : 'deaktiviert'));
-                
-                // Wenn deaktiviert, laufenden Timer löschen
-                if (!enableIdleTimer && idleTimer) {
-                    clearTimeout(idleTimer);
-                    idleTimer = null;
-                }
-                
-                // Verhindern, dass das Tastaturkürzel andere Aktionen auslöst
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }, nonPassiveOption);
-
-        // Öffentliche API für andere Skripte
-        window.MastheadController = {
-            /**
-             * Aktiviert oder deaktiviert den Idle-Timer
-             * @param {boolean} enabled - true zum Aktivieren, false zum Deaktivieren
-             * @returns {boolean} Aktueller Status des Idle-Timers
-             */
-            setIdleTimerEnabled: function(enabled) {
-                toggleIdleTimer(Boolean(enabled));
-                return enableIdleTimer;
+        window.addEventListener(
+            'resize',
+            function () {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = window.setTimeout(function () {
+                    updateMastheadHeight();
+                }, 150);
             },
-            
-            /**
-             * Gibt den aktuellen Status des Idle-Timers zurück
-             * @returns {boolean} true wenn aktiviert, false wenn deaktiviert
-             */
-            isIdleTimerEnabled: function() {
-                return enableIdleTimer;
-            },
-            
-            /**
-             * Blendet den Header manuell ein
-             * @returns {boolean} Aktueller Sichtbarkeitsstatus des Headers
-             */
-            showHeader: function() {
-                header.classList.add('masthead--visible');
-                header.classList.remove('masthead--hidden');
-                headerVisible = true;
-                return headerVisible;
-            },
-            
-            /**
-             * Blendet den Header manuell aus
-             * @returns {boolean} Aktueller Sichtbarkeitsstatus des Headers
-             */
-            hideHeader: function() {
-                header.classList.remove('masthead--visible');
-                header.classList.add('masthead--hidden');
-                headerVisible = false;
-                return headerVisible;
-            },
-            
-            /**
-             * Gibt die ermittelte Scrollschrittgröße zurück
-             * @returns {number} Scrollschrittgröße in Pixeln
-             */
-            getScrollHeight: function() {
-                return scrollHeight;
-            },
-            
-            /**
-             * Passt die Hover-Effekte manuell an
-             * @param {Object} options - Optionen für die Hover-Effekte
-             * @param {number} [options.indicatorHeight] - Höhe des Indikators in Pixeln
-             * @param {number} [options.opacity] - Transparenz des Hover-Hintergrunds (0-1)
-             * @param {string} [options.primaryColor] - Primärfarbe für Hover-Effekte (HEX oder RGB)
-             * @param {string} [options.indicatorColor] - Farbe des unteren Indikators (HEX oder RGB)
-             * @returns {Object} Aktuelle Einstellungen der Hover-Effekte
-             */
-            customizeHoverEffects: function(options) {
-                if (options) {
-                    if (typeof options.indicatorHeight === 'number') {
-                        document.documentElement.style.setProperty('--hover-indicator-height', options.indicatorHeight + 'px');
-                    }
-                    
-                    if (typeof options.opacity === 'number') {
-                        document.documentElement.style.setProperty('--hover-bg-opacity', Math.max(0, Math.min(1, options.opacity)));
-                    }
-                    
-                    if (typeof options.primaryColor === 'string') {
-                        document.documentElement.style.setProperty('--primary-color', options.primaryColor);
-                        
-                        // Versuche, die RGB-Werte zu extrahieren
-                        try {
-                            let rgb = '';
-                            if (options.primaryColor.startsWith('rgb')) {
-                                const rgbMatch = options.primaryColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-                                if (rgbMatch) {
-                                    rgb = `${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}`;
-                                }
-                            } else if (options.primaryColor.startsWith('#')) {
-                                const hex = options.primaryColor.substring(1);
-                                const r = parseInt(hex.substring(0, 2), 16);
-                                const g = parseInt(hex.substring(2, 4), 16);
-                                const b = parseInt(hex.substring(4, 6), 16);
-                                rgb = `${r}, ${g}, ${b}`;
-                            }
-                            
-                            if (rgb) {
-                                document.documentElement.style.setProperty('--primary-color-rgb', rgb);
-                            }
-                        } catch (e) {
-                            console.error('Fehler beim Konvertieren der Primärfarbe:', e);
-                        }
-                    }
-                    
-                    // Neue Option für die Farbe des unteren Indikators
-                    if (typeof options.indicatorColor === 'string') {
-                        document.documentElement.style.setProperty('--hover-indicator-color', options.indicatorColor);
-                    }
-                }
-                
-                // Aktuelle Einstellungen zurückgeben
-                return {
-                    indicatorHeight: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hover-indicator-height')),
-                    opacity: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hover-bg-opacity')),
-                    primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color'),
-                    indicatorColor: getComputedStyle(document.documentElement).getPropertyValue('--hover-indicator-color'),
-                    scrollHeight: scrollHeight
-                };
-            }
-        };
-
-        // Initial Header sichtbar machen
-        header.classList.add('masthead--visible');
-        header.classList.remove('masthead--hidden');
-
-        // Initial einmal aufrufen
-        updateHeaderVisibility();
-        resetIdleTimer();
-        // Funktion zum Anpassen der Hover-Farben basierend auf dem Theme
-        function updateHoverColors() {
-            // Versuche, die Primärfarbe aus dem Theme zu extrahieren
-            let primaryColor = '';
-            let primaryColorRGB = '';
-            
-            try {
-                // Methode 1: Versuche, die Farbe aus einem vorhandenen Element zu extrahieren
-                const testElement = document.querySelector('.page__content a, .sidebar a, button.btn, .btn');
-                if (testElement) {
-                    const computedStyle = window.getComputedStyle(testElement);
-                    primaryColor = computedStyle.color || computedStyle.backgroundColor;
-                    
-                    // Konvertiere die Farbe in RGB-Format
-                    if (primaryColor.startsWith('rgb')) {
-                        // Extrahiere die RGB-Werte
-                        const rgbMatch = primaryColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-                        if (rgbMatch) {
-                            primaryColorRGB = `${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}`;
-                        }
-                    } else if (primaryColor.startsWith('#')) {
-                        // Konvertiere Hex zu RGB
-                        const hex = primaryColor.substring(1);
-                        const r = parseInt(hex.substring(0, 2), 16);
-                        const g = parseInt(hex.substring(2, 4), 16);
-                        const b = parseInt(hex.substring(4, 6), 16);
-                        primaryColorRGB = `${r}, ${g}, ${b}`;
-                    }
-                }
-            } catch (e) {
-                console.log('Konnte Primärfarbe nicht extrahieren:', e);
-            }
-            
-            // Wenn keine Farbe gefunden wurde, verwende Standardwerte
-            if (!primaryColor || !primaryColorRGB) {
-                primaryColor = '#3498db';
-                primaryColorRGB = '52, 152, 219';
-            }
-            
-            // Setze die CSS-Variablen für den Hover-Hintergrund
-            document.documentElement.style.setProperty('--primary-color', primaryColor);
-            document.documentElement.style.setProperty('--primary-color-rgb', primaryColorRGB);
-            
-            // Die Farbe des unteren Strichs bleibt immer die klassische Cyan-Farbe
-            document.documentElement.style.setProperty('--hover-indicator-color', '#05d9e8');
-        }
-        
-        // Rufe die Funktion initial auf
-        updateHoverColors();
-        
-        // Bei Änderung des Themes (falls möglich zu erkennen)
-        window.addEventListener('themechange', updateHoverColors);
-        
-        // Der Code für die mobile Menü-Funktionalität wurde in die Datei
-        // /assets/js/greedy-navigation.js ausgelagert
+            { passive: true }
+        );
     });
 </script>

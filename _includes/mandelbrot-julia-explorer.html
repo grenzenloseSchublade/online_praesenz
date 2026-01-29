@@ -1,5 +1,5 @@
 <!-- Interaktiver Mandelbrot-Julia-Explorer -->
-<div class="explorer-container" id="explorer-container">
+<div class="explorer-container focus-mode" id="explorer-container">
   <a id="explorer-container-anchor" class="anchor-target"></a>
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
   <div class="explorer-toolbar">
@@ -7,9 +7,9 @@
       <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
       <span class="btn-text">Erweitert</span>
     </button>
-    <button id="explorerFocusMode" class="toggle-button" title="Fokusmodus" aria-label="Fokusmodus">
+    <button id="explorerFocusMode" class="toggle-button active" title="Fokusmodus" aria-label="Fokusmodus" aria-pressed="true">
       <span class="icon"><i class="fas fa-crosshairs" aria-hidden="true"></i></span>
-      <span class="btn-text">Fokus</span>
+      <span class="btn-text">Fokus aus</span>
     </button>
     <button id="explorerFullscreen" class="toggle-button" title="Vollbild" aria-label="Vollbild">
       <span class="icon"><i class="fas fa-expand" aria-hidden="true"></i></span>
@@ -578,9 +578,9 @@
   }
   
   .toggle-button.active {
-    background: rgba(0, 102, 204, 0.35);
-    color: white;
-    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+    background: rgba(5, 217, 232, 0.25);
+    color: #fff;
+    box-shadow: 0 0 6px rgba(5, 217, 232, 0.5);
   }
   
   /* Seitlicher Zoom-Regler für Smartphones */
@@ -985,19 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
     link.click();
   });
 
-  if (advancedToggleButton) {
-    advancedToggleButton.addEventListener('click', function() {
-      container.classList.toggle('advanced-open');
-      this.classList.toggle('active', container.classList.contains('advanced-open'));
-    });
-  }
-
-  if (focusModeButton) {
-    focusModeButton.addEventListener('click', function() {
-      container.classList.toggle('focus-mode');
-      this.classList.toggle('active', container.classList.contains('focus-mode'));
-    });
-  }
+  // Toggle-Handler kommen weiter unten über setAdvancedOpen/setFocusMode
 
   if (fullscreenButton) {
     fullscreenButton.addEventListener('click', function() {
@@ -1974,6 +1962,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const container = document.querySelector('.explorer-container');
     if (!container || !focusModeButton) return;
     container.classList.toggle('focus-mode', enabled);
+    focusModeButton.classList.toggle('active', enabled);
+    focusModeButton.setAttribute('aria-pressed', String(enabled));
     setButtonLabel(focusModeButton, enabled ? 'Fokus aus' : 'Fokus');
   }
 
@@ -1985,9 +1975,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  if (isMobileDevice() || window.innerWidth <= 768) {
-    setFocusMode(true);
-  }
+  setFocusMode(true);
 
   // Vollbildmodus
   if (fullscreenButton) {
