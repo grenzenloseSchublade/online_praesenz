@@ -31,7 +31,15 @@
       {{ site.title }}{% unless paginator.page == 1 %} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{
       paginator.page }}{% endunless %}
       {% else %}
-      {{ page.title | default: site.title | markdownify | remove: "<p>" | remove: "</p>" }}
+      {% assign hero_title = page.title | default: site.title %}
+      {% if page.url == "/" and hero_title contains "Müller" %}
+        {% unless hero_title contains "neon-umlaut" %}
+        {% assign hero_title = hero_title | replace: "Hans Müller", "<span class='neon-glow'>Hans M<span class='neon-umlaut' aria-label='ü'>u</span>ller</span>" %}
+        {% assign hero_title = hero_title | replace: "Hans", "<span class='neon-glow'>Hans</span>" %}
+        {% assign hero_title = hero_title | replace: "Müller", "<span class='neon-glow'><span class='neon-umlaut' aria-label='ü'>u</span>ller</span>" %}
+        {% endunless %}
+      {% endif %}
+      {{ hero_title | markdownify | remove: "<p>" | remove: "</p>" }}
       {% endif %}
     </h1>
     {% if page.tagline %}

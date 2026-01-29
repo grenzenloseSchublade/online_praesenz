@@ -29,6 +29,134 @@
         }
     }
 
+    .neon-umlaut {
+        position: relative;
+        display: inline-block;
+        padding-inline: 0.02em;
+        line-height: 1;
+        overflow: visible;
+    }
+
+    .neon-umlaut::before,
+    .neon-umlaut::after {
+        content: "";
+        position: absolute;
+        top: -0.42em;
+        width: 0.18em;
+        height: 0.18em;
+        border-radius: 999px;
+        background: #ff00cc;
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 14px rgba(255, 0, 204, 0.85),
+            0 0 26px rgba(255, 0, 204, 0.6);
+        animation: neonUmlautFlicker 3.1s infinite;
+    }
+
+    .neon-umlaut::before {
+        left: 0.05em;
+        animation-delay: 0.2s;
+    }
+
+    .neon-umlaut::after {
+        left: 0.33em;
+        animation-delay: 0.95s;
+    }
+
+@keyframes neonUmlautFlickerA {
+    /* Aggressiv (Variante B): 4‑Puls moderat, 2‑Puls schnell */
+    /* 4‑Puls moderat (2x schneller): 0–10% (≈1.2s bei 12s) — Zeiten hier anpassen */
+    0%, 2.5%, 5%, 7.5%, 10% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    1.25%, 3.75%, 6.25%, 8.75% {
+        opacity: 0.02; /* aus = kein Glow */
+        box-shadow: none;
+    }
+    /* Pause: 10–26.7% (≈2s) — Ruhezeit hier anpassen */
+    10%, 26.7% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    /* 2‑Puls schnell (2x schneller): 26.7–31% (≈0.5s) — Pulsdauer hier anpassen */
+    26.7%, 28.8%, 31% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    27.8%, 30% {
+        opacity: 0.02; /* aus */
+        box-shadow: none;
+    }
+    /* Ruhephase: 31–100% (≈8.3s) — lange Pause hier anpassen */
+    31%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+}
+
+@keyframes neonUmlautFlickerB {
+    /* zweite Sequenz: 1‑Puls (300ms) + 3‑Puls (250ms) */
+    /* 1‑Puls moderat: 0–5% (≈0.6s bei 12s) — 300ms on/off */
+    0%, 5% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    2.5% {
+        opacity: 0.02; /* aus */
+        box-shadow: none;
+    }
+    /* Pause: 5–21.7% (≈2s) — Ruhezeit hier anpassen */
+    5%, 21.7% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    /* 3‑Puls schnell: 21.7–28% (≈0.75s) — 250ms pro Puls */
+    21.7%, 24.2%, 26.7%, 28% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+    22.9%, 25.4%, 27.2% {
+        opacity: 0.02;
+        box-shadow: none;
+    }
+    /* Ruhephase: 28–100% (≈8.6s) — lange Pause hier anpassen */
+    28%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.9),
+            0 0 30px rgba(255, 0, 204, 0.65);
+    }
+}
+
+    .neon-glow {
+        color: inherit;
+        text-shadow: 0 0 4px rgba(255, 0, 204, 0.9),
+            0 0 12px rgba(255, 0, 204, 0.65),
+            0 0 28px rgba(255, 0, 204, 0.45);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .neon-umlaut::before,
+        .neon-umlaut::after {
+            animation: none;
+        }
+    }
+
     // Anpassung der Navigationsleiste
     .greedy-nav {
         background-color: transparent; // Transparenter Hintergrund
@@ -62,6 +190,56 @@
                 background-color: $hover-color;
             }
         }
+    }
+}
+
+// Neon-Utilities global (Hero + Header)
+.neon-umlaut {
+    position: relative;
+    display: inline-block;
+    padding-inline: 0.02em;
+    line-height: 1;
+    overflow: visible;
+}
+
+.neon-umlaut::before,
+.neon-umlaut::after {
+    content: "";
+    position: absolute;
+    top: -0.10em;
+    width: 0.18em;
+    height: 0.18em;
+    border-radius: 999px;
+    background: #ff00cc;
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+        0 0 14px rgba(255, 0, 204, 0.85),
+        0 0 26px rgba(255, 0, 204, 0.6);
+    animation: neonUmlautFlickerA 12s linear infinite; // Gesamtzyklus anpassen (hier 12s)
+}
+
+.neon-umlaut::before {
+    left: 0.1em;
+    animation-delay: 6s; // Startversatz Punkt 1 (hier ändern)
+}
+
+.neon-umlaut::after {
+    left: 0.32em;
+    animation-delay: 8s; // Startversatz Punkt 2 (hier ändern)
+    animation-name: neonUmlautFlickerB; // zweite Sequenz für Zufall
+}
+
+.neon-glow {
+    color: inherit;
+    text-shadow: 0 0 4px rgba(255, 0, 204, 0.9),
+        0 0 12px rgba(255, 0, 204, 0.65),
+        0 0 28px rgba(255, 0, 204, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .neon-umlaut::before,
+    .neon-umlaut::after {
+        animation: none;
     }
 }
 

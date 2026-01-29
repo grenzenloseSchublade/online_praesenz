@@ -9,7 +9,15 @@
                         alt="{{ site.masthead_title | default: site.title }}"></a>
                 {% endunless %}
                 <a class="site-title" href="{{ '/' | relative_url }}">
-                    {{ site.masthead_title | default: site.title }}
+                    {% if page.url == "/" %}
+                        {% assign masthead_title = site.masthead_title | default: site.title %}
+                        {% assign masthead_title = masthead_title | replace: "Hans", "<span class='neon-glow'>H</span>ans" %}
+                        {% assign masthead_title = masthead_title | replace: "Müller", "M<span class='neon-umlaut' aria-label='ü'>u</span>ller" %}
+                        {% assign masthead_title = masthead_title | replace: "Kraftstoff", "<span class='neon-glow'>K</span>raftstoff" %}
+                        {{ masthead_title }}
+                    {% else %}
+                        {{ site.masthead_title | default: site.title }}
+                    {% endif %}
                     {% if site.subtitle %}<span class="site-subtitle">{{ site.subtitle }}</span>{% endif %}
                 </a>
                 <ul class="visible-links">
