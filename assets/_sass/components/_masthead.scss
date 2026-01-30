@@ -41,7 +41,7 @@
     .neon-umlaut::after {
         content: "";
         position: absolute;
-        top: -0.42em;
+        top: -0.34em;
         width: 0.18em;
         height: 0.18em;
         border-radius: 999px;
@@ -54,12 +54,12 @@
     }
 
     .neon-umlaut::before {
-        left: 0.05em;
+        left: 0.08em;
         animation-delay: 0.2s;
     }
 
     .neon-umlaut::after {
-        left: 0.33em;
+        left: 0.32em;
         animation-delay: 0.95s;
     }
 
@@ -206,7 +206,7 @@
 .neon-umlaut::after {
     content: "";
     position: absolute;
-    top: -0.10em;
+    top: -0.04em;
     width: 0.18em;
     height: 0.18em;
     border-radius: 999px;
@@ -219,7 +219,7 @@
 }
 
 .neon-umlaut::before {
-    left: 0.1em;
+    left: 0.12em;
     animation-delay: 6s; // Startversatz Punkt 1 (hier ändern)
 }
 
