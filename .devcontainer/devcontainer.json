@@ -9,17 +9,14 @@
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "onCreateCommand": "sudo rm -f /etc/apt/sources.list.d/yarn.list /etc/apt/sources.list.d/*yarn* /etc/apt/trusted.gpg.d/yarn.gpg 2>/dev/null || true",
-    "postCreateCommand": "sh .devcontainer/post-create.sh",
-    "postAttachCommand": "pip install --upgrade pip && bundle install",
+    "postCreateCommand": "bash -i .devcontainer/post-create.sh",
     "forwardPorts": [
         4000,
         8888
     ],
     "remoteEnv": {
-        "GH_TOKEN": "${localEnv:GH_TOKEN}",
-        "PATH": "${containerEnv:PATH}:${containerWorkspaceFolder}/vendor/bundle/ruby/3.4.0/bin"
+        "GH_TOKEN": "${localEnv:GH_TOKEN}"
     },
-    "postStartCommand": "sh -c 'find ${containerWorkspaceFolder}/vendor/bundle -name jekyll -type f -exec chmod +x {} \\; 2>/dev/null || true'",
     "customizations": {
         "vscode": {
             "extensions": [
