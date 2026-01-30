@@ -458,19 +458,30 @@
 
 // Aus masthead.html migriert
 :root {
+  /* Layout */
+  --masthead-height: 76px;
+  --anchor-offset: calc(var(--masthead-height) + 20px);
+  --content-spacing: 0.8rem;
+
+  /* Brand/Navigation */
   --primary-color: #3498db;
   --primary-color-rgb: 52, 152, 219;
   --hover-bg-color-rgb: 0, 255, 255;
   --hover-bg-opacity: 0.08;
   --hover-indicator-height: 3px;
   --hover-indicator-color: #05d9e8;
-  --masthead-height: 76px;
-  --anchor-offset: calc(var(--masthead-height) + 20px);
-  --content-spacing: 0.8rem;
+
+  /* Neon Text (.neon-glow) */
+  --neon-text-layered-on: 0;
+  --neon-text-pulse-on: 1;
+
+  /* Neon Umlaut Grundeffekte */
   --neon-base-flicker-on: 0;
   --neon-flicker-on: 1;
   --neon-jitter-on: 0;
   --neon-layered-glow-on: 1;
+
+  /* Neon Orbit (Umlaut-Punkte) */
   --neon-orbit-on: 0;
   --neon-orbit-state: paused;
   --neon-orbit-center-x: 0.18em;
@@ -481,9 +492,7 @@
   --neon-orbit-ramp-factor: 2.5s;
   --neon-orbit-ramp-duration: calc(var(--neon-orbit-radius-em, 0.4) * var(--neon-orbit-ramp-factor, 2.5s));
   --neon-orbit-period: 6.4s;
-  --neon-orbit-start-delay: 0.6s;
-  --neon-text-layered-on: 0;
-  --neon-text-pulse-on: 1;
+  --neon-orbit-start-delay: 1.6s;
 }
 
 .masthead {
