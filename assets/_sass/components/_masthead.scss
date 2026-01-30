@@ -484,9 +484,9 @@
   /* Neon Orbit (Umlaut-Punkte) */
   --neon-orbit-on: 0;
   --neon-orbit-state: paused;
-  --neon-orbit-center-x: 0.18em;
-  --neon-orbit-start-offset-before: -0.10em;
-  --neon-orbit-start-offset-after: 0.14em;
+  --neon-orbit-center-x: 0.23em;
+  --neon-orbit-start-offset-before: -0.12em;
+  --neon-orbit-start-offset-after: 0.12em;
   --neon-orbit-radius-em: 0.4;
   --neon-orbit-radius: calc(var(--neon-orbit-radius-em, 0.4) * 1em);
   --neon-orbit-ramp-factor: 2.5s;
