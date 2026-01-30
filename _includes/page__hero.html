@@ -34,9 +34,9 @@
       {% assign hero_title = page.title | default: site.title %}
       {% if page.url == "/" and hero_title contains "Müller" %}
         {% unless hero_title contains "neon-umlaut" %}
-        {% assign hero_title = hero_title | replace: "Hans Müller", "<span class='neon-glow'>Hans M<span class='neon-umlaut' aria-label='ü'>u</span>ller</span>" %}
-        {% assign hero_title = hero_title | replace: "Hans", "<span class='neon-glow'>Hans</span>" %}
-        {% assign hero_title = hero_title | replace: "Müller", "<span class='neon-glow'><span class='neon-umlaut' aria-label='ü'>u</span>ller</span>" %}
+        {% assign hero_title = hero_title | replace: "Hans Müller", "<span class='neon-name'><span class='neon-glow'>H<span class='neon-orbit-trigger' role='button' tabindex='0' aria-label='Orbit starten'>a</span>ns M<span class='neon-umlaut' aria-label='ü'>u</span>ller</span></span>" %}
+        {% assign hero_title = hero_title | replace: "Hans", "<span class='neon-name'><span class='neon-glow'>H<span class='neon-orbit-trigger' role='button' tabindex='0' aria-label='Orbit starten'>a</span>ns</span></span>" %}
+        {% assign hero_title = hero_title | replace: "Müller", "<span class='neon-name'><span class='neon-glow'><span class='neon-umlaut' aria-label='ü'>u</span>ller</span></span>" %}
         {% endunless %}
       {% endif %}
       {{ hero_title | markdownify | remove: "<p>" | remove: "</p>" }}

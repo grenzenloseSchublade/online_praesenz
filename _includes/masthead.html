@@ -11,10 +11,10 @@
                 <a class="site-title" href="{{ '/' | relative_url }}">
                     {% if page.url == "/" %}
                         {% assign masthead_title = site.masthead_title | default: site.title %}
-                        {% assign masthead_title = masthead_title | replace: "Hans", "<span class='neon-glow'>H</span>ans" %}
+                        {% assign masthead_title = masthead_title | replace: "Hans", "<span class='neon-glow'>H</span><span class='neon-orbit-trigger' role='button' tabindex='0' aria-label='Orbit starten'>a</span>ns" %}
                         {% assign masthead_title = masthead_title | replace: "Müller", "M<span class='neon-umlaut' aria-label='ü'>u</span>ller" %}
                         {% assign masthead_title = masthead_title | replace: "Kraftstoff", "<span class='neon-glow'>K</span>raftstoff" %}
-                        {{ masthead_title }}
+                        <span class="neon-name">{{ masthead_title }}</span>
                     {% else %}
                         {{ site.masthead_title | default: site.title }}
                     {% endif %}
