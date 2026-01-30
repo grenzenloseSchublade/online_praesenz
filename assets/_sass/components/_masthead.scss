@@ -50,7 +50,16 @@
         box-shadow: 0 0 6px rgba(255, 0, 204, 1),
             0 0 14px rgba(255, 0, 204, 0.85),
             0 0 26px rgba(255, 0, 204, 0.6);
-        animation: neonUmlautFlicker 3.1s infinite;
+        animation-name: neonUmlautFlicker, neonFlickerIrregular, neonJitter, neonLayeredGlow;
+        animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+            calc(var(--neon-flicker-on, 0) * 3.4s),
+            calc(var(--neon-jitter-on, 0) * 1.6s),
+            calc(var(--neon-layered-glow-on, 0) * 2.8s);
+        animation-timing-function: linear,
+            steps(1, end),
+            ease-in-out,
+            ease-in-out;
+        animation-iteration-count: infinite, infinite, infinite, infinite;
     }
 
     .neon-umlaut::before {
@@ -143,16 +152,101 @@
     }
 }
 
+@keyframes neonFlickerIrregular {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 14px rgba(255, 0, 204, 0.85),
+            0 0 26px rgba(255, 0, 204, 0.6);
+    }
+    20%, 24%, 55% {
+        opacity: 0.15;
+        box-shadow: 0 0 2px rgba(255, 0, 204, 0.6);
+    }
+}
+
+@keyframes neonJitter {
+    0%, 100% {
+        transform: translate(0, 0);
+        filter: blur(0);
+    }
+    20% {
+        transform: translate(0.01em, -0.01em);
+        filter: blur(0.2px);
+    }
+    40% {
+        transform: translate(-0.01em, 0.01em);
+        filter: blur(0.35px);
+    }
+    60% {
+        transform: translate(0.012em, 0);
+        filter: blur(0.2px);
+    }
+    80% {
+        transform: translate(-0.012em, -0.01em);
+        filter: blur(0.3px);
+    }
+}
+
+@keyframes neonLayeredGlow {
+    0%, 100% {
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 14px rgba(255, 0, 204, 0.85),
+            0 0 26px rgba(255, 0, 204, 0.6),
+            0 0 36px rgba(255, 0, 204, 0.35);
+    }
+    50% {
+        box-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.95),
+            0 0 30px rgba(255, 0, 204, 0.75),
+            0 0 44px rgba(255, 0, 204, 0.45);
+    }
+}
+
+@keyframes neonTextLayeredGlow {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(255, 0, 204, 0.9),
+            0 0 12px rgba(255, 0, 204, 0.65),
+            0 0 28px rgba(255, 0, 204, 0.45),
+            0 0 40px rgba(255, 0, 204, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 4px rgba(255, 0, 204, 1),
+            0 0 14px rgba(255, 0, 204, 0.8),
+            0 0 32px rgba(255, 0, 204, 0.6),
+            0 0 48px rgba(255, 0, 204, 0.4);
+    }
+}
+
+@keyframes neonTextPulse {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(255, 0, 204, 0.85),
+            0 0 12px rgba(255, 0, 204, 0.6),
+            0 0 26px rgba(255, 0, 204, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 6px rgba(255, 0, 204, 1),
+            0 0 16px rgba(255, 0, 204, 0.8),
+            0 0 32px rgba(255, 0, 204, 0.55);
+    }
+}
+
     .neon-glow {
         color: inherit;
         text-shadow: 0 0 4px rgba(255, 0, 204, 0.9),
             0 0 12px rgba(255, 0, 204, 0.65),
             0 0 28px rgba(255, 0, 204, 0.45);
+        animation-name: neonTextLayeredGlow, neonTextPulse;
+        animation-duration: calc(var(--neon-text-layered-on, 0) * 3.2s),
+            calc(var(--neon-text-pulse-on, 0) * 4.6s);
+        animation-timing-function: ease-in-out, ease-in-out;
+        animation-iteration-count: infinite, infinite;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .neon-umlaut::before,
-        .neon-umlaut::after {
+        .neon-umlaut::after,
+        .neon-glow {
             animation: none;
         }
     }
@@ -215,7 +309,16 @@
     box-shadow: 0 0 6px rgba(255, 0, 204, 1),
         0 0 14px rgba(255, 0, 204, 0.85),
         0 0 26px rgba(255, 0, 204, 0.6);
-    animation: neonUmlautFlickerA 12s linear infinite; // Gesamtzyklus anpassen (hier 12s)
+    animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow;
+    animation-duration: calc(var(--neon-base-flicker-on, 1) * 12s),
+        calc(var(--neon-flicker-on, 0) * 3.4s),
+        calc(var(--neon-jitter-on, 0) * 1.6s),
+        calc(var(--neon-layered-glow-on, 0) * 2.8s);
+    animation-timing-function: linear,
+        steps(1, end),
+        ease-in-out,
+        ease-in-out;
+    animation-iteration-count: infinite, infinite, infinite, infinite;
 }
 
 .neon-umlaut::before {
@@ -226,7 +329,7 @@
 .neon-umlaut::after {
     left: 0.32em;
     animation-delay: 8s; // Startversatz Punkt 2 (hier ändern)
-    animation-name: neonUmlautFlickerB; // zweite Sequenz für Zufall
+    animation-name: neonUmlautFlickerB, neonFlickerIrregular, neonJitter, neonLayeredGlow; // zweite Sequenz für Zufall
 }
 
 .neon-glow {
@@ -234,11 +337,17 @@
     text-shadow: 0 0 4px rgba(255, 0, 204, 0.9),
         0 0 12px rgba(255, 0, 204, 0.65),
         0 0 28px rgba(255, 0, 204, 0.45);
+    animation-name: neonTextLayeredGlow, neonTextPulse;
+    animation-duration: calc(var(--neon-text-layered-on, 0) * 3.2s),
+        calc(var(--neon-text-pulse-on, 0) * 4.6s);
+    animation-timing-function: ease-in-out, ease-in-out;
+    animation-iteration-count: infinite, infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .neon-umlaut::before,
-    .neon-umlaut::after {
+    .neon-umlaut::after,
+    .neon-glow {
         animation: none;
     }
 }
@@ -276,6 +385,12 @@
   --masthead-height: 76px;
   --anchor-offset: calc(var(--masthead-height) + 20px);
   --content-spacing: 0.8rem;
+  --neon-base-flicker-on: 0;
+  --neon-flicker-on: 1;
+  --neon-jitter-on: 0;
+  --neon-layered-glow-on: 1;
+  --neon-text-layered-on: 0;
+  --neon-text-pulse-on: 1;
 }
 
 .masthead {
