@@ -1,0 +1,338 @@
+// Orbit-Animationen für die Neon-Umlaut-Punkte (ausgelagert)
+
+@property --neon-orbit-radius-em {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.4;
+}
+
+:root {
+  transition: --neon-orbit-radius-em var(--neon-orbit-return-duration, 1.0s) ease-in-out;
+  /* Neon Orbit (Umlaut-Punkte) */
+  --neon-orbit-on: 0;
+  --neon-orbit-state: paused;
+  --neon-orbit-return-state: paused;
+  --neon-orbit-return-on: 0;
+  --neon-orbit-color-mode: default;
+  --neon-orbit-start-angle-before: 180deg;
+  --neon-orbit-start-angle-after: 0deg;
+  --neon-orbit-finish-state: paused;
+  --neon-orbit-popin-state: paused;
+  --neon-orbit-period: 6.8s;
+  --neon-orbit-finish-duration: 3.2s;
+  --neon-orbit-pop-duration: 0.5s;
+  --neon-orbit-center-x: 0.23em;
+  --neon-orbit-start-offset-before: -0.12em;
+  --neon-orbit-start-offset-after: 0.12em;
+  --neon-orbit-radius-em: 0.4;
+  --neon-orbit-radius: calc(var(--neon-orbit-radius-em, 0.4) * 1em);
+  --neon-orbit-ramp-factor: 2.2s;
+  --neon-orbit-ramp-duration: calc(var(--neon-orbit-radius-em, 0.4) * var(--neon-orbit-ramp-factor, 2.5s));
+  --neon-orbit-return-duration: 1.0s;
+  --neon-orbit-start-delay: 1.6s;
+}
+
+@keyframes neonOrbitRampBefore {
+  from {
+    transform: rotate(0deg) translateX(var(--neon-orbit-start-offset-before, -0.10em)) rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+  }
+}
+
+@keyframes neonOrbitRampAfter {
+  from {
+    transform: rotate(0deg) translateX(var(--neon-orbit-start-offset-after, 0.14em)) rotate(0deg);
+  }
+  to {
+    transform: rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+  }
+}
+
+@keyframes neonOrbitSpinBefore {
+  from {
+    transform: rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+  }
+  to {
+    transform: rotate(540deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-540deg);
+  }
+}
+
+@keyframes neonOrbitSpinAfter {
+  from {
+    transform: rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-360deg);
+  }
+}
+
+@keyframes neonOrbitFinishBefore {
+  0% {
+    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
+    opacity: 1;
+  }
+  70% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
+      translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 720deg)));
+    opacity: 1;
+  }
+  85% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)));
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 1),
+      0 0 44px rgba(255, 255, 255, 0.9),
+      0 0 90px rgba(255, 255, 255, 0.75);
+  }
+  92% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1260deg)))
+      scale(var(--neon-orbit-explosion-scale, 2));
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 30px var(--neon-orbit-explosion-glow-strong, rgba(255, 255, 255, 1)),
+      0 0 80px var(--neon-orbit-explosion-glow-mid, rgba(255, 255, 255, 0.95)),
+      0 0 160px var(--neon-orbit-explosion-glow-soft, rgba(255, 255, 255, 0.85));
+  }
+  100% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1260deg)))
+      scale(1);
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1),
+      0 0 50px rgba(255, 255, 255, 0.9),
+      0 0 110px rgba(255, 255, 255, 0.75);
+  }
+}
+
+@keyframes neonOrbitFinishAfter {
+  0% {
+    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
+    opacity: 1;
+  }
+  70% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
+      translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 720deg)));
+    opacity: 1;
+  }
+  85% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)));
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 1),
+      0 0 44px rgba(255, 255, 255, 0.9),
+      0 0 90px rgba(255, 255, 255, 0.75);
+  }
+  92% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1260deg)))
+      scale(var(--neon-orbit-explosion-scale, 2));
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 30px var(--neon-orbit-explosion-glow-strong, rgba(255, 255, 255, 1)),
+      0 0 80px var(--neon-orbit-explosion-glow-mid, rgba(255, 255, 255, 0.95)),
+      0 0 160px var(--neon-orbit-explosion-glow-soft, rgba(255, 255, 255, 0.85));
+  }
+  100% {
+    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
+      translateX(0)
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1260deg)))
+      scale(1);
+    opacity: 1;
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1),
+      0 0 50px rgba(255, 255, 255, 0.9),
+      0 0 110px rgba(255, 255, 255, 0.75);
+  }
+}
+
+@keyframes neonOrbitPopOutBefore {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 1),
+      0 0 36px rgba(255, 255, 255, 0.95),
+      0 0 90px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes neonOrbitPopOutAfter {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 1),
+      0 0 36px rgba(255, 255, 255, 0.95),
+      0 0 90px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes neonOrbitPopInBefore {
+  0% {
+    transform: translateX(var(--neon-orbit-start-offset-before, -0.10em)) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(var(--neon-orbit-start-offset-before, -0.10em)) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes neonOrbitPopInAfter {
+  0% {
+    transform: translateX(var(--neon-orbit-start-offset-after, 0.14em)) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(var(--neon-orbit-start-offset-after, 0.14em)) scale(1);
+    opacity: 1;
+  }
+}
+
+.neon-name.orbit-running .neon-umlaut::before {
+  animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitRampBefore, neonOrbitSpinBefore;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-ramp-duration, 1.2s),
+    var(--neon-orbit-period, 6.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-out,
+    linear;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1, infinite;
+  animation-fill-mode: none, none, none, none, forwards, none;
+  animation-delay: 0.2s, 0s, 0s, 0s,
+    var(--neon-orbit-start-delay, 0.6s),
+    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 1.2s));
+}
+
+.neon-name.orbit-running .neon-umlaut::after {
+  animation-name: neonUmlautFlickerB, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitRampAfter, neonOrbitSpinAfter;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-ramp-duration, 1.2s),
+    var(--neon-orbit-period, 6.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-out,
+    linear;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1, infinite;
+  animation-fill-mode: none, none, none, none, forwards, none;
+  animation-delay: 0.95s, 0s, 0s, 0s,
+    var(--neon-orbit-start-delay, 0.6s),
+    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 1.2s));
+}
+
+.neon-name.orbit-finish .neon-umlaut::before {
+  animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitFinishBefore, neonOrbitPopOutBefore;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-finish-duration, 3.4s),
+    var(--neon-orbit-pop-duration, 0.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-in,
+    ease-out;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1, 1;
+  animation-fill-mode: none, none, none, none, forwards, forwards;
+  animation-delay: 0.2s, 0s, 0s, 0s, 0s,
+    calc(var(--neon-orbit-finish-duration, 3.2s) - var(--neon-orbit-pop-duration, 0.5s));
+}
+
+.neon-name.orbit-finish .neon-umlaut::after {
+  animation-name: neonUmlautFlickerB, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitFinishAfter, neonOrbitPopOutAfter;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-finish-duration, 3.4s),
+    var(--neon-orbit-pop-duration, 0.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-in,
+    ease-out;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1, 1;
+  animation-fill-mode: none, none, none, none, forwards, forwards;
+  animation-delay: 0.95s, 0s, 0s, 0s, 0s,
+    calc(var(--neon-orbit-finish-duration, 3.2s) - var(--neon-orbit-pop-duration, 0.5s));
+}
+
+.neon-name.orbit-popin .neon-umlaut::before {
+  animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitPopInBefore;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-pop-duration, 0.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-out;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1;
+  animation-fill-mode: none, none, none, none, forwards;
+  animation-delay: 0.2s, 0s, 0s, 0s, 0s;
+}
+
+.neon-name.orbit-popin .neon-umlaut::after {
+  animation-name: neonUmlautFlickerB, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitPopInAfter;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-pop-duration, 0.4s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    ease-out;
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1;
+  animation-fill-mode: none, none, none, none, forwards;
+  animation-delay: 0.95s, 0s, 0s, 0s, 0s;
+}
+
+.neon-name:not(.orbit-popin) .neon-umlaut::before,
+.neon-name:not(.orbit-popin) .neon-umlaut::after {
+  opacity: var(--neon-orbit-opacity, 1);
+}
