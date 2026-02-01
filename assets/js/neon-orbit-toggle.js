@@ -155,7 +155,8 @@
     return value.includes("ms") ? num : num * 1000;
   };
 
-  const finishOrbitSequence = (scope, state, target) => {
+  // Scatter-Animation für 2-Klick Beenden (Punkte fliegen wild über den Bildschirm)
+  const scatterOrbitSequence = (scope, state, target) => {
     clearTimers(state);
 
     let angleBefore = getAngle(target, "::before");
@@ -185,7 +186,7 @@
       scope.classList.add("orbit-scatter");
     });
 
-    // Scatter-Animation dauert 3 Sekunden (--neon-orbit-scatter-duration)
+    // Scatter-Animation dauert 3 Sekunden
     const scatterDuration = getVar(scope, "--neon-orbit-scatter-duration") || "3s";
 
     state.finishTimer = window.setTimeout(() => {
@@ -195,7 +196,55 @@
       state.clickCount = 0;
       scope.style.setProperty("--neon-orbit-opacity", "1");
       void scope.offsetWidth;
-    }, parseFloat(scatterDuration) * 1000 + 200); // +200ms Puffer
+    }, parseFloat(scatterDuration) * 1000 + 200);
+  };
+
+  // Explosion-Animation für 3-Klick Beenden (originale Finish-Animation)
+  const finishOrbitSequence = (scope, state, target) => {
+    clearTimers(state);
+
+    let angleBefore = getAngle(target, "::before");
+    let angleAfter = getAngle(target, "::after");
+
+    if (angleBefore === null || angleAfter === null) {
+      const periodMs = toMs(getVar(scope, "--neon-orbit-period")) || 6400;
+      const rampMs = toMs(getVar(scope, "--neon-orbit-ramp-duration")) || 1200;
+      const startDelayMs = toMs(getVar(scope, "--neon-orbit-start-delay")) || 600;
+      const elapsed =
+        performance.now() - state.orbitStartTimeMs - startDelayMs - rampMs;
+      const phase = ((Math.max(0, elapsed) % periodMs) / periodMs) * 360;
+      if (angleBefore === null) angleBefore = 180 + phase;
+      if (angleAfter === null) angleAfter = 0 + phase;
+    }
+
+    scope.style.setProperty("--neon-orbit-start-angle-before", `${angleBefore}deg`);
+    scope.style.setProperty("--neon-orbit-start-angle-after", `${angleAfter}deg`);
+
+    requestAnimationFrame(() => {
+      scope.classList.remove("orbit-running");
+      scope.classList.add("orbit-finish");
+      scope.classList.remove("orbit-popin");
+      scope.classList.remove("orbit-scatter");
+    });
+
+    const finishDuration =
+      getVar(scope, "--neon-orbit-finish-duration") || "3.4s";
+    const popDuration =
+      getVar(scope, "--neon-orbit-pop-duration") || "0.4s";
+
+    state.finishTimer = window.setTimeout(() => {
+      scope.classList.remove("orbit-finish");
+      scope.classList.add("orbit-popin");
+
+      state.popinTimer = window.setTimeout(() => {
+        scope.classList.remove("orbit-popin");
+        stopOrbitSmooth(scope, state);
+        state.orbitMode = "default";
+        state.clickCount = 0;
+        scope.style.setProperty("--neon-orbit-opacity", "1");
+        void scope.offsetWidth;
+      }, parseFloat(popDuration) * 1000);
+    }, parseFloat(finishDuration) * 1000);
   };
 
   const startOrbit = (scope, state, mode) => {
@@ -203,22 +252,36 @@
     state.orbitStartTimeMs = performance.now();
     scope.style.setProperty("--neon-orbit-color-mode", mode);
     setColorMode(scope, state, mode);
+    
+    // Orbit-Mittelpunkt anpassen je nach Modus
+    if (mode === "default") {
+      // 2-Klick Modus: Orbit etwas höher
+      scope.style.setProperty("--neon-orbit-radius-em", "0.5");
+    } else {
+      // 3-Klick Modus: Standard-Radius
+      scope.style.setProperty("--neon-orbit-radius-em", "0.4");
+    }
+    
     scope.classList.add("orbit-running");
     scope.classList.remove("orbit-finish");
     scope.classList.remove("orbit-popin");
+    scope.classList.remove("orbit-scatter");
   };
 
   const toggleOrbit = (scope, state, mode, target) => {
-    if (scope.classList.contains("orbit-finish") || scope.classList.contains("orbit-popin")) {
+    if (scope.classList.contains("orbit-finish") || scope.classList.contains("orbit-popin") || scope.classList.contains("orbit-scatter")) {
       return;
     }
     const running = scope.classList.contains("orbit-running");
     if (running) {
+      // Beim Beenden: unterschiedliche Animationen je nach Modus
       if (state.orbitMode === "accent") {
+        // 3-Klick Modus: Explosion-Animation
         finishOrbitSequence(scope, state, target);
         return;
       }
-      stopOrbitSmooth(scope, state);
+      // 2-Klick Modus (default): Scatter-Animation (Punkte fliegen wild)
+      scatterOrbitSequence(scope, state, target);
       return;
     }
     state.orbitMode = mode;
