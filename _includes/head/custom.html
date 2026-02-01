@@ -143,4 +143,60 @@
 
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
 
+<!-- Strukturierte Daten (JSON-LD) für SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{% if page.layout == 'single' and page.date %}BlogPosting{% else %}WebPage{% endif %}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "headline": "{{ page.title | default: site.title | escape }}",
+  "description": "{{ page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 | escape }}",
+  {% if page.header.overlay_image or site.og_image %}
+  "image": "{{ page.header.overlay_image | default: site.og_image | absolute_url }}",
+  {% endif %}
+  {% if page.date %}
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  {% endif %}
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author.name | default: site.name }}",
+    "url": "{{ site.url }}"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "{{ site.author.name | default: site.name }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.logo | absolute_url }}"
+    }
+  }
+}
+</script>
+
+<!-- Person Schema für About-Seite -->
+{% if page.url == "/about/" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ site.author.name }}",
+  "url": "{{ site.url }}{{ site.baseurl }}",
+  "image": "{{ site.author.avatar | absolute_url }}",
+  "jobTitle": "{{ site.author.bio }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "DE"
+  },
+  "sameAs": [
+    "https://github.com/grenzenloseSchublade",
+    "https://www.linkedin.com/in/hans-m%C3%BCller-39a133359/"
+  ]
+}
+</script>
+{% endif %}
+
 <!-- end custom head snippets -->

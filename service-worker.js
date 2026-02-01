@@ -78,14 +78,39 @@ self.addEventListener('fetch', event => {
   // Ignoriere Chrome-Extensions und andere externe Requests
   if (!event.request.url.startsWith(self.location.origin)) return;
   
-  // Spezielle Behandlung für Bilder
-  if (event.request.url.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+  const url = event.request.url;
+  
+  // Spezielle Behandlung für Bilder: Cache-First
+  if (url.match(/\.(jpg|jpeg|png|gif|webp|ico)$/)) {
     event.respondWith(cacheFirst(event.request));
-  } else {
-    // Für alle anderen Ressourcen: Network-First-Strategie
+  }
+  // CSS und JS: Stale-While-Revalidate (schnell + aktuell)
+  else if (url.match(/\.(css|js)$/)) {
+    event.respondWith(staleWhileRevalidate(event.request));
+  }
+  // Für alle anderen Ressourcen: Network-First-Strategie
+  else {
     event.respondWith(networkFirst(event.request));
   }
 });
+
+// Stale-While-Revalidate für CSS/JS (schnell + aktuell)
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cachedResponse = await cache.match(request);
+  
+  // Im Hintergrund neue Version holen und cachen
+  const fetchPromise = fetch(request).then(networkResponse => {
+    if (networkResponse.ok) {
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  }).catch(() => null);
+  
+  // Sofort gecachte Version zurückgeben, falls vorhanden
+  // Sonst auf Netzwerk warten
+  return cachedResponse || fetchPromise;
+}
 
 // Cache-First-Strategie für Bilder
 async function cacheFirst(request) {

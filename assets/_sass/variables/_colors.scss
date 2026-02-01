@@ -1,9 +1,14 @@
 // Farbvariablen für das gesamte Projekt
 // Diese Datei enthält alle Farbdefinitionen, die im Projekt verwendet werden
 
-// Primäre Farbpalette
-$link-color: #05d9e8; // Linkfarbe
-$hover-color: #ff00ff; // Hover-Effekt Farbe
+// Basis-Farben
+$white: #ffffff; // Einheitliches Weiß für alle Verwendungen
+
+// Primäre Farbpalette (Cyan, Magenta, Grün)
+$link-color: #05d9e8; // Cyan - Linkfarbe
+$hover-color: #ff00ff; // Magenta - Hover-Effekt Farbe
+$accent-green: #00ffc8; // Grün - Akzentfarbe
+$accent-green-light: #bbfff0; // Helles Grün - Sekundärakzent
 $background-dark: #1a1a1a; // Dunkler Hintergrund
 $code-background: #2d2d2d; // Code-Block Hintergrund
 

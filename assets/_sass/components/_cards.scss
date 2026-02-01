@@ -63,19 +63,14 @@
 }
 
 // Globaler Hover-Akzent für Archiv/Teaser-Items (list + grid)
+// Hover-Effekt: NUR Glow-Rahmen, keine Text-/Hintergrundänderung
 .archive__item {
     border-radius: 8px;
     padding-block: 0.1em;
     padding-inline: 0.2em;
-    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+    transition: box-shadow 0.2s ease;
 }
 
 .archive__item:hover {
     box-shadow: 0 0 0 1px #f0f, 0 8px 18px rgba(240, 0, 255, 0.3);
-    background-color: rgba(240, 0, 255, 0.06);
-    transform: translateY(-1px);
-}
-
-.archive__item:hover .archive__item-title a {
-    color: #f0f;
 }

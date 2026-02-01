@@ -24,7 +24,8 @@ lunr:
 
 # Math Settings
 markdown: kramdown
-mathjax: true
+# mathjax: wird nur auf Page-Ebene aktiviert (z.B. mathjax: true im Frontmatter)
+# Das verbessert die Performance, da MathJax nur bei Bedarf geladen wird
 kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
@@ -55,15 +56,18 @@ naver_site_verification:
 # Social Sharing
 twitter:
   username:
+  card: "summary_large_image"
 facebook:
   username:
   app_id:
   publisher:
-og_image: # Open Graph/Twitter default site image
+og_image: "/assets/images/WebSite_Logo_3.png" # Open Graph/Twitter default site image
 social:
-  type: # Person or Organization (defaults to Person)
-  name: # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type: "Person"
+  name: "Hans Müller"
+  links:
+    - "https://github.com/grenzenloseSchublade"
+    - "https://www.linkedin.com/in/hans-m%C3%BCller-39a133359/"
 
 # Analytics
 analytics:

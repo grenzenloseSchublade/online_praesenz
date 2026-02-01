@@ -122,7 +122,13 @@
       clearTimeout(timer);
     });
 
-    window.addEventListener('resize', check);
+    // Debounced resize handler für bessere Performance
+    let resizeTimeout;
+    function debouncedCheck() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(check, 100);
+    }
+    window.addEventListener('resize', debouncedCheck);
 
     if (logoImg && !(logoImg.complete && logoImg.naturalWidth !== 0)) {
       logoImg.addEventListener('load', check, { once: true });

@@ -1,0 +1,97 @@
+// Zentrale CSS Custom Properties (CSS-Variablen)
+// Diese Datei enthält alle :root CSS-Variablen für das gesamte Projekt
+// Konsolidiert aus _masthead.scss und _neon-orbit.scss
+
+:root {
+  // ============================================
+  // Layout
+  // ============================================
+  --masthead-height: 76px;
+  --anchor-offset: calc(var(--masthead-height) + 20px);
+  --content-spacing: 0.8rem;
+
+  // ============================================
+  // Brand/Navigation Farben
+  // ============================================
+  --primary-color: #3498db;
+  --primary-color-rgb: 52, 152, 219;
+  --hover-bg-color-rgb: 0, 255, 255;
+  --hover-bg-opacity: 0.08;
+  --hover-indicator-height: 3px;
+  --hover-indicator-color: #05d9e8;
+
+  // ============================================
+  // Neon Text (.neon-glow)
+  // ============================================
+  --neon-text-layered-on: 0;
+  --neon-text-pulse-on: 1;
+
+  // ============================================
+  // Neon Umlaut Grundeffekte
+  // ============================================
+  --neon-base-flicker-on: 0;
+  --neon-flicker-on: 1;
+  --neon-jitter-on: 0;
+  --neon-layered-glow-on: 1;
+  
+  // Umlaut-Punkt Farben
+  --neon-umlaut-dot-color: #ffffff;
+  --neon-umlaut-dot-glow-strong: rgba(255, 0, 204, 1);
+  --neon-umlaut-dot-glow-mid: rgba(255, 0, 204, 0.85);
+  --neon-umlaut-dot-glow-soft: rgba(255, 0, 204, 0.6);
+  
+  // Umlaut-Punkt Farben (before/after Pseudo-Elemente)
+  --neon-umlaut-dot-color-before: var(--neon-umlaut-dot-color, #ffffff);
+  --neon-umlaut-dot-color-after: var(--neon-umlaut-dot-color, #ffffff);
+  --neon-umlaut-dot-glow-strong-before: var(--neon-umlaut-dot-glow-strong, rgba(255, 0, 204, 1));
+  --neon-umlaut-dot-glow-mid-before: var(--neon-umlaut-dot-glow-mid, rgba(255, 0, 204, 0.85));
+  --neon-umlaut-dot-glow-soft-before: var(--neon-umlaut-dot-glow-soft, rgba(255, 0, 204, 0.6));
+  --neon-umlaut-dot-glow-strong-after: var(--neon-umlaut-dot-glow-strong, rgba(255, 0, 204, 1));
+  --neon-umlaut-dot-glow-mid-after: var(--neon-umlaut-dot-glow-mid, rgba(255, 0, 204, 0.85));
+  --neon-umlaut-dot-glow-soft-after: var(--neon-umlaut-dot-glow-soft, rgba(255, 0, 204, 0.6));
+  
+  // Umlaut Akzentfarben
+  --neon-umlaut-accent-before: #00ffff;
+  --neon-umlaut-accent-after: #ff00cc;
+  --neon-umlaut-accent-glow-before: rgba(0, 255, 255, 0.85);
+  --neon-umlaut-accent-glow-mid-before: rgba(0, 255, 255, 0.7);
+  --neon-umlaut-accent-glow-soft-before: rgba(0, 255, 255, 0.5);
+  --neon-umlaut-accent-glow-after: rgba(255, 0, 204, 0.85);
+  --neon-umlaut-accent-glow-mid-after: rgba(255, 0, 204, 0.7);
+  --neon-umlaut-accent-glow-soft-after: rgba(255, 0, 204, 0.5);
+
+  // ============================================
+  // Neon Orbit Animation
+  // ============================================
+  --neon-orbit-on: 0;
+  --neon-orbit-state: paused;
+  --neon-orbit-return-state: paused;
+  --neon-orbit-return-on: 0;
+  --neon-orbit-color-mode: default;
+  --neon-orbit-start-angle-before: 180deg;
+  --neon-orbit-start-angle-after: 0deg;
+  --neon-orbit-finish-state: paused;
+  --neon-orbit-popin-state: paused;
+  --neon-orbit-period: 6.8s;
+  --neon-orbit-finish-duration: 3.2s;
+  --neon-orbit-pop-duration: 0.5s;
+  --neon-orbit-center-x: 0.23em;
+  --neon-orbit-start-offset-before: -0.12em;
+  --neon-orbit-start-offset-after: 0.12em;
+  --neon-orbit-radius-em: 0.4;
+  --neon-orbit-radius: calc(var(--neon-orbit-radius-em, 0.4) * 1em);
+  --neon-orbit-ramp-factor: 2.2s;
+  --neon-orbit-ramp-duration: calc(var(--neon-orbit-radius-em, 0.4) * var(--neon-orbit-ramp-factor, 2.5s));
+  --neon-orbit-return-duration: 1.0s;
+  --neon-orbit-start-delay: 1.6s;
+
+  // Orbit Radius Transition
+  transition: --neon-orbit-radius-em var(--neon-orbit-return-duration, 1.0s) ease-in-out;
+}
+
+// CSS @property für animierbare Custom Properties
+@property --neon-orbit-radius-em {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.4;
+}

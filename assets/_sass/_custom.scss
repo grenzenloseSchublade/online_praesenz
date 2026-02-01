@@ -33,3 +33,62 @@
     background: $selection-bg;
     color: $selection-text;
 }
+
+// ============================================
+// Accessibility: Reduced Motion
+// ============================================
+// Deaktiviert alle Animationen und Transitions für Benutzer,
+// die reduzierte Bewegung bevorzugen
+
+@media (prefers-reduced-motion: reduce) {
+    // Deaktiviere alle Animationen global
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    // Spezifische Komponenten
+    .neon-umlaut::before,
+    .neon-umlaut::after,
+    .neon-glow,
+    .neon-name {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    // Hover-Transformationen deaktivieren
+    .archive__item,
+    .landing-section,
+    .interest-card,
+    .skill-card,
+    .contact-card,
+    .quote-container,
+    .about-section,
+    .btn {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    // Hero fade-in deaktivieren
+    .page__hero--overlay {
+        animation: none !important;
+    }
+
+    // Masthead Transitions deaktivieren
+    .masthead,
+    .greedy-nav__toggle,
+    .navicon,
+    .navicon::before,
+    .navicon::after {
+        transition: none !important;
+    }
+
+    // TOC Collapse deaktivieren
+    .toc__menu-wrapper {
+        transition: none !important;
+    }
+}

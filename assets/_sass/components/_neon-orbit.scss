@@ -1,36 +1,5 @@
 // Orbit-Animationen für die Neon-Umlaut-Punkte (ausgelagert)
-
-@property --neon-orbit-radius-em {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0.4;
-}
-
-:root {
-  transition: --neon-orbit-radius-em var(--neon-orbit-return-duration, 1.0s) ease-in-out;
-  /* Neon Orbit (Umlaut-Punkte) */
-  --neon-orbit-on: 0;
-  --neon-orbit-state: paused;
-  --neon-orbit-return-state: paused;
-  --neon-orbit-return-on: 0;
-  --neon-orbit-color-mode: default;
-  --neon-orbit-start-angle-before: 180deg;
-  --neon-orbit-start-angle-after: 0deg;
-  --neon-orbit-finish-state: paused;
-  --neon-orbit-popin-state: paused;
-  --neon-orbit-period: 6.8s;
-  --neon-orbit-finish-duration: 3.2s;
-  --neon-orbit-pop-duration: 0.5s;
-  --neon-orbit-center-x: 0.23em;
-  --neon-orbit-start-offset-before: -0.12em;
-  --neon-orbit-start-offset-after: 0.12em;
-  --neon-orbit-radius-em: 0.4;
-  --neon-orbit-radius: calc(var(--neon-orbit-radius-em, 0.4) * 1em);
-  --neon-orbit-ramp-factor: 2.2s;
-  --neon-orbit-ramp-duration: calc(var(--neon-orbit-radius-em, 0.4) * var(--neon-orbit-ramp-factor, 2.5s));
-  --neon-orbit-return-duration: 1.0s;
-  --neon-orbit-start-delay: 1.6s;
-}
+// CSS Custom Properties sind zentral in _variables/_css-properties.scss definiert
 
 @keyframes neonOrbitRampBefore {
   from {
