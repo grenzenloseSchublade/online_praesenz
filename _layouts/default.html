@@ -2,7 +2,7 @@
 {% include copyright.html %}
 <html lang="{{ site.locale | replace: "_", "-" | default: "en" }}" class="no-js" data-enable-service-worker="{{ site.enable_service_worker }}" data-baseurl="{{ site.baseurl }}">
   <head>
-    {% include_cached head.html %}
+    {% include head.html %}
     {% include head/custom.html %}
     
     <!-- Preload kritischer Ressourcen für bessere Performance -->

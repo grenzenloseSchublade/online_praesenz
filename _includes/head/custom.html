@@ -45,10 +45,21 @@
     }
   };
 </script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-chtml.js"></script>
+<script id="MathJax-script" async 
+        src="https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-chtml.js"
+        integrity="sha384-eFoKTCK+YGO2m6R2Z5v7A6twgQ1+PfLq+elzUmXZzq5PMVnt5uwSR8L5rjlQoPJu"
+        crossorigin="anonymous"></script>
 {% endif %}
 
+<!-- Favicon-Set für verschiedene Plattformen -->
 <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/assets/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/assets/images/WebSite_Logo_3.png">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/assets/images/WebSite_Logo_3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ site.baseurl }}/assets/images/WebSite_Logo_3.png">
+<link rel="mask-icon" href="{{ site.baseurl }}/assets/images/WebSite_Logo_3.png" color="#05d9e8">
+<meta name="msapplication-TileImage" content="{{ site.baseurl }}/assets/images/WebSite_Logo_3.png">
+<meta name="msapplication-TileColor" content="#1a1a1a">
+<meta name="theme-color" content="#1a1a1a">
 
 <!-- Hintergrundbild vorladen für bessere Performance -->
 <link rel="preload" href="{{ site.baseurl }}/assets/images/background.jpg" as="image" type="image/jpeg" crossorigin="anonymous">

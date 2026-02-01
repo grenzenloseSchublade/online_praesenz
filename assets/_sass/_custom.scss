@@ -92,3 +92,59 @@
         transition: none !important;
     }
 }
+
+// ============================================
+// Accessibility: Focus Styles
+// ============================================
+// Konsistente und sichtbare Focus-Styles für Keyboard-Navigation
+
+// Globaler Focus-Style für alle interaktiven Elemente
+:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+}
+
+// Entferne den Standard-Fokus-Ring für Maus-Klicks
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+// Spezifische Focus-Styles für Buttons
+button:focus-visible,
+.btn:focus-visible,
+.zoom-button:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba($link-color, 0.3);
+}
+
+// Focus-Styles für Links
+a:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+    text-decoration: underline;
+}
+
+// Focus-Styles für Formular-Elemente
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+    border-color: $link-color;
+}
+
+// Focus-Styles für Navigation
+.greedy-nav a:focus-visible,
+.masthead__menu-item a:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+    background-color: rgba($link-color, 0.1);
+}
+
+// Focus-Styles für Kontakt-Karten
+.contact-card:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgba($link-color, 0.2);
+}
