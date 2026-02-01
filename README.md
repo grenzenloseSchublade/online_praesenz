@@ -7,8 +7,9 @@ Dies ist eine persönliche Website, die mit Jekyll und dem Minimal Mistakes Them
 Diese Website kombiniert Jekyll mit dem Minimal Mistakes Theme, um eine ansprechende und funktionale Plattform zu bieten.
 
 ## TODO
-- Bilder und Grafiken optimieren
-- Blog Einträge hinzufügen
+
+- [ ] Bilder und Grafiken optimieren
+- [ ] Weitere Blog Einträge hinzufügen
 
 ## Installation und Einrichtung
 
