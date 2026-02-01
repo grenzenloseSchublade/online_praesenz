@@ -103,6 +103,36 @@
     scope.classList.remove("orbit-running");
     scope.classList.remove("orbit-finish");
     scope.classList.remove("orbit-popin");
+    scope.classList.remove("orbit-scatter");
+  };
+
+  // Generiert zufällige Bildschirmpositionen für die Scatter-Animation
+  const generateScatterPositions = (scope) => {
+    const randomRange = (min, max) => Math.random() * (max - min) + min;
+    const randomSign = () => (Math.random() > 0.5 ? 1 : -1);
+    
+    // 4 zufällige Wegpunkte für jeden Punkt (before und after)
+    for (let i = 1; i <= 4; i++) {
+      // Punkt "before" - zufällige Positionen über den Bildschirm
+      scope.style.setProperty(
+        `--neon-scatter-x${i}-before`,
+        `${randomSign() * randomRange(15, 45)}vw`
+      );
+      scope.style.setProperty(
+        `--neon-scatter-y${i}-before`,
+        `${randomSign() * randomRange(10, 40)}vh`
+      );
+      
+      // Punkt "after" - andere zufällige Positionen
+      scope.style.setProperty(
+        `--neon-scatter-x${i}-after`,
+        `${randomSign() * randomRange(15, 45)}vw`
+      );
+      scope.style.setProperty(
+        `--neon-scatter-y${i}-after`,
+        `${randomSign() * randomRange(10, 40)}vh`
+      );
+    }
   };
 
   const getAngle = (el, pseudo) => {
@@ -145,30 +175,27 @@
     scope.style.setProperty("--neon-orbit-start-angle-before", `${angleBefore}deg`);
     scope.style.setProperty("--neon-orbit-start-angle-after", `${angleAfter}deg`);
 
+    // Generiere zufällige Positionen für die Scatter-Animation
+    generateScatterPositions(scope);
+
     requestAnimationFrame(() => {
       scope.classList.remove("orbit-running");
-      scope.classList.add("orbit-finish");
+      scope.classList.remove("orbit-finish");
       scope.classList.remove("orbit-popin");
+      scope.classList.add("orbit-scatter");
     });
 
-    const finishDuration =
-      getVar(scope, "--neon-orbit-finish-duration") || "3.4s";
-    const popDuration =
-      getVar(scope, "--neon-orbit-pop-duration") || "0.4s";
+    // Scatter-Animation dauert 3 Sekunden (--neon-orbit-scatter-duration)
+    const scatterDuration = getVar(scope, "--neon-orbit-scatter-duration") || "3s";
 
     state.finishTimer = window.setTimeout(() => {
-      scope.classList.remove("orbit-finish");
-      scope.classList.add("orbit-popin");
-
-      state.popinTimer = window.setTimeout(() => {
-        scope.classList.remove("orbit-popin");
-        stopOrbitSmooth(scope, state);
-        state.orbitMode = "default";
-        state.clickCount = 0;
-        scope.style.setProperty("--neon-orbit-opacity", "1");
-        void scope.offsetWidth;
-      }, parseFloat(popDuration) * 1000);
-    }, parseFloat(finishDuration) * 1000);
+      scope.classList.remove("orbit-scatter");
+      stopOrbitSmooth(scope, state);
+      state.orbitMode = "default";
+      state.clickCount = 0;
+      scope.style.setProperty("--neon-orbit-opacity", "1");
+      void scope.offsetWidth;
+    }, parseFloat(scatterDuration) * 1000 + 200); // +200ms Puffer
   };
 
   const startOrbit = (scope, state, mode) => {

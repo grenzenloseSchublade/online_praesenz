@@ -179,6 +179,94 @@
   }
 }
 
+// ============================================
+// Scatter Animation - Punkte fliegen wild über den Bildschirm
+// ============================================
+
+@keyframes neonOrbitScatterBefore {
+  0% {
+    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
+    opacity: 1;
+  }
+  15% {
+    transform: translate(
+      var(--neon-scatter-x1-before, 30vw),
+      var(--neon-scatter-y1-before, -20vh)
+    ) scale(1.5) rotate(180deg);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(
+      var(--neon-scatter-x2-before, -40vw),
+      var(--neon-scatter-y2-before, 30vh)
+    ) scale(0.8) rotate(540deg);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(
+      var(--neon-scatter-x3-before, 50vw),
+      var(--neon-scatter-y3-before, -40vh)
+    ) scale(1.2) rotate(900deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(
+      var(--neon-scatter-x4-before, -20vw),
+      var(--neon-scatter-y4-before, 15vh)
+    ) scale(1) rotate(1260deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--neon-orbit-start-offset-before, -0.10em)) 
+      scale(1) rotate(1440deg);
+    opacity: 1;
+  }
+}
+
+@keyframes neonOrbitScatterAfter {
+  0% {
+    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
+    opacity: 1;
+  }
+  15% {
+    transform: translate(
+      var(--neon-scatter-x1-after, -35vw),
+      var(--neon-scatter-y1-after, 25vh)
+    ) scale(1.3) rotate(-180deg);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(
+      var(--neon-scatter-x2-after, 45vw),
+      var(--neon-scatter-y2-after, -35vh)
+    ) scale(0.9) rotate(-540deg);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(
+      var(--neon-scatter-x3-after, -30vw),
+      var(--neon-scatter-y3-after, 45vh)
+    ) scale(1.4) rotate(-900deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(
+      var(--neon-scatter-x4-after, 25vw),
+      var(--neon-scatter-y4-after, -10vh)
+    ) scale(1.1) rotate(-1260deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--neon-orbit-start-offset-after, 0.14em)) 
+      scale(1) rotate(-1440deg);
+    opacity: 1;
+  }
+}
+
 .neon-name.orbit-running .neon-umlaut::before {
   animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow,
     neonOrbitRampBefore, neonOrbitSpinBefore;
@@ -304,4 +392,44 @@
 .neon-name:not(.orbit-popin) .neon-umlaut::before,
 .neon-name:not(.orbit-popin) .neon-umlaut::after {
   opacity: var(--neon-orbit-opacity, 1);
+}
+
+// ============================================
+// Scatter Animation State - Punkte fliegen wild und kehren zurück
+// ============================================
+
+.neon-name.orbit-scatter .neon-umlaut::before {
+  animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitScatterBefore;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-scatter-duration, 3s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1;
+  animation-fill-mode: none, none, none, none, forwards;
+  animation-delay: 0.2s, 0s, 0s, 0s, 0s;
+}
+
+.neon-name.orbit-scatter .neon-umlaut::after {
+  animation-name: neonUmlautFlickerB, neonFlickerIrregular, neonJitter, neonLayeredGlow,
+    neonOrbitScatterAfter;
+  animation-duration: calc(var(--neon-base-flicker-on, 1) * 3.1s),
+    calc(var(--neon-flicker-on, 0) * 3.4s),
+    calc(var(--neon-jitter-on, 0) * 1.6s),
+    calc(var(--neon-layered-glow-on, 0) * 2.8s),
+    var(--neon-orbit-scatter-duration, 3s);
+  animation-timing-function: linear,
+    steps(1, end),
+    ease-in-out,
+    ease-in-out,
+    cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-iteration-count: infinite, infinite, infinite, infinite, 1;
+  animation-fill-mode: none, none, none, none, forwards;
+  animation-delay: 0.95s, 0s, 0s, 0s, 0.1s;
 }

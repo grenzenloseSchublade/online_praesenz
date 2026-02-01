@@ -84,6 +84,7 @@
   --neon-orbit-ramp-duration: calc(var(--neon-orbit-radius-em, 0.4) * var(--neon-orbit-ramp-factor, 2.5s));
   --neon-orbit-return-duration: 1.0s;
   --neon-orbit-start-delay: 1.6s;
+  --neon-orbit-scatter-duration: 3s; // Dauer der Scatter-Animation (Punkte fliegen wild)
 
   // Orbit Radius Transition
   transition: --neon-orbit-radius-em var(--neon-orbit-return-duration, 1.0s) ease-in-out;
