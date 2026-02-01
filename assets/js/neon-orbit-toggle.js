@@ -274,13 +274,14 @@
     }
     const running = scope.classList.contains("orbit-running");
     if (running) {
-      // Beim Beenden: unterschiedliche Animationen je nach Modus
-      if (state.orbitMode === "accent") {
-        // 3-Klick Modus: Explosion-Animation
+      // Beim Beenden: Animation basierend auf mode Parameter (Klickzahl)
+      // Die Validierung (passende Klickzahl) erfolgt in handleClicks
+      if (mode === "accent") {
+        // 3-Klick Ende: Explosion-Animation
         finishOrbitSequence(scope, state, target);
         return;
       }
-      // 2-Klick Modus (default): Scatter-Animation (Punkte fliegen wild)
+      // 2-Klick Ende: Scatter-Animation (Punkte fliegen wild)
       scatterOrbitSequence(scope, state, target);
       return;
     }
@@ -289,14 +290,23 @@
   };
 
   const handleClicks = (scope, state, target) => {
+    const running = scope.classList.contains("orbit-running");
+    
     if (state.clickCount === 2) {
-      if (state.orbitMode === "accent") {
+      // 2-Klick: Ignorieren wenn Animation mit 3-Klick gestartet wurde
+      if (running && state.orbitMode === "accent") {
         state.clickCount = 0;
         state.clickTimer = null;
         return;
       }
       toggleOrbit(scope, state, "default", target);
     } else if (state.clickCount >= 3) {
+      // 3-Klick: Ignorieren wenn Animation mit 2-Klick gestartet wurde
+      if (running && state.orbitMode === "default") {
+        state.clickCount = 0;
+        state.clickTimer = null;
+        return;
+      }
       toggleOrbit(scope, state, "accent", target);
     }
     state.clickCount = 0;

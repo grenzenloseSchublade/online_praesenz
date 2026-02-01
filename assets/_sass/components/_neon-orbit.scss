@@ -44,32 +44,36 @@
       rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
     opacity: 1;
   }
-  70% {
+  60% {
     transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 720deg)));
     opacity: 1;
   }
-  85% {
+  75% {
     transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)));
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
+      scale(5);
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 18px rgba(255, 255, 255, 1),
-      0 0 44px rgba(255, 255, 255, 0.9),
-      0 0 90px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 1),
+      0 0 100px rgba(255, 255, 255, 0.95),
+      0 0 200px rgba(255, 255, 255, 0.8);
   }
-  92% {
+  88% {
     transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1260deg)))
-      scale(var(--neon-orbit-explosion-scale, 2));
+      scale(var(--neon-orbit-explosion-scale, 50));
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 30px var(--neon-orbit-explosion-glow-strong, rgba(255, 255, 255, 1)),
-      0 0 80px var(--neon-orbit-explosion-glow-mid, rgba(255, 255, 255, 0.95)),
-      0 0 160px var(--neon-orbit-explosion-glow-soft, rgba(255, 255, 255, 0.85));
+    box-shadow: 
+      0 0 80px rgba(255, 255, 255, 1),
+      0 0 180px rgba(255, 255, 255, 0.95),
+      0 0 350px rgba(255, 255, 255, 0.85),
+      0 0 500px rgba(255, 255, 255, 0.6),
+      0 0 25vw rgba(255, 255, 255, 0.4);
   }
   100% {
     transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
@@ -78,9 +82,9 @@
       scale(1);
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 1),
-      0 0 50px rgba(255, 255, 255, 0.9),
-      0 0 110px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 1),
+      0 0 80px rgba(255, 255, 255, 0.9),
+      0 0 150px rgba(255, 255, 255, 0.7);
   }
 }
 
@@ -91,32 +95,36 @@
       rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
     opacity: 1;
   }
-  70% {
+  60% {
     transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 720deg)));
     opacity: 1;
   }
-  85% {
+  75% {
     transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)));
+      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
+      scale(5);
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 18px rgba(255, 255, 255, 1),
-      0 0 44px rgba(255, 255, 255, 0.9),
-      0 0 90px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 1),
+      0 0 100px rgba(255, 255, 255, 0.95),
+      0 0 200px rgba(255, 255, 255, 0.8);
   }
-  92% {
+  88% {
     transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1260deg)))
-      scale(var(--neon-orbit-explosion-scale, 2));
+      scale(var(--neon-orbit-explosion-scale, 50));
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 30px var(--neon-orbit-explosion-glow-strong, rgba(255, 255, 255, 1)),
-      0 0 80px var(--neon-orbit-explosion-glow-mid, rgba(255, 255, 255, 0.95)),
-      0 0 160px var(--neon-orbit-explosion-glow-soft, rgba(255, 255, 255, 0.85));
+    box-shadow: 
+      0 0 80px rgba(255, 255, 255, 1),
+      0 0 180px rgba(255, 255, 255, 0.95),
+      0 0 350px rgba(255, 255, 255, 0.85),
+      0 0 500px rgba(255, 255, 255, 0.6),
+      0 0 25vw rgba(255, 255, 255, 0.4);
   }
   100% {
     transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
@@ -125,9 +133,9 @@
       scale(1);
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 1),
-      0 0 50px rgba(255, 255, 255, 0.9),
-      0 0 110px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 1),
+      0 0 80px rgba(255, 255, 255, 0.9),
+      0 0 150px rgba(255, 255, 255, 0.7);
   }
 }
 
