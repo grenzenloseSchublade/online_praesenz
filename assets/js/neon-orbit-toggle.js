@@ -255,11 +255,11 @@
     
     // Orbit-Mittelpunkt anpassen je nach Modus
     if (mode === "default") {
-      // 2-Klick Modus: Orbit etwas höher
-      scope.style.setProperty("--neon-orbit-radius-em", "0.5");
+      // 2-Klick Modus: Orbit höher
+      scope.style.setProperty("--neon-orbit-radius-em", "0.9");
     } else {
       // 3-Klick Modus: Standard-Radius
-      scope.style.setProperty("--neon-orbit-radius-em", "0.4");
+      scope.style.setProperty("--neon-orbit-radius-em", "0.5");
     }
     
     scope.classList.add("orbit-running");

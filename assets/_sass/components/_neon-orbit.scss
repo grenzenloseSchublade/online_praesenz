@@ -44,27 +44,21 @@
       rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
     opacity: 1;
   }
-  60% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
-      translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 720deg)));
-    opacity: 1;
-  }
-  75% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
-      scale(5);
+  40% {
+    // Punkte bleiben an ihrer Position, beginnen zu leuchten
+    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 1),
-      0 0 100px rgba(255, 255, 255, 0.95),
-      0 0 200px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 1),
+      0 0 60px rgba(255, 255, 255, 0.9);
   }
-  88% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1260deg)))
+  70% {
+    // Explosion am Ort - Punkte bleiben an Position, nur scale wächst
+    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)))
       scale(var(--neon-orbit-explosion-scale, 50));
     opacity: 1;
     background: #ffffff;
@@ -76,9 +70,10 @@
       0 0 25vw rgba(255, 255, 255, 0.4);
   }
   100% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1260deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1260deg)))
+    // Zurück zu normal an gleicher Position
+    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)))
       scale(1);
     opacity: 1;
     background: #ffffff;
@@ -95,27 +90,21 @@
       rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
     opacity: 1;
   }
-  60% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
-      translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 720deg)));
-    opacity: 1;
-  }
-  75% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
-      scale(5);
+  40% {
+    // Punkte bleiben an ihrer Position, beginnen zu leuchten
+    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
     opacity: 1;
     background: #ffffff;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 1),
-      0 0 100px rgba(255, 255, 255, 0.95),
-      0 0 200px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 1),
+      0 0 60px rgba(255, 255, 255, 0.9);
   }
-  88% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1260deg)))
+  70% {
+    // Explosion am Ort - Punkte bleiben an Position, nur scale wächst
+    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)))
       scale(var(--neon-orbit-explosion-scale, 50));
     opacity: 1;
     background: #ffffff;
@@ -127,9 +116,10 @@
       0 0 25vw rgba(255, 255, 255, 0.4);
   }
   100% {
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1260deg))
-      translateX(0)
-      rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1260deg)))
+    // Zurück zu normal an gleicher Position
+    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.12em))
+      rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)))
       scale(1);
     opacity: 1;
     background: #ffffff;
