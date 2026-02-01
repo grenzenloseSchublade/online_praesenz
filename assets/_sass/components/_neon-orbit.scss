@@ -40,21 +40,24 @@
 @keyframes neonOrbitFinishBefore {
   0% {
     // Startposition auf Orbit
-    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
+    transform: translateY(0)
+      rotate(var(--neon-orbit-start-angle-before, 180deg))
       translateX(var(--neon-orbit-radius, 0.12em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
     opacity: 1;
   }
   60% {
     // Punkte kreiseln weiter (+720deg) und nähern sich dem Mittelpunkt
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 720deg)));
     opacity: 1;
   }
   75% {
     // Punkte treffen sich im Mittelpunkt - Rotation fixiert bei +1080deg
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)));
     opacity: 1;
@@ -64,8 +67,9 @@
       0 0 200px rgba(255, 255, 255, 0.8);
   }
   85% {
-    // Explosion am Mittelpunkt - Position bleibt fixiert, nur scale wächst
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
+    // Explosion am Mittelpunkt - translateY verschiebt nach unten, dann scale
+    transform: translateY(0.4em)
+      rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
       scale(var(--neon-orbit-explosion-scale, 50));
@@ -80,7 +84,8 @@
   }
   100% {
     // Zurück zu normal am Mittelpunkt
-    transform: rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
       scale(1);
@@ -95,21 +100,24 @@
 @keyframes neonOrbitFinishAfter {
   0% {
     // Startposition auf Orbit
-    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
+    transform: translateY(0)
+      rotate(var(--neon-orbit-start-angle-after, 0deg))
       translateX(var(--neon-orbit-radius, 0.12em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
     opacity: 1;
   }
   60% {
     // Punkte kreiseln weiter (+720deg) und nähern sich dem Mittelpunkt
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 720deg)));
     opacity: 1;
   }
   75% {
     // Punkte treffen sich im Mittelpunkt - Rotation fixiert bei +1080deg
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)));
     opacity: 1;
@@ -119,8 +127,9 @@
       0 0 200px rgba(255, 255, 255, 0.8);
   }
   85% {
-    // Explosion am Mittelpunkt - Position bleibt fixiert, nur scale wächst
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
+    // Explosion am Mittelpunkt - translateY verschiebt nach unten, dann scale
+    transform: translateY(0.4em)
+      rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
       scale(var(--neon-orbit-explosion-scale, 50));
@@ -135,7 +144,8 @@
   }
   100% {
     // Zurück zu normal am Mittelpunkt
-    transform: rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
+    transform: translateY(0)
+      rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
       scale(1);
