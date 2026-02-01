@@ -49,7 +49,11 @@
   class FractalRenderer {
     constructor(options) {
       this.canvas = options.canvas;
-      this.ctx = this.canvas.getContext('2d');
+      this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+      if (!this.ctx) {
+        console.warn('FractalRenderer: Canvas context not available');
+        return;
+      }
       this.loadingIndicator = options.loadingIndicator || null;
       this.workerUrl = options.workerUrl;
       this.type = options.type;

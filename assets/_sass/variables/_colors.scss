@@ -8,15 +8,13 @@ $white: #ffffff; // Einheitliches Weiß für alle Verwendungen
 $link-color: #05d9e8; // Cyan - Linkfarbe
 $hover-color: #ff00ff; // Magenta - Hover-Effekt Farbe
 $accent-green: #00ffc8; // Grün - Akzentfarbe
-$accent-green-light: #bbfff0; // Helles Grün - Sekundärakzent
 $background-dark: #1a1a1a; // Dunkler Hintergrund
 $code-background: #2d2d2d; // Code-Block Hintergrund
 
 // Überschriften
 $h1-color: #ff00ff; // H1 Überschriften
-$h2-color: #ffffff; //#05d9e8; // H2 Überschriften
+$h2-color: #ffffff; // H2 Überschriften
 $h3-color: #bbfff0; // H3 Überschriften
-$cv-heading-color: #05d9e8; // Überschriftenfarbe für CV und About-Kacheln
 $card-heading-color: #05d9e8; // Überschriftenfarbe für Karten
 
 // Textfarben
@@ -24,10 +22,11 @@ $excerpt-color: #00ffc8; // Untertitel Farbe
 $selection-bg: #ff00ff; // Hintergrundfarbe für markierten Text
 $selection-text: #000000; // Textfarbe für markierten Text
 
-// Captions
-$caption-bg: rgba(0, 0, 0, 0.5); // Hintergrundfarbe für Captions
-$caption-text: #fff; // Textfarbe für Captions
-$caption-link-hover: #4a9ae1; // Hover-Farbe für Links in Captions
+// Overlay-Farben (für konsistente Hintergrund-Transparenzen)
+$bg-overlay-dark: rgba(0, 0, 0, 0.2); // Dunkler Overlay
+$bg-overlay-darker: rgba(0, 0, 0, 0.3); // Dunklerer Overlay
+$bg-overlay-light-subtle: rgba(255, 255, 255, 0.03); // Sehr subtiler heller Overlay
+$bg-overlay-light: rgba(255, 255, 255, 0.05); // Subtiler heller Overlay
 
 .contact-type {
     font-weight: bold;

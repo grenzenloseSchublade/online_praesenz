@@ -1,21 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var input = document.getElementById('blog-search-input');
+  const input = document.getElementById('blog-search-input');
   if (!input) return;
 
-  var clearBtn = document.getElementById('blog-search-clear');
-  var entries = document.querySelectorAll('#blog-entries .post-item');
-  var emptyMessage = document.getElementById('blog-empty-message');
+  const clearBtn = document.getElementById('blog-search-clear');
+  const entries = document.querySelectorAll('#blog-entries .post-item');
+  const emptyMessage = document.getElementById('blog-empty-message');
 
   function normalize(value) {
     return (value || '').toLowerCase().trim();
   }
 
   function applyFilter() {
-    var query = normalize(input.value);
-    var visibleCount = 0;
+    const query = normalize(input.value);
+    let visibleCount = 0;
     entries.forEach(function(item) {
-      var haystack = item.getAttribute('data-search') || '';
-      var visible = query === '' || haystack.indexOf(query) !== -1;
+      const haystack = item.getAttribute('data-search') || '';
+      const visible = query === '' || haystack.includes(query);
       item.style.display = visible ? '' : 'none';
       if (visible) visibleCount += 1;
     });

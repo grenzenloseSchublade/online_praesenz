@@ -22,7 +22,6 @@
     </div>
 
 
-# TODO hier konkret die privaten wichtigen Sachen aufführen
 - section: "Meine Interessen"
   icon: "brain"
   interests:
@@ -49,11 +48,8 @@
         - "Yoga"
         - "Kochen"
         - "Atemtechniken"
-        - "Kochen"
-        - "Atemtechniken"
         - "Meditation"
 
-# TODO hier konkret die privaten wichtigen Sachen aufführen
 - section: "Meine Projekte"
   icon: "project-diagram"
   skills:
@@ -92,10 +88,11 @@
   icon: "envelope"
   content: "Ich freue mich über jede Form der Zusammenarbeit und Austausch."
   contact_info:
-    - type: "E-Mail"
-      icon: "envelope"
-      value: "ihre@email.de"
-      link: "mailto:ihre@email.de"
+    # E-Mail auskommentiert bis echte Adresse verfügbar
+    # - type: "E-Mail"
+    #   icon: "envelope"
+    #   value: "kontakt@beispiel.de"
+    #   link: "mailto:kontakt@beispiel.de"
     - type: "GitHub"
       icon: "github"
       value: "@grenzenloseSchublade"

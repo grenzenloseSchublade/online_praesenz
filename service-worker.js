@@ -161,8 +161,6 @@ async function networkFirst(request) {
 // Nachricht-Event-Handler für explizites Caching von Bildern
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'CACHE_IMAGES') {
-    console.log('[Service Worker] Caching von Bildern angefordert');
-    
     const imageUrls = event.data.images || [];
     if (imageUrls.length > 0) {
       caches.open(CACHE_NAME)
@@ -172,11 +170,13 @@ self.addEventListener('message', event => {
               // Relativen Pfad zum Basis-URL hinzufügen
               const fullUrl = url.startsWith('/') ? self.location.origin + url : url;
               
-              return fetch(fullUrl, { mode: 'no-cors' })
+              // same-origin für lokale Bilder, cors für externe
+              const fetchMode = fullUrl.startsWith(self.location.origin) ? 'same-origin' : 'cors';
+              
+              return fetch(fullUrl, { mode: fetchMode })
                 .then(response => {
-                  if (response) {
+                  if (response && response.ok) {
                     cache.put(fullUrl, response);
-                    console.log('[Service Worker] Bild gecached:', url);
                     
                     // Benachrichtigung an Client senden
                     if (event.source) {

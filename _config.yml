@@ -18,9 +18,10 @@ minimal_mistakes_skin: "dark" # "default", air", "aqua", "contrast", "dark", "di
 # Site Settings
 locale: "de-DE"
 search: false
-search_full_content: true
-lunr:
-  search_within_pages: true
+# search_full_content und lunr werden nur benötigt wenn search: true
+# search_full_content: true
+# lunr:
+#   search_within_pages: true
 
 # Math Settings
 markdown: kramdown
@@ -48,19 +49,15 @@ after_footer_scripts:
 include:
   - _pages
 
-# SEO Related
-google_site_verification:
-bing_site_verification:
-naver_site_verification:
+# SEO Related (bei Bedarf ausfüllen)
+# google_site_verification:
+# bing_site_verification:
+# naver_site_verification:
 
 # Social Sharing
 twitter:
-  username:
   card: "summary_large_image"
-facebook:
-  username:
-  app_id:
-  publisher:
+  # username: (bei Bedarf ausfüllen)
 og_image: "/assets/images/WebSite_Logo_3.png" # Open Graph/Twitter default site image
 social:
   type: "Person"
@@ -69,12 +66,9 @@ social:
     - "https://github.com/grenzenloseSchublade"
     - "https://www.linkedin.com/in/hans-m%C3%BCller-39a133359/"
 
-# Analytics
+# Analytics (derzeit deaktiviert)
 analytics:
-  provider: false # false (default), "google", "google-universal", "google-gtag", "custom"
-  google:
-    tracking_id:
-    anonymize_ip: # true, false (default)
+  provider: false
 
 # Site Author
 author:

@@ -46,7 +46,6 @@
               element.style.backgroundImage = `url('${imageUrl}')`;
             }
             element.classList.add('loaded');
-            console.log(`Hintergrundbild geladen: ${imageUrl}`);
           })
           .catch(error => {
             console.error(error);
@@ -74,14 +73,12 @@
     const heroElements = document.querySelectorAll('.page__hero--overlay[data-background-image]');
     
     if (heroElements.length > 0) {
-      console.log(`${heroElements.length} Hintergrundbilder gefunden zum Cachen`);
       applyBackgroundImages(heroElements);
     }
     
     // Globales Hintergrundbild aus der Konfiguration cachen, falls vorhanden
     if (config.backgroundImage) {
       preloadImage(config.backgroundImage)
-        .then(() => console.log(`Globales Hintergrundbild gecached: ${config.backgroundImage}`))
         .catch(error => console.error(error));
     }
   }
