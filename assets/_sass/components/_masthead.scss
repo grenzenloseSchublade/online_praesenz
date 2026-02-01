@@ -320,13 +320,11 @@
     animation-iteration-count: infinite, infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .neon-umlaut::before,
-    .neon-umlaut::after,
-    .neon-glow {
-        animation: none;
-    }
-}
+// WICHTIG: Die Neon-Orbit-Animation bleibt IMMER aktiv
+// Sie ist ein essenzielles Designelement der Startseite und wird 
+// bei prefers-reduced-motion NICHT deaktiviert, da sie nur bei
+// Benutzerinteraktion (Klick auf "a") ausgelöst wird.
+// @media (prefers-reduced-motion: reduce) - ENTFERNT für Neon-Animation
 
 .page__hero--overlay {
   // Erhöhtes Padding am unteren Rand des Mastheaders

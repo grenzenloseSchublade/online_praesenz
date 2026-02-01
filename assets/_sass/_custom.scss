@@ -41,26 +41,22 @@
 // die reduzierte Bewegung bevorzugen
 
 @media (prefers-reduced-motion: reduce) {
-    // Deaktiviere alle Animationen global
-    *,
-    *::before,
-    *::after {
+    // Deaktiviere Animationen global, ABER mit Ausnahme der Neon-Orbit-Animation
+    // Die Neon-Orbit-Animation auf der Startseite ist ein wichtiges Designelement
+    // und wird nur bei Benutzerinteraktion ausgelöst
+    *:not(.neon-umlaut):not(.neon-glow):not(.neon-name):not(.neon-orbit-trigger),
+    *:not(.neon-umlaut):not(.neon-glow):not(.neon-name):not(.neon-orbit-trigger)::before,
+    *:not(.neon-umlaut):not(.neon-glow):not(.neon-name):not(.neon-orbit-trigger)::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
 
-    // Spezifische Komponenten
-    .neon-umlaut::before,
-    .neon-umlaut::after,
-    .neon-glow,
-    .neon-name {
-        animation: none !important;
-        transition: none !important;
-    }
+    // WICHTIG: Neon-Orbit-Animation bleibt IMMER aktiv (Startseiten-Feature)
+    // Diese Animation ist essenziell für die Darstellung und wird nicht deaktiviert
 
-    // Hover-Transformationen deaktivieren
+    // Hover-Transformationen deaktivieren (außer Neon-Elemente)
     .archive__item,
     .landing-section,
     .interest-card,
@@ -78,7 +74,7 @@
         animation: none !important;
     }
 
-    // Masthead Transitions deaktivieren
+    // Masthead Transitions deaktivieren (aber nicht die Neon-Animation)
     .masthead,
     .greedy-nav__toggle,
     .navicon,

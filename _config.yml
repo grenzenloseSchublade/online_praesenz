@@ -95,10 +95,8 @@ incremental: false
 
 # Outputting
 permalink: /posts/:title/
-# Paginierung ist auf Seiten-Ebene in _pages/posts.md aktiviert
-# NICHT global, da das die page-Variable auf der Home-Seite überschreibt
 pagination:
-  enabled: false
+  enabled: true
   per_page: 6
   permalink: /posts/page:num/
 timezone: Europe/Berlin
