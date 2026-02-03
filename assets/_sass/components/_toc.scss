@@ -169,3 +169,13 @@
 .sidebar__right.sticky .toc__menu {
     max-height: calc(100vh - var(--masthead-height) - 6em);
 }
+
+// Author-Sidebar (linke Seite) nach unten versetzen wie TOC
+.sidebar.sticky {
+    top: calc(var(--masthead-height) + 16px);
+}
+
+// Avatar in der Sidebar - Transparenz beibehalten
+.author__avatar img {
+    background: transparent;
+}

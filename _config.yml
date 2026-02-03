@@ -4,7 +4,7 @@ description: Persönliche Website von Hans Müller - Ingenieur & Entwickler. Blo
 url: "https://grenzenloseSchublade.github.io"
 baseurl: "/auflinie"
 repository: "grenzenloseSchublade/auflinie"
-logo: "/assets/images/Logo.jpg"
+logo: "/assets/images/Logo.svg"  # SVG für perfekte Transparenz (Alternative: Logo.png)
 
 # Bild- und Performance-Einstellungen
 background_image: "/assets/images/background.jpg"
@@ -73,7 +73,7 @@ analytics:
 # Site Author
 author:
   name: "Hans Müller"
-  avatar: "/assets/images/WebSite_Logo_3.png"
+  avatar: "/assets/images/Logo.svg"
   bio: "Ingenieur & Entwickler"
   location: "Deutschland, 45"
   links:
