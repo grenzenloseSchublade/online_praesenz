@@ -222,12 +222,12 @@
                 padding: 0.5em;
                 margin: 0.2em;
                 font-weight: $medium-weight; // Etwas fetter
-                color: $link-color; // Cyan - Projektfarbe
+                color: #ffffff; // $link-color; // Cyan - Projektfarbe
                 transition: color 0.2s ease, text-shadow 0.2s ease;
                 
                 // Desktop: Größere Schrift (moderne Standards: 16-18px)
                 @media (min-width: 768px) {
-                    font-size: 1.0625em; // ~17px bei 16px Basis
+                    font-size: 1.15em; // ~17px bei 16px Basis
                 }
 
                 &:hover {
@@ -596,7 +596,7 @@ body .hidden-links li a:focus:after {
 
 body .greedy-nav__toggle {
   background-color: transparent;
-  border: 2px solid $link-color; // Cyan-Umrandung
+  border: 0.5px solid $link-color; // Cyan-Umrandung
   cursor: pointer;
   padding: 0.25em 0.4em;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
