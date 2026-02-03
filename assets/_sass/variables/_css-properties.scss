@@ -6,7 +6,7 @@
   // ============================================
   // Layout
   // ============================================
-  --masthead-height: 76px;
+  --masthead-height: 64px; // Mobile default (moderne Standards: 56-64px)
   --anchor-offset: calc(var(--masthead-height) + 20px);
   --content-spacing: 0.8rem;
 
@@ -90,6 +90,13 @@
 
   // Orbit Radius Transition
   transition: --neon-orbit-radius-em var(--neon-orbit-return-duration, 1.0s) ease-in-out;
+}
+
+// Desktop: Größere Header-Höhe (moderne Standards: 72-88px)
+@media (min-width: 768px) {
+  :root {
+    --masthead-height: 80px;
+  }
 }
 
 // CSS @property für animierbare Custom Properties

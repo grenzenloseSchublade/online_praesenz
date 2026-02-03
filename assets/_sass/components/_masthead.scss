@@ -218,13 +218,21 @@
         .visible-links {
 
             a {
-                font-size: $nav-font-size; // Größere Schrift für Navigationslinks
+                font-size: $nav-font-size; // Mobile: Standard-Schriftgröße
                 padding: 0.5em;
                 margin: 0.2em;
                 font-weight: $medium-weight; // Etwas fetter
+                color: $link-color; // Cyan - Projektfarbe
+                transition: color 0.2s ease, text-shadow 0.2s ease;
+                
+                // Desktop: Größere Schrift (moderne Standards: 16-18px)
+                @media (min-width: 768px) {
+                    font-size: 1.0625em; // ~17px bei 16px Basis
+                }
 
                 &:hover {
-                    color: $hover-color; // Verwendet deine bereits definierte Variable
+                    color: $hover-color; // Magenta - Projektfarbe
+                    text-shadow: 0 0 8px rgba(255, 0, 255, 0.5); // Subtiler Magenta-Glow
                     background-color: rgba(0, 0, 0, 0.2); // Leichter Hintergrund beim Hover
                 }
 
@@ -235,12 +243,24 @@
             }
         }
 
-        // Dropdown-Menü-Button für mobile Ansicht
+        // Dropdown-Menü-Button für mobile Ansicht - Neon-Cyan-Design
+        // Nur Umrandung und Glow-Effekt, keine ausgefüllte Hintergrundfarbe
         .greedy-nav__toggle {
-            background-color: $link-color;
+            background-color: transparent;
+            border: 2px solid $link-color; // Cyan-Umrandung
+            border-radius: 6px;
+            box-shadow: 
+                0 0 6px rgba(5, 217, 232, 0.4),
+                0 0 12px rgba(5, 217, 232, 0.2),
+                inset 0 0 4px rgba(5, 217, 232, 0.1); // Subtiler Glow-Effekt
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
 
             &:hover {
-                background-color: $hover-color;
+                border-color: $hover-color; // Magenta beim Hover
+                box-shadow: 
+                    0 0 10px rgba(255, 0, 255, 0.5),
+                    0 0 20px rgba(255, 0, 255, 0.3),
+                    inset 0 0 6px rgba(255, 0, 255, 0.15);
             }
         }
     }
@@ -576,17 +596,25 @@ body .hidden-links li a:focus:after {
 
 body .greedy-nav__toggle {
   background-color: transparent;
-  border: none;
+  border: 2px solid $link-color; // Cyan-Umrandung
   cursor: pointer;
-  padding: 0.15em 0.35em;
-  transition: background-color 0.15s ease;
+  padding: 0.25em 0.4em;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   position: relative;
   z-index: 1002;
-  border-radius: 8px;
+  border-radius: 6px;
+  box-shadow: 
+    0 0 6px rgba(5, 217, 232, 0.4),
+    0 0 12px rgba(5, 217, 232, 0.2),
+    inset 0 0 4px rgba(5, 217, 232, 0.1); // Neon-Glow-Effekt
 }
 
 body .greedy-nav__toggle:hover {
-  background-color: rgba(255, 255, 255, 0.06);
+  border-color: $hover-color; // Magenta beim Hover
+  box-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3),
+    inset 0 0 6px rgba(255, 0, 255, 0.15);
 }
 
 body .navicon {
@@ -594,7 +622,8 @@ body .navicon {
   display: block;
   width: 1.5em;
   height: 0.25em;
-  background: #fff;
+  background: $link-color; // Cyan statt Weiß
+  box-shadow: 0 0 4px rgba(5, 217, 232, 0.6); // Subtiler Glow
   transition: 0.3s;
 }
 
@@ -605,7 +634,8 @@ body .navicon:after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: $link-color; // Cyan statt Weiß
+  box-shadow: 0 0 4px rgba(5, 217, 232, 0.6); // Subtiler Glow
   transition: 0.3s;
 }
 
@@ -619,18 +649,21 @@ body .navicon:after {
 
 body .greedy-nav__toggle.close .navicon {
   background: transparent;
+  box-shadow: none;
 }
 
 body .greedy-nav__toggle.close .navicon:before {
   transform: rotate(45deg);
   top: 0;
-  background: var(--hover-indicator-color, #05d9e8);
+  background: $link-color; // Cyan
+  box-shadow: 0 0 6px rgba(5, 217, 232, 0.8); // Stärkerer Glow beim X
 }
 
 body .greedy-nav__toggle.close .navicon:after {
   transform: rotate(-45deg);
   bottom: 0;
-  background: var(--hover-indicator-color, #05d9e8);
+  background: $link-color; // Cyan
+  box-shadow: 0 0 6px rgba(5, 217, 232, 0.8); // Stärkerer Glow beim X
 }
 
 // Body-Padding für festen Header
