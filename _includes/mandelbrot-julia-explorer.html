@@ -2,13 +2,13 @@
 <div class="explorer-container focus-mode" id="explorer-container">
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
   <div class="explorer-toolbar">
-    <button id="explorerAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
-      <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
-      <span class="btn-text">Erweitert</span>
-    </button>
     <button id="explorerFocusMode" class="toggle-button active" title="Fokusmodus" aria-label="Fokusmodus" aria-pressed="true">
       <span class="icon"><i class="fas fa-crosshairs" aria-hidden="true"></i></span>
-      <span class="btn-text">Fokus aus</span>
+      <span class="btn-text">Fokus</span>
+    </button>
+    <button id="resetExplorer" class="toggle-button" title="Zurücksetzen" aria-label="Zurücksetzen">
+      <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+      <span class="btn-text">Reset</span>
     </button>
     <button id="explorerFullscreen" class="toggle-button" title="Vollbild" aria-label="Vollbild">
       <span class="icon"><i class="fas fa-expand" aria-hidden="true"></i></span>
@@ -17,6 +17,12 @@
   </div>
   <div class="explorer-controls">
     <div class="controls-basic">
+      <div class="advanced-toggle-row">
+        <button id="explorerAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
+          <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
+          <span class="btn-text">Erweitert</span>
+        </button>
+      </div>
       <div class="control-row">
         <label for="explorerMaxIter">Iterationen:</label>
         <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
@@ -37,12 +43,6 @@
             <option value="goldgrün">Gold-Grün</option>
           </select>
         </div>
-      </div>
-      <div class="button-row">
-        <button id="resetExplorer" title="Zurücksetzen" aria-label="Zurücksetzen">
-          <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
-          <span class="btn-text">Reset</span>
-        </button>
       </div>
     </div>
     <div class="controls-advanced">
@@ -160,14 +160,25 @@
 
   .explorer-toolbar {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 8px;
+    flex-wrap: nowrap;
     margin-bottom: 12px;
-    justify-content: flex-start;
+    justify-content: space-between;
+  }
+
+  .explorer-toolbar .toggle-button {
+    flex: 1;
+    min-width: 0;
+    max-width: 140px;
+    justify-content: center;
   }
 
   .explorer-toolbar .icon {
     margin-right: 6px;
+  }
+
+  .advanced-toggle-row {
+    margin-bottom: 12px;
   }
 
   .btn-text {
@@ -254,7 +265,22 @@
 
   @media (max-width: 768px) {
     .explorer-toolbar {
-      justify-content: space-between;
+      gap: 6px;
+    }
+    .explorer-toolbar .toggle-button {
+      padding: 8px 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .explorer-toolbar .btn-text {
+      display: none;
+    }
+    .explorer-toolbar .icon {
+      margin-right: 0;
+    }
+    .explorer-toolbar .toggle-button {
+      padding: 10px 12px;
     }
   }
   
@@ -333,19 +359,6 @@
       flex: 1 1 100%;
     }
 
-    .explorer-toolbar button {
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-
-    .explorer-toolbar .icon {
-      margin-right: 4px;
-    }
-
-    .btn-text {
-      display: inline;
-      font-size: 11px;
-    }
   }
   
   .explorer-row {
@@ -984,7 +997,21 @@ document.addEventListener('DOMContentLoaded', function() {
     link.click();
   });
 
-  // Toggle-Handler kommen weiter unten über setAdvancedOpen/setFocusMode
+  // Toggle-Handler für Advanced und Focus Mode
+  if (advancedToggleButton) {
+    advancedToggleButton.addEventListener('click', function() {
+      container.classList.toggle('advanced-open');
+      this.classList.toggle('active', container.classList.contains('advanced-open'));
+    });
+  }
+
+  if (focusModeButton) {
+    focusModeButton.addEventListener('click', function() {
+      container.classList.toggle('focus-mode');
+      this.classList.toggle('active', container.classList.contains('focus-mode'));
+      setTimeout(resizeAndRender, 80);
+    });
+  }
 
   if (fullscreenButton) {
     fullscreenButton.addEventListener('click', function() {
@@ -1474,954 +1501,3 @@ document.addEventListener('DOMContentLoaded', function() {
   resizeAndRender();
 });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  if (window.__fractalNewExplorer) {
-    return;
-  }
-  // Canvas und Kontext für Mandelbrot
-  const mandelbrotCanvas = document.getElementById('mandelbrotCanvas');
-  const mandelbrotCtx = mandelbrotCanvas.getContext('2d');
-  const mandelbrotLoading = document.getElementById('mandelbrotLoading');
-  
-  // Canvas und Kontext für Julia
-  const juliaCanvas = document.getElementById('explorerJuliaCanvas');
-  const juliaCtx = juliaCanvas.getContext('2d');
-  const juliaLoading = document.getElementById('juliaLoading');
-  
-  // Steuerelemente
-  const maxIterSlider = document.getElementById('explorerMaxIter');
-  const colorSchemeSelect = document.getElementById('explorerColorScheme');
-  const colorIntensityButton = document.getElementById('explorerColorIntensity');
-  const resetButton = document.getElementById('resetExplorer');
-  const saveImageButton = document.getElementById('saveExplorerImage');
-  const advancedToggleButton = document.getElementById('explorerAdvancedToggle');
-  const focusModeButton = document.getElementById('explorerFocusMode');
-  const fullscreenButton = document.getElementById('explorerFullscreen');
-  
-  // Anzeige-Elemente
-  const iterValueSpan = document.getElementById('explorerIterValue');
-  const juliaParameter = document.getElementById('juliaParameter');
-  
-  // Standardeinstellungen
-  const defaultSettings = {
-    maxIterations: 80,
-    colorScheme: 'retrowave'
-  };
-  
-  // Initialisierung der Steuerelemente
-  let maxIterations = parseInt(maxIterSlider.value);
-  let colorScheme = colorSchemeSelect.value;
-  let juliaReal = -0.7;
-  let juliaImag = 0.27;
-  
-  // Farbpaletten mit mehr Magenta-Tönen
-  const colorPalettes = {
-    'blau-rot': ['#000764', '#206BCB', '#EDFFFF', '#FFB847', '#FB0C00'],
-    'cyberpunk': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc'],
-    'retrowave': ['#ff00ff', '#9600ff', '#0000ff', '#00ffff', '#00ffcc', '#ff00cc', '#ff00ff'],
-    'feuer': ['#000000', '#340000', '#800000', '#ff0000', '#ffff00', '#ffffff'],
-    'ozean': ['#000033', '#000066', '#0000ff', '#00ffff', '#ffffff', '#00ffff'],
-    'monochrom': ['#000000', '#222222', '#444444', '#666666', '#888888', '#aaaaaa', '#cccccc', '#ffffff'],
-    'regenbogen': ['#ff00ff', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff', '#ff00ff'],
-    'ultraviolett': ['#000000', '#2E0854', '#5A1A9A', '#7B52AB', '#9470DC', '#B490FF', '#DCACFF', '#FFFFFF'],
-    'goldgrün': ['#071A07', '#0B3B0B', '#0E640E', '#11C411', '#30FF30', '#88FF88', '#DFFFDF', '#FFFFFF']
-  };
-  
-  // Erweiterte Farbpaletten für intensivere Farbverläufe
-  const intensePalettes = {
-    'blau-rot': ['#000764', '#0C3B9E', '#206BCB', '#4E9CED', '#EDFFFF', '#FFCE89', '#FFB847', '#FF7847', '#FB0C00'],
-    'cyberpunk': ['#ff00ff', '#d400ff', '#a900ff', '#7e00ff', '#5300ff', '#2700ff', '#001eff', '#0069ff', '#00b4ff', '#00ffff', '#00ffb4', '#00ff69', '#00ff1e', '#27ff00', '#53ff00', '#7eff00', '#a9ff00', '#d4ff00', '#ffff00', '#ffd400', '#ffa900', '#ff7e00', '#ff5300', '#ff2700', '#ff001e', '#ff0069', '#ff00b4', '#ff00ff'],
-    'retrowave': ['#ff00ff', '#f700f7', '#d100ff', '#9f00ff', '#5500ff', '#2300ff', '#0014ff', '#0046ff', '#0078ff', '#00a9ff', '#00d9ff', '#00ffff', '#00ffdc', '#00ffb0', '#00ff83', '#00ff55', '#00ff28', '#19ff00', '#64ff00', '#b0ff00', '#ffff00', '#ffdc00', '#ffb000', '#ff8300', '#ff5500', '#ff2800', '#ff0019', '#ff0064', '#ff00b0', '#ff00ff'],
-    'feuer': ['#000000', '#1C0000', '#340000', '#550000', '#800000', '#AA0000', '#D40000', '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#FFFFAA', '#FFFFFF'],
-    'ozean': ['#000033', '#000044', '#000066', '#000088', '#0000AA', '#0000CC', '#0000FF', '#0055FF', '#00AAFF', '#00FFFF', '#55FFFF', '#AAFFFF', '#FFFFFF', '#AAFFFF', '#00FFFF'],
-    'monochrom': ['#000000', '#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999', '#aaaaaa', '#bbbbbb', '#cccccc', '#dddddd', '#eeeeee', '#ffffff'],
-    'regenbogen': ['#ff00ff', '#ff00cc', '#ff0099', '#ff0066', '#ff0033', '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00', '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff', '#0000ff', '#3300ff', '#6600ff', '#9900ff', '#cc00ff', '#ff00ff'],
-    'ultraviolett': ['#000000', '#150429', '#2E0854', '#44127E', '#5A1A9A', '#6B36A3', '#7B52AB', '#876EB4', '#9470DC', '#A480E8', '#B490FF', '#C59DFF', '#DCACFF', '#E9CBFF', '#F5E9FF', '#FFFFFF'],
-    'goldgrün': ['#071A07', '#09280A', '#0B3B0B', '#0C500C', '#0E640E', '#0F790F', '#118E11', '#10A710', '#11C411', '#20D820', '#30FF30', '#59FF59', '#88FF88', '#B0FFB0', '#DFFFDF', '#FFFFFF']
-  };
-  
-  // Standardmäßig intensive Farbverläufe verwenden
-  let useIntensePalettes = false;
-  let activePalettes = colorPalettes;
-  
-  // Touch-Gesten-Unterstützung für mobile Geräte
-  // Mandelbrot-Canvas Touch-Unterstützung
-  let mandelbrotLastTouchDistance = 0;
-  let mandelbrotLastTouchCenter = { x: 0, y: 0 };
-  let mandelbrotIsTouching = false;
-  let mandelbrotZoomLevel = 1;
-  let mandelbrotViewX = -0.5; // Zentrum der Mandelbrot-Menge
-  let mandelbrotViewY = 0;
-  
-  // Julia-Canvas Touch-Unterstützung
-  let juliaLastTouchDistance = 0;
-  let juliaLastTouchCenter = { x: 0, y: 0 };
-  let juliaIsTouching = false;
-  let juliaZoomLevel = 1;
-  let juliaViewX = 0;
-  let juliaViewY = 0;
-  
-  // Variablen für Doppeltipp-Erkennung
-  let lastTapTime = 0;
-  let juliaLastTapTime = 0;
-  
-  // Variablen für Drosselung (Throttling)
-  let mandelbrotThrottleTimer = null;
-  let juliaThrottleTimer = null;
-  const throttleDelay = 150; // Verzögerung in Millisekunden
-  
-  // Variablen für Worker-Management
-  let mandelbrotWorkers = [];
-  let juliaWorkers = [];
-  let mandelbrotCalculationInProgress = false;
-  let juliaCalculationInProgress = false;
-  
-  // Funktion zum Drosseln von Funktionsaufrufen
-  function throttle(callback, delay) {
-    return function() {
-      const context = this;
-      const args = arguments;
-      
-      if (!mandelbrotThrottleTimer) {
-        callback.apply(context, args);
-        mandelbrotThrottleTimer = setTimeout(() => {
-          mandelbrotThrottleTimer = null;
-        }, delay);
-      }
-    };
-  }
-  
-  // Optimierte Funktion zur Berechnung der Mandelbrot-Menge
-  function calculateMandelbrot() {
-    // Wenn bereits eine Berechnung läuft, breche sie ab
-    if (mandelbrotCalculationInProgress) {
-      // Beende alle laufenden Worker
-      mandelbrotWorkers.forEach(w => w.terminate());
-      mandelbrotWorkers = [];
-    }
-    
-    mandelbrotLoading.style.display = 'block';
-    mandelbrotCalculationInProgress = true;
-    
-    requestAnimationFrame(() => {
-      if (window.Worker) {
-        // Anzahl der Worker (Prozessorkerne)
-        const numWorkers = Math.min(navigator.hardwareConcurrency || 2, 2); // Reduziert auf maximal 2 Worker für mobile Geräte
-        mandelbrotWorkers = [];
-        const chunks = [];
-        let completedChunks = 0;
-        
-        // Stelle sicher, dass die aktuelle Farbpalette existiert
-        if (!activePalettes[colorScheme]) {
-          console.error("Farbschema nicht gefunden:", colorScheme);
-          colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
-          colorSchemeSelect.value = colorScheme;
-        }
-        
-        // Canvas in Chunks aufteilen
-        const chunkHeight = Math.ceil(mandelbrotCanvas.height / numWorkers);
-        
-        // Direkt hochauflösend berechnen
-        startMultiWorkerCalculation();
-        
-        function startMultiWorkerCalculation() {
-          // Erstelle Worker für jeden Chunk
-          for (let i = 0; i < numWorkers; i++) {
-            const startY = i * chunkHeight;
-            const endY = Math.min(startY + chunkHeight, mandelbrotCanvas.height);
-            
-            const worker = new Worker('{{ site.baseurl }}/assets/js/mandelbrot-worker.js');
-            mandelbrotWorkers.push(worker);
-            
-            worker.postMessage({
-              width: mandelbrotCanvas.width,
-              height: mandelbrotCanvas.height,
-              maxIterations: maxIterations,
-              colorScheme: colorScheme,
-              colorPalettes: activePalettes,
-              startY: startY,
-              endY: endY,
-              workerId: i,
-              // Neue Parameter für Zoom und Panning
-              viewX: mandelbrotViewX,
-              viewY: mandelbrotViewY,
-              zoomLevel: mandelbrotZoomLevel
-            });
-            
-            worker.onmessage = function(e) {
-              const result = e.data;
-              chunks[result.workerId] = result;
-              completedChunks++;
-              
-              // Zeichne diesen Chunk sofort
-              mandelbrotCtx.putImageData(
-                result.imageData, 
-                0, 
-                result.startY, 
-                0, 
-                0, 
-                mandelbrotCanvas.width, 
-                result.endY - result.startY
-              );
-              
-              // Wenn alle Chunks fertig sind
-              if (completedChunks === numWorkers) {
-                mandelbrotLoading.style.display = 'none';
-                mandelbrotCalculationInProgress = false;
-              }
-            };
-            
-            // Fehlerbehandlung für Worker
-            worker.onerror = function(e) {
-              console.error("Worker-Fehler:", e);
-              mandelbrotLoading.style.display = 'none';
-              mandelbrotCalculationInProgress = false;
-            };
-          }
-        }
-      } else {
-        // Fallback für Browser ohne Web Worker-Unterstützung
-        calculateMandelbrotDirectly();
-        mandelbrotCalculationInProgress = false;
-      }
-    });
-  }
-  
-  // Optimierte Funktion zur Berechnung der Julia-Menge
-  function calculateJulia() {
-    // Wenn bereits eine Berechnung läuft, breche sie ab
-    if (juliaCalculationInProgress) {
-      // Beende alle laufenden Worker
-      juliaWorkers.forEach(w => w.terminate());
-      juliaWorkers = [];
-    }
-    
-    juliaLoading.style.display = 'block';
-    juliaCalculationInProgress = true;
-    
-    requestAnimationFrame(() => {
-      if (window.Worker) {
-        // Anzahl der Worker (Prozessorkerne)
-        const numWorkers = Math.min(navigator.hardwareConcurrency || 2, 2); // Reduziert auf maximal 2 Worker für mobile Geräte
-        juliaWorkers = [];
-        const chunks = [];
-        let completedChunks = 0;
-        
-        // Stelle sicher, dass die aktuelle Farbpalette existiert
-        if (!activePalettes[colorScheme]) {
-          console.error("Farbschema nicht gefunden:", colorScheme);
-          colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
-          colorSchemeSelect.value = colorScheme;
-        }
-        
-        // Canvas in Chunks aufteilen
-        const chunkHeight = Math.ceil(juliaCanvas.height / numWorkers);
-        
-        // Direkt hochauflösend berechnen
-        startMultiWorkerCalculation();
-        
-        function startMultiWorkerCalculation() {
-          // Erstelle Worker für jeden Chunk
-          for (let i = 0; i < numWorkers; i++) {
-            const startY = i * chunkHeight;
-            const endY = Math.min(startY + chunkHeight, juliaCanvas.height);
-            
-            const worker = new Worker('{{ site.baseurl }}/assets/js/julia-worker.js');
-            juliaWorkers.push(worker);
-            
-            worker.postMessage({
-              width: juliaCanvas.width,
-              height: juliaCanvas.height,
-              realPart: juliaReal,
-              imagPart: juliaImag,
-              maxIterations: maxIterations,
-              colorScheme: colorScheme,
-              viewX: juliaViewX,
-              viewY: juliaViewY,
-              zoomLevel: juliaZoomLevel,
-              colorPalettes: activePalettes,
-              startY: startY,
-              endY: endY,
-              workerId: i
-            });
-            
-            worker.onmessage = function(e) {
-              const result = e.data;
-              chunks[result.workerId] = result;
-              completedChunks++;
-              
-              // Zeichne diesen Chunk sofort
-              juliaCtx.putImageData(
-                result.imageData, 
-                0, 
-                result.startY, 
-                0, 
-                0, 
-                juliaCanvas.width, 
-                result.endY - result.startY
-              );
-              
-              // Wenn alle Chunks fertig sind
-              if (completedChunks === numWorkers) {
-                juliaLoading.style.display = 'none';
-                juliaCalculationInProgress = false;
-              }
-            };
-            
-            // Fehlerbehandlung für Worker
-            worker.onerror = function(e) {
-              console.error("Worker-Fehler:", e);
-              juliaLoading.style.display = 'none';
-              juliaCalculationInProgress = false;
-            };
-          }
-        }
-      } else {
-        // Fallback für Browser ohne Web Worker-Unterstützung
-        calculateJuliaDirectly();
-        juliaCalculationInProgress = false;
-      }
-    });
-  }
-  
-  // Hilfsfunktion: HEX zu RGB
-  function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-      parseInt(result[1], 16),
-      parseInt(result[2], 16),
-      parseInt(result[3], 16)
-    ] : [0, 0, 0];
-  }
-  
-  // Fallback-Funktionen für Browser ohne Web Worker
-  function calculateMandelbrotDirectly() {
-    // Implementierung hier...
-  }
-  
-  function calculateJuliaDirectly() {
-    // Implementierung hier...
-  }
-  
-  // Event-Listener für Mandelbrot-Canvas
-  mandelbrotCanvas.addEventListener('click', function(e) {
-    const rect = mandelbrotCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Umrechnung in komplexe Koordinaten unter Berücksichtigung von Zoom und Panning
-    const xRange = 3.0 / mandelbrotZoomLevel;
-    const yRange = 3.0 / mandelbrotZoomLevel;
-    const xMin = mandelbrotViewX - xRange / 2;
-    const yMin = mandelbrotViewY - yRange / 2;
-    
-    const newReal = xMin + (xRange * x / mandelbrotCanvas.width);
-    const newImag = yMin + (yRange * y / mandelbrotCanvas.height);
-    
-    // Setze neue Parameter
-    juliaReal = newReal;
-    juliaImag = newImag;
-    
-    // Aktualisiere Anzeige
-    const sign = juliaImag >= 0 ? '+' : '';
-    juliaParameter.textContent = `${juliaReal.toFixed(3)} ${sign} ${juliaImag.toFixed(3)}i`;
-    
-    // Berechne Julia-Menge neu
-    calculateJulia();
-  });
-  
-  // Event-Listener für Steuerelemente
-  maxIterSlider.addEventListener('input', function() {
-    const iterValue = parseInt(this.value);
-    iterValueSpan.textContent = iterValue;
-    maxIterations = iterValue;
-    calculateMandelbrot();
-    calculateJulia();
-  });
-  
-  colorSchemeSelect.addEventListener('change', function() {
-    colorScheme = this.value;
-    
-    if (!activePalettes[colorScheme]) {
-      console.error("Farbschema nicht gefunden:", colorScheme);
-      colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
-      this.value = colorScheme;
-    }
-    
-    calculateMandelbrot();
-    calculateJulia();
-  });
-  
-  // Farbintensitäts-Button
-  colorIntensityButton.addEventListener('click', function() {
-    useIntensePalettes = !useIntensePalettes;
-    
-    // Button-Zustand aktualisieren
-    if (useIntensePalettes) {
-      setButtonLabel(this, 'Intensiv');
-      this.classList.add('active');
-      activePalettes = intensePalettes;
-    } else {
-      setButtonLabel(this, 'Subtil');
-      this.classList.remove('active');
-      activePalettes = colorPalettes;
-    }
-    
-    calculateMandelbrot();
-    calculateJulia();
-  });
-  
-  resetButton.addEventListener('click', function() {
-    juliaReal = -0.7;
-    juliaImag = 0.27;
-    
-    // Setze Iterationen auf Standardwert zurück
-    maxIterations = defaultSettings.maxIterations;
-    maxIterSlider.value = maxIterations;
-    iterValueSpan.textContent = maxIterations;
-    
-    // Setze Zoom und Panning zurück
-    mandelbrotZoomLevel = 1;
-    mandelbrotViewX = -0.5;
-    mandelbrotViewY = 0;
-    juliaZoomLevel = 1;
-    juliaViewX = 0;
-    juliaViewY = 0;
-    
-    // Aktualisiere Anzeige
-    const sign = juliaImag >= 0 ? '+' : '';
-    juliaParameter.textContent = `${juliaReal.toFixed(3)} ${sign} ${juliaImag.toFixed(3)}i`;
-    
-    calculateMandelbrot();
-    calculateJulia();
-  });
-  
-  saveImageButton.addEventListener('click', function() {
-    // Erstelle ein temporäres Canvas mit beiden Bildern
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = mandelbrotCanvas.width + juliaCanvas.width + 20; // 20px Abstand
-    tempCanvas.height = Math.max(mandelbrotCanvas.height, juliaCanvas.height);
-    const tempCtx = tempCanvas.getContext('2d');
-    
-    // Hintergrund
-    tempCtx.fillStyle = '#222';
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    
-    // Zeichne beide Canvas
-    tempCtx.drawImage(mandelbrotCanvas, 0, 0);
-    tempCtx.drawImage(juliaCanvas, mandelbrotCanvas.width + 20, 0);
-    
-    // Füge Text hinzu
-    tempCtx.font = '14px Arial';
-    tempCtx.fillStyle = '#eacfb4';
-    tempCtx.fillText('Mandelbrot-Menge', 10, mandelbrotCanvas.height + 20);
-    tempCtx.fillText(`Julia-Menge für c = ${juliaReal.toFixed(3)} ${juliaImag >= 0 ? '+' : ''} ${juliaImag.toFixed(3)}i`, 
-                     mandelbrotCanvas.width + 30, mandelbrotCanvas.height + 20);
-    
-    // Erstelle Download-Link
-    const link = document.createElement('a');
-    link.download = `mandelbrot-julia-c${juliaReal.toFixed(3)}_${juliaImag.toFixed(3)}i.png`;
-    link.href = tempCanvas.toDataURL('image/png');
-    link.click();
-  });
-  
-  // Initialisierung
-  iterValueSpan.textContent = maxIterations;
-
-  function setButtonLabel(button, text) {
-    if (!button) return;
-    const label = button.querySelector('.btn-text');
-    if (label) {
-      label.textContent = text;
-    } else {
-      button.textContent = text;
-    }
-  }
-
-  // Erweiterte Steuerungen ein-/ausblenden
-  function setAdvancedOpen(enabled) {
-    const container = document.querySelector('.explorer-container');
-    if (!container || !advancedToggleButton) return;
-    container.classList.toggle('advanced-open', enabled);
-    setButtonLabel(advancedToggleButton, enabled ? 'Erweitert aus' : 'Erweitert');
-  }
-
-  if (advancedToggleButton) {
-    advancedToggleButton.addEventListener('click', function() {
-      const container = document.querySelector('.explorer-container');
-      if (!container) return;
-      setAdvancedOpen(!container.classList.contains('advanced-open'));
-    });
-  }
-
-  // Fokusmodus (kartenkompatibel, platzsparend)
-  function setFocusMode(enabled) {
-    const container = document.querySelector('.explorer-container');
-    if (!container || !focusModeButton) return;
-    container.classList.toggle('focus-mode', enabled);
-    focusModeButton.classList.toggle('active', enabled);
-    focusModeButton.setAttribute('aria-pressed', String(enabled));
-    setButtonLabel(focusModeButton, enabled ? 'Fokus aus' : 'Fokus');
-  }
-
-  if (focusModeButton) {
-    focusModeButton.addEventListener('click', function() {
-      const container = document.querySelector('.explorer-container');
-      if (!container) return;
-      setFocusMode(!container.classList.contains('focus-mode'));
-    });
-  }
-
-  setFocusMode(true);
-
-  // Vollbildmodus
-  if (fullscreenButton) {
-    fullscreenButton.addEventListener('click', function() {
-      const container = document.querySelector('.explorer-container');
-      if (!container) return;
-      if (!document.fullscreenElement) {
-        container.requestFullscreen?.();
-      } else {
-        document.exitFullscreen?.();
-      }
-    });
-
-    document.addEventListener('fullscreenchange', function() {
-      const isFullscreen = !!document.fullscreenElement;
-      setButtonLabel(fullscreenButton, isFullscreen ? 'Vollbild aus' : 'Vollbild');
-      const container = document.querySelector('.explorer-container');
-      if (container) {
-        container.classList.toggle('fullscreen-mode', isFullscreen);
-      }
-      adjustCanvasResolution();
-    });
-  }
-  
-  // Erste Berechnung
-  calculateMandelbrot();
-  calculateJulia();
-  
-  // Touch-Start-Handler für Mandelbrot-Canvas
-  mandelbrotCanvas.addEventListener('touchstart', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      
-      // Berechne Abstand zwischen den Fingern
-      mandelbrotLastTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-      
-      // Berechne Mittelpunkt der Berührung
-      const rect = mandelbrotCanvas.getBoundingClientRect();
-      mandelbrotLastTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
-      
-      mandelbrotIsTouching = true;
-    } else if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
-      const touch = e.touches[0];
-      const rect = mandelbrotCanvas.getBoundingClientRect();
-      
-      mandelbrotLastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-      
-      mandelbrotIsTouching = true;
-    }
-  });
-  
-  // Gedrosselter Touch-Move-Handler für Mandelbrot-Canvas
-  mandelbrotCanvas.addEventListener('touchmove', throttle(function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (!mandelbrotIsTouching) return;
-    
-    // Änderung: Immer Ein-Finger-Geste für Verschieben verwenden
-    if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
-      const touch = e.touches[0];
-      const rect = mandelbrotCanvas.getBoundingClientRect();
-      
-      const newTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-      
-      // Berechne Verschiebung in Pixel
-      const deltaX = newTouchCenter.x - mandelbrotLastTouchCenter.x;
-      const deltaY = newTouchCenter.y - mandelbrotLastTouchCenter.y;
-      
-      // Umrechnung in komplexe Koordinaten
-      const xRange = 3.0 / mandelbrotZoomLevel;
-      const yRange = 3.0 / mandelbrotZoomLevel;
-      
-      // Verschiebe Ansicht
-      mandelbrotViewX -= (deltaX / mandelbrotCanvas.width) * xRange;
-      mandelbrotViewY -= (deltaY / mandelbrotCanvas.height) * yRange;
-      
-      // Aktualisiere für nächsten Move-Event
-      mandelbrotLastTouchCenter = newTouchCenter;
-      
-      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
-      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) { // Erhöhter Schwellenwert
-        // Neuberechnung der Mandelbrot-Menge mit aktualisierten Panning-Parametern
-        calculateMandelbrot();
-      }
-    }
-  }, throttleDelay));
-  
-  // Touch-End-Handler für Mandelbrot-Canvas
-  mandelbrotCanvas.addEventListener('touchend', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (e.touches.length === 0) {
-      mandelbrotIsTouching = false;
-      
-      // Prüfe auf Doppeltipp
-      const currentTime = new Date().getTime();
-      const tapLength = currentTime - lastTapTime;
-      
-      if (tapLength < 500 && tapLength > 0) {
-        // Doppeltipp erkannt - zoome hinein
-        mandelbrotZoomLevel *= 2;
-        calculateMandelbrot();
-      }
-      
-      lastTapTime = currentTime;
-      
-      // Finale Berechnung mit voller Qualität
-      if (!mandelbrotCalculationInProgress) {
-        calculateMandelbrot();
-      }
-    } else if (e.touches.length === 1) {
-      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
-      const touch = e.touches[0];
-      const rect = mandelbrotCanvas.getBoundingClientRect();
-      
-      mandelbrotLastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-    }
-  });
-  
-  // Touch-Start-Handler für Julia-Canvas
-  juliaCanvas.addEventListener('touchstart', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (e.touches.length === 2) {
-      // Zwei-Finger-Geste für Zoom
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      
-      // Berechne Abstand zwischen den Fingern
-      juliaLastTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-      
-      // Berechne Mittelpunkt der Berührung
-      const rect = juliaCanvas.getBoundingClientRect();
-      juliaLastTouchCenter = {
-        x: ((touch1.clientX + touch2.clientX) / 2) - rect.left,
-        y: ((touch1.clientY + touch2.clientY) / 2) - rect.top
-      };
-      
-      juliaIsTouching = true;
-    } else if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
-      const touch = e.touches[0];
-      const rect = juliaCanvas.getBoundingClientRect();
-      
-      juliaLastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-      
-      juliaIsTouching = true;
-    }
-  });
-  
-  // Gedrosselter Touch-Move-Handler für Julia-Canvas
-  juliaCanvas.addEventListener('touchmove', throttle(function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (!juliaIsTouching) return;
-    
-    // Änderung: Immer Ein-Finger-Geste für Verschieben verwenden
-    if (e.touches.length === 1) {
-      // Ein-Finger-Geste für Verschieben
-      const touch = e.touches[0];
-      const rect = juliaCanvas.getBoundingClientRect();
-      
-      const newTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-      
-      // Berechne Verschiebung in Pixel
-      const deltaX = newTouchCenter.x - juliaLastTouchCenter.x;
-      const deltaY = newTouchCenter.y - juliaLastTouchCenter.y;
-      
-      // Umrechnung in komplexe Koordinaten
-      const xRange = 3.0 / juliaZoomLevel;
-      const yRange = 3.0 / juliaZoomLevel;
-      
-      // Verschiebe Ansicht
-      juliaViewX -= (deltaX / juliaCanvas.width) * xRange;
-      juliaViewY -= (deltaY / juliaCanvas.height) * yRange;
-      
-      // Aktualisiere für nächsten Move-Event
-      juliaLastTouchCenter = newTouchCenter;
-      
-      // Nur neu berechnen, wenn sich die Position signifikant geändert hat
-      if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) { // Erhöhter Schwellenwert
-        // Neuberechnung der Julia-Menge mit aktualisierten Panning-Parametern
-        calculateJulia();
-      }
-    }
-  }, throttleDelay));
-  
-  // Touch-End-Handler für Julia-Canvas
-  juliaCanvas.addEventListener('touchend', function(e) {
-    e.preventDefault(); // Verhindere Standard-Touch-Aktionen
-    
-    if (e.touches.length === 0) {
-      juliaIsTouching = false;
-      
-      // Prüfe auf Doppeltipp
-      const currentTime = new Date().getTime();
-      const tapLength = currentTime - juliaLastTapTime;
-      
-      if (tapLength < 500 && tapLength > 0) {
-        // Doppeltipp erkannt - zoome hinein
-        juliaZoomLevel *= 2;
-        calculateJulia();
-      }
-      
-      juliaLastTapTime = currentTime;
-      
-      // Finale Berechnung mit voller Qualität
-      if (!juliaCalculationInProgress) {
-        calculateJulia();
-      }
-    } else if (e.touches.length === 1) {
-      // Wechsel von Zwei-Finger- zu Ein-Finger-Geste
-      const touch = e.touches[0];
-      const rect = juliaCanvas.getBoundingClientRect();
-      
-      juliaLastTouchCenter = {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-    }
-  });
-  
-  // Füge Info-Text für Touch-Geräte hinzu
-  function addTouchInfoText() {
-    const isTouchDevice = ('ontouchstart' in window) || 
-                          (navigator.maxTouchPoints > 0) || 
-                          (navigator.msMaxTouchPoints > 0);
-    
-    if (isTouchDevice) {
-      // Füge Info-Text für Mandelbrot-Canvas hinzu
-      const mandelbrotInfoPanel = document.querySelector('.explorer-column:first-child .info-panel');
-      if (mandelbrotInfoPanel) {
-        mandelbrotInfoPanel.innerHTML = '<p>Tippen Sie auf einen Punkt, um die entsprechende Julia-Menge zu sehen.</p>' +
-                                       '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
-      }
-      
-      // Füge Info-Text für Julia-Canvas hinzu
-      const juliaInfoPanel = document.querySelector('.explorer-column:last-child .info-panel');
-      if (juliaInfoPanel) {
-        juliaInfoPanel.innerHTML = '<p>Die Julia-Menge für den gewählten Parameter c.</p>' +
-                                  '<p>Zwei Finger: Zoomen | Ein Finger: Verschieben | Doppeltippen: Zoom +</p>';
-      }
-      
-      // Reduziere die Auflösung auf Mobilgeräten
-      adjustCanvasResolution();
-    }
-  }
-  
-  // Funktion zur Anpassung der Canvas-Auflösung auf Mobilgeräten
-  function adjustCanvasResolution() {
-    // Prüfe, ob es sich um ein Mobilgerät handelt
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    const mandelbrotContainer = mandelbrotCanvas.parentElement;
-    const juliaContainer = juliaCanvas.parentElement;
-    if (!mandelbrotContainer || !juliaContainer) return;
-
-    const containerWidth = Math.floor(Math.min(
-      mandelbrotContainer.clientWidth || 0,
-      juliaContainer.clientWidth || 0
-    ));
-    if (!containerWidth) return;
-
-    const maxWidth = isMobile ? 720 : 800;
-    const minWidth = isMobile ? 320 : 480;
-    const targetWidth = Math.max(minWidth, Math.min(maxWidth, containerWidth));
-    const targetHeight = Math.floor(targetWidth * 9 / 16);
-
-    const needsResize =
-      mandelbrotCanvas.width !== targetWidth ||
-      mandelbrotCanvas.height !== targetHeight ||
-      juliaCanvas.width !== targetWidth ||
-      juliaCanvas.height !== targetHeight;
-
-    if (needsResize) {
-      mandelbrotCanvas.width = targetWidth;
-      mandelbrotCanvas.height = targetHeight;
-      juliaCanvas.width = targetWidth;
-      juliaCanvas.height = targetHeight;
-
-      calculateMandelbrot();
-      calculateJulia();
-    }
-  }
-  
-  // Führe die Aktualisierung der Info-Texte nach dem Laden durch
-  setTimeout(addTouchInfoText, 100);
-
-  // Funktion zum Erkennen von Mobilgeräten
-  function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
-
-  // Zeige oder verstecke mobile Zoom-Steuerungen basierend auf Gerätetyp
-  function setupMobileControls() {
-    const mandelbrotMobileZoom = document.getElementById('mandelbrotMobileZoom');
-    const juliaMobileZoom = document.getElementById('juliaMobileZoom');
-    
-    if (isMobileDevice() || window.innerWidth <= 768) {
-      // Zeige mobile Steuerungen auf Smartphones
-      if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'flex';
-      if (juliaMobileZoom) juliaMobileZoom.style.display = 'flex';
-      
-      // Passe Auflösung für mobile Geräte an
-      adjustCanvasResolution();
-      
-      // Passe die Breite des Containers an
-      const container = document.querySelector('.explorer-container');
-      if (container) {
-        container.style.width = '100%';
-        container.style.maxWidth = '100vw';
-        container.style.boxSizing = 'border-box';
-      }
-    } else {
-      // Verstecke mobile Steuerungen auf Desktop
-      if (mandelbrotMobileZoom) mandelbrotMobileZoom.style.display = 'none';
-      if (juliaMobileZoom) juliaMobileZoom.style.display = 'none';
-    }
-  }
-
-  // Initialisiere mobile Steuerungen beim Laden
-  document.addEventListener('DOMContentLoaded', setupMobileControls);
-  window.addEventListener('resize', setupMobileControls);
-
-  // Hilfsfunktion zur Formatierung der Zoom-Stufe
-  function formatZoomLevel(level) {
-    if (level >= 10) {
-      return level.toFixed(0) + '×';
-    } else if (level >= 1) {
-      return level.toFixed(1) + '×';
-    } else {
-      return level.toFixed(2) + '×';
-    }
-  }
-  
-  // Mandelbrot Zoom-Funktionalität
-  const mandelbrotZoomValue = document.getElementById('mandelbrotZoomLevel');
-  const mandelbrotZoomInBtn = document.getElementById('mandelbrotZoomIn');
-  const mandelbrotZoomOutBtn = document.getElementById('mandelbrotZoomOut');
-  
-  // Initialisierung der Zoom-Anzeige
-  if (mandelbrotZoomValue) {
-    mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
-  }
-  
-  // Zoom-In Button für Mandelbrot
-  if (mandelbrotZoomInBtn) {
-    mandelbrotZoomInBtn.addEventListener('click', function() {
-      // Zoom-Faktor: 1.5x pro Klick
-      mandelbrotZoomLevel = Math.min(mandelbrotZoomLevel * 1.5, 1000);
-      
-      // Aktualisiere die Zoom-Anzeige
-      if (mandelbrotZoomValue) {
-        mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
-      }
-      
-      // Berechne Mandelbrot neu
-      calculateMandelbrot();
-    });
-  }
-  
-  // Zoom-Out Button für Mandelbrot
-  if (mandelbrotZoomOutBtn) {
-    mandelbrotZoomOutBtn.addEventListener('click', function() {
-      // Zoom-Faktor: 1.5x pro Klick (rückwärts)
-      mandelbrotZoomLevel = Math.max(mandelbrotZoomLevel / 1.5, 0.1);
-      
-      // Aktualisiere die Zoom-Anzeige
-      if (mandelbrotZoomValue) {
-        mandelbrotZoomValue.textContent = formatZoomLevel(mandelbrotZoomLevel);
-      }
-      
-      // Berechne Mandelbrot neu
-      calculateMandelbrot();
-    });
-  }
-  
-  // Julia Zoom-Funktionalität
-  const juliaZoomValue = document.getElementById('juliaZoomLevel');
-  const juliaZoomInBtn = document.getElementById('juliaZoomIn');
-  const juliaZoomOutBtn = document.getElementById('juliaZoomOut');
-  
-  // Initialisierung der Zoom-Anzeige
-  if (juliaZoomValue) {
-    juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
-  }
-  
-  // Zoom-In Button für Julia
-  if (juliaZoomInBtn) {
-    juliaZoomInBtn.addEventListener('click', function() {
-      // Zoom-Faktor: 1.5x pro Klick
-      juliaZoomLevel = Math.min(juliaZoomLevel * 1.5, 1000);
-      
-      // Aktualisiere die Zoom-Anzeige
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
-      }
-      
-      // Berechne Julia neu
-      calculateJulia();
-    });
-  }
-  
-  // Zoom-Out Button für Julia
-  if (juliaZoomOutBtn) {
-    juliaZoomOutBtn.addEventListener('click', function() {
-      // Zoom-Faktor: 1.5x pro Klick (rückwärts)
-      juliaZoomLevel = Math.max(juliaZoomLevel / 1.5, 0.1);
-      
-      // Aktualisiere die Zoom-Anzeige
-      if (juliaZoomValue) {
-        juliaZoomValue.textContent = formatZoomLevel(juliaZoomLevel);
-      }
-      
-      // Berechne Julia neu
-      calculateJulia();
-    });
-  }
-});
-</script> 

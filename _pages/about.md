@@ -32,7 +32,7 @@ header:
         so ist es mir wichtig diese Dinge auch für mich selbst festzuhalten. So steht an erster Stelle Qualität und Einträge werden ohne Zeitdruck und unter Wohlbefinden erstellt und umgesetzt.
 
         Für ein Projekt bringe ich mir im Allgemeinen schrittweise autodidaktisch Grundlagen und alle notwendigen Fähigkeiten bei. 
-        Dabei ist es wichtig, dass ich mich selbst motiviere und die Herausforderungen so lange angehen, bis ich das gewünschte Ergebnis erreicht habe.
+        Dabei ist es wichtig, dass ich mich selbst motiviere und die Herausforderungen so lange angehe, bis das gewünschte Ergebnis erreicht ist.
         Daher wird keinerlei Zeitrahmen für die Aktualisierung dieser Seite angegeben.
         <br>
         <br>

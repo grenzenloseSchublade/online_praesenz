@@ -2,13 +2,13 @@
 <div class="julia-container focus-mode" id="julia-container">
   <h2 class="julia-title">Interaktive Julia-Menge</h2>
   <div class="julia-toolbar">
-    <button id="juliaAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
-      <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
-      <span class="btn-text">Erweitert</span>
-    </button>
     <button id="juliaFocusMode" class="toggle-button active" title="Fokusmodus" aria-label="Fokusmodus" aria-pressed="true">
       <span class="icon"><i class="fas fa-crosshairs" aria-hidden="true"></i></span>
-      <span class="btn-text">Fokus aus</span>
+      <span class="btn-text">Fokus</span>
+    </button>
+    <button id="resetZoom" class="toggle-button" title="Zoom zurücksetzen" aria-label="Zoom zurücksetzen">
+      <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+      <span class="btn-text">Reset</span>
     </button>
     <button id="juliaFullscreen" class="toggle-button" title="Vollbild" aria-label="Vollbild">
       <span class="icon"><i class="fas fa-expand" aria-hidden="true"></i></span>
@@ -17,6 +17,12 @@
   </div>
   <div class="julia-controls">
     <div class="controls-basic">
+      <div class="advanced-toggle-row">
+        <button id="juliaAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
+          <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
+          <span class="btn-text">Erweitert</span>
+        </button>
+      </div>
       <div class="control-row">
         <label for="maxIterations">Iterationen:</label>
         <input type="range" id="maxIterations" min="10" max="1000" step="10" value="250">
@@ -42,10 +48,6 @@
         <button id="applySettings" title="Neu berechnen" aria-label="Neu berechnen">
           <span class="icon"><i class="fas fa-sync" aria-hidden="true"></i></span>
           <span class="btn-text">Aktualisieren</span>
-        </button>
-        <button id="resetZoom" title="Zoom zurücksetzen" aria-label="Zoom zurücksetzen">
-          <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
-          <span class="btn-text">Reset</span>
         </button>
       </div>
     </div>
@@ -216,14 +218,25 @@
 
   .julia-toolbar {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 8px;
+    flex-wrap: nowrap;
     margin-bottom: 12px;
-    justify-content: flex-start;
+    justify-content: space-between;
+  }
+
+  .julia-toolbar .toggle-button {
+    flex: 1;
+    min-width: 0;
+    max-width: 140px;
+    justify-content: center;
   }
 
   .julia-toolbar .icon {
     margin-right: 6px;
+  }
+
+  .advanced-toggle-row {
+    margin-bottom: 12px;
   }
 
   .btn-text {
@@ -322,17 +335,22 @@
 
   @media (max-width: 768px) {
     .julia-toolbar {
-      justify-content: space-between;
+      gap: 6px;
     }
-
     .julia-toolbar .toggle-button {
-      min-width: 80px;
-      padding: 6px 10px;
-      font-size: 12px;
+      padding: 8px 10px;
     }
+  }
 
+  @media (max-width: 480px) {
+    .julia-toolbar .btn-text {
+      display: none;
+    }
     .julia-toolbar .icon {
-      margin-right: 4px;
+      margin-right: 0;
+    }
+    .julia-toolbar .toggle-button {
+      padding: 10px 12px;
     }
   }
   
