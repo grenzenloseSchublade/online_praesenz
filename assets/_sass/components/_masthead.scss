@@ -222,7 +222,7 @@
                 padding: 0.5em;
                 margin: 0.2em;
                 font-weight: $medium-weight; // Etwas fetter
-                color: #ffffff; // $link-color; // Cyan - Projektfarbe
+                color: $white; // Weiß für bessere Lesbarkeit
                 transition: color 0.2s ease, text-shadow 0.2s ease;
                 
                 // Desktop: Größere Schrift (moderne Standards: 16-18px)
@@ -232,8 +232,7 @@
 
                 &:hover {
                     color: $hover-color; // Magenta - Projektfarbe
-                    text-shadow: 0 0 8px rgba(255, 0, 255, 0.5); // Subtiler Magenta-Glow
-                    background-color: rgba(0, 0, 0, 0.2); // Leichter Hintergrund beim Hover
+                    // Minimalistisch: kein text-shadow, kein Hintergrund
                 }
 
                 // &:before {
@@ -243,26 +242,8 @@
             }
         }
 
-        // Dropdown-Menü-Button für mobile Ansicht - Neon-Cyan-Design
-        // Nur Umrandung und Glow-Effekt, keine ausgefüllte Hintergrundfarbe
-        .greedy-nav__toggle {
-            background-color: transparent;
-            border: 2px solid $link-color; // Cyan-Umrandung
-            border-radius: 6px;
-            box-shadow: 
-                0 0 6px rgba(5, 217, 232, 0.4),
-                0 0 12px rgba(5, 217, 232, 0.2),
-                inset 0 0 4px rgba(5, 217, 232, 0.1); // Subtiler Glow-Effekt
-            transition: box-shadow 0.2s ease, border-color 0.2s ease;
-
-            &:hover {
-                border-color: $hover-color; // Magenta beim Hover
-                box-shadow: 
-                    0 0 10px rgba(255, 0, 255, 0.5),
-                    0 0 20px rgba(255, 0, 255, 0.3),
-                    inset 0 0 6px rgba(255, 0, 255, 0.15);
-            }
-        }
+        // Dropdown-Menü-Button Styles sind in body .greedy-nav__toggle definiert
+        // (höhere Spezifität für Theme-Überschreibung)
     }
 }
 
@@ -549,7 +530,7 @@ body .hidden-links li {
 body .hidden-links li a {
   display: block;
   padding: 12px 14px;
-  color: #f5f5f5;
+  color: $white; // Konsistent mit visible-links
   font-size: 0.95em;
   text-decoration: none;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
@@ -596,34 +577,28 @@ body .hidden-links li a:focus:after {
 
 body .greedy-nav__toggle {
   background-color: transparent;
-  border: 0.5px solid $link-color; // Cyan-Umrandung
+  border: 1px solid rgba(5, 217, 232, 0.6); // Dezente Cyan-Umrandung
   cursor: pointer;
   padding: 0.25em 0.4em;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
   position: relative;
   z-index: 1002;
   border-radius: 6px;
-  box-shadow: 
-    0 0 6px rgba(5, 217, 232, 0.4),
-    0 0 12px rgba(5, 217, 232, 0.2),
-    inset 0 0 4px rgba(5, 217, 232, 0.1); // Neon-Glow-Effekt
+  box-shadow: 0 0 4px rgba(5, 217, 232, 0.2); // Minimaler Glow
 }
 
 body .greedy-nav__toggle:hover {
-  border-color: $hover-color; // Magenta beim Hover
-  box-shadow: 
-    0 0 10px rgba(255, 0, 255, 0.5),
-    0 0 20px rgba(255, 0, 255, 0.3),
-    inset 0 0 6px rgba(255, 0, 255, 0.15);
+  border-color: $link-color; // Volle Cyan-Farbe beim Hover
+  box-shadow: 0 0 8px rgba(5, 217, 232, 0.4); // Subtiler Glow beim Hover
 }
 
 body .navicon {
   position: relative;
   display: block;
   width: 1.5em;
-  height: 0.25em;
-  background: $link-color; // Cyan statt Weiß
-  box-shadow: 0 0 4px rgba(5, 217, 232, 0.6); // Subtiler Glow
+  height: 0.2em;
+  background: $link-color; // Cyan
+  box-shadow: none; // Minimalistisch: kein Glow
   transition: 0.3s;
 }
 
@@ -634,8 +609,8 @@ body .navicon:after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: $link-color; // Cyan statt Weiß
-  box-shadow: 0 0 4px rgba(5, 217, 232, 0.6); // Subtiler Glow
+  background: $link-color; // Cyan
+  box-shadow: none; // Minimalistisch: kein Glow
   transition: 0.3s;
 }
 
@@ -656,14 +631,14 @@ body .greedy-nav__toggle.close .navicon:before {
   transform: rotate(45deg);
   top: 0;
   background: $link-color; // Cyan
-  box-shadow: 0 0 6px rgba(5, 217, 232, 0.8); // Stärkerer Glow beim X
+  box-shadow: none; // Minimalistisch
 }
 
 body .greedy-nav__toggle.close .navicon:after {
   transform: rotate(-45deg);
   bottom: 0;
   background: $link-color; // Cyan
-  box-shadow: 0 0 6px rgba(5, 217, 232, 0.8); // Stärkerer Glow beim X
+  box-shadow: none; // Minimalistisch
 }
 
 // Body-Padding für festen Header

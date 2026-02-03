@@ -11,10 +11,10 @@
   --content-spacing: 0.8rem;
 
   // ============================================
-  // Brand/Navigation Farben
+  // Brand/Navigation Farben (Cyan/Magenta Farbschema)
   // ============================================
-  --primary-color: #3498db;
-  --primary-color-rgb: 52, 152, 219;
+  --primary-color: #05d9e8; // Cyan - konsistent mit $link-color
+  --primary-color-rgb: 5, 217, 232; // Cyan RGB
   --hover-bg-color-rgb: 0, 255, 255;
   --hover-bg-opacity: 0.08;
   --hover-indicator-height: 3px;
