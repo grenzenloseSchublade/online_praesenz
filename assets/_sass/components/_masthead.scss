@@ -22,12 +22,12 @@
     // Gesamter Header-Bereich
     // background-color: $background-dark; // Verwendet deine bereits definierte Variable
 
-    // Anpassung des Titels "Kraftstoff"
+    // Anpassung des Titels "Kraftstoff" / "Hans Müller"
     .site-title {
         font-size: $site-title-font-size; // Größerer Titel
         font-weight: bold;
         transition: color 0.45s ease, text-shadow 0.45s ease; // Sanfter Übergang für Farbe/Glow
-        margin-right: 2em;
+        margin-right: 3em; // Größerer Abstand zum Menü (Desktop)
         
         &:hover {
             color: inherit;
@@ -36,13 +36,18 @@
               0 0 34px rgba(255, 0, 204, 0.75),
               0 0 60px rgba(255, 0, 204, 0.5),
               0 0 90px rgba(255, 0, 204, 0.35);
-            text-decoration: none; // Optional: Entfernt die Unterstreichung beim Hover
+            text-decoration: none;
         }
         
         // Responsive Anpassung für kleinere Bildschirme
         @media (max-width: 768px) {
             font-size: 1.6em;
-            margin-right: 0;
+            margin-right: 1em; // Kleiner Abstand auch auf Mobile
+        }
+        
+        // Tablet
+        @media (min-width: 769px) and (max-width: 1024px) {
+            margin-right: 2em;
         }
     }
 
@@ -436,6 +441,50 @@ body .visible-links li {
   position: relative;
 }
 
+// Trennung nach erstem Link (Mandelbrot) - Kombination aus Abstand und dezenter Linie
+body .visible-links li:first-child {
+  margin-right: 1.2em; // Größerer Abstand als normal
+  
+  // Schmale Cyan-Linie nach dem ersten Element
+  &::after {
+    content: "";
+    position: absolute;
+    right: -0.75em;
+    // Symmetrische Zentrierung (nicht top/transform)
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    width: 2px; // Sehr schmal
+    height: 45%; // Nicht über gesamten Header
+    background: rgba(5, 217, 232, 0.4); // Dezentes Cyan
+    pointer-events: none;
+  }
+  
+  // Linie verschwindet, wenn Mandelbrot der einzige visible Link ist
+  &:only-child::after {
+    display: none;
+  }
+  
+  // Tablet: etwas kleiner
+  @media (min-width: 769px) and (max-width: 1024px) {
+    margin-right: 1em;
+    
+    &::after {
+      right: -0.6em;
+    }
+  }
+  
+  // Mobile: proportional kleiner
+  @media (max-width: 768px) {
+    margin-right: 0.8em;
+    
+    &::after {
+      height: 35%;
+      right: -0.5em;
+    }
+  }
+}
+
 body .visible-links li a {
   display: flex;
   align-items: center;
@@ -484,95 +533,101 @@ body .visible-links li a:focus:after {
   transform: scaleX(1);
 }
 
-body .hidden-links {
+// Hidden-Links (Dropdown-Menü) - angepasst an Header-Stil
+body .greedy-nav .hidden-links {
   position: absolute;
   top: 100%;
-  right: 50%;
-  transform: translateX(50%);
-  margin-top: 10px;
-  padding: 8px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  right: 0; // Rechtsbündig am Toggle-Button
+  margin-top: 8px;
+  padding: 6px 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(20, 20, 25, 0.95); // Ähnlich wie Header-Hintergrund
+  backdrop-filter: blur(5px); // Gleicher Blur wie Header
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); // Gleicher Schatten wie Header
   z-index: 1001;
-  min-width: 200px;
-  width: 92vw;
-  max-width: 360px;
+  min-width: auto;
+  width: auto; // Automatische Breite basierend auf Inhalt
 }
 
-body .hidden-links.hidden {
+body .greedy-nav .hidden-links.hidden {
   display: none;
 }
 
-body .hidden-links::before {
+body .greedy-nav .hidden-links::before {
   content: "";
   position: absolute;
-  top: -8px;
-  right: 50%;
-  transform: translateX(50%);
+  top: -6px;
+  right: 12px; // Rechtsbündig passend zum Toggle
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0 8px 8px 8px;
-  border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent;
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent rgba(20, 20, 25, 0.95) transparent;
   z-index: 0;
 }
 
-body .hidden-links li {
-  display: block;
-  width: 100%;
-  position: relative;
+// Theme-Override: entfernt den weißen After-Pfeil
+body .greedy-nav .hidden-links::after {
+  display: none;
 }
 
-body .hidden-links li a {
+body .greedy-nav .hidden-links li {
   display: block;
-  padding: 12px 14px;
-  color: $white; // Konsistent mit visible-links
-  font-size: 0.95em;
+  width: auto;
+  position: relative;
+  border-bottom: none;
+  
+  &:last-child {
+    border-bottom: none; // Theme-Override
+  }
+  
+  // Trennung nach erstem Link (Mandelbrot) im Dropdown
+  &:first-child:not(:only-child) {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    
+    // Horizontale Cyan-Linie unter Mandelbrot
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: rgba(5, 217, 232, 0.3); // Dezentes Cyan
+      pointer-events: none;
+    }
+  }
+}
+
+body .greedy-nav .hidden-links li a {
+  display: block;
+  padding: 10px 20px;
+  margin: 0;
+  color: $white;
+  font-size: 1em; // Gleiche Größe wie visible-links
   text-decoration: none;
-  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out;
   position: relative;
   z-index: 1;
-  border-radius: 8px;
+  border-radius: 0;
+  background: transparent;
+  white-space: nowrap; // Verhindert Umbruch, hält Menü kompakt
+  
+  &:hover,
+  &:focus {
+    color: $hover-color; // Magenta - konsistent mit visible-links
+    background: transparent;
+  }
 }
 
-body .hidden-links li a:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(var(--primary-color-rgb, 52, 152, 219), var(--hover-bg-opacity, 0.3));
-  transform: scaleY(0);
-  transform-origin: bottom center;
-  transition: transform 0.2s ease-in-out;
-  z-index: -1;
-}
-
-body .hidden-links li a:hover:before,
-body .hidden-links li a:focus:before {
-  transform: scaleY(1);
-}
-
-body .hidden-links li a:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: var(--hover-indicator-height, 3px);
-  width: 100%;
-  background-color: var(--hover-indicator-color, #05d9e8);
-  transform: scaleX(0);
-  transition: transform 0.2s ease-in-out;
-}
-
-body .hidden-links li a:hover:after,
-body .hidden-links li a:focus:after {
-  transform: scaleX(1);
+// Minimalistisch: keine aufwändigen Hover-Animationen
+// Nur Farbwechsel wie bei visible-links
+body .greedy-nav .hidden-links li a:before,
+body .greedy-nav .hidden-links li a:after {
+  display: none; // Deaktiviert Theme-Pseudo-Elemente
 }
 
 body .greedy-nav__toggle {

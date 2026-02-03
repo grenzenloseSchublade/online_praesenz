@@ -1,9 +1,22 @@
 /*
  * Vanilla GreedyNav based on lukejacksonn/GreedyNav
  * Keeps visible links in the navbar and moves overflow to hidden menu.
+ * 
+ * WICHTIG: Diese Version überschreibt die jQuery-Version aus main.min.js
  */
 (function() {
   'use strict';
+
+  // Entferne alte jQuery Event-Listener von hidden-links (falls vorhanden)
+  function removeOldListeners() {
+    const hlinks = document.querySelector('.greedy-nav .hidden-links');
+    const btn = document.querySelector('.greedy-nav .greedy-nav__toggle');
+    if (hlinks && window.jQuery) {
+      // jQuery off() entfernt die Event-Listener der jQuery-Version
+      jQuery(hlinks).off('mouseleave mouseenter click');
+      jQuery(btn).off('click');
+    }
+  }
 
   function outerWidth(el) {
     if (!el) return 0;
@@ -23,10 +36,13 @@
 
     if (!btn || !vlinks || !hlinks || !title) return;
 
+    // Entferne alte jQuery Event-Listener (aus main.min.js)
+    removeOldListeners();
+
     let numOfItems = 0;
     let breakWidths = [];
     let lastBreakpoint = null;
-    let closingTime = 1000;
+    let closingTime = 3000; // 3 Sekunden
     let timer;
 
     function addWidth(w) {
@@ -39,7 +55,7 @@
     function measureLinks() {
       numOfItems = 0;
       breakWidths = [];
-      closingTime = 1000;
+      // closingTime wird NICHT mehr hier überschrieben (Bug behoben)
 
       const vChildren = Array.from(vlinks.children);
       vChildren.forEach((child) => addWidth(outerWidth(child)));
@@ -121,6 +137,31 @@
     hlinks.addEventListener('mouseenter', function() {
       clearTimeout(timer);
     });
+
+    // Click außerhalb des Menüs schließt es (wichtig für Mobile und Desktop)
+    document.addEventListener('click', function(e) {
+      // Prüfe ob Klick außerhalb von Menü UND Toggle-Button war
+      const isClickInsideMenu = hlinks.contains(e.target);
+      const isClickOnToggle = btn.contains(e.target);
+      
+      if (!isClickInsideMenu && !isClickOnToggle && !hlinks.classList.contains('hidden')) {
+        hlinks.classList.add('hidden');
+        btn.classList.remove('close');
+        clearTimeout(timer);
+      }
+    });
+
+    // Touch-Event für bessere Mobile-Unterstützung
+    document.addEventListener('touchstart', function(e) {
+      const isClickInsideMenu = hlinks.contains(e.target);
+      const isClickOnToggle = btn.contains(e.target);
+      
+      if (!isClickInsideMenu && !isClickOnToggle && !hlinks.classList.contains('hidden')) {
+        hlinks.classList.add('hidden');
+        btn.classList.remove('close');
+        clearTimeout(timer);
+      }
+    }, { passive: true });
 
     // Debounced resize handler für bessere Performance
     let resizeTimeout;
