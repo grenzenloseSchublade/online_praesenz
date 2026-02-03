@@ -3,37 +3,49 @@
 
 @keyframes neonOrbitRampBefore {
   from {
-    transform: rotate(0deg) translateX(var(--neon-orbit-start-offset-before, -0.10em)) rotate(0deg);
+    // Start bei Y=0 (Originalposition)
+    transform: translateY(0)
+      rotate(0deg) translateX(var(--neon-orbit-start-offset-before, -0.10em)) rotate(0deg);
   }
   to {
-    transform: rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+    // Ende bei Ziel-Y (smooth Übergang)
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
   }
 }
 
 @keyframes neonOrbitRampAfter {
   from {
-    transform: rotate(0deg) translateX(var(--neon-orbit-start-offset-after, 0.14em)) rotate(0deg);
+    // Start bei Y=0 (Originalposition)
+    transform: translateY(0)
+      rotate(0deg) translateX(var(--neon-orbit-start-offset-after, 0.14em)) rotate(0deg);
   }
   to {
-    transform: rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+    // Ende bei Ziel-Y (smooth Übergang)
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
   }
 }
 
 @keyframes neonOrbitSpinBefore {
   from {
-    transform: rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
   }
   to {
-    transform: rotate(540deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-540deg);
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(540deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-540deg);
   }
 }
 
 @keyframes neonOrbitSpinAfter {
   from {
-    transform: rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
   }
   to {
-    transform: rotate(360deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-360deg);
+    transform: translateY(var(--neon-orbit-center-y, 0))
+      rotate(360deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-360deg);
   }
 }
 
@@ -67,8 +79,8 @@
       0 0 200px rgba(255, 255, 255, 0.8);
   }
   85% {
-    // Explosion am Mittelpunkt - translateY verschiebt nach unten, dann scale
-    transform: translateY(0.4em)
+    // Explosion am Mittelpunkt - scale vom Zentrum dank transform-origin: center
+    transform: translateY(0)
       rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
@@ -127,8 +139,8 @@
       0 0 200px rgba(255, 255, 255, 0.8);
   }
   85% {
-    // Explosion am Mittelpunkt - translateY verschiebt nach unten, dann scale
-    transform: translateY(0.4em)
+    // Explosion am Mittelpunkt - scale vom Zentrum dank transform-origin: center
+    transform: translateY(0)
       rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
@@ -335,6 +347,13 @@
   animation-delay: 0.95s, 0s, 0s, 0s,
     var(--neon-orbit-start-delay, 0.6s),
     calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 1.2s));
+}
+
+// transform-origin für zentrierte Explosion (keine Verschiebung bei scale)
+// Sicher, weil bei 75% translateX=0 ist - kein visueller Sprung
+.neon-name.orbit-finish .neon-umlaut::before,
+.neon-name.orbit-finish .neon-umlaut::after {
+  transform-origin: center center;
 }
 
 .neon-name.orbit-finish .neon-umlaut::before {

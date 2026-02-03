@@ -76,6 +76,7 @@
   --neon-orbit-finish-duration: 3.2s;
   --neon-orbit-pop-duration: 0.5s;
   --neon-orbit-center-x: 0.23em;
+  --neon-orbit-center-y: 0; // Y-Offset für Rotationsmittelpunkt (wird per JS gesetzt)
   --neon-orbit-start-offset-before: -0.12em;
   --neon-orbit-start-offset-after: 0.12em;
   --neon-orbit-radius-em: 0.4;

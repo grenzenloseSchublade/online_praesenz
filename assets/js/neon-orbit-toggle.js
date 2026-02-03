@@ -100,9 +100,10 @@
     clearTimers(state);
     scope.style.setProperty("--neon-orbit-color-mode", "default");
     setColorMode(scope, state, "default");
-    // Radius-Variablen zurücksetzen auf CSS-Defaults
+    // Radius- und Y-Offset-Variablen zurücksetzen auf CSS-Defaults
     scope.style.removeProperty("--neon-orbit-radius-em");
     scope.style.removeProperty("--neon-orbit-radius");
+    scope.style.removeProperty("--neon-orbit-center-y");
     scope.classList.remove("orbit-running");
     scope.classList.remove("orbit-finish");
     scope.classList.remove("orbit-popin");
@@ -259,13 +260,15 @@
     // Orbit-Mittelpunkt anpassen je nach Modus
     // WICHTIG: Beide Variablen setzen! --neon-orbit-radius wird in Keyframes verwendet
     if (mode === "default") {
-      // 2-Klick Modus: Orbit höher
+      // 2-Klick Modus: Orbit höher, Y-Offset für Mitte des "u"
       scope.style.setProperty("--neon-orbit-radius-em", "0.7");
       scope.style.setProperty("--neon-orbit-radius", "0.7em");
+      scope.style.setProperty("--neon-orbit-center-y", "0.29em");
     } else {
-      // 3-Klick Modus: Standard-Radius
+      // 3-Klick Modus: Standard-Radius, Y=0 (vorheriger Stand)
       scope.style.setProperty("--neon-orbit-radius-em", "0.4");
       scope.style.setProperty("--neon-orbit-radius", "0.4em");
+      scope.style.setProperty("--neon-orbit-center-y", "0em");
     }
     
     scope.classList.add("orbit-running");
