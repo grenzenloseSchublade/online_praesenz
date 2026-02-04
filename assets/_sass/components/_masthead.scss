@@ -533,6 +533,7 @@ body {
     margin: 0 !important;
     padding: 0; // Wird unten für Links gesetzt
     border: none !important;
+    font-weight: $medium-weight;
     border-left: 1px solid $link-color-subtle !important;
     border-radius: 0 !important;
     background: rgba(15, 15, 20, 0.98) !important;
