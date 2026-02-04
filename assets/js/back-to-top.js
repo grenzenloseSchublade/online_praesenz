@@ -6,7 +6,7 @@
 (function() {
   'use strict';
   
-  const SCROLL_THRESHOLD = 300; // Pixel nach unten gescrollt
+  const SCROLL_THRESHOLD = 888; // Pixel nach unten gescrollt
   const MIN_PAGE_HEIGHT_RATIO = 1.5; // Seite muss 150% des Viewports sein
   const THROTTLE_MS = 16; // ~60fps
   
