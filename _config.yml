@@ -44,6 +44,7 @@ kramdown:
 after_footer_scripts:
   - /assets/js/greedy-navigation.js
   - /assets/js/blog-search.js
+  - /assets/js/back-to-top.js
 
 # Collections
 include:

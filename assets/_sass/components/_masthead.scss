@@ -17,45 +17,11 @@
             drop-shadow(0 0 6px rgba(255, 0, 204, 0.4));
 }
 
-// Anpassungen für Header und Navigation
-.masthead {
-    // Gesamter Header-Bereich
-    // background-color: $background-dark; // Verwendet deine bereits definierte Variable
-
-    // Anpassung des Titels "Kraftstoff" / "Hans Müller"
-    .site-title {
-        font-size: $site-title-font-size; // Größerer Titel
-        font-weight: bold;
-        transition: color 0.45s ease, text-shadow 0.45s ease; // Sanfter Übergang für Farbe/Glow
-        margin-right: 3em; // Größerer Abstand zum Menü (Desktop)
-        
-        &:hover {
-            color: inherit;
-            text-shadow: 0 0 6px rgba(255, 0, 204, 1),
-              0 0 16px rgba(255, 0, 204, 0.95),
-              0 0 34px rgba(255, 0, 204, 0.75),
-              0 0 60px rgba(255, 0, 204, 0.5),
-              0 0 90px rgba(255, 0, 204, 0.35);
-            text-decoration: none;
-        }
-        
-        // Responsive Anpassung für kleinere Bildschirme
-        @media (max-width: 768px) {
-            font-size: 1.6em;
-            margin-right: 1em; // Kleiner Abstand auch auf Mobile
-        }
-        
-        // Tablet
-        @media (min-width: 769px) and (max-width: 1024px) {
-            margin-right: 2em;
-        }
-    }
-
-    // Neon-Umlaut Styles sind global definiert, um Überschreibungen zu vermeiden.
+// =============================================================================
+// KEYFRAMES (global, außerhalb von Komponenten)
+// =============================================================================
 
 @keyframes neonUmlautFlickerA {
-    /* Aggressiv (Variante B): 4‑Puls moderat, 2‑Puls schnell */
-    /* 4‑Puls moderat (2x schneller): 0–10% (≈1.2s bei 12s) — Zeiten hier anpassen */
     0%, 2.5%, 5%, 7.5%, 10% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -63,17 +29,15 @@
             0 0 30px var(--neon-umlaut-dot-glow-soft-current, rgba(255, 0, 204, 0.65));
     }
     1.25%, 3.75%, 6.25%, 8.75% {
-        opacity: 0.02; /* aus = kein Glow */
+        opacity: 0.02;
         box-shadow: none;
     }
-    /* Pause: 10–26.7% (≈2s) — Ruhezeit hier anpassen */
     10%, 26.7% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
             0 0 16px var(--neon-umlaut-dot-glow-mid-current, rgba(255, 0, 204, 0.9)),
             0 0 30px var(--neon-umlaut-dot-glow-soft-current, rgba(255, 0, 204, 0.65));
     }
-    /* 2‑Puls schnell (2x schneller): 26.7–31% (≈0.5s) — Pulsdauer hier anpassen */
     26.7%, 28.8%, 31% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -81,10 +45,9 @@
             0 0 30px var(--neon-umlaut-dot-glow-soft-current, rgba(255, 0, 204, 0.65));
     }
     27.8%, 30% {
-        opacity: 0.02; /* aus */
+        opacity: 0.02;
         box-shadow: none;
     }
-    /* Ruhephase: 31–100% (≈8.3s) — lange Pause hier anpassen */
     31%, 100% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -94,8 +57,6 @@
 }
 
 @keyframes neonUmlautFlickerB {
-    /* zweite Sequenz: 1‑Puls (300ms) + 3‑Puls (250ms) */
-    /* 1‑Puls moderat: 0–5% (≈0.6s bei 12s) — 300ms on/off */
     0%, 5% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -103,17 +64,15 @@
             0 0 30px var(--neon-umlaut-dot-glow-soft-current, rgba(255, 0, 204, 0.65));
     }
     2.5% {
-        opacity: 0.02; /* aus */
+        opacity: 0.02;
         box-shadow: none;
     }
-    /* Pause: 5–21.7% (≈2s) — Ruhezeit hier anpassen */
     5%, 21.7% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
             0 0 16px var(--neon-umlaut-dot-glow-mid-current, rgba(255, 0, 204, 0.9)),
             0 0 30px var(--neon-umlaut-dot-glow-soft-current, rgba(255, 0, 204, 0.65));
     }
-    /* 3‑Puls schnell: 21.7–28% (≈0.75s) — 250ms pro Puls */
     21.7%, 24.2%, 26.7%, 28% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -124,7 +83,6 @@
         opacity: 0.02;
         box-shadow: none;
     }
-    /* Ruhephase: 28–100% (≈8.6s) — lange Pause hier anpassen */
     28%, 100% {
         opacity: 1;
         box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong-current, rgba(255, 0, 204, 1)),
@@ -212,8 +170,48 @@
     }
 }
 
-    // .neon-glow Styles sind global definiert (siehe unten)
-    // @media (prefers-reduced-motion) ist ebenfalls global definiert
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+// =============================================================================
+// MASTHEAD KOMPONENTE
+// =============================================================================
+
+// Anpassungen für Header und Navigation
+.masthead {
+    // Gesamter Header-Bereich
+    // background-color: $background-dark; // Verwendet deine bereits definierte Variable
+
+    // Anpassung des Titels "Kraftstoff" / "Hans Müller"
+    .site-title {
+        font-size: $site-title-font-size; // Größerer Titel
+        font-weight: bold;
+        transition: color 0.45s ease, text-shadow 0.45s ease; // Sanfter Übergang für Farbe/Glow
+        margin-right: 3em; // Größerer Abstand zum Menü (Desktop)
+        
+        &:hover {
+            color: inherit;
+            text-shadow: 0 0 6px rgba(255, 0, 204, 1),
+              0 0 16px rgba(255, 0, 204, 0.95),
+              0 0 34px rgba(255, 0, 204, 0.75),
+              0 0 60px rgba(255, 0, 204, 0.5),
+              0 0 90px rgba(255, 0, 204, 0.35);
+            text-decoration: none;
+        }
+        
+        // Responsive Anpassung für kleinere Bildschirme
+        @media (max-width: 768px) {
+            font-size: 1.6em;
+            margin-right: 1em; // Kleiner Abstand auch auf Mobile
+        }
+        
+        // Tablet
+        @media (min-width: 769px) and (max-width: 1024px) {
+            margin-right: 2em;
+        }
+    }
 
     // Anpassung der Navigationsleiste
     .greedy-nav {
@@ -237,13 +235,7 @@
 
                 &:hover {
                     color: $hover-color; // Magenta - Projektfarbe
-                    // Minimalistisch: kein text-shadow, kein Hintergrund
                 }
-
-                // &:before {
-                //     height: 3px; // Dickere Unterstreichung
-                //     background: $link-color; // Verwendet deine bereits definierte Variable
-                // }
             }
         }
 
@@ -395,17 +387,6 @@ body .masthead {
   min-height: var(--masthead-height);
   display: flex;
   align-items: center;
-}
-
-body .masthead--hidden {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-body .masthead--visible {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 body .masthead__inner-wrap {
@@ -561,6 +542,7 @@ body {
     z-index: 1003 !important;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
+    will-change: transform; // Performance-Optimierung für Animation
     overflow-x: hidden;
     overflow-y: auto;
     
@@ -588,16 +570,9 @@ body.menu-open {
   overflow: hidden; // Kein Scrollbalken auf der Seite
 }
 
-// Kein Pfeil mehr (war für Dropdown) - höhere Spezifität
+// Theme-Override: Entfernt Dropdown-Pfeile (::before und ::after)
 body .greedy-nav .hidden-links::before,
-body.menu-open .greedy-nav .hidden-links::before {
-  display: none !important;
-  content: none !important;
-}
-
-// Theme-Override: entfernt den weißen After-Pfeil
-body .greedy-nav .hidden-links::after,
-body.menu-open .greedy-nav .hidden-links::after {
+body .greedy-nav .hidden-links::after {
   display: none !important;
   content: none !important;
 }
@@ -615,6 +590,7 @@ body.menu-open::before {
   z-index: 1001;
   pointer-events: auto; // Klick zum Schließen
   animation: fadeIn 0.2s ease-out;
+  will-change: opacity; // Performance-Optimierung für Animation
 }
 
 // Responsive: Overlay passt sich an max-width: 75vw an
@@ -624,18 +600,15 @@ body.menu-open::before {
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-// Hidden-Links: Liste und Links
+// Hidden-Links: Liste und Links (zusammengeführt)
 body .greedy-nav .hidden-links li {
   display: block !important;
   width: 100% !important;
   position: relative;
   border-bottom: none !important;
-  pointer-events: auto; // Klickbar machen
+  border-left: 2px solid transparent; // Platzhalter für Hover-Border
+  pointer-events: auto;
+  transition: background-color 0.2s ease-in-out, border-left-color 0.2s ease-in-out;
   
   &:last-child {
     border-bottom: none !important;
@@ -646,7 +619,6 @@ body .greedy-nav .hidden-links li {
     margin-bottom: 8px;
     padding-bottom: 8px;
     
-    // Horizontale Cyan-Linie unter Mandelbrot
     &::after {
       content: "";
       position: absolute;
@@ -656,6 +628,27 @@ body .greedy-nav .hidden-links li {
       height: 1px;
       background: rgba(5, 217, 232, 0.3);
       pointer-events: none;
+    }
+  }
+  
+  // Desktop: Hover-Effekt auf gesamter Box
+  @media (min-width: 768px) {
+    &:hover {
+      background: rgba(5, 217, 232, 0.1);
+      border-left-color: $link-color-subtle;
+      
+      a {
+        color: $hover-color !important;
+      }
+    }
+  }
+  
+  // Mobile: nur Textfarbe ändern
+  @media (max-width: 767px) {
+    &:hover a,
+    a:hover,
+    a:focus {
+      color: $hover-color !important;
     }
   }
 }
@@ -672,37 +665,10 @@ body .greedy-nav .hidden-links li a {
   position: relative;
   z-index: 10;
   border-radius: 0;
-  background: transparent; // KEIN !important - damit Hover funktioniert
+  background: transparent;
   white-space: nowrap;
   pointer-events: auto !important;
   cursor: pointer;
-}
-
-// Hover-Effekt auf der gesamten Box (li), nicht nur auf dem Link
-body .greedy-nav .hidden-links li {
-  transition: background-color 0.2s ease-in-out, border-left 0.2s ease-in-out;
-  border-left: 2px solid transparent; // Platzhalter für Hover-Border
-  
-  // Desktop: dezenter Hover-Effekt
-  @media (min-width: 768px) {
-    &:hover {
-      background: rgba(5, 217, 232, 0.1); // Dezentes Cyan-Highlight
-      border-left-color: $link-color-subtle; // Subtile Linie links
-      
-      a {
-        color: $hover-color !important; // Magenta Text
-      }
-    }
-  }
-  
-  // Mobile: nur Textfarbe ändern
-  @media (max-width: 767px) {
-    &:hover a,
-    a:hover,
-    a:focus {
-      color: $hover-color !important;
-    }
-  }
 }
 
 // Theme-Pseudo-Elemente deaktivieren

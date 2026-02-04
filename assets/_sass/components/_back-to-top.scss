@@ -1,0 +1,111 @@
+// Back to Top Button
+// Runder, schwebender Button zum Zurückkehren an den Seitenanfang
+
+.back-to-top {
+  // Positionierung - mittig auf der Seite
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  z-index: 999;
+  
+  // Größe und Form
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  
+  // Farben (Projekt-Variablen)
+  background-color: $background-dark;
+  border: 2px solid $link-color-subtle;
+  color: $link-color-subtle;
+  
+  // Layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  // Initial versteckt (kombiniert mit horizontaler Zentrierung)
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(20px);
+  
+  // Animationen
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+  will-change: opacity, transform;
+  
+  // SVG-Icon
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke: $link-color-subtle;
+    transition: filter 0.2s ease;
+  }
+  
+  // Sichtbarer Zustand
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  // Hover-Effekt (Desktop) - Cyan Glow
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 0 12px rgba(5, 217, 232, 0.5),
+                  0 0 24px rgba(5, 217, 232, 0.3),
+                  0 0 36px rgba(5, 217, 232, 0.15);
+      
+      svg {
+        filter: drop-shadow(0 0 4px rgba(5, 217, 232, 0.8));
+      }
+    }
+  }
+  
+  // Focus-State (Accessibility)
+  &:focus {
+    outline: none;
+  }
+  
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
+  
+  &:focus-visible {
+    outline: none;
+    border-color: $link-color;
+    box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.3);
+  }
+  
+  // Active-State
+  &:active {
+    transform: translateX(-50%) translateY(2px);
+    transition-duration: 0.1s;
+  }
+  
+  // Mobile Anpassungen
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
+    bottom: 20px;
+    // Bleibt mittig (left: 50% + translateX(-50%))
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  // Reduzierte Bewegung respektieren
+  @media (prefers-reduced-motion: reduce) {
+    transition: opacity 0.1s ease;
+    transform: translateX(-50%);
+    
+    &.visible {
+      transform: translateX(-50%);
+    }
+    
+    &:active {
+      transform: translateX(-50%);
+    }
+  }
+}
