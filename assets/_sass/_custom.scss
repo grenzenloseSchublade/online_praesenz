@@ -136,7 +136,7 @@ textarea:focus-visible {
 .masthead__menu-item a:focus-visible {
     outline: 2px solid $link-color;
     outline-offset: 2px;
-    background-color: rgba($link-color, 0.1);
+    background-color: $link-color-subtle !important;
 }
 
 // Focus-Styles für Kontakt-Karten

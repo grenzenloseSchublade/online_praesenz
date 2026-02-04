@@ -234,7 +234,7 @@
                 }
 
                 &:hover {
-                    color: $hover-color; // Magenta - Projektfarbe
+                    color: $hover-color // Magenta - Projektfarbe
                 }
             }
         }
@@ -437,7 +437,7 @@ body .visible-links li:first-child {
     margin: auto 0;
     width: 2px; // Sehr schmal
     height: 45%; // Nicht über gesamten Header
-    background: rgba(5, 217, 232, 0.4); // Dezentes Cyan
+    background: $link-color-subtle; // Dezentes Cyan
     pointer-events: none;
   }
   
@@ -731,14 +731,14 @@ body .greedy-nav__toggle.close .navicon {
 body .greedy-nav__toggle.close .navicon:before {
   transform: rotate(45deg);
   top: 0;
-  background: $link-color; // Volles Cyan beim X (für besseren Kontrast)
+  background: $link-color-subtle; // Volles Cyan beim X (für besseren Kontrast)
   box-shadow: none;
 }
 
 body .greedy-nav__toggle.close .navicon:after {
   transform: rotate(-45deg);
   bottom: 0;
-  background: $link-color; // Volles Cyan beim X (für besseren Kontrast)
+  background: $link-color-subtle; // Volles Cyan beim X (für besseren Kontrast)
   box-shadow: none;
 }
 
