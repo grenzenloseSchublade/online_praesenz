@@ -116,38 +116,44 @@
       }
     }
 
-    btn.addEventListener('click', function() {
-      hlinks.classList.toggle('hidden');
-      btn.classList.toggle('close');
-      clearTimeout(timer);
-    });
-
-    hlinks.addEventListener('click', function() {
+    // Hilfsfunktion zum Öffnen/Schließen des Menüs
+    function openMenu() {
+      hlinks.classList.remove('hidden');
+      btn.classList.add('close');
+      document.body.classList.add('menu-open');
+    }
+    
+    function closeMenu() {
       hlinks.classList.add('hidden');
       btn.classList.remove('close');
+      document.body.classList.remove('menu-open');
+    }
+
+    btn.addEventListener('click', function() {
+      if (hlinks.classList.contains('hidden')) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
     });
 
-    hlinks.addEventListener('mouseleave', function() {
-      timer = setTimeout(function() {
-        hlinks.classList.add('hidden');
-        btn.classList.remove('close');
-      }, closingTime);
+    // Klick auf Menü-Link schließt das Menü
+    hlinks.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        closeMenu();
+      }
     });
 
-    hlinks.addEventListener('mouseenter', function() {
-      clearTimeout(timer);
-    });
+    // Slide-in Menü: kein automatisches Schließen bei mouseleave
+    // (nur bei Klick außerhalb oder auf Overlay)
 
-    // Click außerhalb des Menüs schließt es (wichtig für Mobile und Desktop)
+    // Click außerhalb des Menüs schließt es (Overlay-Klick)
     document.addEventListener('click', function(e) {
-      // Prüfe ob Klick außerhalb von Menü UND Toggle-Button war
       const isClickInsideMenu = hlinks.contains(e.target);
       const isClickOnToggle = btn.contains(e.target);
       
       if (!isClickInsideMenu && !isClickOnToggle && !hlinks.classList.contains('hidden')) {
-        hlinks.classList.add('hidden');
-        btn.classList.remove('close');
-        clearTimeout(timer);
+        closeMenu();
       }
     });
 
@@ -157,9 +163,7 @@
       const isClickOnToggle = btn.contains(e.target);
       
       if (!isClickInsideMenu && !isClickOnToggle && !hlinks.classList.contains('hidden')) {
-        hlinks.classList.add('hidden');
-        btn.classList.remove('close');
-        clearTimeout(timer);
+        closeMenu();
       }
     }, { passive: true });
 

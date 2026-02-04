@@ -533,60 +533,118 @@ body .visible-links li a:focus:after {
   transform: scaleX(1);
 }
 
-// Hidden-Links (Dropdown-Menü) - angepasst an Header-Stil
-body .greedy-nav .hidden-links {
-  position: absolute;
-  top: 100%;
-  right: 0; // Rechtsbündig am Toggle-Button
-  margin-top: 8px;
-  padding: 6px 0;
-  border: none;
-  border-radius: 6px;
-  background: rgba(20, 20, 25, 0.95); // Ähnlich wie Header-Hintergrund
-  backdrop-filter: blur(5px); // Gleicher Blur wie Header
-  -webkit-backdrop-filter: blur(5px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); // Gleicher Schatten wie Header
-  z-index: 1001;
-  min-width: auto;
-  width: auto; // Automatische Breite basierend auf Inhalt
+// Hidden-Links (Slide-in Menü von rechts)
+// WICHTIG: Höhere Spezifität um Theme zu überschreiben
+body.menu-open,
+body {
+  .greedy-nav .hidden-links {
+    // Theme-Overrides mit !important wo nötig
+    display: block !important; // Überschreibt Theme's display:none
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: 180px; // Schmaler (vorher 280px)
+    max-width: 75vw;
+    height: 100vh; // Volle Viewport-Höhe
+    height: 100dvh; // Dynamic viewport height für Mobile
+    margin: 0 !important;
+    padding: 0; // Wird unten für Links gesetzt
+    border: none !important;
+    border-left: 1px solid $link-color-subtle !important;
+    border-radius: 0 !important;
+    background: rgba(15, 15, 20, 0.98) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4) !important;
+    z-index: 1003 !important;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+    // Container für Links mit Padding
+    padding-top: calc(var(--masthead-height) + 1em);
+    padding-bottom: 2em;
+  }
+  
+  // Sichtbar (nicht .hidden)
+  .greedy-nav .hidden-links:not(.hidden) {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  
+  // Versteckt - nur transform, KEIN display:none
+  .greedy-nav .hidden-links.hidden {
+    transform: translateX(100%);
+    pointer-events: none;
+    visibility: visible !important; // Überschreibt mögliche visibility:hidden
+  }
 }
 
-body .greedy-nav .hidden-links.hidden {
-  display: none;
+// Body-Scroll verhindern wenn Menü offen
+body.menu-open {
+  overflow: hidden; // Kein Scrollbalken auf der Seite
 }
 
-body .greedy-nav .hidden-links::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  right: 12px; // Rechtsbündig passend zum Toggle
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 6px 6px 6px;
-  border-color: transparent transparent rgba(20, 20, 25, 0.95) transparent;
-  z-index: 0;
+// Kein Pfeil mehr (war für Dropdown) - höhere Spezifität
+body .greedy-nav .hidden-links::before,
+body.menu-open .greedy-nav .hidden-links::before {
+  display: none !important;
+  content: none !important;
 }
 
 // Theme-Override: entfernt den weißen After-Pfeil
-body .greedy-nav .hidden-links::after {
-  display: none;
+body .greedy-nav .hidden-links::after,
+body.menu-open .greedy-nav .hidden-links::after {
+  display: none !important;
+  content: none !important;
 }
 
+// Overlay - verdunkelt alles AUSSER dem Menü
+// Bedeckt nur den Bereich links vom Menü, damit Links klickbar bleiben
+body.menu-open::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 180px; // Stoppt vor dem Menü (180px Menübreite)
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1001;
+  pointer-events: auto; // Klick zum Schließen
+  animation: fadeIn 0.2s ease-out;
+}
+
+// Responsive: Overlay passt sich an max-width: 75vw an
+@media (max-width: 240px) { // Wenn 75vw < 180px
+  body.menu-open::before {
+    right: 75vw;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Hidden-Links: Liste und Links
 body .greedy-nav .hidden-links li {
-  display: block;
-  width: auto;
+  display: block !important;
+  width: 100% !important;
   position: relative;
-  border-bottom: none;
+  border-bottom: none !important;
+  pointer-events: auto; // Klickbar machen
   
   &:last-child {
-    border-bottom: none; // Theme-Override
+    border-bottom: none !important;
   }
   
   // Trennung nach erstem Link (Mandelbrot) im Dropdown
   &:first-child:not(:only-child) {
-    margin-bottom: 6px;
-    padding-bottom: 6px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
     
     // Horizontale Cyan-Linie unter Mandelbrot
     &::after {
@@ -596,55 +654,77 @@ body .greedy-nav .hidden-links li {
       left: 15%;
       right: 15%;
       height: 1px;
-      background: rgba(5, 217, 232, 0.3); // Dezentes Cyan
+      background: rgba(5, 217, 232, 0.3);
       pointer-events: none;
     }
   }
 }
 
+// Hidden-Links: Link-Styling
 body .greedy-nav .hidden-links li a {
-  display: block;
-  padding: 10px 20px;
-  margin: 0;
-  color: $white;
-  font-size: 1em; // Gleiche Größe wie visible-links
-  text-decoration: none;
+  display: block !important;
+  padding: 12px 20px !important;
+  margin: 0 !important;
+  color: $white !important;
+  font-size: 1em;
+  text-decoration: none !important;
   transition: color 0.2s ease-in-out;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   border-radius: 0;
-  background: transparent;
-  white-space: nowrap; // Verhindert Umbruch, hält Menü kompakt
+  background: transparent; // KEIN !important - damit Hover funktioniert
+  white-space: nowrap;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+// Hover-Effekt auf der gesamten Box (li), nicht nur auf dem Link
+body .greedy-nav .hidden-links li {
+  transition: background-color 0.2s ease-in-out, border-left 0.2s ease-in-out;
+  border-left: 2px solid transparent; // Platzhalter für Hover-Border
   
-  &:hover,
-  &:focus {
-    color: $hover-color; // Magenta - konsistent mit visible-links
-    background: transparent;
+  // Desktop: dezenter Hover-Effekt
+  @media (min-width: 768px) {
+    &:hover {
+      background: rgba(5, 217, 232, 0.1); // Dezentes Cyan-Highlight
+      border-left-color: $link-color-subtle; // Subtile Linie links
+      
+      a {
+        color: $hover-color !important; // Magenta Text
+      }
+    }
+  }
+  
+  // Mobile: nur Textfarbe ändern
+  @media (max-width: 767px) {
+    &:hover a,
+    a:hover,
+    a:focus {
+      color: $hover-color !important;
+    }
   }
 }
 
-// Minimalistisch: keine aufwändigen Hover-Animationen
-// Nur Farbwechsel wie bei visible-links
+// Theme-Pseudo-Elemente deaktivieren
 body .greedy-nav .hidden-links li a:before,
 body .greedy-nav .hidden-links li a:after {
-  display: none; // Deaktiviert Theme-Pseudo-Elemente
+  display: none !important;
 }
 
 body .greedy-nav__toggle {
   background-color: transparent;
-  border: 1px solid rgba(5, 217, 232, 0.6); // Dezente Cyan-Umrandung
+  border: none; // Keine Umrandung mehr
   cursor: pointer;
-  padding: 0.25em 0.4em;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  padding: 0.4em;
+  transition: opacity 0.2s ease;
   position: relative;
-  z-index: 1002;
-  border-radius: 6px;
-  box-shadow: 0 0 4px rgba(5, 217, 232, 0.2); // Minimaler Glow
+  z-index: 1004; // Über allem (auch Overlay), immer klickbar
+  border-radius: 0;
+  box-shadow: none;
 }
 
 body .greedy-nav__toggle:hover {
-  border-color: $link-color; // Volle Cyan-Farbe beim Hover
-  box-shadow: 0 0 8px rgba(5, 217, 232, 0.4); // Subtiler Glow beim Hover
+  opacity: 0.8;
 }
 
 body .navicon {
@@ -652,8 +732,8 @@ body .navicon {
   display: block;
   width: 1.5em;
   height: 0.2em;
-  background: $link-color; // Cyan
-  box-shadow: none; // Minimalistisch: kein Glow
+  background: $link-color-subtle; // Dezentes Cyan
+  box-shadow: none;
   transition: 0.3s;
 }
 
@@ -664,8 +744,8 @@ body .navicon:after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: $link-color; // Cyan
-  box-shadow: none; // Minimalistisch: kein Glow
+  background: $link-color-subtle; // Dezentes Cyan
+  box-shadow: none;
   transition: 0.3s;
 }
 
@@ -685,15 +765,15 @@ body .greedy-nav__toggle.close .navicon {
 body .greedy-nav__toggle.close .navicon:before {
   transform: rotate(45deg);
   top: 0;
-  background: $link-color; // Cyan
-  box-shadow: none; // Minimalistisch
+  background: $link-color; // Volles Cyan beim X (für besseren Kontrast)
+  box-shadow: none;
 }
 
 body .greedy-nav__toggle.close .navicon:after {
   transform: rotate(-45deg);
   bottom: 0;
-  background: $link-color; // Cyan
-  box-shadow: none; // Minimalistisch
+  background: $link-color; // Volles Cyan beim X (für besseren Kontrast)
+  box-shadow: none;
 }
 
 // Body-Padding für festen Header
