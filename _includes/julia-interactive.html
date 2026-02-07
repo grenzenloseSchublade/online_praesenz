@@ -1,4 +1,8 @@
 <!-- Interaktive Julia-Menge Visualisierung -->
+<!-- noUiSlider CDN -->
+<link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+
 <div class="julia-container focus-mode" id="julia-container">
   <h2 class="julia-title">Interaktive Julia-Menge</h2>
   <div class="julia-toolbar">
@@ -25,7 +29,7 @@
       </div>
       <div class="control-row">
         <label for="maxIterations">Iterationen:</label>
-        <input type="range" id="maxIterations" min="10" max="1000" step="10" value="250">
+        <div id="maxIterationsSlider" class="nouislider-wrapper"></div>
         <span id="iterValue" class="value-chip">250</span>
       </div>
       <div class="color-controls-row">
@@ -54,12 +58,12 @@
     <div class="controls-advanced">
       <div class="control-row">
         <label for="realPart">c (Real):</label>
-        <input type="range" id="realPart" min="-2" max="2" step="0.01" value="-0.7">
+        <div id="realPartSlider" class="nouislider-wrapper"></div>
         <span id="realValue" class="value-chip">-0.7</span>
       </div>
       <div class="control-row">
         <label for="imagPart">c (Imag):</label>
-        <input type="range" id="imagPart" min="-2" max="2" step="0.01" value="0.27">
+        <div id="imagPartSlider" class="nouislider-wrapper"></div>
         <span id="imagValue" class="value-chip">0.27</span>
       </div>
       <div class="color-controls-row">
@@ -399,46 +403,67 @@
     text-align: left;
   }
   
-  .control-row input[type="range"] {
+  /* ========================================
+     noUiSlider Custom Styles
+     ======================================== */
+  .nouislider-wrapper {
     flex: 1;
-    margin: 0 10px;
-    min-width: 160px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.16);
-    border-radius: 999px;
-    -webkit-appearance: none;
-    appearance: none;
+    margin: 0 15px;
+    min-width: 120px;
   }
   
-  .control-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #4aa3ff;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.25);
-  }
-
-  .control-row input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: #4aa3ff;
-    border: 2px solid rgba(0, 0, 0, 0.25);
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .control-row input[type="range"]::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 999px;
+  .nouislider-wrapper .noUi-target {
     background: rgba(255, 255, 255, 0.16);
-  }
-
-  .control-row input[type="range"]::-moz-range-track {
-    height: 6px;
+    border: none;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
+    box-shadow: none;
+    height: 6px;
+  }
+  
+  .nouislider-wrapper .noUi-connect {
+    background: linear-gradient(90deg, #05d9e8, #4aa3ff);
+    border-radius: 999px;
+  }
+  
+  .nouislider-wrapper .noUi-handle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4aa3ff;
+    border: 2px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    top: -8px;
+    right: -10px;
+  }
+  
+  .nouislider-wrapper .noUi-handle::before,
+  .nouislider-wrapper .noUi-handle::after {
+    display: none;
+  }
+  
+  .nouislider-wrapper .noUi-handle:hover {
+    background: #5cb8ff;
+    transform: scale(1.1);
+  }
+  
+  .nouislider-wrapper .noUi-handle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 163, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Mobile: Größerer Slider für Touch */
+  @media (max-width: 768px) {
+    .nouislider-wrapper .noUi-target {
+      height: 8px;
+    }
+    
+    .nouislider-wrapper .noUi-handle {
+      width: 28px;
+      height: 28px;
+      top: -10px;
+      right: -14px;
+    }
   }
   
   .value-chip {
@@ -774,9 +799,38 @@ document.addEventListener('DOMContentLoaded', function() {
   const loadingIndicator = document.getElementById('loadingIndicator');
   const zoomBox = document.getElementById('zoomBox');
 
-  const realPartSlider = document.getElementById('realPart');
-  const imagPartSlider = document.getElementById('imagPart');
-  const maxIterSlider = document.getElementById('maxIterations');
+  // noUiSlider Elements
+  const realPartSliderEl = document.getElementById('realPartSlider');
+  const imagPartSliderEl = document.getElementById('imagPartSlider');
+  const maxIterSliderEl = document.getElementById('maxIterationsSlider');
+  
+  // Initialize noUiSlider for Real Part
+  noUiSlider.create(realPartSliderEl, {
+    start: -0.7,
+    connect: [true, false],
+    step: 0.01,
+    range: { 'min': -2, 'max': 2 },
+    format: { to: v => v.toFixed(2), from: v => Number(v) }
+  });
+  
+  // Initialize noUiSlider for Imaginary Part
+  noUiSlider.create(imagPartSliderEl, {
+    start: 0.27,
+    connect: [true, false],
+    step: 0.01,
+    range: { 'min': -2, 'max': 2 },
+    format: { to: v => v.toFixed(2), from: v => Number(v) }
+  });
+  
+  // Initialize noUiSlider for Iterations
+  noUiSlider.create(maxIterSliderEl, {
+    start: 250,
+    connect: [true, false],
+    step: 10,
+    range: { 'min': 10, 'max': 1000 },
+    format: { to: v => Math.round(v), from: v => Number(v) }
+  });
+
   const colorSchemeSelect = document.getElementById('colorScheme');
   const colorIntensityButton = document.getElementById('colorIntensity');
   const applyButton = document.getElementById('applySettings');
@@ -953,19 +1007,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  realPartSlider.addEventListener('input', function() {
-    realValueSpan.textContent = this.value;
-    state.realPart = parseFloat(this.value);
+  // noUiSlider Event Handlers
+  realPartSliderEl.noUiSlider.on('update', function(values) {
+    realValueSpan.textContent = values[0];
+    state.realPart = parseFloat(values[0]);
   });
 
-  imagPartSlider.addEventListener('input', function() {
-    imagValueSpan.textContent = this.value;
-    state.imagPart = parseFloat(this.value);
+  imagPartSliderEl.noUiSlider.on('update', function(values) {
+    imagValueSpan.textContent = values[0];
+    state.imagPart = parseFloat(values[0]);
   });
 
-  maxIterSlider.addEventListener('input', function() {
-    iterValueSpan.textContent = this.value;
-    state.maxIterations = parseInt(this.value, 10);
+  maxIterSliderEl.noUiSlider.on('update', function(values) {
+    iterValueSpan.textContent = values[0];
+    state.maxIterations = parseInt(values[0], 10);
+  });
+  
+  maxIterSliderEl.noUiSlider.on('change', function() {
     requestRender({ preview: true, debounce: 220, reason: 'iterations' });
   });
 
@@ -975,13 +1033,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   defaultValuesButton.addEventListener('click', function() {
-    realPartSlider.value = defaultSettings.realPart;
-    imagPartSlider.value = defaultSettings.imagPart;
-    maxIterSlider.value = defaultSettings.maxIterations;
+    // noUiSlider: set values programmatically
+    realPartSliderEl.noUiSlider.set(defaultSettings.realPart);
+    imagPartSliderEl.noUiSlider.set(defaultSettings.imagPart);
+    maxIterSliderEl.noUiSlider.set(defaultSettings.maxIterations);
     colorSchemeSelect.value = defaultSettings.colorScheme;
-    realValueSpan.textContent = defaultSettings.realPart;
-    imagValueSpan.textContent = defaultSettings.imagPart;
-    iterValueSpan.textContent = defaultSettings.maxIterations;
     state.realPart = defaultSettings.realPart;
     state.imagPart = defaultSettings.imagPart;
     state.maxIterations = defaultSettings.maxIterations;

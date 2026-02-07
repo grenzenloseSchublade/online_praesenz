@@ -1,4 +1,8 @@
 <!-- Interaktiver Mandelbrot-Julia-Explorer -->
+<!-- noUiSlider CDN -->
+<link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+
 <div class="explorer-container focus-mode" id="explorer-container">
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
   <div class="explorer-toolbar">
@@ -25,7 +29,7 @@
       </div>
       <div class="control-row">
         <label for="explorerMaxIter">Iterationen:</label>
-        <input type="range" id="explorerMaxIter" min="10" max="500" step="10" value="80">
+        <div id="explorerMaxIterSlider" class="iterations-slider"></div>
         <span id="explorerIterValue" class="info-value value-chip">80</span>
       </div>
       <div class="color-controls-row">
@@ -170,11 +174,11 @@
     flex: 1;
     min-width: 0;
     max-width: 140px;
-    justify-content: center;
   }
 
   .explorer-toolbar .icon {
-    margin-right: 6px;
+    /* margin wird durch gap im parent gesteuert */
+    margin: 0;
   }
 
   .advanced-toggle-row {
@@ -521,46 +525,67 @@
     box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.18);
   }
   
-  input[type="range"] {
+  /* ========================================
+     noUiSlider Custom Styles
+     ======================================== */
+  .iterations-slider {
     flex: 1;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.16);
-    border-radius: 999px;
-    -webkit-appearance: none;
-    appearance: none;
-    margin: 0 10px;
-    min-width: 160px;
+    margin: 0 15px;
+    min-width: 120px;
   }
-
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #4aa3ff;
+  
+  .iterations-slider .noUi-target {
+    background: rgba(255, 255, 255, 0.16);
+    border: none;
+    border-radius: 999px;
+    box-shadow: none;
+    height: 6px;
+  }
+  
+  .iterations-slider .noUi-connect {
+    background: linear-gradient(90deg, #05d9e8, #4aa3ff);
+    border-radius: 999px;
+  }
+  
+  .iterations-slider .noUi-handle {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.25);
-  }
-
-  input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
     background: #4aa3ff;
-    border-radius: 50%;
-    cursor: pointer;
     border: 2px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    top: -8px;
+    right: -10px;
   }
-
-  input[type="range"]::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
+  
+  .iterations-slider .noUi-handle::before,
+  .iterations-slider .noUi-handle::after {
+    display: none; /* Entferne die Standard-Linien im Handle */
   }
-
-  input[type="range"]::-moz-range-track {
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
+  
+  .iterations-slider .noUi-handle:hover {
+    background: #5cb8ff;
+    transform: scale(1.1);
+  }
+  
+  .iterations-slider .noUi-handle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 163, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Mobile: Größerer Slider für Touch */
+  @media (max-width: 768px) {
+    .iterations-slider .noUi-target {
+      height: 8px;
+    }
+    
+    .iterations-slider .noUi-handle {
+      width: 28px;
+      height: 28px;
+      top: -10px;
+      right: -14px;
+    }
   }
   
   select,
@@ -586,7 +611,18 @@
     cursor: pointer;
     transition: all 0.2s ease;
     min-width: 80px;
-    text-align: center;
+    /* Flexbox für korrekte Icon-Zentrierung */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .toggle-button .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
   }
   
   .toggle-button.active {
@@ -699,8 +735,24 @@ document.addEventListener('DOMContentLoaded', function() {
   const juliaCanvas = document.getElementById('explorerJuliaCanvas');
   const juliaLoading = document.getElementById('juliaLoading');
 
-  const maxIterSlider = document.getElementById('explorerMaxIter');
+  // noUiSlider Setup
+  const maxIterSliderElement = document.getElementById('explorerMaxIterSlider');
   const iterValueSpan = document.getElementById('explorerIterValue');
+  
+  noUiSlider.create(maxIterSliderElement, {
+    start: 80,
+    connect: [true, false],
+    step: 10,
+    range: {
+      'min': 10,
+      'max': 500
+    },
+    format: {
+      to: value => Math.round(value),
+      from: value => Number(value)
+    }
+  });
+  
   const colorSchemeSelect = document.getElementById('explorerColorScheme');
   const colorIntensityButton = document.getElementById('explorerColorIntensity');
   const allowExtremeZoomButton = document.getElementById('explorerAllowExtremeZoom');
@@ -724,7 +776,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const explorerJuliaZoomWarning = document.getElementById('explorerJuliaZoomWarning');
 
   const state = {
-    maxIterations: parseInt(maxIterSlider.value, 10),
+    maxIterations: 80, // Startwert für noUiSlider
     colorScheme: colorSchemeSelect.value,
     useIntense: false,
     allowExtremeZoom: false,
@@ -921,9 +973,14 @@ document.addEventListener('DOMContentLoaded', function() {
     requestRender(juliaRenderer, { immediate: true, reason: 'julia-c' });
   }
 
-  maxIterSlider.addEventListener('input', function() {
-    state.maxIterations = parseInt(this.value, 10);
-    iterValueSpan.textContent = this.value;
+  // noUiSlider Event Handler
+  maxIterSliderElement.noUiSlider.on('update', function(values, handle) {
+    const value = values[handle];
+    state.maxIterations = parseInt(value, 10);
+    iterValueSpan.textContent = value;
+  });
+  
+  maxIterSliderElement.noUiSlider.on('change', function(values, handle) {
     requestRender(mandelbrotRenderer, { preview: true, debounce: 220, reason: 'iterations' });
     requestRender(juliaRenderer, { preview: true, debounce: 220, reason: 'iterations' });
   });
@@ -1491,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', function() {
     resizeObserver.observe(juliaCanvas.parentElement);
   }
 
-  iterValueSpan.textContent = maxIterSlider.value;
+  // Initial value is already set by noUiSlider
   if (allowExtremeZoomButton) {
     setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
   }
