@@ -10,10 +10,16 @@
       <span class="icon"><i class="fas fa-crosshairs" aria-hidden="true"></i></span>
       <span class="btn-text">Fokus</span>
     </button>
-    <button id="resetZoom" class="toggle-button" title="Zoom zurücksetzen" aria-label="Zoom zurücksetzen">
-      <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
-      <span class="btn-text">Reset</span>
-    </button>
+    <div class="toolbar-button-group">
+      <button id="resetZoom" class="toggle-button" title="Zoom zurücksetzen" aria-label="Zoom zurücksetzen">
+        <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+        <span class="btn-text">Reset</span>
+      </button>
+      <button id="applySettings" class="toggle-button" title="Neu berechnen" aria-label="Neu berechnen">
+        <span class="icon"><i class="fas fa-sync" aria-hidden="true"></i></span>
+        <span class="btn-text">Neu</span>
+      </button>
+    </div>
     <button id="juliaFullscreen" class="toggle-button" title="Vollbild" aria-label="Vollbild">
       <span class="icon"><i class="fas fa-expand" aria-hidden="true"></i></span>
       <span class="btn-text">Vollbild</span>
@@ -21,12 +27,6 @@
   </div>
   <div class="julia-controls">
     <div class="controls-basic">
-      <div class="advanced-toggle-row">
-        <button id="juliaAdvancedToggle" class="toggle-button" title="Erweiterte Optionen" aria-label="Erweiterte Optionen">
-          <span class="icon"><i class="fas fa-cog" aria-hidden="true"></i></span>
-          <span class="btn-text">Erweitert</span>
-        </button>
-      </div>
       <div class="control-row">
         <label for="maxIterations">Iterationen:</label>
         <div id="maxIterationsSlider" class="nouislider-wrapper"></div>
@@ -48,10 +48,12 @@
           </select>
         </div>
       </div>
-      <div class="button-row">
-        <button id="applySettings" title="Neu berechnen" aria-label="Neu berechnen">
-          <span class="icon"><i class="fas fa-sync" aria-hidden="true"></i></span>
-          <span class="btn-text">Aktualisieren</span>
+      <!-- Erweitert-Button am Ende der Basic Controls -->
+      <div class="advanced-toggle-row">
+        <button id="juliaAdvancedToggle" class="toggle-button expand-toggle" title="Erweiterte Optionen anzeigen" aria-label="Erweiterte Optionen" aria-expanded="false">
+          <span class="icon"><i class="fas fa-sliders-h" aria-hidden="true"></i></span>
+          <span class="btn-text">Erweiterte Optionen</span>
+          <span class="chevron"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
         </button>
       </div>
     </div>
@@ -213,11 +215,16 @@
     background-color: #0066cc;
   }
   
+  /* ========================================
+     Julia Controls Panel - Modern Compact Design
+     ======================================== */
   .julia-controls {
     margin-bottom: 15px;
-    background: #2a2a2a;
-    padding: 15px;
-    border-radius: 6px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   .julia-toolbar {
@@ -239,8 +246,86 @@
     margin-right: 6px;
   }
 
+  /* ========================================
+     Toolbar Button Group (Reset + Neu)
+     ======================================== */
+  .toolbar-button-group {
+    display: flex;
+    flex: 1;
+    max-width: 140px;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 3px;
+  }
+  
+  .toolbar-button-group .toggle-button {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+  }
+  
+  @media (max-width: 480px) {
+    .toolbar-button-group .btn-text {
+      display: none;
+    }
+    .toolbar-button-group .icon {
+      margin-right: 0;
+    }
+  }
+
+  /* ========================================
+     Expand Toggle Button (Erweitert)
+     ======================================== */
   .advanced-toggle-row {
-    margin-bottom: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  
+  .expand-toggle {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    transition: all 0.25s ease;
+  }
+  
+  .expand-toggle:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(5, 217, 232, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .expand-toggle .chevron {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  .expand-toggle .chevron i {
+    font-size: 12px;
+  }
+  
+  /* Active state when panel is open */
+  .julia-container.advanced-open .expand-toggle {
+    background: rgba(5, 217, 232, 0.1);
+    border-color: rgba(5, 217, 232, 0.3);
+    border-style: solid;
+    color: #05d9e8;
+    -webkit-box-shadow: 0 0 8px 2px rgba(5, 217, 232, 0.2);
+    box-shadow: 0 0 8px 2px rgba(5, 217, 232, 0.2);
+  }
+  
+  .julia-container.advanced-open .expand-toggle .chevron {
+    transform: rotate(180deg);
   }
 
   .btn-text {
@@ -249,20 +334,20 @@
 
   .controls-basic,
   .controls-advanced {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .controls-advanced {
     display: none;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #3a3a3a;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(5, 217, 232, 0.2);
   }
 
   .julia-container.advanced-open .controls-advanced {
-    display: block;
+    display: flex;
   }
 
   .julia-container.advanced-open .info-panel {
@@ -358,49 +443,68 @@
     }
   }
   
+  /* ========================================
+     Control Rows - Compact Inline Layout
+     ======================================== */
   .control-row {
     display: flex;
     align-items: center;
-    margin-bottom: 0;
-    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.2s ease;
   }
   
+  .control-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .control-row label {
+    flex-shrink: 0;
+    min-width: 70px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+  }
+  
+  /* ========================================
+     Color Controls - Two Column Layout
+     ======================================== */
   .color-controls-row {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 0;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
   }
   
   .color-control-item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    flex: 1;
-    min-width: 200px;
     gap: 6px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.2s ease;
+  }
+  
+  .color-control-item:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
   
   .color-control-item label {
-    width: 100%;
-    color: #ddd;
-    font-size: 14px;
-    text-align: left;
-    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   
   .color-control-item select,
   .color-control-item button {
     width: 100%;
-    max-width: 200px;
-  }
-  
-  .control-row label {
-    width: 150px;
-    color: #ddd;
-    font-size: 14px;
-    text-align: left;
   }
   
   /* ========================================
@@ -408,8 +512,8 @@
      ======================================== */
   .nouislider-wrapper {
     flex: 1;
-    margin: 0 15px;
-    min-width: 120px;
+    margin: 0 8px;
+    min-width: 100px;
   }
   
   .nouislider-wrapper .noUi-target {
@@ -466,48 +570,152 @@
     }
   }
   
+  /* ========================================
+     Value Chip - Compact Display
+     ======================================== */
   .value-chip {
-    min-width: 56px;
-    padding: 4px 8px;
-    color: #eacfb4;
-    font-size: 12px;
+    flex-shrink: 0;
+    min-width: 52px;
+    padding: 5px 10px;
+    color: #05d9e8;
+    font-size: 13px;
     font-weight: 600;
+    font-family: 'SF Mono', 'Consolas', monospace;
     text-align: center;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(5, 217, 232, 0.1);
+    border: 1px solid rgba(5, 217, 232, 0.2);
   }
   
+  /* ========================================
+     Button Row - Clean Action Area
+     ======================================== */
   .button-row {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-top: 6px;
-    justify-content: flex-start;
-    grid-column: 1 / -1;
+    padding-top: 14px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
   
+  /* ========================================
+     General Button Styling
+     ======================================== */
   .julia-container button {
     background: rgba(255, 255, 255, 0.04);
     color: #eacfb4;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 8px 12px;
-    border-radius: 999px;
+    padding: 10px 14px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s, transform 0.1s, border-color 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 40px; /* Touch-friendly */
   }
 
   .julia-container button:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(5, 217, 232, 0.3);
+    transform: translateY(-1px);
   }
 
   .julia-container button:active {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(0);
+  }
+  
+  /* ========================================
+     Select Dropdown - Modern Style
+     ======================================== */
+  .julia-controls select {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    min-height: 40px; /* Touch-friendly */
+    transition: all 0.2s ease;
+  }
+  
+  .julia-controls select:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(5, 217, 232, 0.3);
+  }
+  
+  .julia-controls select:focus {
+    outline: none;
+    border-color: rgba(5, 217, 232, 0.5);
+    box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.15);
+  }
+  
+  /* ========================================
+     Mobile Responsive - Controls Panel
+     ======================================== */
+  @media (max-width: 768px) {
+    .julia-controls {
+      padding: 14px;
+    }
+    
+    .control-row {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .control-row label {
+      width: 100%;
+      min-width: unset;
+      margin-bottom: 2px;
+    }
+    
+    .nouislider-wrapper {
+      flex: 1 1 100%;
+      margin: 0;
+      order: 1;
+    }
+    
+    .control-row .value-chip {
+      order: 2;
+      margin-left: auto;
+    }
+    
+    .color-controls-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .julia-controls {
+      padding: 12px;
+      border-radius: 10px;
+    }
+    
+    .control-row,
+    .color-control-item {
+      padding: 8px 10px;
+    }
+    
+    .control-row label,
+    .color-control-item label {
+      font-size: 12px;
+    }
+    
+    .button-row {
+      gap: 6px;
+    }
+    
+    .julia-container button {
+      padding: 8px 12px;
+      font-size: 12px;
+      flex: 1;
+      min-width: 0;
+    }
   }
   
   .canvas-container {
@@ -623,17 +831,18 @@
     margin-bottom: 10px;
   }
   
-select,
-option,
-optgroup {
+  /* General select styling (outside .julia-controls) */
+  select,
+  option,
+  optgroup {
     background: rgba(255, 255, 255, 0.06);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 8px 12px;
-    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 14px;
+    border-radius: 10px;
     cursor: pointer;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.2;
   }
   
@@ -700,9 +909,12 @@ optgroup {
   }
   
   .toggle-button.active {
-    background: rgba(5, 217, 232, 0.25);
-    color: #fff;
-    box-shadow: 0 0 6px rgba(5, 217, 232, 0.5);
+    background: rgba(5, 217, 232, 0.3) !important;
+    color: #fff !important;
+    border-color: rgba(5, 217, 232, 0.6) !important;
+    /* Verstärkter Glow für Safari/iOS Kompatibilität */
+    -webkit-box-shadow: 0 0 8px 2px rgba(5, 217, 232, 0.6), inset 0 0 4px rgba(5, 217, 232, 0.2);
+    box-shadow: 0 0 8px 2px rgba(5, 217, 232, 0.6), inset 0 0 4px rgba(5, 217, 232, 0.2);
   }
   
   /* Seitlicher Zoom-Regler für Smartphones */
@@ -2023,7 +2235,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const container = document.querySelector('.julia-container');
     if (!container || !advancedToggleButton) return;
     container.classList.toggle('advanced-open', enabled);
-    setButtonLabel(advancedToggleButton, enabled ? 'Erweitert aus' : 'Erweitert');
+    advancedToggleButton.setAttribute('aria-expanded', enabled);
+    // Button-Text und Title aktualisieren
+    setButtonLabel(advancedToggleButton, enabled ? 'Optionen ausblenden' : 'Erweiterte Optionen');
+    advancedToggleButton.title = enabled ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen';
   }
 
   if (advancedToggleButton) {
