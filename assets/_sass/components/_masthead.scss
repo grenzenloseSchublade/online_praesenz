@@ -234,7 +234,7 @@
                 }
 
                 &:hover {
-                    color: $hover-color // Magenta - Projektfarbe
+                    color: $hover-color-subtle; // Magenta - Projektfarbe
                 }
             }
         }
@@ -390,7 +390,7 @@ body .masthead {
 }
 
 body .masthead__inner-wrap {
-  padding: 0 1em;
+  padding: 0 1em 0 0.4em; // Rechts 1em, Links 0.4em (Logo näher am Rand)
   width: 100%;
   height: 100%;
   display: flex;
@@ -466,52 +466,33 @@ body .visible-links li:first-child {
   }
 }
 
-body .visible-links li a {
+body .greedy-nav .visible-links a {
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 0.75em;
   position: relative;
   z-index: 2;
-  transition: color 0.15s ease-in-out;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  
+  // Hover-Effekt wie hidden-links
+  &:hover,
+  &:focus {
+    color: $hover-color-subtle !important; // Magenta mit etwas weniger Kontrast
+    background: rgba(5, 217, 232, 0.1);
+  }
+  
+  // Theme-Override: Entferne den unteren Cyan-Balken
+  &:before,
+  &:after {
+    display: none !important;
+    content: none !important;
+  }
 }
 
-body .visible-links li a:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(var(--hover-bg-color-rgb, 5, 217, 232), var(--hover-bg-opacity, 0.3));
-  transform: scaleY(0);
-  transform-origin: bottom center;
-  transition: transform 0.15s ease-in-out;
-  border-radius: 0;
-  z-index: -1;
-}
-
-body .visible-links li a:hover:before,
-body .visible-links li a:focus:before {
-  transform: scaleY(1);
-}
-
-body .visible-links li a:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: var(--hover-indicator-height, 3px);
-  width: 100%;
-  background-color: var(--hover-indicator-color, #05d9e8);
-  transform: scaleX(0);
-  transition: transform 0.15s ease-in-out;
-  border-radius: 0;
-}
-
-body .visible-links li a:hover:after,
-body .visible-links li a:focus:after {
-  transform: scaleX(1);
+// Visible-Links: Deaktiviere Interaktion wenn Menü offen
+body.menu-open .greedy-nav .visible-links a {
+  pointer-events: none;
 }
 
 // Hidden-Links (Slide-in Menü von rechts)
@@ -522,7 +503,7 @@ body {
     // Theme-Overrides mit !important wo nötig
     display: block !important; // Überschreibt Theme's display:none
     position: fixed !important;
-    top: 0 !important;
+    top: var(--masthead-height) !important; // Beginnt unter dem Header
     right: 0 !important;
     bottom: 0 !important;
     left: auto !important;
@@ -540,7 +521,7 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4) !important;
-    z-index: 1003 !important;
+    z-index: 999 !important; // Hinter dem Header (z-index: 1000)
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     will-change: transform; // Performance-Optimierung für Animation
@@ -548,7 +529,7 @@ body {
     overflow-y: auto;
     
     // Container für Links mit Padding
-    padding-top: calc(var(--masthead-height) + 1em);
+    padding-top: 1em; // Menü startet bereits unter Header
     padding-bottom: 2em;
   }
   
@@ -568,7 +549,12 @@ body {
 
 // Body-Scroll verhindern wenn Menü offen
 body.menu-open {
-  overflow: hidden; // Kein Scrollbalken auf der Seite
+  overflow: hidden; // Kein Scrollen möglich
+}
+
+// Scrollbar-Platz immer reservieren (verhindert Layout-Shift beim Menü öffnen/schließen)
+html {
+  scrollbar-gutter: stable;
 }
 
 // Theme-Override: Entfernt Dropdown-Pfeile (::before und ::after)
@@ -579,25 +565,43 @@ body .greedy-nav .hidden-links::after {
 }
 
 // Overlay - verdunkelt alles AUSSER dem Menü
-// Bedeckt nur den Bereich links vom Menü, damit Links klickbar bleiben
+// ::before = Bereich links vom Menü (klickbar zum Schließen)
+// ::after = Bereich über dem Menü (Header-Höhe rechts, nicht klickbar wg. X-Button)
 body.menu-open::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  right: 180px; // Stoppt vor dem Menü (180px Menübreite)
+  right: 180px; // Spart Menü-Bereich aus (Menü bleibt klickbar)
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1001;
+  z-index: 1001; // Über Header (1000), Menü ist ausgespart
   pointer-events: auto; // Klick zum Schließen
   animation: fadeIn 0.2s ease-out;
-  will-change: opacity; // Performance-Optimierung für Animation
+  will-change: opacity;
+}
+
+// Overlay über dem Menü (Header-Bereich rechts)
+body.menu-open::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 180px; // Menü-Breite
+  height: var(--masthead-height); // Nur Header-Höhe
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1001; // Über Header
+  pointer-events: none; // NICHT klickbar - X-Button muss funktionieren
+  animation: fadeIn 0.2s ease-out;
 }
 
 // Responsive: Overlay passt sich an max-width: 75vw an
 @media (max-width: 240px) { // Wenn 75vw < 180px
   body.menu-open::before {
     right: 75vw;
+  }
+  body.menu-open::after {
+    width: 75vw;
   }
 }
 
@@ -639,7 +643,7 @@ body .greedy-nav .hidden-links li {
       border-left-color: $link-color-subtle;
       
       a {
-        color: $hover-color !important;
+        color: $hover-color-subtle !important;
       }
     }
   }
@@ -649,7 +653,7 @@ body .greedy-nav .hidden-links li {
     &:hover a,
     a:hover,
     a:focus {
-      color: $hover-color !important;
+      color: $hover-color-subtle !important;
     }
   }
 }
@@ -685,9 +689,16 @@ body .greedy-nav__toggle {
   padding: 0.4em;
   transition: opacity 0.2s ease;
   position: relative;
-  z-index: 1004; // Über allem (auch Overlay), immer klickbar
+  z-index: 1010; // Über Overlay (1005) - X-Button immer klickbar
   border-radius: 0;
   box-shadow: none;
+  
+  // Theme-Override: Deaktiviere das Theme-eigene Fullscreen-Overlay
+  // (Das Theme hat ein ::before auf dem Toggle das den ganzen Screen bedeckt)
+  &:before {
+    display: none !important;
+    content: none !important;
+  }
 }
 
 body .greedy-nav__toggle:hover {
