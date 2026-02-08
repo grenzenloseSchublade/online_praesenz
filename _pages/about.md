@@ -24,15 +24,11 @@ header:
     </summary>
     <div class="about-intro__content">
       <p>
-        Auch wenn es anfänglich eine Zeit dauern wird dieses Vorhaben, all die verschiedenen Projekte und Gedanken entsprechend aufzubereiten und zu dokumentieren,  
-        so ist es mir wichtig diese Dinge auch für mich selbst festzuhalten. So steht an erster Stelle Qualität und Einträge werden ohne Zeitdruck und unter Wohlbefinden erstellt und umgesetzt.
-
-        Für ein Projekt bringe ich mir im Allgemeinen schrittweise autodidaktisch Grundlagen und alle notwendigen Fähigkeiten bei. 
-        Dabei ist es wichtig, dass ich mich selbst motiviere und die Herausforderungen so lange angehe, bis das gewünschte Ergebnis erreicht ist.
-        Daher wird keinerlei Zeitrahmen für die Aktualisierung dieser Seite angegeben.
+        Diese Seite dokumentiert Projekte, Experimente und Gedanken – entstanden aus der Überzeugung, dass technisches Wissen durch Teilen wertvoller wird. 
+        Qualität hat Vorrang vor Quantität; Beiträge entstehen, wenn ein Thema es verdient.
         <br>
         <br>
-        <strong>Ich hoffe, dass Ihnen diese Seite gefällt und Sie viel Freude daran haben.</strong>
+        Der autodidaktische Ansatz prägt diese Arbeit: Für jedes Projekt eigne ich mir schrittweise die notwendigen Grundlagen an und gehe Herausforderungen so lange an, bis das gewünschte Ergebnis erreicht ist.
       </p>
     </div>
   </details>
