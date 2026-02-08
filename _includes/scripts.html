@@ -1,10 +1,11 @@
-{% if site.footer_scripts %}
-  {% for script in site.footer_scripts %}
-    <script src="{{ script | relative_url }}"></script>
-  {% endfor %}
-{% else %}
-  <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
-{% endif %}
+{% comment %}
+  main.min.js wird NICHT geladen da wir eigene Vanilla-JS Implementierungen haben:
+  - greedy-navigation.js (ersetzt jQuery GreedyNav)
+  - Gumshoe standalone (ScrollSpy für TOC)
+{% endcomment %}
+
+<!-- Gumshoe ScrollSpy (standalone, kein jQuery) -->
+<script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js" crossorigin="anonymous" defer></script>
 
 {% if site.search == true %}
   {% case site.search_provider %}

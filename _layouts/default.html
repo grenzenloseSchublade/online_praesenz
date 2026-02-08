@@ -5,13 +5,6 @@
     {% include head.html %}
     {% include head/custom.html %}
     
-    <!-- Preload kritischer Ressourcen für bessere Performance -->
-    {% if site.background_image %}
-      <link rel="preload" href="{{ site.background_image | relative_url }}" as="image" fetchpriority="high">
-    {% endif %}
-    <link rel="preload" href="{{ '/assets/css/main.css' | relative_url }}" as="style">
-    <link rel="prefetch" href="{{ '/assets/js/main.min.js' | relative_url }}" as="script">
-    
     <!-- Critical CSS für schnelleren First Paint -->
     <style>
       /* Basis-Layout für sofortige Darstellung */

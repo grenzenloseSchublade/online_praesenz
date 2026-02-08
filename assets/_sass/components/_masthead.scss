@@ -435,6 +435,12 @@ body .greedy-nav__toggle {
     display: none !important;
     content: none !important;
   }
+  
+  // Versteckt wenn keine hidden links vorhanden
+  &.hidden {
+    display: none !important;
+    visibility: hidden !important;
+  }
 }
 
 body .greedy-nav__toggle:hover {

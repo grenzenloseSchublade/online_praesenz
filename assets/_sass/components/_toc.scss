@@ -230,8 +230,7 @@
     @media (max-width: $large - 1) {
         display: block;
         position: fixed;
-        // Unter dem Sticky TOC positionieren
-        top: calc(var(--masthead-height) + 48px); // masthead + sticky toc height
+        top: calc(var(--masthead-height) + 48px);
         left: 0;
         right: 0;
         bottom: 0;
@@ -239,11 +238,13 @@
         z-index: 997;
         opacity: 0;
         visibility: hidden;
+        pointer-events: none; // Klicks durchlassen wenn unsichtbar
         transition: opacity 0.25s ease, visibility 0s linear 0.25s;
         
         &.is-visible {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto; // Klicks abfangen wenn sichtbar
             transition: opacity 0.25s ease, visibility 0s linear 0s;
         }
     }

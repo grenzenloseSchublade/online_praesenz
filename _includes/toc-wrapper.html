@@ -6,6 +6,7 @@
   Alle anderen TOC-Parameter (toc_label, toc_icon, toc_sticky) funktionieren weiterhin wie gewohnt.
   
   NEU: Mobile Sticky TOC Header - erscheint unter dem Masthead wenn das Original-TOC aus dem Viewport scrollt.
+  ScrollSpy: Verwendet Gumshoe (standalone Library) für performantes Tracking.
 {% endcomment %}
 
 {% assign toc_id_source = page.url | default: page.title | default: "toc" %}
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const MOBILE_BREAKPOINT = 1024;
   let isDropdownOpen = false;
   let stickyVisible = false;
+  let gumshoeInstance = null;
   
   // Cache für berechnete Werte (Performance)
   let cachedMastheadHeight = null;
@@ -92,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const mastheadHeight = getMastheadHeight();
     
     // TOC ist "aus dem Viewport" wenn seine Unterkante unter dem Masthead ist
-    // UND wir tatsächlich nach unten gescrollt haben
     const tocBelowMasthead = tocRect.bottom < mastheadHeight;
     const hasScrolled = window.scrollY > 50;
     
@@ -112,6 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // Sticky TOC Höhe für anchor-offset berücksichtigen
       const stickyHeight = stickyToc.offsetHeight;
       document.documentElement.style.setProperty('--sticky-toc-height', stickyHeight + 'px');
+      
+      // Gumshoe offset aktualisieren
+      reinitGumshoe();
     }
   }
   
@@ -124,11 +128,63 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Sticky TOC Höhe zurücksetzen
       document.documentElement.style.setProperty('--sticky-toc-height', '0px');
+      
+      // Gumshoe offset aktualisieren
+      reinitGumshoe();
     }
   }
   
   // ==========================================================================
-  // UNIFIED SCROLL HANDLER (Performance: nur ein Listener)
+  // GUMSHOE INTEGRATION (etablierte ScrollSpy Library)
+  // ==========================================================================
+  function getGumshoeOffset() {
+    const mastheadH = getMastheadHeight();
+    const stickyH = (isMobile() && stickyVisible) ? stickyToc.offsetHeight : 0;
+    return mastheadH + stickyH + 20; // +20px Puffer
+  }
+  
+  function initGumshoe() {
+    // Warte auf Gumshoe (wird async geladen)
+    if (typeof Gumshoe === 'undefined') {
+      setTimeout(initGumshoe, 50);
+      return;
+    }
+    
+    const tocMenu = originalToc.querySelector('.toc__menu');
+    if (!tocMenu) return;
+    
+    // Gumshoe initialisieren
+    gumshoeInstance = new Gumshoe('#toc-original .toc__menu a', {
+      navClass: 'active',           // Klasse für aktives li-Element
+      contentClass: 'active',       // Klasse für aktive content-Sektion
+      nested: true,                 // Nested navigation support
+      nestedClass: 'active',        // Klasse für Parent-Elemente
+      offset: getGumshoeOffset,     // Funktion für dynamischen Offset
+      reflow: true,                 // Reflow bei DOM-Änderungen
+      events: true                  // Custom Events aktivieren
+    });
+    
+    // Auf Gumshoe-Events hören für Mobile Sticky TOC
+    document.addEventListener('gumshoeActivate', function(event) {
+      const link = event.detail.link;
+      if (link && isMobile()) {
+        updateCurrentHeading(link.textContent.trim());
+      }
+      // Sync auch das Dropdown
+      syncDropdownActive(link);
+    });
+  }
+  
+  function reinitGumshoe() {
+    // Gumshoe offset wird automatisch aktualisiert (Funktion statt Wert)
+    // Aber wir können einen Reflow triggern
+    if (gumshoeInstance && gumshoeInstance.detect) {
+      gumshoeInstance.detect();
+    }
+  }
+  
+  // ==========================================================================
+  // SCROLL HANDLER (nur für Visibility, Gumshoe macht ScrollSpy)
   // ==========================================================================
   let scrollTicking = false;
   window.addEventListener('scroll', function() {
@@ -141,8 +197,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, { passive: true });
   
-  // Initial check
+  // Initial checks
   updateStickyVisibility();
+  initGumshoe();
   
   // ==========================================================================
   // DROPDOWN FUNCTIONALITY
@@ -181,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Klick auf TOC-Link: schließen (Smooth scroll wird von SmoothScroll-Lib übernommen)
+  // Klick auf TOC-Link: schließen
   stickyDropdown.addEventListener('click', function(e) {
     if (e.target.tagName === 'A') {
       closeDropdown();
@@ -189,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // ==========================================================================
-  // SCROLLSPY: Aktuelle Überschrift anzeigen
+  // MOBILE STICKY TOC: Aktuelle Überschrift anzeigen mit Animation
   // ==========================================================================
   let lastActiveText = '';
   let isAnimating = false;
@@ -221,134 +278,31 @@ document.addEventListener('DOMContentLoaded', function() {
           isAnimating = false;
         }, 200);
       }, 150);
-      
-      // Auch im Dropdown das aktive Element markieren
-      syncDropdownActive(newText);
     }
   }
   
-  function syncDropdownActive(activeText) {
-    // Entferne alte Markierungen im Dropdown
-    stickyDropdown.querySelectorAll('li.active').forEach(li => li.classList.remove('active'));
+  // Cache Dropdown-Links für Performance (einmalig bei Init)
+  const dropdownLinks = stickyDropdown ? Array.from(stickyDropdown.querySelectorAll('a')) : [];
+  
+  function syncDropdownActive(activeLink) {
+    if (!activeLink || dropdownLinks.length === 0) return;
+    const activeText = activeLink.textContent.trim();
     
-    // Finde den passenden Link im Dropdown und markiere ihn
-    stickyDropdown.querySelectorAll('a').forEach(link => {
+    // Entferne alte Markierungen und setze neue
+    dropdownLinks.forEach(link => {
+      const li = link.parentElement;
       if (link.textContent.trim() === activeText) {
-        link.parentElement.classList.add('active');
+        li.classList.add('active');
+      } else {
+        li.classList.remove('active');
       }
     });
   }
   
   // ==========================================================================
-  // EIGENER SCROLLSPY MIT BOTTOM-EDGE DETECTION
-  // Kapitel wird aktiv wenn die UNTERKANTE der Überschrift den Header passiert
-  // Gilt für Mobile UND Desktop für konsistentes Verhalten
-  // ==========================================================================
-  function initCustomScrollSpy() {
-    // Alle Headings finden die im TOC verlinkt sind
-    const tocLinks = originalToc.querySelectorAll('.toc__menu a[href^="#"]');
-    const headingIds = Array.from(tocLinks).map(link => link.getAttribute('href').slice(1));
-    const headings = headingIds
-      .map(id => document.getElementById(id))
-      .filter(el => el !== null);
-    
-    if (headings.length === 0) return;
-    
-    // Berechne den Trigger-Punkt (Masthead + ggf. Sticky-TOC)
-    const getThreshold = () => {
-      const mastheadH = getMastheadHeight();
-      // Auf Mobile: Sticky-TOC Höhe berücksichtigen
-      // Auf Desktop: Nur Masthead + kleiner Puffer
-      const stickyH = (isMobile() && stickyVisible) ? stickyToc.offsetHeight : 0;
-      return mastheadH + stickyH + 10;
-    };
-    
-    let currentActiveIndex = -1;
-    
-    function updateActiveHeading() {
-      const threshold = getThreshold();
-      let newActiveIndex = -1;
-      
-      // Finde das letzte Heading dessen UNTERKANTE über dem Threshold ist
-      // Das bedeutet: Die Überschrift ist komplett unter dem Header verschwunden
-      for (let i = 0; i < headings.length; i++) {
-        const rect = headings[i].getBoundingClientRect();
-        if (rect.bottom <= threshold) {
-          newActiveIndex = i;
-        } else {
-          // Sonderfall: Erstes Heading ist noch sichtbar aber teilweise über dem Threshold
-          if (i === 0 && rect.top <= threshold) {
-            newActiveIndex = 0;
-          }
-          break;
-        }
-      }
-      
-      // Fallback: Wenn noch kein Heading passiert wurde aber nah dran
-      if (newActiveIndex === -1 && headings.length > 0) {
-        const firstRect = headings[0].getBoundingClientRect();
-        if (firstRect.top <= threshold + 50) {
-          newActiveIndex = 0;
-        }
-      }
-      
-      // Nur aktualisieren wenn sich was geändert hat
-      if (newActiveIndex !== currentActiveIndex && newActiveIndex >= 0) {
-        currentActiveIndex = newActiveIndex;
-        const activeLink = tocLinks[newActiveIndex];
-        if (activeLink) {
-          // Alle .active Klassen entfernen
-          originalToc.querySelectorAll('.toc__menu li.active').forEach(li => {
-            li.classList.remove('active');
-          });
-          // Nur das aktive Element markieren
-          activeLink.parentElement.classList.add('active');
-          
-          // Sticky TOC aktualisieren (nur auf Mobile relevant)
-          if (isMobile()) {
-            updateCurrentHeading(activeLink.textContent.trim());
-          }
-        }
-      }
-    }
-    
-    // Scroll handler
-    let customScrollTicking = false;
-    window.addEventListener('scroll', function() {
-      if (!customScrollTicking) {
-        requestAnimationFrame(function() {
-          updateActiveHeading();
-          customScrollTicking = false;
-        });
-        customScrollTicking = true;
-      }
-    }, { passive: true });
-    
-    // Initial prüfen
-    setTimeout(updateActiveHeading, 200);
-  }
-  
-  // Custom ScrollSpy für ALLE Geräte (Desktop & Mobile)
-  // Ersetzt Gumshoe für konsistentes Timing
-  initCustomScrollSpy();
-  
-  // ==========================================================================
-  // GUMSHOE EVENT LISTENER (Backup für Desktop)
-  // ==========================================================================
-  document.addEventListener('gumshoeActivate', function(event) {
-    if (isMobile()) return;
-    
-    const link = event.detail && event.detail.link;
-    if (link && originalToc.contains(link)) {
-      updateCurrentHeading(link.textContent.trim());
-    }
-  }, false);
-  
-  // ==========================================================================
-  // INITIALE ÜBERSCHRIFT (einmalig nach Gumshoe-Init)
+  // INITIALE ÜBERSCHRIFT
   // ==========================================================================
   requestAnimationFrame(function() {
-    // Kurz warten bis Gumshoe initialisiert hat
     setTimeout(function() {
       const activeLi = originalToc.querySelector('.toc__menu li.active');
       if (activeLi) {
@@ -363,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (firstLink && !lastActiveText) {
         updateCurrentHeading(firstLink.textContent.trim());
       }
-    }, 100);
+    }, 150); // Warte auf Gumshoe-Initialisierung
   });
   
   // ==========================================================================
@@ -375,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
     resizeTimeout = setTimeout(function() {
       cachedMastheadHeight = null; // Cache invalidieren
       updateStickyVisibility();
+      reinitGumshoe();
     }, 100);
   });
 

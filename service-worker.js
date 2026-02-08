@@ -19,7 +19,7 @@ const CACHE_URLS = [
   './index.html',
   './offline.html',
   './assets/css/main.css',
-  './assets/js/main.min.js',
+  './assets/js/greedy-navigation.js',
   './assets/js/image-cache.js',
   './assets/js/sw-register.js',
   './assets/images/background.jpg'
@@ -27,29 +27,25 @@ const CACHE_URLS = [
 
 // Installation des Service Workers
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Installation');
-  
   // Warten, bis der Cache geöffnet und die Ressourcen hinzugefügt wurden
+  // Promise.allSettled ermöglicht fehlertolerantes Caching (einzelne Fehler blockieren nicht)
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[Service Worker] Cache geöffnet');
-        return cache.addAll(CACHE_URLS);
+        return Promise.allSettled(
+          CACHE_URLS.map(url => 
+            cache.add(url).catch(() => {
+              // Einzelne Fehler still ignorieren - Ressource wird später bei Bedarf gecached
+            })
+          )
+        );
       })
-      .then(() => {
-        console.log('[Service Worker] Alle Ressourcen gecached');
-        return self.skipWaiting();
-      })
-      .catch(error => {
-        console.error('[Service Worker] Fehler beim Cachen:', error);
-      })
+      .then(() => self.skipWaiting())
   );
 });
 
 // Aktivierung des Service Workers
 self.addEventListener('activate', event => {
-  console.log('[Service Worker] Aktivierung');
-  
   // Alte Caches löschen
   event.waitUntil(
     caches.keys()
@@ -57,16 +53,12 @@ self.addEventListener('activate', event => {
         return Promise.all(
           cacheNames.map(cacheName => {
             if (cacheName !== CACHE_NAME) {
-              console.log('[Service Worker] Lösche alten Cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       })
-      .then(() => {
-        console.log('[Service Worker] Jetzt aktiv');
-        return self.clients.claim();
-      })
+      .then(() => self.clients.claim())
   );
 });
 
@@ -127,7 +119,6 @@ async function cacheFirst(request) {
     }
     return networkResponse;
   } catch (error) {
-    console.error('[Service Worker] Fehler beim Abrufen:', error);
     // Fallback-Bild oder leere Response zurückgeben
     return new Response('Bild nicht verfügbar', { status: 404 });
   }
@@ -143,7 +134,7 @@ async function networkFirst(request) {
     }
     return networkResponse;
   } catch (error) {
-    console.log('[Service Worker] Offline-Modus, verwende Cache');
+    // Offline-Modus - verwende Cache
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
       return cachedResponse;
@@ -187,8 +178,8 @@ self.addEventListener('message', event => {
                     }
                   }
                 })
-                .catch(error => {
-                  console.error('[Service Worker] Fehler beim Cachen des Bildes:', url, error);
+                .catch(() => {
+                  // Fehler beim Bild-Caching still ignorieren
                 });
             })
           );

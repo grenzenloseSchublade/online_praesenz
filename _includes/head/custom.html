@@ -61,9 +61,6 @@
 <meta name="msapplication-TileColor" content="#1a1a1a">
 <meta name="theme-color" content="#1a1a1a">
 
-<!-- Hintergrundbild vorladen für bessere Performance -->
-<link rel="preload" href="{{ site.baseurl }}/assets/images/background.jpg" as="image" type="image/jpeg" crossorigin="anonymous">
-
 <!-- Anpassungen für Dropdown-Menüs und Header-Elemente -->
 <style>
   select.form-control,
@@ -141,15 +138,6 @@
   document.documentElement.setAttribute('data-enable-image-caching', '{{ site.enable_image_caching | default: true }}');
   document.documentElement.setAttribute('data-enable-service-worker', '{{ site.enable_service_worker | default: true }}');
   document.documentElement.setAttribute('data-background-image', '{{ site.background_image | relative_url }}');
-  
-  // DOMContentLoaded-Event abwarten, bevor auf document.body zugegriffen wird
-  document.addEventListener('DOMContentLoaded', function() {
-    // Prüfen, ob document.body existiert
-    if (document.body) {
-      // Hier können wir sicher auf document.body zugreifen
-      console.log('DOM vollständig geladen, document.body ist verfügbar');
-    }
-  });
 </script>
 
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
