@@ -1,5 +1,19 @@
 <!-- start custom head snippets -->
 
+<!-- Security Headers (nur die via meta unterstützten) -->
+<!-- Hinweis: X-Frame-Options, Permissions-Policy und frame-ancestors erfordern HTTP-Header -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  img-src 'self' data: https:;
+  font-src 'self' https://cdn.jsdelivr.net;
+  connect-src 'self';
+  base-uri 'self';
+  form-action 'self';
+">
+
 {% if page.mathjax %}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script>
