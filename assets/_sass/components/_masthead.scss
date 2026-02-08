@@ -564,44 +564,26 @@ body .greedy-nav .hidden-links::after {
   content: none !important;
 }
 
-// Overlay - verdunkelt alles AUSSER dem Menü
-// ::before = Bereich links vom Menü (klickbar zum Schließen)
-// ::after = Bereich über dem Menü (Header-Höhe rechts, nicht klickbar wg. X-Button)
+// Overlay - verdunkelt nur den Content-Bereich (Header und Menü bleiben frei)
+// ::before = Bereich unter dem Header, links vom Menü (klickbar zum Schließen)
 body.menu-open::before {
   content: "";
   position: fixed;
-  top: 0;
+  top: var(--masthead-height); // Beginnt unter dem Header
   left: 0;
   right: 180px; // Spart Menü-Bereich aus (Menü bleibt klickbar)
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1001; // Über Header (1000), Menü ist ausgespart
+  z-index: 1001;
   pointer-events: auto; // Klick zum Schließen
   animation: fadeIn 0.2s ease-out;
   will-change: opacity;
 }
 
-// Overlay über dem Menü (Header-Bereich rechts)
-body.menu-open::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 180px; // Menü-Breite
-  height: var(--masthead-height); // Nur Header-Höhe
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1001; // Über Header
-  pointer-events: none; // NICHT klickbar - X-Button muss funktionieren
-  animation: fadeIn 0.2s ease-out;
-}
-
 // Responsive: Overlay passt sich an max-width: 75vw an
-@media (max-width: 240px) { // Wenn 75vw < 180px
+@media (max-width: 240px) {
   body.menu-open::before {
     right: 75vw;
-  }
-  body.menu-open::after {
-    width: 75vw;
   }
 }
 
