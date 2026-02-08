@@ -2,6 +2,9 @@
 <!-- noUiSlider CDN -->
 <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+<!-- Tom Select CDN -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
 
 <div class="explorer-container focus-mode" id="explorer-container">
   <h2 class="explorer-main-title">Interaktiver Mandelbrot-Julia-Explorer</h2>
@@ -644,29 +647,92 @@
   }
   
   /* ========================================
-     Select Dropdown - Modern Style
+     Tom Select - Custom Dark Theme
      ======================================== */
-  .explorer-controls select {
-    background: rgba(255, 255, 255, 0.06);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 13px;
-    min-height: 40px; /* Touch-friendly */
-    transition: all 0.2s ease;
+  .explorer-controls .ts-wrapper {
+    width: 100%;
   }
   
-  .explorer-controls select:hover {
+  .explorer-controls .ts-wrapper.single .ts-control {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-height: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none;
+  }
+  
+  .explorer-controls .ts-wrapper.single .ts-control:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(5, 217, 232, 0.3);
   }
   
-  .explorer-controls select:focus {
-    outline: none;
+  .explorer-controls .ts-wrapper.single.focus .ts-control {
+    background: rgba(255, 255, 255, 0.08);
     border-color: rgba(5, 217, 232, 0.5);
     box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.15);
+  }
+  
+  .explorer-controls .ts-control,
+  .explorer-controls .ts-control input {
+    color: #fff;
+    font-size: 13px;
+  }
+  
+  .explorer-controls .ts-control input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Dropdown Arrow */
+  .explorer-controls .ts-wrapper.single .ts-control::after {
+    border-color: rgba(255, 255, 255, 0.5) transparent transparent transparent;
+    margin-top: -2px;
+  }
+  
+  .explorer-controls .ts-wrapper.single.dropdown-active .ts-control::after {
+    border-color: transparent transparent #05d9e8 transparent;
+  }
+  
+  /* Dropdown Menu */
+  .explorer-controls .ts-dropdown {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  
+  .explorer-controls .ts-dropdown .ts-dropdown-content {
+    padding: 6px;
+    max-height: 250px;
+  }
+  
+  .explorer-controls .ts-dropdown .option {
+    padding: 10px 14px;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 13px;
+  }
+  
+  .explorer-controls .ts-dropdown .option:hover,
+  .explorer-controls .ts-dropdown .option.active {
+    background: rgba(5, 217, 232, 0.15);
+    color: #fff;
+  }
+  
+  .explorer-controls .ts-dropdown .option.selected {
+    background: rgba(5, 217, 232, 0.25);
+    color: #05d9e8;
+  }
+  
+  /* Hide native select (fallback) */
+  .explorer-controls select.tomselected {
+    display: none !important;
   }
   
   @media (max-width: 480px) {
@@ -928,7 +994,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
+  // Tom Select für Farbschema-Dropdown initialisieren
   const colorSchemeSelect = document.getElementById('explorerColorScheme');
+  let colorSchemeTomSelect = null;
+  if (colorSchemeSelect && typeof TomSelect !== 'undefined') {
+    colorSchemeTomSelect = new TomSelect('#explorerColorScheme', {
+      create: false,
+      sortField: null, // Reihenfolge beibehalten
+      controlInput: null, // Kein Suchfeld
+      allowEmptyOption: false
+    });
+  }
+  
   const colorIntensityButton = document.getElementById('explorerColorIntensity');
   const allowExtremeZoomButton = document.getElementById('explorerAllowExtremeZoom');
   const resetButton = document.getElementById('resetExplorer');

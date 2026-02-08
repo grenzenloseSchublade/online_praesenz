@@ -2,6 +2,9 @@
 <!-- noUiSlider CDN -->
 <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+<!-- Tom Select CDN -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
 
 <div class="julia-container focus-mode" id="julia-container">
   <h2 class="julia-title">Interaktive Julia-Menge</h2>
@@ -116,15 +119,10 @@
       </div>
     </div>
     
-    <div class="info-panel">
-      <p>Position: <span id="mousePosition" class="info-value">(0, 0)</span></p>
-      <p>Komplexe Zahl: <span id="complexValue" class="info-value">0 + 0i</span></p>
-      <p>Iterationen: <span id="iterationInfo" class="info-value">-</span></p>
-    </div>
   </div>
   
   <div class="explanation-container">
-    <button id="toggleExplanation" class="explanation-toggle" aria-label="Erklärung ein-/ausblenden" aria-expanded="false">Erklärung anzeigen ▼</button>
+    <button id="toggleExplanation" class="explanation-toggle" aria-label="Erklärung ein-/ausblenden" aria-expanded="false" onclick="toggleExplanationBox(this)">Erklärung anzeigen <span style="font-size: 10px;">▼</span></button>
     <div id="explanationBox" class="explanation-box">
       <h3>Die Julia-Menge: Erklärung der Parameter</h3>
       
@@ -332,6 +330,7 @@
     white-space: nowrap;
   }
 
+  /* Mobile: Vertikales Layout */
   .controls-basic,
   .controls-advanced {
     display: flex;
@@ -350,23 +349,79 @@
     display: flex;
   }
 
-  .julia-container.advanced-open .info-panel {
-    display: block;
-  }
-
-  .julia-container.advanced-open .explanation-container {
-    display: block;
+  /* Desktop: 2-Column Grid Layout */
+  @media (min-width: 900px) {
+    .controls-basic {
+      display: grid !important;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 14px;
+      align-items: center;
+    }
+    
+    /* Iterations-Slider links */
+    .controls-basic > .control-row {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    
+    /* Farben-Dropdown rechts, kompakt */
+    .controls-basic > .color-controls-row {
+      grid-column: 2;
+      grid-row: 1;
+      max-width: 180px;
+      min-width: 150px;
+    }
+    
+    /* Erweitert-Button volle Breite */
+    .controls-basic > .advanced-toggle-row {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+    
+    /* Advanced Controls: 2-Spalten Grid */
+    .controls-advanced {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(5, 217, 232, 0.2);
+    }
+    
+    .julia-container.advanced-open .controls-advanced {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    
+    .controls-advanced > .control-row:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    
+    .controls-advanced > .control-row:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    
+    .controls-advanced > .color-controls-row {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+    
+    .controls-advanced > .button-row {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
   }
 
   .julia-container.focus-mode {
     padding: 10px;
   }
 
-  .julia-container.focus-mode .julia-controls,
-  .julia-container.focus-mode .info-panel,
-  .julia-container.focus-mode .explanation-container {
+  .julia-container.focus-mode .julia-controls {
     display: none;
   }
+
+  /* explanation-container bleibt immer sichtbar, auch im focus-mode */
 
   .julia-container.focus-mode .canvas-overlay {
     display: flex;
@@ -488,6 +543,19 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.04);
     transition: background 0.2s ease;
+  }
+  
+  /* Desktop: Compact dropdown width */
+  @media (min-width: 900px) {
+    .controls-basic .color-control-item {
+      min-width: 150px;
+      max-width: 180px;
+    }
+    
+    .controls-basic .color-control-item select {
+      width: auto;
+      min-width: 120px;
+    }
   }
   
   .color-control-item:hover {
@@ -630,29 +698,92 @@
   }
   
   /* ========================================
-     Select Dropdown - Modern Style
+     Tom Select - Custom Dark Theme
      ======================================== */
-  .julia-controls select {
-    background: rgba(255, 255, 255, 0.06);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 13px;
-    min-height: 40px; /* Touch-friendly */
-    transition: all 0.2s ease;
+  .julia-controls .ts-wrapper {
+    width: 100%;
   }
   
-  .julia-controls select:hover {
+  .julia-controls .ts-wrapper.single .ts-control {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-height: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none;
+  }
+  
+  .julia-controls .ts-wrapper.single .ts-control:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(5, 217, 232, 0.3);
   }
   
-  .julia-controls select:focus {
-    outline: none;
+  .julia-controls .ts-wrapper.single.focus .ts-control {
+    background: rgba(255, 255, 255, 0.08);
     border-color: rgba(5, 217, 232, 0.5);
     box-shadow: 0 0 0 3px rgba(5, 217, 232, 0.15);
+  }
+  
+  .julia-controls .ts-control,
+  .julia-controls .ts-control input {
+    color: #fff;
+    font-size: 13px;
+  }
+  
+  .julia-controls .ts-control input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Dropdown Arrow */
+  .julia-controls .ts-wrapper.single .ts-control::after {
+    border-color: rgba(255, 255, 255, 0.5) transparent transparent transparent;
+    margin-top: -2px;
+  }
+  
+  .julia-controls .ts-wrapper.single.dropdown-active .ts-control::after {
+    border-color: transparent transparent #05d9e8 transparent;
+  }
+  
+  /* Dropdown Menu */
+  .julia-controls .ts-dropdown {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  
+  .julia-controls .ts-dropdown .ts-dropdown-content {
+    padding: 6px;
+    max-height: 250px;
+  }
+  
+  .julia-controls .ts-dropdown .option {
+    padding: 10px 14px;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 13px;
+  }
+  
+  .julia-controls .ts-dropdown .option:hover,
+  .julia-controls .ts-dropdown .option.active {
+    background: rgba(5, 217, 232, 0.15);
+    color: #fff;
+  }
+  
+  .julia-controls .ts-dropdown .option.selected {
+    background: rgba(5, 217, 232, 0.25);
+    color: #05d9e8;
+  }
+  
+  /* Hide native select (fallback) */
+  .julia-controls select.tomselected {
+    display: none !important;
   }
   
   /* ========================================
@@ -796,39 +927,73 @@
   
   .explanation-container {
     margin-top: 20px;
-    display: none;
+    display: block;
   }
   
   .explanation-toggle {
     width: 100%;
     text-align: center;
-    margin-bottom: 10px;
-    background: #333;
-    color: #eacfb4;
-    padding: 8px;
+    margin-bottom: 0;
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.95), rgba(30, 30, 30, 0.98));
+    color: #05d9e8;
+    padding: 12px 16px;
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .explanation-toggle:hover {
+    background: linear-gradient(145deg, rgba(50, 50, 50, 0.95), rgba(35, 35, 35, 0.98));
+    border-color: rgba(5, 217, 232, 0.5);
+    box-shadow: 0 0 15px rgba(5, 217, 232, 0.2);
+  }
+  
+  .explanation-toggle.active {
+    background: linear-gradient(145deg, rgba(5, 217, 232, 0.15), rgba(5, 217, 232, 0.08));
+    border-color: rgba(5, 217, 232, 0.5);
   }
   
   .explanation-box {
-    background: #333;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 0;
-    color: #ddd;
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.95), rgba(30, 30, 30, 0.98));
+    border: 1px solid rgba(5, 217, 232, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 12px;
+    color: #e0e0e0;
     font-size: 14px;
+    line-height: 1.6;
     display: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .explanation-box.visible {
+    display: block;
   }
   
   .explanation-box h4 {
     margin-top: 0;
     margin-left: 0;
-    color: #fff;
+    color: #05d9e8;
     font-size: 18px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
   }
   
   .explanation-box p {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .explanation-box strong {
+    color: #05d9e8;
   }
   
   /* General select styling (outside .julia-controls) */
@@ -868,33 +1033,6 @@
     font-size: 12px;
     backdrop-filter: blur(4px);
   }
-  
-  /* Größere Schrift für Echtzeit-Informationen */
-  .info-panel {
-    margin-top: 10px;
-    background: #333;
-    padding: 12px 15px;
-    border-radius: 4px;
-    color: #ddd;
-    font-size: 16px;
-    line-height: 1.5;
-    display: none;
-  }
-  
-  .info-panel p {
-    margin: 5px 0;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .info-value {
-    font-weight: bold;
-    color: #fff;
-    font-size: 16px;
-    margin-left: 10px;
-  }
-  
   /* Toggle-Button Styling */
   .toggle-button {
     background: rgba(255, 255, 255, 0.04);
@@ -1005,6 +1143,28 @@
 <script src="{{ site.baseurl }}/assets/js/fractal-renderer.js"></script>
 <script>
 window.__fractalNewJulia = true;
+
+// Erklärbox-Funktionalität - GLOBAL definiert für onclick
+function toggleExplanationBox(button) {
+  const explanationBox = document.getElementById('explanationBox');
+  if (!explanationBox) {
+    console.error('explanationBox not found');
+    return;
+  }
+  
+  const isOpen = explanationBox.classList.contains('visible');
+  
+  if (isOpen) {
+    explanationBox.classList.remove('visible');
+    button.classList.remove('active');
+    button.innerHTML = 'Erklärung anzeigen <span style="font-size: 10px;">▼</span>';
+  } else {
+    explanationBox.classList.add('visible');
+    button.classList.add('active');
+    button.innerHTML = 'Erklärung ausblenden <span style="font-size: 10px;">▲</span>';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const container = document.querySelector('.julia-container');
   const canvas = document.getElementById('juliaCanvas');
@@ -1043,7 +1203,18 @@ document.addEventListener('DOMContentLoaded', function() {
     format: { to: v => Math.round(v), from: v => Number(v) }
   });
 
+  // Tom Select für Farbschema-Dropdown initialisieren
   const colorSchemeSelect = document.getElementById('colorScheme');
+  let colorSchemeTomSelect = null;
+  if (colorSchemeSelect && typeof TomSelect !== 'undefined') {
+    colorSchemeTomSelect = new TomSelect('#colorScheme', {
+      create: false,
+      sortField: null, // Reihenfolge beibehalten
+      controlInput: null, // Kein Suchfeld
+      allowEmptyOption: false
+    });
+  }
+  
   const colorIntensityButton = document.getElementById('colorIntensity');
   const applyButton = document.getElementById('applySettings');
   const defaultValuesButton = document.getElementById('defaultValues');
@@ -2350,20 +2521,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Führe die Aktualisierung der Info-Texte nach dem Laden durch
   setTimeout(updateTouchInfo, 200);
-  
-  // Erklärbox-Funktionalität
-  const toggleExplanationButton = document.getElementById('toggleExplanation');
-  const explanationBox = document.getElementById('explanationBox');
-  
-  toggleExplanationButton.addEventListener('click', function() {
-    if (explanationBox.style.display === 'block') {
-      explanationBox.style.display = 'none';
-      this.textContent = 'Erklärung anzeigen ▼';
-    } else {
-      explanationBox.style.display = 'block';
-      this.textContent = 'Erklärung ausblenden ▲';
-    }
-  });
 
   // Drosselungsfunktion für Berechnungen
   let calculationThrottleTimer = null;
