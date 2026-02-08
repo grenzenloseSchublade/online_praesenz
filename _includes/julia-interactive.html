@@ -1287,6 +1287,8 @@ document.addEventListener('DOMContentLoaded', function() {
     zoomInfoSpan.textContent = FractalUtils.formatZoomLevel(view.zoomLevel);
     if (juliaZoomLevel) juliaZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
     updateZoomWarning();
+    // Aktualisiere c-Wert mit Mittelpunkt (wichtig für Mobile)
+    updateCenterInfo();
   };
 
   function setButtonLabel(button, label) {
@@ -1360,6 +1362,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (iterationInfoSpan) {
       const iteration = renderer.getIterationAt(pos.x, pos.y);
       iterationInfoSpan.textContent = iteration === null ? '–' : iteration;
+    }
+  }
+
+  // Aktualisiert die c-Wert Anzeige mit dem Mittelpunkt des Canvas (für Mobile/Touch)
+  function updateCenterInfo() {
+    // Der Mittelpunkt des sichtbaren Bereichs ist state.viewX + state.viewY*i
+    if (positionInfoSpan) {
+      positionInfoSpan.textContent = `${state.viewX.toFixed(4)} + ${state.viewY.toFixed(4)}i`;
     }
   }
 
@@ -1577,6 +1587,8 @@ document.addEventListener('DOMContentLoaded', function() {
     canvas.setPointerCapture(event.pointerId);
     const canvasPos = getCanvasCoords(event);
     const cssPos = getCssCoords(event);
+    // c-Wert bei Klick aktualisieren
+    updateInfoFromEvent(event);
     if (event.button === 2 || isSpacePanning) {
       isPanning = true;
       lastPan = canvasPos;
@@ -1588,8 +1600,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   canvas.addEventListener('pointermove', function(event) {
     if (event.pointerType === 'touch') return;
-    if (activePointerId !== event.pointerId) return;
+    
+    // Immer c-Wert aktualisieren bei Mausbewegung
     updateInfoFromEvent(event);
+    
+    // Rest nur wenn Pointer aktiv (Klick gehalten)
+    if (activePointerId !== event.pointerId) return;
+    
     if (isDrawingZoomBox && zoomBoxStart) {
       updateZoomBox(getCssCoords(event));
       return;
@@ -1618,6 +1635,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     isPanning = false;
     activePointerId = null;
+    // c-Wert nach Interaktion aktualisieren
+    updateInfoFromEvent(event);
   });
 
   canvas.addEventListener('pointercancel', function(event) {
@@ -1654,6 +1673,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetZoom = FractalUtils.clamp(state.zoomLevel * zoomFactor, MIN_ZOOM, getMaxZoom());
     animateZoomTo(targetZoom, pos.x, pos.y);
     requestRender({ debounce: 220, reason: 'wheel' });
+    // c-Wert nach Zoom aktualisieren
+    updateInfoFromEvent(event);
   }, { passive: false });
 
   canvas.addEventListener('dblclick', function(event) {
@@ -1662,6 +1683,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetZoom = FractalUtils.clamp(state.zoomLevel / 2, MIN_ZOOM, getMaxZoom());
     animateZoomTo(targetZoom, pos.x, pos.y);
     requestRender({ debounce: 180, reason: 'dblclick-out' });
+    // c-Wert nach Zoom aktualisieren
+    updateInfoFromEvent(event);
   });
 
   let lastTouchDistance = 0;
@@ -1726,6 +1749,8 @@ document.addEventListener('DOMContentLoaded', function() {
     lastPan = null;
     lastTouchCenter = null;
     lastTouchDistance = 0;
+    // Aktualisiere c-Wert nach Touch-Interaktion
+    updateCenterInfo();
   });
 
   function updateMobileControls() {
@@ -1755,6 +1780,7 @@ document.addEventListener('DOMContentLoaded', function() {
   updateZoomWarning();
   adjustFontSize();
   updateMobileControls();
+  updateCenterInfo(); // Initial c-Wert setzen
   resizeAndRender();
 });
 </script>
