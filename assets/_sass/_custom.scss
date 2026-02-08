@@ -33,6 +33,7 @@
 @import "components/cv-about-style";
 @import "components/pages";
 @import "components/back-to-top";
+@import "components/article-review";  // Testberichte und Reviews
 
 // =============================================================================
 // 5. Layouts (Seiten-spezifische Strukturen)
@@ -41,6 +42,7 @@
 @import "layouts/posts";
 @import "layouts/pages";
 @import "layouts/mandelbrot";
+@import "layouts/offline";
 
 // =============================================================================
 // 6. Theme-Overrides (Minimal Mistakes Theme-Anpassungen)

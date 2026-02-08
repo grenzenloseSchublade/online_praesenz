@@ -7,22 +7,17 @@ tags:
   - HomeAssistant
   - Pi-Hole
   - DNS
-  - AdGuard
-  - Firewall
-  - Network
-  - Security
-  - Performance
-  - Optimization
-  - Monitoring
-  - Management
+  - Netzwerk
+  - Heimautomatisierung
 toc: true
 toc_label: "Inhalt"
-toc_icon: "cog"
+toc_icon: "list"
 toc_sticky: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "HomeAssistant und Pi-Hole"
+  teaser: /assets/images/background.jpg
 excerpt: "Eine Übersicht über die Integration von HomeAssistant und Pi-Hole from Scratch"
 ---
 

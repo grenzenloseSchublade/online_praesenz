@@ -1,6 +1,12 @@
 // Styles für das Inhaltsverzeichnis (Table of Contents)
+// =============================================================================
+// Mobile: TOC erscheint oberhalb des Contents (Minimal Mistakes Default)
+// Desktop (>= $large): TOC ist sticky in der rechten Sidebar
+// =============================================================================
 
-// Grundlegende TOC-Stile
+// =============================================================================
+// GRUNDLEGENDE TOC-STILE
+// =============================================================================
 .toc {
     font-family: $sans-serif-narrow;
     color: $text-color;
@@ -13,14 +19,17 @@
 
     .nav__title {
         color: #fff;
-        font-size: $type-size-6;
+        font-size: $type-size-5; // 1em (~16px) - gut lesbar
         background: $primary-color;
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
-        padding: 0.5em;
+        padding: 0.75em 1em; // Größerer Touch-Target
         font-weight: 600;
         letter-spacing: 0.02em;
         text-transform: none;
+        min-height: 44px; // WCAG AAA Touch Target
+        display: flex;
+        align-items: center;
     }
 
     // Scrollspy marks toc items as .active when they are in focus
@@ -30,70 +39,86 @@
     }
 }
 
-// TOC-Menü
+// =============================================================================
+// TOC-MENÜ - Mobile-First mit Touch-optimierten Targets
+// =============================================================================
 .toc__menu {
     margin: 0;
     padding: 0;
     width: 100%;
     list-style: none;
-    font-size: $type-size-6;
+    font-size: $type-size-5; // 1em (~16px) - Standard Textgröße
 
     a {
         display: block;
-        padding: 0.25rem 0.75rem;
+        padding: 0.75rem 1rem; // 12px 16px - ausreichend für Touch
+        min-height: 44px; // WCAG AAA Touch Target
         color: $text-color;
         font-weight: 600;
-        line-height: 1.5;
+        line-height: 1.4;
         text-decoration: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         transition: background-color $standard-transition, color $standard-transition;
+        
+        // Flexbox für vertikale Zentrierung
+        display: flex;
+        align-items: center;
 
         &:hover {
             color: $link-color;
             background-color: rgba(0, 0, 0, 0.2);
         }
+        
+        // Touch-Feedback für Mobile
+        &:active {
+            background-color: rgba($link-color, 0.15);
+        }
 
         &:focus-visible {
             outline: 2px solid $link-color;
-            outline-offset: 2px;
+            outline-offset: -2px; // Innen, damit es im Container bleibt
         }
     }
 
+    // Verschachtelte Listen
     li ul {
-        margin: 0.2rem 0 0.35rem;
-        padding-left: 0.5rem;
-        border-left: 1px solid rgba($border-color, 0.4);
+        margin: 0;
+        padding-left: 0;
+        border-left: 2px solid rgba($border-color, 0.3);
+        margin-left: 0.75rem;
     }
 
     li ul a {
         font-weight: 500;
-        font-size: 1em;
-        line-height: 1.5;
+        font-size: 0.9375em; // 15px - etwas kleiner für Hierarchie
     }
 
-    li ul>li a {
+    li ul > li a {
         padding-left: 1.25rem;
         font-weight: normal;
     }
 
-    li ul li ul>li a {
+    li ul li ul > li a {
         padding-left: 1.75rem;
+        font-size: 0.875em; // 14px für tiefere Ebenen
     }
 
-    li ul li ul li ul>li a {
+    li ul li ul li ul > li a {
         padding-left: 2.25rem;
     }
 
-    li ul li ul li ul li ul>li a {
+    li ul li ul li ul li ul > li a {
         padding-left: 2.75rem;
     }
 
-    li ul li ul li ul li ul li ul>li a {
+    li ul li ul li ul li ul li ul > li a {
         padding-left: 3.25rem;
     }
 }
 
-// Stile für das ausklappbare TOC
+// =============================================================================
+// AUSKLAPPBARES TOC (Toggle-Button)
+// =============================================================================
 .toc-toggle {
     width: 100%;
     background: none;
@@ -105,6 +130,11 @@
     outline: none;
     display: block;
     box-sizing: border-box;
+    
+    // Touch-Feedback
+    &:active .nav__title {
+        background: darken($primary-color, 5%);
+    }
 }
 
 .toc-toggle .nav__title {
@@ -115,11 +145,14 @@
     width: 100%;
     box-sizing: border-box;
     border-radius: $border-radius $border-radius 0 0;
+    gap: 0.5rem;
 }
 
 .toc-toggle-icon {
     transition: transform $standard-transition;
     display: inline-block;
+    font-size: 0.875em;
+    flex-shrink: 0;
 }
 
 .toc-toggle[aria-expanded="false"] .toc-toggle-icon {
@@ -142,32 +175,109 @@
 
 .toc-toggle:focus-visible .nav__title {
     outline: 2px solid $link-color;
-    outline-offset: 2px;
+    outline-offset: -2px;
 }
 
-// Einheitliche Schriftgröße und Buttonhöhe für TOC auf Seiten mit 'wide' Klasse
+// =============================================================================
+// DESKTOP STYLES (>= $large: 1024px)
+// Kompaktere Darstellung für Sidebar-Sticky-Modus
+// =============================================================================
+@media (min-width: $large) {
+    .toc {
+        .nav__title {
+            font-size: 0.875rem; // 14px - kompakter auf Desktop
+            padding: 0.5em 0.75em;
+            min-height: 36px;
+        }
+    }
+    
+    .toc__menu {
+        font-size: 0.875rem; // 14px - kompakter auf Desktop
+        
+        a {
+            padding: 0.375rem 0.75rem; // 6px 12px
+            min-height: 32px; // Kleinere Targets OK mit Maus
+        }
+        
+        li ul a {
+            font-size: 0.8125em; // 13px
+        }
+        
+        li ul li ul > li a {
+            font-size: 0.8125em;
+        }
+    }
+}
+
+// =============================================================================
+// WIDE LAYOUT ANPASSUNGEN
+// =============================================================================
 .wide .toc {
     .nav__title {
-        font-size: $type-size-6;
-        padding: 0.5em;
+        font-size: 0.875rem;
+        padding: 0.5em 0.75em;
     }
 }
 
 .wide .toc__menu {
-    font-size: $type-size-6;
+    font-size: 0.875rem;
 
     a {
-        padding: 0.25rem 0.75rem;
+        padding: 0.375rem 0.75rem;
     }
 }
 
-// TOC nach unten versetzen, damit der feste Header nicht ueberlappt
+// Mobile: Wide-Layout braucht größere Touch-Targets
+@media (max-width: $large - 1) {
+    .wide .toc {
+        .nav__title {
+            font-size: $type-size-5;
+            padding: 0.75em 1em;
+            min-height: 44px;
+        }
+    }
+    
+    .wide .toc__menu {
+        font-size: $type-size-5;
+        
+        a {
+            padding: 0.75rem 1rem;
+            min-height: 44px;
+        }
+    }
+}
+
+// =============================================================================
+// STICKY SIDEBAR POSITIONING
+// =============================================================================
+// TOC nach unten versetzen, damit der feste Header nicht überlappt
 .sidebar__right.sticky {
     top: calc(var(--masthead-height) + 16px);
 }
 
+// Maximale Höhe für scrollbare TOC-Liste
 .sidebar__right.sticky .toc__menu {
     max-height: calc(100vh - var(--masthead-height) - 6em);
+    overflow-y: auto;
+    
+    // Custom Scrollbar für Desktop
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba($link-color, 0.4);
+        border-radius: 3px;
+        
+        &:hover {
+            background: rgba($link-color, 0.6);
+        }
+    }
 }
 
 // Author-Sidebar (linke Seite) nach unten versetzen wie TOC

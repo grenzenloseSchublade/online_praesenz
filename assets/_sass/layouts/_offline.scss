@@ -1,0 +1,62 @@
+// =============================================================================
+// OFFLINE PAGE STYLES
+// =============================================================================
+// Styles für die Offline-Fallback-Seite des Service Workers
+
+.offline-page {
+  text-align: center;
+  padding: 2em;
+  max-width: 800px;
+  margin: 0 auto;
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__description {
+    font-size: 1.2em;
+    margin: 2em 0;
+  }
+
+  &__options {
+    margin: 2em 0;
+
+    .options-list {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      display: inline-block;
+
+      li {
+        margin: 1em 0;
+      }
+    }
+  }
+
+  &__reload-btn {
+    background-color: #05d9e8;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: lighten(#05d9e8, 10%);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__cache-notice {
+    margin-top: 3em;
+    font-size: 0.9em;
+    color: #888;
+  }
+}

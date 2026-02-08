@@ -8,7 +8,7 @@ categories:
   - Webentwicklung
 tags:
   - Jekyll
-  - Blogging
+  - Bloggen
   - Markdown
   - Minimal Mistakes
   - Technische Dokumentation
@@ -16,9 +16,10 @@ header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "Technische Grundlagen und Methodik für Content Management"
+  teaser: /assets/images/background.jpg
 toc: true
 toc_label: "Inhalt"
-toc_icon: "file-alt"
+toc_icon: "list"
 toc_sticky: true
 toc_collapse: true
 excerpt: "Eine systematische Darstellung der technischen Grundlagen und methodischen Ansätze für die Erstellung strukturierter Blogbeiträge in Jekyll-basierten Systemen."
@@ -105,7 +106,7 @@ Die wichtigsten Parameter sind:
 Der Markdown-Inhalt definiert die inhaltliche Gliederung des Blogbeitrags, wie die Überschriften, Absätze, Listen und andere Elemente. Dabei wird dem klassischem Markdown Stil gefolgt.
 Mit Markdown können grundlegende Formatierungen wie Überschriften, Listen, Fett- und Kursivschrift, Zitate und Code-Blöcke erstellt werden.  Überschriften werden durch ein oder mehrere Hash-Symbole (#) am Anfang einer Zeile definiert, wobei die Anzahl der Rauten die Hierarchie bestimmt. Für ungeordnete Listen verwenden Sie Bindestriche (-), Sterne (*) oder Pluszeichen (+), während geordnete Listen durch Zahlen gefolgt von einem Punkt erstellt werden. Fettgedruckter Text wird mit zwei Sternchen (**) oder Unterstrichen (__) umschlossen, kursiver Text mit einem einzelnen Sternchen (`*`) oder Unterstrich (_). Code-Blöcke werden durch drei umgekehrte Anführungszeichen (```) eingeleitet und abgeschlossen, wobei die Programmiersprache optional angegeben werden kann.
 
-[In diesem Abschnitt](#wie-verwende-ich-markdown) werden wichtige Markdown-Elemente exemplarisch aufgefürt, ausserdem sind sie zusätzlich im Template enthalten.
+[In diesem Abschnitt](#exkurs-wie-verwende-ich-markdown) werden wichtige Markdown-Elemente exemplarisch aufgeführt, außerdem sind sie zusätzlich im Template enthalten.
 
 ## Veröffentlichung von Blogbeiträgen
 
@@ -151,7 +152,7 @@ Das Jekyll-basierte System bietet eine leistungsfähige, sichere und wartbare Um
 
 ---
 
-> ## Exkurs: Wie verwende ich Markdown?
+## Exkurs: Wie verwende ich Markdown?
 
 Markdown ist eine leichtgewichtige Markup-Sprache. Die wesentlichen Syntax-Elemente umfassen:
 

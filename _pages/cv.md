@@ -6,7 +6,7 @@ layout: single
 author_profile: true
 toc: true
 toc_label: "Inhalt"
-toc_icon: "graduation-cap"
+toc_icon: "list"
 toc_sticky: true
 toc_collapse: true
 header:

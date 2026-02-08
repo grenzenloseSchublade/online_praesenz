@@ -11,12 +11,13 @@ tags:
   - Design
 toc: true
 toc_label: "Inhalt"
-toc_icon: "paint-brush"
+toc_icon: "list"
 toc_sticky: true
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "CSS/SASS-Struktur und Design-Zentralisierung"
+  teaser: /assets/images/background.jpg
 excerpt: "Eine detaillierte Analyse der CSS/SASS-Struktur in unserem Jekyll-Projekt und wie wir das Design zentral verwalten können"
 ---
 

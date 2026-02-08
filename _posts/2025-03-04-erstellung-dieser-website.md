@@ -16,9 +16,10 @@ header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
   caption: "Technische Architektur und Implementierungsdetails"
+  teaser: /assets/images/background.jpg
 toc: true
 toc_label: "Inhalt"
-toc_icon: "file-alt"
+toc_icon: "list"
 toc_sticky: true
 toc_collapse: true
 excerpt: "Eine detaillierte Analyse der technischen Implementierung dieser Jekyll-basierten Website mit Minimal Mistakes Theme, inklusive Deployment-Strategie und Lessons Learned."

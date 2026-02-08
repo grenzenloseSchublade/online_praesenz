@@ -1,11 +1,21 @@
 ---
 title: "Mein erster Blogbeitrag"
 date: 2025-02-15
+last_modified_at: 2025-02-15
+excerpt: "Ein erster Testbeitrag zur Demonstration von Jekyll und dem Minimal Mistakes Theme."
+header:
+  overlay_image: /assets/images/background.jpg
+  overlay_filter: 0.5
+  teaser: /assets/images/background.jpg
 categories:
   - Blog
 tags:
   - Jekyll
-  - Update
+  - Aktualisierung
+toc: true
+toc_label: "Inhalt"
+toc_icon: "list"
+toc_sticky: true
 ---
 
 Dies ist ein erster Blogbeitrag zu Testzwecken mit Jekyll und dem Minimal Mistakes Theme. Zusätzlich dient dieser zur (beispielhaften) Darstellung von internen und externen Referenzierungen von  Blogbeiträgen in einem Anleitungsbeitrag.
