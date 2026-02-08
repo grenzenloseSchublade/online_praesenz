@@ -1,58 +1,63 @@
 // Orbit-Animationen für die Neon-Umlaut-Punkte (ausgelagert)
 // CSS Custom Properties sind zentral in _variables/_css-properties.scss definiert
 
+// Spiral-Start: Punkte starten von ihrer ECHTEN Position und spiralen zum Orbit
+// --neon-orbit-center-y verschiebt den Orbit vertikal (höher = Punkte weiter oben)
 @keyframes neonOrbitRampBefore {
-  from {
-    // Start bei Y=0 (Originalposition)
-    transform: translateY(0)
-      rotate(0deg) translateX(var(--neon-orbit-start-offset-before, -0.10em)) rotate(0deg);
+  0% {
+    // Start: ECHTE Position des Punktes (translateX aus CSS)
+    transform: translateX(var(--neon-orbit-start-offset-before, -0.10em));
   }
-  to {
-    // Ende bei Ziel-Y (smooth Übergang)
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+  100% {
+    // Ende: Auf Orbit bei 360° (1 volle Umdrehung), vertikal verschoben
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(360deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-360deg);
   }
 }
 
 @keyframes neonOrbitRampAfter {
-  from {
-    // Start bei Y=0 (Originalposition)
-    transform: translateY(0)
-      rotate(0deg) translateX(var(--neon-orbit-start-offset-after, 0.14em)) rotate(0deg);
+  0% {
+    // Start: ECHTE Position des Punktes (translateX aus CSS)
+    transform: translateX(var(--neon-orbit-start-offset-after, 0.14em));
   }
-  to {
-    // Ende bei Ziel-Y (smooth Übergang)
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+  100% {
+    // Ende: Auf Orbit bei 540° (180° versetzt + 1 Umdrehung), vertikal verschoben
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(540deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-540deg);
   }
 }
 
+// Spin: Kontinuierliche Rotation, startet nahtlos wo Ramp endet
 @keyframes neonOrbitSpinBefore {
   from {
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(180deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-180deg);
+    // Startet bei 360° (wo Ramp endet)
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(360deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-360deg);
   }
   to {
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(540deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-540deg);
+    // +360° = 1 volle Umdrehung pro Period
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(720deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-720deg);
   }
 }
 
 @keyframes neonOrbitSpinAfter {
   from {
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(0deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(0deg);
+    // Startet bei 540° (wo Ramp endet, 180° versetzt zu before)
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(540deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-540deg);
   }
   to {
-    transform: translateY(var(--neon-orbit-center-y, 0))
-      rotate(360deg) translateX(var(--neon-orbit-radius, 0.12em)) rotate(-360deg);
+    // +360° = 1 volle Umdrehung pro Period
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(900deg) translateX(var(--neon-orbit-radius, 0.7em)) rotate(-900deg);
   }
 }
 
 @keyframes neonOrbitFinishBefore {
   0% {
     // Startposition auf Orbit
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(var(--neon-orbit-start-angle-before, 180deg))
       translateX(var(--neon-orbit-radius, 0.12em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
@@ -60,7 +65,7 @@
   }
   60% {
     // Punkte kreiseln weiter (+720deg) und nähern sich dem Mittelpunkt
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 720deg)));
@@ -68,7 +73,7 @@
   }
   75% {
     // Punkte treffen sich im Mittelpunkt - Rotation fixiert bei +1080deg
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)));
@@ -80,7 +85,7 @@
   }
   85% {
     // Explosion am Mittelpunkt - scale vom Zentrum dank transform-origin: center
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
@@ -96,7 +101,7 @@
   }
   100% {
     // Zurück zu normal am Mittelpunkt
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-before, 180deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-before, 180deg) + 1080deg)))
@@ -112,7 +117,7 @@
 @keyframes neonOrbitFinishAfter {
   0% {
     // Startposition auf Orbit
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(var(--neon-orbit-start-angle-after, 0deg))
       translateX(var(--neon-orbit-radius, 0.12em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
@@ -120,7 +125,7 @@
   }
   60% {
     // Punkte kreiseln weiter (+720deg) und nähern sich dem Mittelpunkt
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 720deg))
       translateX(calc(var(--neon-orbit-radius, 0.12em) * 0.35))
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 720deg)));
@@ -128,7 +133,7 @@
   }
   75% {
     // Punkte treffen sich im Mittelpunkt - Rotation fixiert bei +1080deg
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)));
@@ -140,7 +145,7 @@
   }
   85% {
     // Explosion am Mittelpunkt - scale vom Zentrum dank transform-origin: center
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
@@ -156,7 +161,7 @@
   }
   100% {
     // Zurück zu normal am Mittelpunkt
-    transform: translateY(0)
+    transform: translateY(var(--neon-orbit-center-y, 0))
       rotate(calc(var(--neon-orbit-start-angle-after, 0deg) + 1080deg))
       translateX(0)
       rotate(calc(-1 * (var(--neon-orbit-start-angle-after, 0deg) + 1080deg)))
@@ -223,8 +228,9 @@
 
 @keyframes neonOrbitScatterBefore {
   0% {
-    transform: rotate(var(--neon-orbit-start-angle-before, 180deg))
-      translateX(var(--neon-orbit-radius, 0.12em))
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(var(--neon-orbit-start-angle-before, 180deg))
+      translateX(var(--neon-orbit-radius, 0.7em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-before, 180deg)));
     opacity: 1;
   }
@@ -265,8 +271,9 @@
 
 @keyframes neonOrbitScatterAfter {
   0% {
-    transform: rotate(var(--neon-orbit-start-angle-after, 0deg))
-      translateX(var(--neon-orbit-radius, 0.12em))
+    transform: translateY(var(--neon-orbit-center-y, 0.29em))
+      rotate(var(--neon-orbit-start-angle-after, 0deg))
+      translateX(var(--neon-orbit-radius, 0.7em))
       rotate(calc(-1 * var(--neon-orbit-start-angle-after, 0deg)));
     opacity: 1;
   }
@@ -312,19 +319,19 @@
     calc(var(--neon-flicker-on, 0) * 3.4s),
     calc(var(--neon-jitter-on, 0) * 1.6s),
     calc(var(--neon-layered-glow-on, 0) * 2.8s),
-    var(--neon-orbit-ramp-duration, 1.2s),
-    var(--neon-orbit-period, 6.4s);
+    var(--neon-orbit-ramp-duration, 6.8s),
+    var(--neon-orbit-period, 6.8s);
   animation-timing-function: linear,
     steps(1, end),
     ease-in-out,
     ease-in-out,
-    ease-out,
+    linear,
     linear;
   animation-iteration-count: infinite, infinite, infinite, infinite, 1, infinite;
   animation-fill-mode: none, none, none, none, forwards, none;
   animation-delay: 0.2s, 0s, 0s, 0s,
     var(--neon-orbit-start-delay, 0.6s),
-    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 1.2s));
+    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 6.8s));
 }
 
 .neon-name.orbit-running .neon-umlaut::after {
@@ -334,19 +341,19 @@
     calc(var(--neon-flicker-on, 0) * 3.4s),
     calc(var(--neon-jitter-on, 0) * 1.6s),
     calc(var(--neon-layered-glow-on, 0) * 2.8s),
-    var(--neon-orbit-ramp-duration, 1.2s),
-    var(--neon-orbit-period, 6.4s);
+    var(--neon-orbit-ramp-duration, 6.8s),
+    var(--neon-orbit-period, 6.8s);
   animation-timing-function: linear,
     steps(1, end),
     ease-in-out,
     ease-in-out,
-    ease-out,
+    linear,
     linear;
   animation-iteration-count: infinite, infinite, infinite, infinite, 1, infinite;
   animation-fill-mode: none, none, none, none, forwards, none;
   animation-delay: 0.95s, 0s, 0s, 0s,
     var(--neon-orbit-start-delay, 0.6s),
-    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 1.2s));
+    calc(var(--neon-orbit-start-delay, 0.6s) + var(--neon-orbit-ramp-duration, 6.8s));
 }
 
 // transform-origin für zentrierte Explosion (keine Verschiebung bei scale)
@@ -476,5 +483,5 @@
     cubic-bezier(0.25, 0.1, 0.25, 1);
   animation-iteration-count: infinite, infinite, infinite, infinite, 1;
   animation-fill-mode: none, none, none, none, forwards;
-  animation-delay: 0.95s, 0s, 0s, 0s, 0.1s;
+  animation-delay: 0.95s, 0s, 0s, 0s, 0s;  // Kein Delay für Scatter - beide Punkte starten gleichzeitig
 }

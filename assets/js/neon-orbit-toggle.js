@@ -100,10 +100,11 @@
     clearTimers(state);
     scope.style.setProperty("--neon-orbit-color-mode", "default");
     setColorMode(scope, state, "default");
-    // Radius- und Y-Offset-Variablen zurücksetzen auf CSS-Defaults
+    // Variablen zurücksetzen auf CSS-Defaults
     scope.style.removeProperty("--neon-orbit-radius-em");
     scope.style.removeProperty("--neon-orbit-radius");
     scope.style.removeProperty("--neon-orbit-center-y");
+    scope.style.removeProperty("--neon-orbit-origin-y");
     scope.classList.remove("orbit-running");
     scope.classList.remove("orbit-finish");
     scope.classList.remove("orbit-popin");
@@ -173,8 +174,9 @@
       const elapsed =
         performance.now() - state.orbitStartTimeMs - startDelayMs - rampMs;
       const phase = ((Math.max(0, elapsed) % periodMs) / periodMs) * 360;
-      if (angleBefore === null) angleBefore = 180 + phase;
-      if (angleAfter === null) angleAfter = 0 + phase;
+      // Spiral-Endwinkel: before bei 360°, after bei 540° (180° versetzt)
+      if (angleBefore === null) angleBefore = 360 + phase;
+      if (angleAfter === null) angleAfter = 540 + phase;
     }
 
     scope.style.setProperty("--neon-orbit-start-angle-before", `${angleBefore}deg`);
@@ -217,8 +219,9 @@
       const elapsed =
         performance.now() - state.orbitStartTimeMs - startDelayMs - rampMs;
       const phase = ((Math.max(0, elapsed) % periodMs) / periodMs) * 360;
-      if (angleBefore === null) angleBefore = 180 + phase;
-      if (angleAfter === null) angleAfter = 0 + phase;
+      // Spiral-Endwinkel: before bei 360°, after bei 540° (180° versetzt)
+      if (angleBefore === null) angleBefore = 360 + phase;
+      if (angleAfter === null) angleAfter = 540 + phase;
     }
 
     scope.style.setProperty("--neon-orbit-start-angle-before", `${angleBefore}deg`);
@@ -257,18 +260,19 @@
     scope.style.setProperty("--neon-orbit-color-mode", mode);
     setColorMode(scope, state, mode);
     
-    // Orbit-Mittelpunkt anpassen je nach Modus
-    // WICHTIG: Beide Variablen setzen! --neon-orbit-radius wird in Keyframes verwendet
+    // Orbit-Parameter je nach Modus
+    // WICHTIG: --neon-orbit-center-y und --neon-orbit-radius werden in ALLEN Keyframes verwendet
+    // (Ramp, Spin, Finish, Scatter) - Änderungen hier wirken sich auf alle Animationen aus
     if (mode === "default") {
-      // 2-Klick Modus: Orbit höher, Y-Offset für Mitte des "u"
+      // 2-Klick: Größerer Orbit (0.7em), Mittelpunkt in der Mitte des "u"
       scope.style.setProperty("--neon-orbit-radius-em", "0.7");
       scope.style.setProperty("--neon-orbit-radius", "0.7em");
       scope.style.setProperty("--neon-orbit-center-y", "0.29em");
     } else {
-      // 3-Klick Modus: Standard-Radius, Y=0 (vorheriger Stand)
+      // 3-Klick: Kleinerer Orbit (0.4em), Mittelpunkt ÜBER dem "u"
       scope.style.setProperty("--neon-orbit-radius-em", "0.4");
       scope.style.setProperty("--neon-orbit-radius", "0.4em");
-      scope.style.setProperty("--neon-orbit-center-y", "0em");
+      scope.style.setProperty("--neon-orbit-center-y", "-0.5em");
     }
     
     scope.classList.add("orbit-running");

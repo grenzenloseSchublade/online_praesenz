@@ -281,9 +281,9 @@
     box-shadow: 0 0 6px var(--neon-umlaut-dot-glow-strong, rgba(255, 0, 204, 1)),
         0 0 14px var(--neon-umlaut-dot-glow-mid, rgba(255, 0, 204, 0.85)),
         0 0 26px var(--neon-umlaut-dot-glow-soft, rgba(255, 0, 204, 0.6));
-    // Orbit-Mittelpunkt: X = horizontale Mitte, Y = geometrische Mitte des "u"
-    // Berechnung: x-Höhe/2 (0.25em) + Punkt-top-Offset (0.04em) = 0.29em
-    transform-origin: var(--neon-orbit-center-x, 0.18em) 0.6em;
+    // Orbit-Mittelpunkt: X = horizontale Mitte, Y = dynamisch (höher = Punkte berühren "ü" nicht)
+    // Default 0.45em ist höher als das "ü", damit Rotation frei ist
+    transform-origin: var(--neon-orbit-center-x, 0.18em) var(--neon-orbit-origin-y, 0.45em);
     animation-name: neonUmlautFlickerA, neonFlickerIrregular, neonJitter, neonLayeredGlow;
     animation-duration: calc(var(--neon-base-flicker-on, 1) * 12s),
         calc(var(--neon-flicker-on, 0) * 3.4s),
