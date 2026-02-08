@@ -7,7 +7,8 @@
   // Layout
   // ============================================
   --masthead-height: 74px; // Mobile default (moderne Standards: 56-64px)
-  --anchor-offset: calc(var(--masthead-height) + 20px);
+  --sticky-toc-height: 0px; // Wird via JS auf Mobile gesetzt wenn sichtbar
+  --anchor-offset: calc(var(--masthead-height) + var(--sticky-toc-height) + 20px);
   --content-spacing: 0.8rem;
 
   // ============================================

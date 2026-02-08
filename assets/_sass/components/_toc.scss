@@ -2,7 +2,252 @@
 // =============================================================================
 // Mobile: TOC erscheint oberhalb des Contents (Minimal Mistakes Default)
 // Desktop (>= $large): TOC ist sticky in der rechten Sidebar
+// NEU: Mobile Sticky TOC Header - erscheint unter Masthead beim Scrollen
 // =============================================================================
+
+// =============================================================================
+// MOBILE STICKY TOC HEADER
+// Erscheint unter dem Masthead wenn das Original-TOC aus dem Viewport scrollt
+// Nur für Mobile (< $large)
+// =============================================================================
+.toc-sticky-mobile {
+    // Versteckt auf Desktop
+    display: none;
+    
+    @media (max-width: $large - 1) {
+        display: block;
+        position: fixed;
+        top: var(--masthead-height);
+        left: 0;
+        right: 0;
+        z-index: 998; // Unter dem Masthead (1000)
+        background: darken($background-color, 3%);
+        border-bottom: 1px solid $border-color;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        
+        // Slide Animation
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s linear 0.3s;
+        
+        &.is-visible {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s linear 0s;
+        }
+    }
+}
+
+.toc-sticky-mobile__toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    min-height: 48px; // Touch Target
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: $sans-serif-narrow;
+    font-size: $type-size-6;
+    color: $text-color;
+    text-align: left;
+    
+    &:active {
+        background: rgba($link-color, 0.1);
+    }
+    
+    &:focus-visible {
+        outline: 2px solid $link-color;
+        outline-offset: -2px;
+    }
+}
+
+.toc-sticky-mobile__icon {
+    flex-shrink: 0;
+    color: $link-color-subtle; // Dezentes Cyan - harmonisch mit Pfeil
+    font-size: 1.1em;
+}
+
+.toc-sticky-mobile__label {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: rgba($white, 0.6); // Gedämpftes Weiß - sekundäre Info
+}
+
+.toc-sticky-mobile__current {
+    flex: 1;
+    min-width: 0; // Erlaubt text-overflow
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    color: $white; // Weiß - Hauptfokus, gut lesbar
+    
+    // Slide Animation Setup
+    display: inline-block;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+    
+    // Slide out (nach oben verschwinden)
+    &.is-sliding-out {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    
+    // Slide in (von unten erscheinen)
+    &.is-sliding-in {
+        animation: slideInFromBottom 0.2s ease-out;
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.toc-sticky-mobile__arrow {
+    flex-shrink: 0;
+    font-size: 0.75em;
+    color: $link-color-subtle; // Dezentes Cyan - passend zum Icon
+    transition: transform 0.25s ease;
+    
+    .is-open & {
+        transform: rotate(180deg);
+    }
+}
+
+// Dropdown-Container
+.toc-sticky-mobile__dropdown {
+    max-height: 0;
+    overflow: hidden;
+    background: rgba($background-color, 0.98);
+    border-top: 1px solid $border-color;
+    transition: max-height 0.3s ease-out;
+    
+    .is-open & {
+        max-height: 55vh;
+        overflow-y: auto;
+    }
+}
+
+// TOC-Menü im Dropdown
+.toc-sticky-mobile__menu {
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    font-size: $type-size-5;
+    
+    a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+        min-height: 44px;
+        color: $text-color;
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.4;
+        border-bottom: 1px solid rgba($border-color, 0.5);
+        transition: background-color $standard-transition, color $standard-transition;
+        
+        &:hover,
+        &:focus {
+            color: $link-color;
+            background: rgba($link-color, 0.08);
+        }
+        
+        &:active {
+            background: rgba($link-color, 0.15);
+        }
+    }
+    
+    // Aktives Element
+    .active > a {
+        color: $link-color;
+        font-weight: 700;
+        background: rgba($link-color, 0.05);
+        border-left: 3px solid $link-color;
+        padding-left: calc(1.25rem - 3px);
+    }
+    
+    // Verschachtelte Listen
+    li ul {
+        margin: 0;
+        padding: 0;
+        
+        a {
+            padding-left: 2rem;
+            font-size: 0.9375em;
+            font-weight: 400;
+        }
+        
+        .active > a {
+            padding-left: calc(2rem - 3px);
+        }
+    }
+    
+    li ul li ul a {
+        padding-left: 2.75rem;
+        font-size: 0.875em;
+    }
+    
+    li ul li ul .active > a {
+        padding-left: calc(2.75rem - 3px);
+    }
+}
+
+// Custom Scrollbar für Dropdown
+.toc-sticky-mobile__dropdown {
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba($link-color, 0.4);
+        border-radius: 3px;
+        
+        &:hover {
+            background: rgba($link-color, 0.6);
+        }
+    }
+}
+
+// Overlay
+.toc-sticky-overlay {
+    display: none;
+    
+    @media (max-width: $large - 1) {
+        display: block;
+        position: fixed;
+        // Unter dem Sticky TOC positionieren
+        top: calc(var(--masthead-height) + 48px); // masthead + sticky toc height
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 997;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+        
+        &.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.25s ease, visibility 0s linear 0s;
+        }
+    }
+}
 
 // =============================================================================
 // GRUNDLEGENDE TOC-STILE
@@ -33,7 +278,8 @@
     }
 
     // Scrollspy marks toc items as .active when they are in focus
-    .active a {
+    // Nur der DIREKTE Link des aktiven Elements, nicht Unterkapitel
+    .active > a {
         color: $link-color;
         font-weight: bold;
     }
@@ -113,6 +359,50 @@
 
     li ul li ul li ul li ul li ul > li a {
         padding-left: 3.25rem;
+    }
+
+    // ==========================================================================
+    // ACTIVE STATE - Scrollspy Highlighting (Desktop & Mobile)
+    // Gumshoe setzt .active auf das <li> Element
+    // ==========================================================================
+    li.active > a {
+        color: $link-color;
+        font-weight: 700;
+        background: rgba(0, 0, 0, 0.25);
+        position: relative;
+        
+        // Linker Indikator-Balken (Cyan für Akzent)
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: $link-color;
+            border-radius: 0 2px 2px 0;
+        }
+    }
+    
+    // WICHTIG: Unterkapitel innerhalb eines aktiven Hauptkapitels
+    // zurücksetzen auf Standard (verhindert Vererbung)
+    li.active > ul a {
+        color: $text-color;
+        font-weight: 500;
+        background: transparent;
+        
+        &:hover {
+            color: $link-color;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+    
+    // Wenn ein Unterkapitel SELBST aktiv ist
+    li.active > ul li.active > a,
+    li ul li.active > a {
+        color: $link-color;
+        font-weight: 700;
+        background: rgba(0, 0, 0, 0.2);
     }
 }
 
