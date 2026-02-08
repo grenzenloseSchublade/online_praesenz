@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-excerpt: "Eine Sammlung von Beiträgen - eine vielfältige Mischung aus persönlichen Gedanken, interessanten Themen, Projekten und weiteren relevanten Aspekten, die bewegen und inspirieren."
+excerpt: "Dokumentierte Gedanken, technische Experimente und gelegentliche Abschweifungen – Beiträge entstehen, wenn ein Thema es verdient."
 permalink: /posts/
 layout: single
 author_profile: false
@@ -13,10 +13,10 @@ pagination:
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
-  caption: "Gedanken und Projekte"
+  caption: "Einblicke und Experimente"
 ---
 
-{{ "Auf dieser Seite finden Sie eine Sammlung von Blogbeiträgen - eine bunte Mischung aus persönlichen Gedanken und allgemein interessanten Themen. Inspiriert durch Alltägliches, besondere Momente und Gespräche mit Freunden entsteht hier ein vielfältiges Mosaik an Gedanken. Ohne einem starren Konzept zu folgen, erscheinen neue Beiträge, wenn es die Zeit zulässt - **Qualität geht vor Regelmäßigkeit**." | markdownify }}
+{{ "Hier finden Sie Beiträge zu Technik, Projekten und dem, was mich gerade beschäftigt. Ohne festen Rhythmus – dafür mit dem Anspruch, dass jeder Beitrag einen Mehrwert bietet." | markdownify }}
 
 <div class="notice--info feature-box feature-box--with-icon">
   <div class="feature-box__icon">

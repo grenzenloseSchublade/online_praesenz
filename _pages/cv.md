@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
-excerpt: "Eine detaillierte Übersicht über meine berufliche und akademische Laufbahn"
+excerpt: "Elektrotechnik, Eingebettete Systeme, Machine Learning – ein Werdegang zwischen Theorie und Praxis"
 permalink: /cv-old/
 layout: single
 author_profile: true

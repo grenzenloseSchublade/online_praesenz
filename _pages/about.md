@@ -1,6 +1,6 @@
 ---
 title: "Über mich"
-excerpt: "Eine kurze Einführung in meine Person und meine Interessen."
+excerpt: "Ingenieur aus Leidenschaft, Autodidakt aus Überzeugung – ein Profil zwischen Technik und Neugier."
 permalink: /about/
 layout: single
 author_profile: true
@@ -8,7 +8,7 @@ toc: false
 header:
   overlay_image: /assets/images/background.jpg
   overlay_filter: 0.5
-  caption: "Persönliches Profil und Interessen"
+  caption: "Der Mensch hinter den Projekten"
 ---
 
 <div class="about-container">
@@ -20,7 +20,7 @@ header:
       <div class="feature-box__icon">
         <i class="fas fa-file-alt"></i>
       </div>
-      <h3 class="about-intro__title">Wie gehts es weiter? Lesen Sie hier, was mit dieser Seite passieren wird.</h3>
+      <h3 class="about-intro__title">Über diese Seite – Entstehung und Philosophie</h3>
     </summary>
     <div class="about-intro__content">
       <p>
