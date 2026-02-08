@@ -103,15 +103,7 @@
   }
 }
 
-// Fade-In-Animation
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+// Hinweis: fadeIn Animation ist zentral in base/_animations.scss definiert
 
 // Optimierungen für verschiedene Bildschirmgrößen
 @media (min-width: 768px) {

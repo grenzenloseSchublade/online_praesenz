@@ -1,26 +1,51 @@
+// =============================================================================
 // Zentrale Datei für alle benutzerdefinierten Styles
-// Diese Datei importiert alle Komponenten und Layouts
+// =============================================================================
+// Diese Datei importiert alle Komponenten, Layouts und Theme-Overrides
+// in der korrekten Reihenfolge nach Minimal Mistakes Best Practices
 
-// Gemeinsame Komponenten zuerst importieren
+// =============================================================================
+// 1. Basis-Styles (Animationen, Accessibility-Grundlagen)
+// =============================================================================
+@import "base/animations";
+
+// =============================================================================
+// 2. Gemeinsame Komponenten (Mixins, Placeholders) - ZUERST
+// =============================================================================
 @import "components/shared-components";
 
-// Komponenten importieren
+// =============================================================================
+// 3. Neon-Effekte (Keyframes und Basis-Styles)
+// =============================================================================
+@import "components/neon-base";
+
+// =============================================================================
+// 4. Komponenten (eigene UI-Elemente)
+// =============================================================================
 @import "components/toc";
 @import "components/buttons";
 @import "components/cards";
 @import "components/masthead";
 @import "components/neon-orbit";
-@import "components/hero";  // Neue Hero-Komponente für optimiertes Bild-Caching
-@import "components/cv";    // CV-Komponente für die About-Seite
-@import "components/about"; // About-Komponente für die About-Seite
-@import "components/cv-about-style"; // CV-About-Style für die CV-Seite im About-Stil
-@import "components/pages"; // Seiten-spezifische Helfer und Layouts
-@import "components/back-to-top"; // Back to Top Button
+@import "components/hero";
+@import "components/cv";
+@import "components/about";
+@import "components/cv-about-style";
+@import "components/pages";
+@import "components/back-to-top";
 
-// Layouts importieren
+// =============================================================================
+// 5. Layouts (Seiten-spezifische Strukturen)
+// =============================================================================
 @import "layouts/home";
 @import "layouts/posts";
 @import "layouts/pages";
+@import "layouts/mandelbrot";
+
+// =============================================================================
+// 6. Theme-Overrides (Minimal Mistakes Theme-Anpassungen)
+// =============================================================================
+@import "theme-overrides/archive";
 
 // Globale Anpassungen
 

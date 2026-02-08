@@ -1,0 +1,33 @@
+// =============================================================================
+// Mandelbrot-Seite Layout
+// =============================================================================
+// Seiten-spezifische Layout-Korrekturen für die Mandelbrot-Explorer-Seite
+// Ausgelagert aus components/_pages.scss für bessere Organisation
+
+// Mandelbrot-Seite: Layout-Korrekturen für mobil
+.mandelbrot-page .page__hero--overlay {
+  min-height: 250px !important;
+}
+
+@media (max-width: 768px) {
+  .mandelbrot-page .page__inner-wrap {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .mandelbrot-page .page__content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+// Volle Breite für Explorer-Container auf der Mandelbrot-Seite
+.mandelbrot-page {
+  .explorer-container {
+    @media (max-width: 768px) {
+      border-radius: 0;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+// =============================================================================
+// Theme-Overrides: Archive-Items
+// =============================================================================
+// Styles für Minimal Mistakes Theme-Elemente (.archive__item, etc.)
+// Ausgelagert aus components/_cards.scss für klare Trennung zwischen
+// eigenen Komponenten und Theme-Überschreibungen
+
+// Blogbeiträge auf der Startseite
+.entries-grid {
+  .archive__item {
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform $standard-transition;
+
+    &:hover {
+      transform: $hover-transform;
+    }
+
+    .archive__item-teaser {
+      border-radius: 5px 5px 0 0;
+    }
+
+    .archive__item-title {
+      margin-top: $small-spacing;
+    }
+
+    .archive__item-excerpt {
+      margin-top: $small-spacing;
+    }
+  }
+}
+
+// Globaler Hover-Akzent für Archiv/Teaser-Items (list + grid)
+// Hover-Effekt: NUR Glow-Rahmen, keine Text-/Hintergrundänderung
+.archive__item {
+  border-radius: 8px;
+  padding-block: 0.1em;
+  padding-inline: 0.2em;
+  transition: box-shadow 0.2s ease;
+}
+
+.archive__item:hover {
+  box-shadow: 
+    0 0 0 2px #f0f,
+    0 0 15px rgba(240, 0, 255, 0.6),
+    0 0 30px rgba(240, 0, 255, 0.4),
+    0 8px 25px rgba(240, 0, 255, 0.5);
+}

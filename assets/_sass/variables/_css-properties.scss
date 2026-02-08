@@ -34,6 +34,10 @@
   --neon-jitter-on: 0;
   --neon-layered-glow-on: 1;
   
+  // Umlaut-Punkt Dimensionen (extrahierte Magic Numbers)
+  --neon-umlaut-dot-size: 0.18em;
+  --neon-umlaut-dot-offset-top: -0.04em;
+  
   // Umlaut-Punkt Farben
   --neon-umlaut-dot-color: #ffffff;
   --neon-umlaut-dot-glow-strong: rgba(255, 0, 204, 1);

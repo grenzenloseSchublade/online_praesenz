@@ -111,32 +111,4 @@
   margin-top: 0.75em;
 }
 
-// Mandelbrot-Seite: Layout-Korrekturen fuer mobil
-.mandelbrot-page .page__hero--overlay {
-  min-height: 250px !important;
-}
-
-@media (max-width: 768px) {
-  .mandelbrot-page .page__inner-wrap {
-    width: 100%;
-    max-width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .mandelbrot-page .page__content {
-    padding: 0;
-  }
-
-  .mandelbrot-page .julia-container,
-  .mandelbrot-page .explorer-container {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    border-radius: 0;
-    padding-left: 12px;
-    padding-right: 12px;
-    box-sizing: border-box;
-  }
-}
+// Hinweis: Mandelbrot-Seite Styles wurden nach layouts/_mandelbrot.scss ausgelagert
