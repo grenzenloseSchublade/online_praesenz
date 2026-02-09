@@ -246,7 +246,7 @@
     transform: translateX(-50%);
     width: 120px;
     height: 2px;
-    background-color: #0066cc;
+    background-color: #05d9e8;
   }
   
   /* ========================================
@@ -510,6 +510,29 @@
     top: 64px;
     max-height: 55vh;
     overflow: auto;
+  }
+
+  /* Erklärungsbox im Vollbildmodus: absolut positioniert und scrollbar */
+  .julia-container.fullscreen-mode .explanation-container {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 200;
+    margin-top: 0;
+  }
+
+  .julia-container.fullscreen-mode .explanation-box {
+    max-height: 45vh;
+    overflow-y: auto;
+    background: rgba(34, 34, 34, 0.95);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .julia-container.fullscreen-mode .explanation-toggle {
+    background: rgba(34, 34, 34, 0.9);
+    backdrop-filter: blur(6px);
   }
 
 
@@ -1008,10 +1031,28 @@
     line-height: 1.6;
     display: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* Scrollbar für lange Erklärungen */
+    max-height: 50vh;
+    overflow-y: auto;
   }
   
+  /* Scroll-Schatten oben/unten für bessere UX */
   .explanation-box.visible {
     display: block;
+    background: 
+      linear-gradient(rgba(42, 42, 42, 0.98) 30%, transparent),
+      linear-gradient(transparent, rgba(30, 30, 30, 0.98) 70%) 0 100%,
+      linear-gradient(145deg, rgba(42, 42, 42, 0.95), rgba(30, 30, 30, 0.98));
+    background-size: 100% 20px, 100% 20px, 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: local, local, scroll;
+  }
+  
+  /* Responsive: Kleinere max-height auf Mobilgeräten */
+  @media (max-width: 768px) {
+    .explanation-box {
+      max-height: 40vh;
+    }
   }
   
   .explanation-box h3 {
@@ -1541,9 +1582,17 @@ document.addEventListener('DOMContentLoaded', function() {
     state.realPart = parseFloat(values[0]);
   });
 
+  realPartSliderEl.noUiSlider.on('change', function() {
+    requestRender({ preview: true, debounce: 150, reason: 'realPart' });
+  });
+
   imagPartSliderEl.noUiSlider.on('update', function(values) {
     imagValueSpan.textContent = values[0];
     state.imagPart = parseFloat(values[0]);
+  });
+
+  imagPartSliderEl.noUiSlider.on('change', function() {
+    requestRender({ preview: true, debounce: 150, reason: 'imagPart' });
   });
 
   maxIterSliderEl.noUiSlider.on('update', function(values) {
@@ -1615,6 +1664,8 @@ document.addEventListener('DOMContentLoaded', function() {
     advancedToggleButton.addEventListener('click', function() {
       container.classList.toggle('advanced-open');
       this.classList.toggle('active', container.classList.contains('advanced-open'));
+      // Canvas im Vollbildmodus neu berechnen
+      setTimeout(resizeAndRender, 100);
     });
   }
 
@@ -1622,6 +1673,8 @@ document.addEventListener('DOMContentLoaded', function() {
     focusModeButton.addEventListener('click', function() {
       container.classList.toggle('focus-mode');
       this.classList.toggle('active', container.classList.contains('focus-mode'));
+      // Canvas im Vollbildmodus neu berechnen
+      setTimeout(resizeAndRender, 100);
     });
   }
 
@@ -2571,6 +2624,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Button-Text und Title aktualisieren
     setButtonLabel(advancedToggleButton, enabled ? 'Optionen ausblenden' : 'Erweiterte Optionen');
     advancedToggleButton.title = enabled ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen';
+    // Canvas im Vollbildmodus neu berechnen
+    setTimeout(resizeAndRender, 100);
   }
 
   if (advancedToggleButton) {
@@ -2589,6 +2644,8 @@ document.addEventListener('DOMContentLoaded', function() {
     focusModeButton.classList.toggle('active', enabled);
     focusModeButton.setAttribute('aria-pressed', String(enabled));
     setButtonLabel(focusModeButton, enabled ? 'Fokus aus' : 'Fokus');
+    // Canvas im Vollbildmodus neu berechnen
+    setTimeout(resizeAndRender, 100);
   }
 
   if (focusModeButton) {
