@@ -35,9 +35,9 @@
         <div id="maxIterationsSlider" class="nouislider-wrapper"></div>
         <span id="iterValue" class="value-chip">250</span>
       </div>
-      <div class="color-controls-row">
+      <div class="color-intensity-group">
         <div class="color-control-item">
-          <label for="colorScheme">Farben:</label>
+          <label>Farben:</label>
           <select id="colorScheme" class="form-control">
             <option value="blau-rot">Blau-Rot</option>
             <option value="cyberpunk">Cyberpunk</option>
@@ -50,6 +50,10 @@
             <option value="goldgrün">Gold-Grün</option>
           </select>
         </div>
+        <button id="colorIntensity" class="toggle-button intensity-toggle" title="Farbintensität umschalten" aria-label="Farbintensität">
+          <span class="icon"><i class="fas fa-adjust" aria-hidden="true"></i></span>
+          <span class="btn-text">Subtil</span>
+        </button>
       </div>
       <!-- Erweitert-Button am Ende der Basic Controls -->
       <div class="advanced-toggle-row">
@@ -71,30 +75,24 @@
         <div id="imagPartSlider" class="nouislider-wrapper"></div>
         <span id="imagValue" class="value-chip">0.27</span>
       </div>
-      <div class="color-controls-row">
-        <div class="color-control-item">
-          <label for="colorIntensity">Intensität:</label>
-          <button id="colorIntensity" class="toggle-button" title="Farbintensität" aria-label="Farbintensität">
-            <span class="icon"><i class="fas fa-adjust" aria-hidden="true"></i></span>
-            <span class="btn-text">Subtil</span>
-          </button>
-        </div>
-        <div class="color-control-item">
-          <label for="allowExtremeZoom">Extremzoom:</label>
-          <button id="allowExtremeZoom" class="toggle-button" title="Extremzoom erlauben" aria-label="Extremzoom erlauben">
-            <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
-            <span class="btn-text">Aus</span>
-          </button>
-        </div>
+      <!-- Preset-Dropdown für c-Werte -->
+      <div class="preset-row">
+        <label for="presetValues">Preset:</label>
+        <select id="presetValues" class="preset-select">
+          <option value="standard" data-real="-0.70" data-imag="0.27" selected>Standard (-0.70, 0.27)</option>
+          <option value="seepferdchen" data-real="-0.78" data-imag="-0.11">Seepferdchen (-0.78, -0.11)</option>
+          <option value="blitz" data-real="-0.835" data-imag="-0.2321">Blitz (-0.84, -0.23)</option>
+          <option value="dendrit" data-real="0.285" data-imag="0.01">Dendrit (0.29, 0.01)</option>
+        </select>
       </div>
-      <div class="button-row">
-        <button id="defaultValues" title="Standardwerte" aria-label="Standardwerte">
-          <span class="icon"><i class="fas fa-undo-alt" aria-hidden="true"></i></span>
-          <span class="btn-text">Standard</span>
+      <!-- Kompakte Toggle-Zeile -->
+      <div class="toggle-row">
+        <button id="allowExtremeZoom" class="toggle-button compact" title="Extremzoom erlauben" aria-label="Extremzoom">
+          <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+          <span class="btn-text">Extremzoom: Aus</span>
         </button>
-        <button id="saveImage" title="Bild speichern" aria-label="Bild speichern">
+        <button id="saveImage" class="toggle-button icon-only" title="Bild speichern" aria-label="Bild speichern">
           <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
-          <span class="btn-text">Export</span>
         </button>
       </div>
     </div>
@@ -401,12 +399,10 @@
       grid-row: 1;
     }
     
-    /* Farben-Dropdown rechts, kompakt */
-    .controls-basic > .color-controls-row {
+    /* Farben-Dropdown + Intensität-Button rechts */
+    .controls-basic > .color-intensity-group {
       grid-column: 2;
       grid-row: 1;
-      max-width: 180px;
-      min-width: 150px;
     }
     
     /* Erweitert-Button volle Breite */
@@ -438,12 +434,20 @@
       grid-row: 1;
     }
     
-    .controls-advanced > .color-controls-row {
+    /* Preset-Dropdown volle Breite */
+    .controls-advanced > .preset-row {
       grid-column: 1 / -1;
       grid-row: 2;
+      max-width: 100%; /* Prevent overflow */
     }
     
-    .controls-advanced > .button-row {
+    /* Preset Dropdown-Breite auf Desktop begrenzen */
+    .controls-advanced > .preset-row .ts-wrapper {
+      max-width: 400px; /* Sinnvolle Maximalbreite für Dropdown */
+    }
+    
+    /* Toggle-Zeile volle Breite */
+    .controls-advanced > .toggle-row {
       grid-column: 1 / -1;
       grid-row: 3;
     }
@@ -585,12 +589,69 @@
   }
   
   /* ========================================
-     Color Controls - Two Column Layout
+     Color Intensity Group - Dropdown + Button zusammen
+     ======================================== */
+  .color-intensity-group {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.2s ease;
+  }
+
+  .color-intensity-group:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .color-intensity-group .color-control-item {
+    flex: 1 1 auto;
+    min-width: 120px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  /* Fix: Label soll keine Hover-Events auslösen - nur der Dropdown selbst */
+  .color-intensity-group .color-control-item label {
+    pointer-events: none;
+  }
+
+  /* Fix: Farben Tom-Select Wrapper auf sichtbare Höhe begrenzen */
+  .color-control-item .ts-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: fit-content; /* Höhe nur so groß wie der sichtbare Inhalt */
+  }
+
+  .color-control-item .ts-wrapper .ts-dropdown {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .color-intensity-group .intensity-toggle {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    white-space: nowrap;
+    align-self: flex-end;
+    height: fit-content;
+  }
+
+  /* ========================================
+     Color Controls - Flex Layout für Dropdown + Button nebeneinander
      ======================================== */
   .color-controls-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    align-items: flex-end;
   }
   
   .color-control-item {
@@ -602,6 +663,14 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.04);
     transition: background 0.2s ease;
+    flex: 0 1 auto;
+  }
+
+  /* Intensität-Toggle neben Farbschema */
+  .color-controls-row .intensity-toggle {
+    padding: 10px 14px;
+    min-width: auto;
+    white-space: nowrap;
   }
   
   /* Desktop: Compact dropdown width */
@@ -615,10 +684,19 @@
       width: auto;
       min-width: 120px;
     }
+
+    .color-controls-row .intensity-toggle {
+      max-width: 100px;
+    }
   }
   
   .color-control-item:hover {
     background: rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Fix: Innerhalb color-intensity-group soll color-control-item KEINEN hover haben */
+  .color-intensity-group .color-control-item:hover {
+    background: none;
   }
   
   .color-control-item label {
@@ -715,17 +793,62 @@
   }
   
   /* ========================================
-     Button Row - Clean Action Area
+     Preset Row - c-Werte Auswahl
      ======================================== */
-  .button-row {
+  .preset-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .preset-row label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .preset-row .preset-select,
+  .preset-row .ts-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ========================================
+     Toggle Row - Kompakte Inline Buttons
+     ======================================== */
+  .toggle-row {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    padding-top: 14px;
+    padding-top: 10px;
     margin-top: 4px;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
-  
+
+  .toggle-row .toggle-button.compact {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .toggle-row .toggle-button.icon-only {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    min-width: auto;
+  }
+
+  .toggle-row .toggle-button.icon-only .icon {
+    margin: 0;
+  }
+
   /* ========================================
      General Button Styling
      ======================================== */
@@ -815,6 +938,21 @@
     overflow: hidden;
   }
   
+  /* Dropdown-Breite begrenzen auf Control-Breite */
+  .julia-controls .ts-wrapper {
+    position: relative;
+  }
+  
+  /* Fix: Preset Dropdown an Wrapper-Breite binden */
+  .preset-row .ts-wrapper .ts-dropdown {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    box-sizing: border-box !important;
+  }
+  
   .julia-controls .ts-dropdown .ts-dropdown-content {
     padding: 6px;
     max-height: 250px;
@@ -876,7 +1014,8 @@
     }
     
     .color-controls-row {
-      grid-template-columns: 1fr;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
   }
   
@@ -1031,8 +1170,8 @@
     line-height: 1.6;
     display: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    /* Scrollbar für lange Erklärungen */
-    max-height: 50vh;
+    /* Scrollbar für lange Erklärungen - größer im normalen Modus */
+    max-height: 70vh;
     overflow-y: auto;
   }
   
@@ -1390,10 +1529,36 @@ document.addEventListener('DOMContentLoaded', function() {
       allowEmptyOption: false
     });
   }
+
+  // Tom Select für Preset-Dropdown initialisieren
+  const presetSelect = document.getElementById('presetValues');
+  let presetTomSelect = null;
+  if (presetSelect && typeof TomSelect !== 'undefined') {
+    presetTomSelect = new TomSelect('#presetValues', {
+      create: false,
+      sortField: null,
+      controlInput: null,
+      allowEmptyOption: false,
+      onChange: function(value) {
+        const option = presetSelect.querySelector(`option[value="${value}"]`);
+        if (option) {
+          const realVal = parseFloat(option.dataset.real);
+          const imagVal = parseFloat(option.dataset.imag);
+          // Slider aktualisieren
+          realPartSliderEl.noUiSlider.set(realVal);
+          imagPartSliderEl.noUiSlider.set(imagVal);
+          // State aktualisieren
+          state.realPart = realVal;
+          state.imagPart = imagVal;
+          // Neu rendern
+          requestRender({ preview: true, debounce: 100, reason: 'preset' });
+        }
+      }
+    });
+  }
   
   const colorIntensityButton = document.getElementById('colorIntensity');
   const applyButton = document.getElementById('applySettings');
-  const defaultValuesButton = document.getElementById('defaultValues');
   const resetZoomButton = document.getElementById('resetZoom');
   const saveImageButton = document.getElementById('saveImage');
   const advancedToggleButton = document.getElementById('juliaAdvancedToggle');
@@ -1609,19 +1774,6 @@ document.addEventListener('DOMContentLoaded', function() {
     requestRender({ immediate: true, reason: 'apply' });
   });
 
-  defaultValuesButton.addEventListener('click', function() {
-    // noUiSlider: set values programmatically
-    realPartSliderEl.noUiSlider.set(defaultSettings.realPart);
-    imagPartSliderEl.noUiSlider.set(defaultSettings.imagPart);
-    maxIterSliderEl.noUiSlider.set(defaultSettings.maxIterations);
-    colorSchemeSelect.value = defaultSettings.colorScheme;
-    state.realPart = defaultSettings.realPart;
-    state.imagPart = defaultSettings.imagPart;
-    state.maxIterations = defaultSettings.maxIterations;
-    state.colorScheme = defaultSettings.colorScheme;
-    requestRender({ immediate: true, reason: 'defaults' });
-  });
-
   resetZoomButton.addEventListener('click', function() {
     state.viewX = 0;
     state.viewY = 0;
@@ -1650,7 +1802,7 @@ document.addEventListener('DOMContentLoaded', function() {
     allowExtremeZoomButton.addEventListener('click', function() {
       state.allowExtremeZoom = !state.allowExtremeZoom;
       this.classList.toggle('active', state.allowExtremeZoom);
-      setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
+      setButtonLabel(allowExtremeZoomButton, 'Extremzoom: ' + (state.allowExtremeZoom ? 'An' : 'Aus'));
       if (!state.allowExtremeZoom && state.zoomLevel > MAX_ZOOM_DEFAULT) {
         state.zoomLevel = MAX_ZOOM_DEFAULT;
         renderer.animateTo({ viewX: state.viewX, viewY: state.viewY, zoomLevel: state.zoomLevel }, 160);
@@ -2002,7 +2154,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const colorSchemeSelect = document.getElementById('colorScheme');
   const colorIntensityButton = document.getElementById('colorIntensity');
   const applyButton = document.getElementById('applySettings');
-  const defaultValuesButton = document.getElementById('defaultValues');
   const resetZoomButton = document.getElementById('resetZoom');
   const saveImageButton = document.getElementById('saveImage');
   const advancedToggleButton = document.getElementById('juliaAdvancedToggle');
@@ -2302,41 +2453,6 @@ document.addEventListener('DOMContentLoaded', function() {
       colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
       colorSchemeSelect.value = colorScheme;
     }
-    
-    // Julia-Menge neu berechnen
-    safeCalculateJulia();
-  });
-  
-  // Standardwerte-Button
-  defaultValuesButton.addEventListener('click', function() {
-    // Steuerelemente auf Standardwerte setzen
-    realPartSlider.value = defaultSettings.realPart;
-    imagPartSlider.value = defaultSettings.imagPart;
-    maxIterSlider.value = defaultSettings.maxIterations;
-    colorSchemeSelect.value = defaultSettings.colorScheme;
-    
-    // Anzeige aktualisieren
-    realValueSpan.textContent = defaultSettings.realPart;
-    imagValueSpan.textContent = defaultSettings.imagPart;
-    iterValueSpan.textContent = defaultSettings.maxIterations;
-    
-    // Parameter übernehmen
-    realPart = defaultSettings.realPart;
-    imagPart = defaultSettings.imagPart;
-    maxIterations = defaultSettings.maxIterations;
-    colorScheme = defaultSettings.colorScheme;
-    
-    // Ansicht zurücksetzen
-    viewX = 0;
-    viewY = 0;
-    zoomLevel = 1;
-    zoomInfoSpan.textContent = formatZoomLevel(zoomLevel);
-    
-    // Farbintensität zurücksetzen
-    useIntensePalettes = false;
-    setButtonLabel(colorIntensityButton, 'Subtil');
-    colorIntensityButton.classList.remove('active');
-    activePalettes = colorPalettes;
     
     // Julia-Menge neu berechnen
     safeCalculateJulia();
