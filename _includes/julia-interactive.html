@@ -615,11 +615,6 @@
     border-radius: 0;
   }
 
-  /* Fix: Label soll keine Hover-Events auslösen - nur der Dropdown selbst */
-  .color-intensity-group .color-control-item label {
-    pointer-events: none;
-  }
-
   /* Fix: Farben Tom-Select Wrapper auf sichtbare Höhe begrenzen */
   .color-control-item .ts-wrapper {
     width: 100%;
@@ -645,15 +640,8 @@
   }
 
   /* ========================================
-     Color Controls - Flex Layout für Dropdown + Button nebeneinander
+     Color Control Item - Basis-Styles
      ======================================== */
-  .color-controls-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: flex-end;
-  }
-  
   .color-control-item {
     display: flex;
     flex-direction: column;
@@ -664,13 +652,6 @@
     border: 1px solid rgba(255, 255, 255, 0.04);
     transition: background 0.2s ease;
     flex: 0 1 auto;
-  }
-
-  /* Intensität-Toggle neben Farbschema */
-  .color-controls-row .intensity-toggle {
-    padding: 10px 14px;
-    min-width: auto;
-    white-space: nowrap;
   }
   
   /* Desktop: Compact dropdown width */
@@ -1520,13 +1501,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Tom Select für Farbschema-Dropdown initialisieren
   const colorSchemeSelect = document.getElementById('colorScheme');
-  let colorSchemeTomSelect = null;
+  window.colorSchemeTomSelect = null;
   if (colorSchemeSelect && typeof TomSelect !== 'undefined') {
-    colorSchemeTomSelect = new TomSelect('#colorScheme', {
+    window.colorSchemeTomSelect = new TomSelect('#colorScheme', {
       create: false,
       sortField: null, // Reihenfolge beibehalten
       controlInput: null, // Kein Suchfeld
-      allowEmptyOption: false
+      allowEmptyOption: false,
+      onChange: function(value) {
+        // Farbschema aktualisieren und neu rendern
+        state.colorScheme = value;
+        requestRender({ immediate: true, reason: 'colorScheme' });
+      }
     });
   }
 
@@ -2458,19 +2444,34 @@ document.addEventListener('DOMContentLoaded', function() {
     safeCalculateJulia();
   });
   
-  // Farbschema-Auswahl
-  colorSchemeSelect.addEventListener('change', function() {
-    colorScheme = this.value;
-    
-    if (!activePalettes[colorScheme]) {
-      console.error("Farbschema nicht gefunden:", colorScheme);
-      colorScheme = 'blau-rot'; // Fallback auf Standard-Farbschema
-      colorSchemeSelect.value = colorScheme;
-    }
-    
-    // Julia-Menge neu berechnen
-    safeCalculateJulia();
-  });
+  // Farbschema-Auswahl via Tom-Select
+  if (window.colorSchemeTomSelect) {
+    window.colorSchemeTomSelect.on('change', function(value) {
+      colorScheme = value;
+      
+      if (!activePalettes[colorScheme]) {
+        console.error("Farbschema nicht gefunden:", colorScheme);
+        colorScheme = 'blau-rot';
+        this.setValue(colorScheme, true); // silent = true
+      }
+      
+      // Julia-Menge neu berechnen
+      safeCalculateJulia();
+    });
+  } else {
+    // Fallback falls Tom-Select nicht geladen
+    colorSchemeSelect.addEventListener('change', function() {
+      colorScheme = this.value;
+      
+      if (!activePalettes[colorScheme]) {
+        console.error("Farbschema nicht gefunden:", colorScheme);
+        colorScheme = 'blau-rot';
+        colorSchemeSelect.value = colorScheme;
+      }
+      
+      safeCalculateJulia();
+    });
+  }
   
   // Farbintensitäts-Button
   colorIntensityButton.addEventListener('click', function() {
