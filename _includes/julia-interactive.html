@@ -1073,6 +1073,30 @@
       flex-direction: row;
       flex-wrap: wrap;
     }
+    
+    /* Farben + Subtil-Button nebeneinander (kompakt) */
+    .color-intensity-group {
+      flex-direction: row;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .color-intensity-group .color-control-item {
+      flex: 1 1 auto;
+      min-width: 100px;
+    }
+    .color-intensity-group .intensity-toggle {
+      flex: 0 0 auto;
+      padding: 10px;
+      min-width: auto;
+      width: auto;
+    }
+    /* Nur Icon zeigen auf Mobile */
+    .color-intensity-group .intensity-toggle .btn-text {
+      display: none;
+    }
+    .color-intensity-group .intensity-toggle .icon {
+      margin-right: 0;
+    }
   }
   
   @media (max-width: 480px) {
