@@ -473,10 +473,12 @@
 
   .julia-container.fullscreen-mode .canvas-overlay {
     display: flex;
+    top: 140px; /* Unterhalb der Controls (Toolbar 12px + 56px + Controls ~60px + Abstand) */
   }
 
   .julia-container.fullscreen-mode.focus-mode .canvas-overlay {
     display: flex;
+    top: 80px; /* Nur Toolbar sichtbar, also weniger Abstand */
   }
 
   .julia-container.fullscreen-mode {
