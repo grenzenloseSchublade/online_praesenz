@@ -27,9 +27,10 @@
       <div class="control-row">
         <label for="explorerMaxIter">Iterationen:</label>
         <div id="explorerMaxIterSlider" class="nouislider-wrapper"></div>
-        <span id="explorerIterValue" class="value-chip">80</span>
+        <input type="number" id="explorerIterValue" class="value-chip" value="80" min="10" max="500" step="10">
       </div>
-      <div class="color-controls-row">
+      <!-- Farben + Intensität zusammen -->
+      <div class="color-intensity-group">
         <div class="color-control-item">
           <label for="explorerColorScheme">Farben:</label>
           <select id="explorerColorScheme">
@@ -44,6 +45,10 @@
             <option value="goldgrün">Gold-Grün</option>
           </select>
         </div>
+        <button id="explorerColorIntensity" class="toggle-button intensity-toggle" title="Farbintensität" aria-label="Farbintensität">
+          <span class="icon"><i class="fas fa-adjust" aria-hidden="true"></i></span>
+          <span class="btn-text">Subtil</span>
+        </button>
       </div>
       <!-- Erweitert-Button am Ende der Basic Controls -->
       <div class="advanced-toggle-row">
@@ -55,26 +60,14 @@
       </div>
     </div>
     <div class="controls-advanced">
-      <div class="color-controls-row">
-        <div class="color-control-item">
-          <label for="explorerColorIntensity">Intensität:</label>
-          <button id="explorerColorIntensity" class="toggle-button" title="Farbintensität" aria-label="Farbintensität">
-            <span class="icon"><i class="fas fa-adjust" aria-hidden="true"></i></span>
-            <span class="btn-text">Subtil</span>
-          </button>
-        </div>
-        <div class="color-control-item">
-          <label for="explorerAllowExtremeZoom">Extremzoom:</label>
-          <button id="explorerAllowExtremeZoom" class="toggle-button" title="Extremzoom erlauben" aria-label="Extremzoom erlauben">
-            <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
-            <span class="btn-text">Aus</span>
-          </button>
-        </div>
-      </div>
-      <div class="button-row">
-        <button id="saveExplorerImage" title="Bild speichern" aria-label="Bild speichern">
+      <!-- Extremzoom + Export zusammen -->
+      <div class="toggle-row">
+        <button id="explorerAllowExtremeZoom" class="toggle-button compact" title="Extremzoom erlauben" aria-label="Extremzoom erlauben">
+          <span class="icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+          <span class="btn-text">Extremzoom</span>
+        </button>
+        <button id="saveExplorerImage" class="toggle-button icon-only" title="Bild speichern" aria-label="Bild speichern">
           <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
-          <span class="btn-text">Export</span>
         </button>
       </div>
     </div>
@@ -85,6 +78,10 @@
       <h3 class="explorer-title">Mandelbrot-Menge</h3>
       <div class="canvas-container">
         <canvas id="mandelbrotCanvas" width="800" height="450"></canvas>
+        <div class="canvas-overlay" id="mandelbrotOverlay">
+          <div class="overlay-item">c: <span id="mandelbrotPositionInfo">-0.5 + 0i</span></div>
+          <div class="overlay-item overlay-zoom">Zoom: <span id="mandelbrotZoomInfo">1×</span></div>
+        </div>
         <div class="loading-indicator" id="mandelbrotLoading">Berechne...</div>
         <div class="zoom-warning" id="mandelbrotZoomWarning">Extremzoom aktiv – Details koennen instabil sein.</div>
         
@@ -105,6 +102,10 @@
       <h3 class="explorer-title">Julia-Menge für c = <span id="juliaParameter" class="info-value">-0.7 + 0.27i</span></h3>
       <div class="canvas-container">
         <canvas id="explorerJuliaCanvas" width="800" height="450"></canvas>
+        <div class="canvas-overlay" id="juliaOverlay">
+          <div class="overlay-item">c: <span id="juliaPositionInfo">0 + 0i</span></div>
+          <div class="overlay-item overlay-zoom">Zoom: <span id="juliaZoomInfoOverlay">1×</span></div>
+        </div>
         <div class="loading-indicator" id="juliaLoading">Berechne...</div>
         <div class="zoom-warning" id="explorerJuliaZoomWarning">Extremzoom aktiv – Details koennen instabil sein.</div>
         
@@ -233,7 +234,67 @@
   }
 
   .explorer-toolbar .icon {
-    /* margin wird durch gap im parent gesteuert */
+    margin-right: 6px;
+  }
+
+  /* ========================================
+     Color Intensity Group - Farben + Intensität zusammen
+     ======================================== */
+  .color-intensity-group {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .color-intensity-group .color-control-item {
+    flex: 1 1 auto;
+    min-width: 120px;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  .color-intensity-group .color-control-item:hover {
+    background: none;
+  }
+
+  .color-intensity-group .intensity-toggle {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    white-space: nowrap;
+    align-self: flex-end;
+    height: fit-content;
+  }
+
+  /* ========================================
+     Toggle Row - Extremzoom + Export
+     ======================================== */
+  .toggle-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .toggle-row .toggle-button.compact {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .toggle-row .toggle-button.icon-only {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    min-width: auto;
+  }
+
+  .toggle-row .toggle-button.icon-only .icon {
     margin: 0;
   }
 
@@ -331,6 +392,7 @@
 
   .explorer-container.fullscreen-mode {
     position: relative;
+    padding: 0;
   }
 
   .explorer-container.fullscreen-mode,
@@ -363,14 +425,83 @@
 
   .explorer-container.fullscreen-mode .explorer-toolbar {
     top: 12px;
+    padding: 8px 12px;
   }
 
   .explorer-container.fullscreen-mode .explorer-controls {
-    top: 64px;
+    top: 72px;
     max-height: 55vh;
     overflow: auto;
   }
 
+  /* Erklärbox im Fullscreen-Modus */
+  .explorer-container.fullscreen-mode .explorer-explanation-container {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 300;
+  }
+
+  .explorer-container.fullscreen-mode .explorer-explanation-box {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    margin-bottom: 8px;
+    max-height: 70vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease,
+                visibility 0.3s ease;
+  }
+
+  .explorer-container.fullscreen-mode .explorer-explanation-box.visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    display: block;
+  }
+
+
+  /* Desktop 2-Spalten Grid für Controls */
+  @media (min-width: 900px) {
+    .controls-basic {
+      display: grid !important;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      align-items: start;
+    }
+    
+    .controls-basic .control-row {
+      grid-column: 1 / 2;
+    }
+    
+    .controls-basic .color-intensity-group {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+    
+    .controls-basic .advanced-toggle-row {
+      grid-column: 1 / -1;
+    }
+    
+    .controls-advanced {
+      display: none;
+    }
+    
+    .explorer-container.advanced-open .controls-advanced {
+      display: flex;
+    }
+    
+    .controls-advanced .toggle-row {
+      width: 100%;
+    }
+  }
 
   @media (max-width: 768px) {
     .explorer-toolbar {
@@ -378,6 +509,15 @@
     }
     .explorer-toolbar .toggle-button {
       padding: 8px 10px;
+    }
+    .color-intensity-group {
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .color-intensity-group .intensity-toggle {
+      width: 100%;
+      align-self: stretch;
     }
   }
 
@@ -574,6 +714,50 @@
     touch-action: none;
   }
 
+  /* Canvas Overlay für Position/Zoom Info - kompakt rechts oben */
+  .explorer-container .canvas-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    pointer-events: none;
+  }
+
+  .explorer-container .canvas-overlay .overlay-item {
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    width: 120px;
+    text-align: center;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .explorer-container .canvas-overlay .overlay-item span {
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .explorer-container .canvas-overlay {
+      top: 6px;
+      right: 6px;
+      gap: 3px;
+    }
+    .explorer-container .canvas-overlay .overlay-item {
+      padding: 3px 6px;
+      font-size: 10px;
+    }
+  }
+
   .zoom-box {
     position: absolute;
     border: 2px dashed #ff00ff;
@@ -639,12 +823,13 @@
   }
 
   /* ========================================
-     Value Chip - Compact Display
+     Value Chip - Compact Display (Editable Input)
      ======================================== */
   .value-chip {
     flex-shrink: 0;
     min-width: 52px;
-    padding: 5px 10px;
+    width: 65px;
+    padding: 5px 8px;
     color: #05d9e8;
     font-size: 13px;
     font-weight: 600;
@@ -653,6 +838,25 @@
     border-radius: 8px;
     background: rgba(5, 217, 232, 0.1);
     border: 1px solid rgba(5, 217, 232, 0.2);
+    outline: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .value-chip::-webkit-outer-spin-button,
+  .value-chip::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .value-chip:focus {
+    border-color: #05d9e8;
+    box-shadow: 0 0 8px rgba(5, 217, 232, 0.4);
+  }
+
+  .value-chip:hover {
+    border-color: rgba(5, 217, 232, 0.5);
   }
   
   /* ========================================
@@ -749,6 +953,7 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     margin-top: 4px;
     overflow: hidden;
+    z-index: 250; /* Über Controls (200), unter Erklärbox (300) */
   }
   
   .explorer-controls .ts-dropdown .ts-dropdown-content {
@@ -930,7 +1135,7 @@
     background: rgba(0, 0, 0, 0.4);
     border-radius: 12px;
     padding: 5px 3px;
-    z-index: 10;
+    z-index: 100;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
   
@@ -1209,7 +1414,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // noUiSlider Setup
   const maxIterSliderElement = document.getElementById('explorerMaxIterSlider');
-  const iterValueSpan = document.getElementById('explorerIterValue');
+  const iterValueInput = document.getElementById('explorerIterValue');
   
   noUiSlider.create(maxIterSliderElement, {
     start: 80,
@@ -1309,10 +1514,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   mandelbrotRenderer.onViewUpdate = (view) => {
     if (mandelbrotZoomLevel) mandelbrotZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
+    state.mandelbrot.viewX = view.viewX;
+    state.mandelbrot.viewY = view.viewY;
+    state.mandelbrot.zoomLevel = view.zoomLevel;
+    updateMandelbrotOverlay();
     updateZoomWarnings();
   };
   juliaRenderer.onViewUpdate = (view) => {
     if (juliaZoomLevel) juliaZoomLevel.textContent = view.zoomLevel.toFixed(2) + '×';
+    state.julia.viewX = view.viewX;
+    state.julia.viewY = view.viewY;
+    state.julia.zoomLevel = view.zoomLevel;
+    updateJuliaOverlay();
     updateZoomWarnings();
   };
 
@@ -1448,6 +1661,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Overlay Update Funktionen - zeigen Cursor-Position (c-Wert)
+  // Speichert die aktuelle Cursor-Position für jedes Canvas
+  const cursorState = {
+    mandelbrot: { cx: -0.5, cy: 0 },  // Default: Mandelbrot-Zentrum
+    julia: { cx: 0, cy: 0 }            // Default: Julia-Zentrum
+  };
+
+  function updateMandelbrotOverlay(cx, cy) {
+    const posInfo = document.getElementById('mandelbrotPositionInfo');
+    const zoomInfo = document.getElementById('mandelbrotZoomInfo');
+    if (cx !== undefined && cy !== undefined) {
+      cursorState.mandelbrot.cx = cx;
+      cursorState.mandelbrot.cy = cy;
+    }
+    if (posInfo) {
+      const sign = cursorState.mandelbrot.cy >= 0 ? '+' : '';
+      posInfo.textContent = `${cursorState.mandelbrot.cx.toFixed(3)} ${sign} ${cursorState.mandelbrot.cy.toFixed(3)}i`;
+    }
+    if (zoomInfo) {
+      zoomInfo.textContent = state.mandelbrot.zoomLevel.toFixed(2) + '×';
+    }
+  }
+
+  function updateJuliaOverlay(cx, cy) {
+    const posInfo = document.getElementById('juliaPositionInfo');
+    const zoomInfo = document.getElementById('juliaZoomInfoOverlay');
+    if (cx !== undefined && cy !== undefined) {
+      cursorState.julia.cx = cx;
+      cursorState.julia.cy = cy;
+    }
+    if (posInfo) {
+      const sign = cursorState.julia.cy >= 0 ? '+' : '';
+      posInfo.textContent = `${cursorState.julia.cx.toFixed(3)} ${sign} ${cursorState.julia.cy.toFixed(3)}i`;
+    }
+    if (zoomInfo) {
+      zoomInfo.textContent = state.julia.zoomLevel.toFixed(2) + '×';
+    }
+  }
+
+  // Berechnet Canvas-Mitte als komplexe Koordinate (für Mobile)
+  function getMandelbrotCenter() {
+    return { cx: state.mandelbrot.viewX, cy: state.mandelbrot.viewY };
+  }
+
+  function getJuliaCenter() {
+    return { cx: state.julia.viewX, cy: state.julia.viewY };
+  }
+
   function applyMandelbrotTap(pos) {
     const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
     state.julia.realPart = complex.cx;
@@ -1460,12 +1721,24 @@ document.addEventListener('DOMContentLoaded', function() {
   maxIterSliderElement.noUiSlider.on('update', function(values, handle) {
     const value = values[handle];
     state.maxIterations = parseInt(value, 10);
-    iterValueSpan.textContent = value;
+    iterValueInput.value = value;
   });
   
   maxIterSliderElement.noUiSlider.on('change', function(values, handle) {
     requestRender(mandelbrotRenderer, { preview: true, debounce: 220, reason: 'iterations' });
     requestRender(juliaRenderer, { preview: true, debounce: 220, reason: 'iterations' });
+  });
+
+  // Input → Slider Bindung für Iterationen
+  iterValueInput.addEventListener('change', function() {
+    const val = parseInt(this.value, 10);
+    if (!isNaN(val) && val >= 10 && val <= 500) {
+      maxIterSliderElement.noUiSlider.set(val);
+      requestRender(mandelbrotRenderer, { preview: true, debounce: 220, reason: 'iterations-input' });
+      requestRender(juliaRenderer, { preview: true, debounce: 220, reason: 'iterations-input' });
+    } else {
+      this.value = state.maxIterations;
+    }
   });
 
   colorSchemeSelect.addEventListener('change', function() {
@@ -1556,6 +1829,10 @@ document.addEventListener('DOMContentLoaded', function() {
       this.setAttribute('aria-expanded', isOpen);
       setButtonLabel(this, isOpen ? 'Optionen ausblenden' : 'Erweiterte Optionen');
       this.title = isOpen ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen';
+      // Nur im Nicht-Fullscreen-Modus neu berechnen (verhindert Flackern)
+      if (!container.classList.contains('fullscreen-mode')) {
+        setTimeout(resizeAndRender, 100);
+      }
     });
   }
 
@@ -1563,7 +1840,10 @@ document.addEventListener('DOMContentLoaded', function() {
     focusModeButton.addEventListener('click', function() {
       container.classList.toggle('focus-mode');
       this.classList.toggle('active', container.classList.contains('focus-mode'));
-      setTimeout(resizeAndRender, 80);
+      // Nur im Nicht-Fullscreen-Modus neu berechnen (verhindert Flackern)
+      if (!container.classList.contains('fullscreen-mode')) {
+        setTimeout(resizeAndRender, 100);
+      }
     });
   }
 
@@ -2025,8 +2305,63 @@ document.addEventListener('DOMContentLoaded', function() {
     if (event.touches.length === 0) {
       juliaTouchPanning = false;
       juliaTouchLast = null;
+      // Mobile: Zeige Canvas-Mitte als c-Wert
+      const center = getJuliaCenter();
+      updateJuliaOverlay(center.cx, center.cy);
     }
   }, { passive: false });
+
+  // ========================================
+  // Mousemove Event-Listener für Overlay-Updates
+  // ========================================
+  mandelbrotCanvas.addEventListener('mousemove', function(event) {
+    const pos = getCanvasCoords(mandelbrotCanvas, event);
+    const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
+    updateMandelbrotOverlay(complex.cx, complex.cy);
+  });
+
+  mandelbrotCanvas.addEventListener('mouseleave', function() {
+    // Bei Verlassen: Zeige Canvas-Mitte
+    const center = getMandelbrotCenter();
+    updateMandelbrotOverlay(center.cx, center.cy);
+  });
+
+  juliaCanvas.addEventListener('mousemove', function(event) {
+    const pos = getCanvasCoords(juliaCanvas, event);
+    const complex = screenToComplex(state.julia, juliaCanvas, pos);
+    updateJuliaOverlay(complex.cx, complex.cy);
+  });
+
+  juliaCanvas.addEventListener('mouseleave', function() {
+    // Bei Verlassen: Zeige Canvas-Mitte
+    const center = getJuliaCenter();
+    updateJuliaOverlay(center.cx, center.cy);
+  });
+
+  // Touch: Bei Berührung Position aktualisieren, bei Ende auf Mitte zurücksetzen
+  mandelbrotCanvas.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 1) {
+      const pos = getTouchCanvasCoords(mandelbrotCanvas, event.touches[0]);
+      const complex = screenToComplex(state.mandelbrot, mandelbrotCanvas, pos);
+      updateMandelbrotOverlay(complex.cx, complex.cy);
+    }
+  }, { passive: true });
+
+  mandelbrotCanvas.addEventListener('touchend', function() {
+    // Nach Touch-Ende: Zeige Canvas-Mitte
+    setTimeout(() => {
+      const center = getMandelbrotCenter();
+      updateMandelbrotOverlay(center.cx, center.cy);
+    }, 100);
+  }, { passive: true });
+
+  juliaCanvas.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 1) {
+      const pos = getTouchCanvasCoords(juliaCanvas, event.touches[0]);
+      const complex = screenToComplex(state.julia, juliaCanvas, pos);
+      updateJuliaOverlay(complex.cx, complex.cy);
+    }
+  }, { passive: true });
 
   function updateMobileControls() {
     const isMobile = FractalUtils.isMobileDevice() || window.innerWidth <= 768;
@@ -2050,6 +2385,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setButtonLabel(allowExtremeZoomButton, state.allowExtremeZoom ? 'An' : 'Aus');
   }
   updateJuliaParameterText();
+  // Initiale Overlay-Werte: Canvas-Mitte
+  const mandelbrotCenter = getMandelbrotCenter();
+  const juliaCenter = getJuliaCenter();
+  updateMandelbrotOverlay(mandelbrotCenter.cx, mandelbrotCenter.cy);
+  updateJuliaOverlay(juliaCenter.cx, juliaCenter.cy);
   updateZoomWarnings();
   updateMobileControls();
   resizeAndRender();
