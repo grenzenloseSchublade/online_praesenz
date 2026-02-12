@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-excerpt: "Dokumentierte Gedanken, technische Experimente und gelegentliche Abschweifungen – Beiträge entstehen, wenn ein Thema es verdient."
+excerpt: "Dokumentierte Gedanken, technische Experimente und gelegentliche Abschweifungen"
 permalink: /posts/
 layout: single
 author_profile: false

@@ -24,8 +24,7 @@ header:
     </summary>
     <div class="about-intro__content">
       <p>
-        Diese Seite dokumentiert Projekte, Experimente und Gedanken – entstanden aus der Überzeugung, dass technisches Wissen durch Teilen wertvoller wird. 
-        Qualität hat Vorrang vor Quantität; Beiträge entstehen, wenn ein Thema es verdient.
+        Diese Seite dokumentiert Projekte, Experimente und Gedanken – entstanden aus der Überzeugung, dass technisches Wissen durch Teilen wertvoller wird.
         <br>
         <br>
         Der autodidaktische Ansatz prägt diese Arbeit: Für jedes Projekt eigne ich mir schrittweise die notwendigen Grundlagen an und gehe Herausforderungen so lange an, bis das gewünschte Ergebnis erreicht ist.
