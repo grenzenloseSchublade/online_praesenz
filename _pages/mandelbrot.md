@@ -1,6 +1,6 @@
 ---
 title: "Die faszinierende Welt der Fraktale"
-excerpt: "Tauchen Sie ein in die Welt von Fraktalen und entdecken Sie die Schönheit der Methematik. Durch interaktive Visualisierungen können Sie sowohl die Mandelbrot-Menge als auch ihre zugehörigen Julia-Mengen selbst erkunden und deren einzigartige Eigenschaften kennenlernen."
+excerpt: "Entdecken Sie die Schönheit der Mathematik. Durch interaktive Visualisierungen können Sie verschiedene Mengen erkunden und deren einzigartige Eigenschaften kennenlernen."
 permalink: /mandelbrot/
 layout: single
 author_profile: true
