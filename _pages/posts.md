@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-excerpt: "Dokumentierte Gedanken, technische Experimente und gelegentliche Abschweifungen"
+excerpt: "Projekte, Gedanken und technische Experimente."
 permalink: /posts/
 layout: single
 author_profile: false

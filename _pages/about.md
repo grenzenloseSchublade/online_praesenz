@@ -1,6 +1,6 @@
 ---
 title: "Über mich"
-excerpt: "Ingenieur aus Leidenschaft, Autodidakt aus Überzeugung – ein Profil zwischen Technik und Neugier."
+excerpt: "Zwischen Theorie und Praxis – ein Profil über Experimentieren und Neugierde. "
 permalink: /about/
 layout: single
 author_profile: true

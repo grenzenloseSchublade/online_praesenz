@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
-excerpt: "Elektrotechnik, Eingebettete Systeme, Machine Learning – ein Werdegang zwischen Theorie und Praxis"
+excerpt: "Elektrotechnik, Eingebettete Systeme, Machine Learning – ein Werdegang zwischen Theorie und Praxis."
 permalink: /cv-old/
 layout: single
 author_profile: true
